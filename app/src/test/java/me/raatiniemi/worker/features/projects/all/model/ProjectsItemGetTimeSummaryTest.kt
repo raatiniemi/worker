@@ -30,8 +30,7 @@ class ProjectsItemGetTimeSummaryTest(
 ) {
     @Test
     fun getTimeSummary() {
-        val project = Project(1, projectName("Project name"))
-        val projectsItem = ProjectsItem(project, timeIntervals)
+        val projectsItem = ProjectsItem(android, timeIntervals)
 
         assertEquals(expected, projectsItem.timeSummary)
     }
@@ -46,6 +45,7 @@ class ProjectsItemGetTimeSummaryTest(
                     "1h 0m",
                     listOf(
                         timeInterval {
+                            projectId = android.id
                             start = Milliseconds(0)
                             stop = Milliseconds(3600000)
                         }
@@ -55,6 +55,7 @@ class ProjectsItemGetTimeSummaryTest(
                     "2h 30m",
                     listOf(
                         timeInterval {
+                            projectId = android.id
                             start = Milliseconds(0)
                             stop = Milliseconds(9000000)
                         }
@@ -64,10 +65,12 @@ class ProjectsItemGetTimeSummaryTest(
                     "3h 30m",
                     listOf(
                         timeInterval {
+                            projectId = android.id
                             start = Milliseconds(0)
                             stop = Milliseconds(3600000)
                         },
                         timeInterval {
+                            projectId = android.id
                             start = Milliseconds(0)
                             stop = Milliseconds(9000000)
                         }

@@ -36,8 +36,6 @@ import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportRoomRepositoryTest {
-    private val project = Project(1, projectName("Name"))
-
     private lateinit var database: Database
     private lateinit var timeReport: TimeReportDao
     private lateinit var timeIntervals: TimeIntervalDao
@@ -53,8 +51,8 @@ class TimeReportRoomRepositoryTest {
         database.projects()
             .add(
                 projectEntity {
-                    id = project.id
-                    name = project.name.value
+                    id = android.id
+                    name = android.name.value
                 }
             )
         timeReport = database.timeReport()
@@ -71,7 +69,7 @@ class TimeReportRoomRepositoryTest {
     fun count_withoutTimeIntervals() {
         val expected = 0
 
-        val actual = repository.count(project)
+        val actual = repository.count(android)
 
         assertEquals(expected, actual)
     }
@@ -79,9 +77,13 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun count_withTimeInterval() {
         val expected = 1
-        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
 
-        val actual = repository.count(project)
+        val actual = repository.count(android)
 
         assertEquals(expected, actual)
     }
@@ -89,10 +91,18 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun count_withTimeIntervalsOnSameDay() {
         val expected = 1
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
 
-        val actual = repository.count(project)
+        val actual = repository.count(android)
 
         assertEquals(expected, actual)
     }
@@ -100,10 +110,18 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun count_withTimeIntervalsOnDifferentDays() {
         val expected = 2
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(timeIntervalEntity { startInMilliseconds = Date().time })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = Date().time
+            }
+        )
 
-        val actual = repository.count(project)
+        val actual = repository.count(android)
 
         assertEquals(expected, actual)
     }
@@ -112,7 +130,7 @@ class TimeReportRoomRepositoryTest {
     fun countNotRegistered_withoutTimeIntervals() {
         val expected = 0
 
-        val actual = repository.countNotRegistered(project)
+        val actual = repository.countNotRegistered(android)
 
         assertEquals(expected, actual)
     }
@@ -120,9 +138,14 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegistered_withRegisteredTimeInterval() {
         val expected = 0
-        timeIntervals.add(timeIntervalEntity { registered = true })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+                registered = true
+            }
+        )
 
-        val actual = repository.countNotRegistered(project)
+        val actual = repository.countNotRegistered(android)
 
         assertEquals(expected, actual)
     }
@@ -130,9 +153,13 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegistered_withTimeInterval() {
         val expected = 1
-        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
 
-        val actual = repository.countNotRegistered(project)
+        val actual = repository.countNotRegistered(android)
 
         assertEquals(expected, actual)
     }
@@ -140,10 +167,18 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegistered_withTimeIntervalsOnSameDay() {
         val expected = 1
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
 
-        val actual = repository.countNotRegistered(project)
+        val actual = repository.countNotRegistered(android)
 
         assertEquals(expected, actual)
     }
@@ -151,13 +186,19 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegistered_withRegisteredTimeIntervalOnDifferentDays() {
         val expected = 1
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(timeIntervalEntity {
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
             startInMilliseconds = Date().time
             registered = true
-        })
+            }
+        )
 
-        val actual = repository.countNotRegistered(project)
+        val actual = repository.countNotRegistered(android)
 
         assertEquals(expected, actual)
     }
@@ -165,12 +206,18 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegistered_withTimeIntervalsOnDifferentDays() {
         val expected = 2
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(timeIntervalEntity {
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
             startInMilliseconds = Date().time
-        })
+            }
+        )
 
-        val actual = repository.countNotRegistered(project)
+        val actual = repository.countNotRegistered(android)
 
         assertEquals(expected, actual)
     }
@@ -178,9 +225,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(project, loadRange)
+        val actual = repository.findAll(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -189,21 +239,24 @@ class TimeReportRoomRepositoryTest {
     fun findAll_withoutTimeIntervalForProject() {
         database.projects().add(
             projectEntity {
-                id = 2
-                name = "Name #2"
+                id = ios.id
+                name = ios.name.value
             }
         )
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = 2
+                projectId = ios.id
                 startInMilliseconds = 1
                 stopInMilliseconds = 10
             }
         )
         val expected = emptyList<TimeReportDay>()
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(project, loadRange)
+        val actual = repository.findAll(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -211,10 +264,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsForSameDay() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 11
             stopInMilliseconds = 30
         }
@@ -230,9 +285,12 @@ class TimeReportRoomRepositoryTest {
                 timeIntervals.map { TimeReportItem(it) }
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(project, loadRange)
+        val actual = repository.findAll(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -240,10 +298,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsForDifferentDays() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -263,9 +323,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(project, loadRange)
+        val actual = repository.findAll(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -273,10 +336,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsWithPosition() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -290,9 +355,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(1),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(project, loadRange)
+        val actual = repository.findAll(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -300,10 +368,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsWithPageSize() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -317,9 +387,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(1)
+        )
 
-        val actual = repository.findAll(project, loadRange)
+        val actual = repository.findAll(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -327,9 +400,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -338,21 +414,24 @@ class TimeReportRoomRepositoryTest {
     fun findNotRegistered_withoutTimeIntervalForProject() {
         database.projects().add(
             projectEntity {
-                id = 2
-                name = "Name #2"
+                id = ios.id
+                name = ios.name.value
             }
         )
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = 2
+                projectId = ios.id
                 startInMilliseconds = 1
                 stopInMilliseconds = 10
             }
         )
         val expected = emptyList<TimeReportDay>()
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -360,10 +439,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsForSameDay() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 11
             stopInMilliseconds = 30
         }
@@ -378,9 +459,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -388,10 +472,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsForDifferentDays() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -411,9 +497,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -421,10 +510,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsWithPosition() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -438,9 +529,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(1),
+            LoadSize(10)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -448,10 +542,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsWithPageSize() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -465,9 +561,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(1)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -475,11 +574,13 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withRegisteredTimeInterval() {
         val firstTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 1
             stopInMilliseconds = 10
             registered = true
         }
         val secondTimeInterval = timeIntervalEntity {
+            projectId = android.id
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -493,9 +594,12 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findNotRegistered(project, loadRange)
+        val actual = repository.findNotRegistered(android, loadRange)
 
         assertEquals(expected, actual)
     }

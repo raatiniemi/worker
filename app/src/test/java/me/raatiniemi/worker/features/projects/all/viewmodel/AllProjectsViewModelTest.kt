@@ -58,8 +58,6 @@ class AllProjectsViewModelTest {
     private lateinit var removeProject: RemoveProject
     private lateinit var vm: AllProjectsViewModel
 
-    private val project = Project(1L, projectName("Project #1"))
-
     @Before
     fun setUp() {
         getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
@@ -101,9 +99,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `refresh active projects without active projects`() = runBlocking {
-        val items = listOf(
-            getProjectsItem(Project(1, projectName("Project Name")))
-        )
+        val items = listOf(getProjectsItem(android))
 
         vm.refreshActiveProjects(items)
 
@@ -113,8 +109,8 @@ class AllProjectsViewModelTest {
     @Test
     fun `refresh active projects with active project`() = runBlocking {
         val items = listOf(
-            getProjectsItem(Project(1, projectName("Project Name #1"))),
-            getProjectsItem(Project(2, projectName("Project Name #2")), true)
+            getProjectsItem(android),
+            getProjectsItem(ios, true)
         )
 
         vm.refreshActiveProjects(items)
@@ -126,19 +122,19 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `open project`() {
-        val projectsItem = ProjectsItem(project, emptyList())
+        val projectsItem = ProjectsItem(android, emptyList())
 
         vm.open(projectsItem)
 
         assertEquals(listOf(Event.TapProjectOpen), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.OpenProject(project), it)
+            assertEquals(AllProjectsViewActions.OpenProject(android), it)
         }
     }
 
     @Test
     fun `toggle clock in with inactive project`() {
-        val item = ProjectsItem(project, emptyList())
+        val item = ProjectsItem(android, emptyList())
         val date = Date()
 
         vm.toggle(item, date)
@@ -148,7 +144,7 @@ class AllProjectsViewModelTest {
                 listOf(Event.TapProjectToggle, Event.ProjectClockIn),
                 usageAnalytics.events
             )
-            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
         }
     }
 
@@ -156,10 +152,11 @@ class AllProjectsViewModelTest {
     fun `toggle clock in with active project`() {
         timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
-        val item = ProjectsItem(project, emptyList())
+        val item = ProjectsItem(android, emptyList())
         val date = Date()
 
         vm.toggle(item, date)
@@ -172,7 +169,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock out with confirm clock out`() = runBlocking {
-        val item = getProjectsItem(project, true)
+        val item = getProjectsItem(android, true)
         val date = Date()
 
         vm.toggle(item, date)
@@ -188,10 +185,11 @@ class AllProjectsViewModelTest {
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
         timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
-        val item = getProjectsItem(project, true)
+        val item = getProjectsItem(android, true)
         val date = Date()
 
         vm.toggle(item, date)
@@ -201,14 +199,14 @@ class AllProjectsViewModelTest {
                 listOf(Event.TapProjectToggle, Event.ProjectClockOut),
                 usageAnalytics.events
             )
-            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
         }
     }
 
     @Test
     fun `toggle clock out project without confirm clock out and active project`() = runBlocking {
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
-        val item = getProjectsItem(project, true)
+        val item = getProjectsItem(android, true)
         val date = Date()
 
         vm.toggle(item, date)
@@ -221,7 +219,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun at() {
-        val item = ProjectsItem(project, emptyList())
+        val item = ProjectsItem(android, emptyList())
 
         vm.at(item)
 
@@ -233,7 +231,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `remove project`() {
-        val item = ProjectsItem(project, emptyList())
+        val item = ProjectsItem(android, emptyList())
 
         vm.remove(item)
 
@@ -247,11 +245,12 @@ class AllProjectsViewModelTest {
     fun `clock in with already active project`() = runBlocking {
         timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
 
-        vm.clockIn(project, Date())
+        vm.clockIn(android, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
@@ -260,17 +259,17 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock in project`() = runBlocking {
-        vm.clockIn(project, Date())
+        vm.clockIn(android, Date())
 
         assertEquals(listOf(Event.ProjectClockIn), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
         }
     }
 
     @Test
     fun `clock out without active project`() = runBlocking {
-        vm.clockOut(project, Date())
+        vm.clockOut(android, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
@@ -281,41 +280,41 @@ class AllProjectsViewModelTest {
     fun `clock out project`() = runBlocking {
         timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
 
-        vm.clockOut(project, Date())
+        vm.clockOut(android, Date())
 
         assertEquals(listOf(Event.ProjectClockOut), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
         }
     }
 
     @Test
     fun `remove project without project`() = runBlocking {
-        vm.remove(project)
+        vm.remove(android)
 
         assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.DismissNotification(project), it)
+            assertEquals(AllProjectsViewActions.DismissNotification(android), it)
         }
     }
 
     @Test
     fun `remove project with project`() = runBlocking {
-        projectRepository.add(NewProject(projectName("Project #1")))
-        val project = Project(1, projectName("Project #1"))
+        projectRepository.add(NewProject(android.name))
         val expected = emptyList<Project>()
 
-        vm.remove(project)
+        vm.remove(android)
 
         assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
         val actual = projectRepository.findAll()
         assertEquals(expected, actual)
         vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.DismissNotification(project), it)
+            assertEquals(AllProjectsViewActions.DismissNotification(android), it)
         }
     }
 }

@@ -38,7 +38,6 @@ class TimeReportDataSourceTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val project = Project(1, projectName("Project name"))
     private val projectHolder = ProjectHolder()
 
     private lateinit var keyValueStore: KeyValueStore
@@ -71,7 +70,7 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withoutTimeIntervals() {
-        projectHolder += project
+        projectHolder += android
         val expected = PositionalDataSourceResult.Initial<TimeReportDay>(emptyList(), 0)
 
         dataSource.loadInitial(loadInitialParams(), loadInitialCallback {
@@ -81,9 +80,10 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeInterval() {
-        projectHolder += project
+        projectHolder += android
         val timeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -106,14 +106,16 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeIntervals() {
-        projectHolder += project
+        projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -140,14 +142,16 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPosition() {
-        projectHolder += project
+        projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -177,14 +181,16 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPageSize() {
-        projectHolder += project
+        projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -220,7 +226,7 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withoutTimeIntervals() {
-        projectHolder += project
+        projectHolder += android
         val expected = PositionalDataSourceResult.Range<TimeReportDay>(emptyList())
 
         dataSource.loadRange(loadRangeParams(), loadRangeCallback {
@@ -230,9 +236,10 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeInterval() {
-        projectHolder += project
+        projectHolder += android
         val timeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -251,14 +258,16 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeIntervals() {
-        projectHolder += project
+        projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -281,14 +290,16 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPosition() {
-        projectHolder += project
+        projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )
@@ -314,14 +325,16 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPageSize() {
-        projectHolder += project
+        projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds.now
             }
         )

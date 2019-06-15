@@ -36,8 +36,6 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TimeIntervalRoomRepositoryTest {
-    private val project = Project(1, projectName("Name"))
-
     private lateinit var database: Database
     private lateinit var timeIntervals: TimeIntervalDao
     private lateinit var repository: TimeIntervalRepository
@@ -52,8 +50,8 @@ class TimeIntervalRoomRepositoryTest {
         database.projects()
             .add(
                 projectEntity {
-                    id = project.id
-                    name = project.name.value
+                    id = android.id
+                    name = android.name.value
                 }
             )
         timeIntervals = database.timeIntervals()
@@ -67,7 +65,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun findAll_withoutTimeInterval() {
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
 
         assertEquals(emptyList<TimeInterval>(), actual)
     }
@@ -75,16 +73,17 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun findAll_withoutTimeIntervalForProject() {
         timeIntervals.add(timeIntervalEntity())
-        val project = Project(2, projectName("Name #2"))
 
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(ios, Milliseconds.empty)
 
         assertEquals(emptyList<TimeInterval>(), actual)
     }
 
     @Test
     fun findAll_withTimeInterval() {
-        val entity = timeIntervalEntity()
+        val entity = timeIntervalEntity {
+            projectId = android.id
+        }
         timeIntervals.add(entity)
         val expected = listOf(
             timeInterval {
@@ -95,14 +94,16 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds(0))
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun findAll_withTimeIntervalOnStart() {
-        val entity = timeIntervalEntity()
+        val entity = timeIntervalEntity {
+            projectId = android.id
+        }
         timeIntervals.add(entity)
         val expected = listOf(
             timeInterval {
@@ -113,23 +114,30 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, Milliseconds(1))
+        val actual = repository.findAll(android, Milliseconds(1))
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun findAll_withTimeIntervalBeforeStart() {
-        timeIntervals.add(timeIntervalEntity())
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
 
-        val actual = repository.findAll(project, Milliseconds(2))
+        val actual = repository.findAll(android, Milliseconds(2))
 
         assertEquals(emptyList<TimeInterval>(), actual)
     }
 
     @Test
     fun findAll_withActiveTimeIntervalBeforeStart() {
-        val entity = timeIntervalEntity { stopInMilliseconds = 0 }
+        val entity = timeIntervalEntity {
+            projectId = android.id
+            stopInMilliseconds = 0
+        }
         timeIntervals.add(entity)
         val expected = listOf(
             timeInterval {
@@ -140,14 +148,14 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, Milliseconds(2))
+        val actual = repository.findAll(android, Milliseconds(2))
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun findById_withoutTimeInterval() {
-        val actual = repository.findById(1)
+        val actual = repository.findById(android.id)
 
         assertNull(actual)
     }
@@ -163,14 +171,14 @@ class TimeIntervalRoomRepositoryTest {
             isRegistered = entity.registered == 1L
         }
 
-        val actual = repository.findById(1)
+        val actual = repository.findById(android.id)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun findActiveByProjectId_withoutTimeInterval() {
-        val actual = repository.findActiveByProjectId(1)
+        val actual = repository.findActiveByProjectId(android.id)
 
         assertNull(actual)
     }
@@ -179,7 +187,7 @@ class TimeIntervalRoomRepositoryTest {
     fun findActiveByProjectId_withoutActiveTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
 
-        val actual = repository.findActiveByProjectId(1)
+        val actual = repository.findActiveByProjectId(android.id)
 
         assertNull(actual)
     }
@@ -195,7 +203,7 @@ class TimeIntervalRoomRepositoryTest {
             isRegistered = entity.registered == 1L
         }
 
-        val actual = repository.findActiveByProjectId(1)
+        val actual = repository.findActiveByProjectId(android.id)
 
         assertEquals(expected, actual)
     }
@@ -203,12 +211,12 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun add() {
         val newTimeInterval = newTimeInterval {
-            projectId = 1
+            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
         val expected = timeInterval {
-            projectId = 1
+            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
@@ -221,7 +229,7 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun update_withoutTimeInterval() {
         val timeInterval = timeInterval {
-            projectId = 1
+            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
@@ -233,7 +241,10 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun update_withTimeInterval() {
-        val entity = timeIntervalEntity { registered = true }
+        val entity = timeIntervalEntity {
+            projectId = android.id
+            registered = true
+        }
         timeIntervals.add(entity)
         val expected = timeInterval {
             projectId = entity.projectId
@@ -251,7 +262,7 @@ class TimeIntervalRoomRepositoryTest {
     fun update_withoutTimeIntervals() {
         val timeInterval = timeInterval {
             id = 1
-            projectId = 1
+            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
@@ -268,23 +279,30 @@ class TimeIntervalRoomRepositoryTest {
         val expected = listOf(
             timeInterval {
                 id = 1
-                projectId = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 2
-                projectId = 1
+                projectId = android.id
                 start = Milliseconds(4)
                 stop = Milliseconds(6)
             }
         )
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(timeIntervalEntity {
-            id = 2
-            startInMilliseconds = 4
-            stopInMilliseconds = 6
-        })
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                id = 2
+                projectId = android.id
+                startInMilliseconds = 4
+                stopInMilliseconds = 6
+            }
+        )
 
         val actual = repository.update(expected)
 
@@ -293,22 +311,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun remove_withoutTimeInterval() {
-        repository.remove(1)
-
-        val actual = timeIntervals.findAll(1, 0)
-        assertEquals(emptyList<TimeIntervalEntity>(), actual)
-    }
-
-    @Test
-    fun remove_withTimeInterval() {
-        val entity = timeIntervalEntity {
-            id = 2
-            startInMilliseconds = 5
-            stopInMilliseconds = 9
-        }
-        timeIntervals.add(timeIntervalEntity { })
-        timeIntervals.add(entity)
-        val expected = listOf(entity)
+        val expected = emptyList<TimeIntervalEntity>()
 
         repository.remove(1)
 
@@ -317,9 +320,31 @@ class TimeIntervalRoomRepositoryTest {
     }
 
     @Test
+    fun remove_withTimeInterval() {
+        val entity = timeIntervalEntity {
+            id = 2
+            projectId = android.id
+            startInMilliseconds = 5
+            stopInMilliseconds = 9
+        }
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
+        timeIntervals.add(entity)
+        val expected = listOf(entity)
+
+        repository.remove(1)
+
+        val actual = timeIntervals.findAll(android.id, 0)
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun remove_withoutTimeIntervals() {
         val timeInterval = timeInterval {
-            projectId = 1
+            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
@@ -328,7 +353,7 @@ class TimeIntervalRoomRepositoryTest {
             listOf(timeInterval)
         )
 
-        val actual = timeIntervals.findAll(1, 0)
+        val actual = timeIntervals.findAll(android.id, 0)
         assertEquals(emptyList<TimeIntervalEntity>(), actual)
     }
 
@@ -336,10 +361,15 @@ class TimeIntervalRoomRepositoryTest {
     fun remove_withTimeIntervals() {
         val entity = timeIntervalEntity {
             id = 2
+            projectId = android.id
             startInMilliseconds = 5
             stopInMilliseconds = 9
         }
-        timeIntervals.add(timeIntervalEntity {})
+        timeIntervals.add(
+            timeIntervalEntity {
+                projectId = android.id
+            }
+        )
         timeIntervals.add(entity)
         val timeInterval = timeInterval {
             projectId = entity.projectId
@@ -352,7 +382,7 @@ class TimeIntervalRoomRepositoryTest {
             listOf(timeInterval)
         )
 
-        val actual = timeIntervals.findAll(1, 0)
+        val actual = timeIntervals.findAll(android.id, 0)
         assertEquals(expected, actual)
     }
 }
