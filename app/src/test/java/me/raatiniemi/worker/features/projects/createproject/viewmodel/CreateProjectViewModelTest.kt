@@ -67,7 +67,6 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with empty name`() = runBlocking {
-        repository.add(NewProject(android.name))
         vm.name = ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -78,12 +77,15 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with duplicated name`() = runBlocking {
+        repository.add(NewProject(android.name))
         vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertTrue(it)
+            assertFalse(it)
         }
-        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
+        vm.viewActions.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
+            assertEquals(CreateProjectViewActions.DuplicateNameErrorMessage, it)
+        }
     }
 
     @Test
