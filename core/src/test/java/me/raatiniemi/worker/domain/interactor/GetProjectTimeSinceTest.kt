@@ -29,8 +29,6 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class GetProjectTimeSinceTest {
-    private val project = Project(1, projectName("Project name"))
-
     private lateinit var repository: TimeIntervalRepository
     private lateinit var getProjectTimeSince: GetProjectTimeSince
 
@@ -43,11 +41,13 @@ class GetProjectTimeSinceTest {
     @Test
     fun `get project time since day`() {
         val newTimeInterval = newTimeInterval {
+            projectId = android.id
             start = after(TimeIntervalStartingPoint.DAY)
             stop = after(TimeIntervalStartingPoint.DAY, 2.hours)
         }
         repository.add(
             newTimeInterval {
+                projectId = android.id
                 start = before(TimeIntervalStartingPoint.DAY)
                 stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)
             }
@@ -56,12 +56,13 @@ class GetProjectTimeSinceTest {
         val expected = listOf(
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = newTimeInterval.start
                 stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
-        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.DAY)
+        val actual = getProjectTimeSince(android, TimeIntervalStartingPoint.DAY)
 
         assertEquals(expected, actual)
     }
@@ -69,11 +70,13 @@ class GetProjectTimeSinceTest {
     @Test
     fun `get project time since week`() {
         val newTimeInterval = newTimeInterval {
+            projectId = android.id
             start = after(TimeIntervalStartingPoint.WEEK)
             stop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
         }
         repository.add(
             newTimeInterval {
+                projectId = android.id
                 start = before(TimeIntervalStartingPoint.WEEK)
                 stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)
             }
@@ -82,12 +85,13 @@ class GetProjectTimeSinceTest {
         val expected = listOf(
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = newTimeInterval.start
                 stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
-        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.WEEK)
+        val actual = getProjectTimeSince(android, TimeIntervalStartingPoint.WEEK)
 
         assertEquals(expected, actual)
     }
@@ -95,11 +99,13 @@ class GetProjectTimeSinceTest {
     @Test
     fun `get project time since month`() {
         val newTimeInterval = newTimeInterval {
+            projectId = android.id
             start = after(TimeIntervalStartingPoint.MONTH)
             stop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
         }
         repository.add(
             newTimeInterval {
+                projectId = android.id
                 start = before(TimeIntervalStartingPoint.MONTH)
                 stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)
             }
@@ -108,12 +114,13 @@ class GetProjectTimeSinceTest {
         val expected = listOf(
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = newTimeInterval.start
                 stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
-        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.MONTH)
+        val actual = getProjectTimeSince(android, TimeIntervalStartingPoint.MONTH)
 
         assertEquals(expected, actual)
     }

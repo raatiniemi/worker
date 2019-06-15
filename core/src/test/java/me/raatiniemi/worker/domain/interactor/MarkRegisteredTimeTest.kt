@@ -27,8 +27,6 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
-    private val project = Project(1, projectName("Project name"))
-
     private lateinit var repository: TimeIntervalRepository
     private lateinit var markRegisteredTime: MarkRegisteredTime
 
@@ -42,18 +40,22 @@ class MarkRegisteredTimeTest {
     fun `mark registered time with multiple unregistered items`() {
         val newTimeIntervals = listOf(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
@@ -62,21 +64,25 @@ class MarkRegisteredTimeTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 3
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 4
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
@@ -87,30 +93,34 @@ class MarkRegisteredTimeTest {
         val expected = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             }
         )
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
@@ -118,21 +128,25 @@ class MarkRegisteredTimeTest {
     fun `mark registered time with multiple registered items`() {
         val newTimeIntervals = listOf(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -142,24 +156,28 @@ class MarkRegisteredTimeTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -171,26 +189,30 @@ class MarkRegisteredTimeTest {
         val expected = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 3
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 4
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
         )
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
@@ -198,20 +220,24 @@ class MarkRegisteredTimeTest {
     fun `mark registered time with multiple items`() {
         val newTimeIntervals = listOf(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             newTimeInterval {
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
-            },
-            newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             newTimeInterval {
+                projectId = android.id
+                start = Milliseconds(1)
+                stop = Milliseconds(2)
+                isRegistered = true
+            },
+            newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -221,23 +247,27 @@ class MarkRegisteredTimeTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
             timeInterval {
                 id = 2
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -249,6 +279,7 @@ class MarkRegisteredTimeTest {
         val expected = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -261,18 +292,20 @@ class MarkRegisteredTimeTest {
             },
             timeInterval {
                 id = 3
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             }
         )
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
@@ -281,6 +314,7 @@ class MarkRegisteredTimeTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
             }
         )
@@ -292,6 +326,7 @@ class MarkRegisteredTimeTest {
     fun `mark registered time with registered active time interval`() {
         val newTimeIntervals = listOf(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
             }
         )
@@ -299,6 +334,7 @@ class MarkRegisteredTimeTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 isRegistered = true
             }
@@ -309,10 +345,11 @@ class MarkRegisteredTimeTest {
         val expected = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
             }
         )
-        val actual = repository.findAll(project, Milliseconds.empty)
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 }

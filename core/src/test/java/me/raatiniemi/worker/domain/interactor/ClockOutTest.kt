@@ -31,8 +31,6 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockOutTest {
-    private val project = Project(1, projectName("Project name"))
-
     private lateinit var repository: TimeIntervalRepository
     private lateinit var clockOut: ClockOut
 
@@ -44,7 +42,7 @@ class ClockOutTest {
 
     @Test(expected = InactiveProjectException::class)
     fun `clock out with inactive project`() {
-        clockOut(1L, Date())
+        clockOut(android.id, Date())
     }
 
     @Test(expected = ClockOutBeforeClockInException::class)
@@ -52,11 +50,12 @@ class ClockOutTest {
         val date = Date()
         repository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(date.time) + 1.hours
             }
         )
 
-        clockOut(1, date)
+        clockOut(android.id, date)
     }
 
     @Test
@@ -64,20 +63,22 @@ class ClockOutTest {
         val date = Date()
         repository.add(
             newTimeInterval {
+                projectId = android.id
                 start = Milliseconds(1)
             }
         )
         val expected = listOf(
             timeInterval {
                 id = 1
+                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(date.time)
             }
         )
 
-        clockOut(1, date)
+        clockOut(android.id, date)
 
-        val actual = repository.findAll(project, Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

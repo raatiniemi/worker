@@ -18,8 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -40,16 +39,15 @@ class GetProjectTest {
 
     @Test
     fun execute() {
-        repository.add(NewProject(projectName("Project name")))
-        val expected = Project(1L, projectName("Project name"))
+        repository.add(NewProject(android.name))
 
-        val actual = getProject(1)
+        val actual = getProject(android.id)
 
-        assertEquals(expected, actual)
+        assertEquals(android, actual)
     }
 
     @Test(expected = NoProjectException::class)
     fun `execute withoutProject`() {
-        getProject(1)
+        getProject(android.id)
     }
 }
