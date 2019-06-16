@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.NewTimeInterval
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.*
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
@@ -48,7 +45,7 @@ interface TimeIntervalRepository {
      * @param projectId Id for project.
      * @return Active time interval for project, or null if project is inactive.
      */
-    fun findActiveByProjectId(projectId: Long): TimeInterval?
+    fun findActiveByProjectId(projectId: ProjectId): TimeInterval?
 
     /**
      * Add new time interval to the repository.

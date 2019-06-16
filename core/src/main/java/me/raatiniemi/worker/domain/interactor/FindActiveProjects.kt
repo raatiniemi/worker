@@ -28,6 +28,6 @@ class FindActiveProjects(
         .filter { isActive(it) }
 
     private fun isActive(project: Project): Boolean {
-        return timeIntervalRepository.findActiveByProjectId(project.id.value) != null
+        return timeIntervalRepository.findActiveByProjectId(project.id) != null
     }
 }

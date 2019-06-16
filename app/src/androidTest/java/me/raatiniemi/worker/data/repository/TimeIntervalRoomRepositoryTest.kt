@@ -174,7 +174,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun findActiveByProjectId_withoutTimeInterval() {
-        val actual = repository.findActiveByProjectId(android.id.value)
+        val actual = repository.findActiveByProjectId(android.id)
 
         assertNull(actual)
     }
@@ -183,7 +183,7 @@ class TimeIntervalRoomRepositoryTest {
     fun findActiveByProjectId_withoutActiveTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
 
-        val actual = repository.findActiveByProjectId(android.id.value)
+        val actual = repository.findActiveByProjectId(android.id)
 
         assertNull(actual)
     }
@@ -198,7 +198,7 @@ class TimeIntervalRoomRepositoryTest {
             isRegistered = entity.registered == 1L
         }
 
-        val actual = repository.findActiveByProjectId(android.id.value)
+        val actual = repository.findActiveByProjectId(android.id)
 
         assertEquals(expected, actual)
     }

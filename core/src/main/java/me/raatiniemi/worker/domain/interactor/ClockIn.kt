@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.interactor
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewTimeInterval
+import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import java.util.*
 
@@ -27,7 +28,7 @@ import java.util.*
  */
 class ClockIn(private val timeIntervalRepository: TimeIntervalRepository) {
     operator fun invoke(projectId: Long, date: Date) {
-        val timeInterval = timeIntervalRepository.findActiveByProjectId(projectId)
+        val timeInterval = timeIntervalRepository.findActiveByProjectId(ProjectId(projectId))
         if (timeInterval != null) {
             throw ActiveProjectException()
         }
