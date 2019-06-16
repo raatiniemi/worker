@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 /**
@@ -25,6 +26,6 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
  */
 class GetProject(private val repository: ProjectRepository) {
     operator fun invoke(projectId: Long): Project {
-        return repository.findById(projectId) ?: throw NoProjectException()
+        return repository.findById(ProjectId(projectId)) ?: throw NoProjectException()
     }
 }

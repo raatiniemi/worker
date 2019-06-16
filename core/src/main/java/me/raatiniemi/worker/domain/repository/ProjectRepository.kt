@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.*
 
 /**
  * Represent a unified interface for working with projects using different data sources.
@@ -50,7 +47,7 @@ interface ProjectRepository {
      * @param id Id for the project.
      * @return Project, or null if none was found.
      */
-    fun findById(id: Long): Project?
+    fun findById(id: ProjectId): Project?
 
     /**
      * Add new project to the repository.

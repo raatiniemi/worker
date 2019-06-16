@@ -218,7 +218,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find by id without project`() {
-        val actual = repository.findById(android.id)
+        val actual = repository.findById(ProjectId(android.id))
 
         assertNull(actual)
     }
@@ -227,7 +227,7 @@ class ProjectInMemoryRepositoryTest {
     fun `find by id without matching project`() {
         repository.add(NewProject(android.name))
 
-        val actual = repository.findById(cli.id)
+        val actual = repository.findById(ProjectId(cli.id))
 
         assertNull(actual)
     }
@@ -236,7 +236,7 @@ class ProjectInMemoryRepositoryTest {
     fun `find by id with project`() {
         repository.add(NewProject(android.name))
 
-        val actual = repository.findById(android.id)
+        val actual = repository.findById(ProjectId(android.id))
 
         assertEquals(android, actual)
     }

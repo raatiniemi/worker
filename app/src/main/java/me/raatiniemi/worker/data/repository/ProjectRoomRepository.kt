@@ -18,10 +18,7 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.ProjectDao
 import me.raatiniemi.worker.data.projects.ProjectEntity
-import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
@@ -44,8 +41,8 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
             ?.run { toProject() }
     }
 
-    override fun findById(id: Long): Project? {
-        return projects.findById(id)
+    override fun findById(id: ProjectId): Project? {
+        return projects.findById(id.value)
             ?.run { toProject() }
     }
 
