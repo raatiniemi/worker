@@ -52,8 +52,8 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
         return findByName(newProject.name) ?: throw UnableToFindNewProjectException()
     }
 
-    override fun remove(id: Long) {
-        val entity = projects.findById(id) ?: return
+    override fun remove(project: Project) {
+        val entity = projects.findById(project.id) ?: return
 
         projects.remove(entity)
     }

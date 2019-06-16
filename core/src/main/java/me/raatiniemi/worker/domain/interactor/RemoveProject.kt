@@ -24,6 +24,6 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
  */
 class RemoveProject(private val repository: ProjectRepository) {
     operator fun invoke(project: Project) {
-        repository.remove(project.id)
+        repository.remove(project)
     }
 }

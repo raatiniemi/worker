@@ -243,7 +243,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `remove without project`() {
-        repository.remove(android.id)
+        repository.remove(android)
     }
 
     @Test
@@ -251,7 +251,7 @@ class ProjectInMemoryRepositoryTest {
         repository.add(NewProject(android.name))
         val expected = listOf(android)
 
-        repository.remove(cli.id)
+        repository.remove(cli)
 
         val actual = repository.findAll()
         assertEquals(expected, actual)
@@ -262,7 +262,7 @@ class ProjectInMemoryRepositoryTest {
         repository.add(NewProject(android.name))
         val expected = emptyList<Project>()
 
-        repository.remove(android.id)
+        repository.remove(android)
 
         val actual = repository.findAll()
         assertEquals(expected, actual)

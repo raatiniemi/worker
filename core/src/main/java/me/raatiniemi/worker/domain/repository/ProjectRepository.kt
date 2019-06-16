@@ -58,12 +58,11 @@ interface ProjectRepository {
     fun add(newProject: NewProject): Project
 
     /**
-     * Remove project by id.
-     *
+     * Remove project.
      *
      * The operation also removes time registered to the project.
      *
-     * @param id Id of the project to remove.
+     * @param project Project to remove.
      */
-    fun remove(id: Long)
+    fun remove(project: Project)
 }
