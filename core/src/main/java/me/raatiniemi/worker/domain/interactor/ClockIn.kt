@@ -34,7 +34,7 @@ class ClockIn(private val timeIntervalRepository: TimeIntervalRepository) {
         }
 
         val newTimeInterval = NewTimeInterval(
-            projectId = projectId,
+            projectId = ProjectId(projectId),
             start = Milliseconds(date.time)
         )
 

@@ -38,7 +38,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         val timeInterval = TimeInterval(
             id = incrementedId.incrementAndGet(),
-            projectId = newTimeInterval.projectId,
+            projectId = newTimeInterval.projectId.value,
             start = newTimeInterval.start,
             stop = newTimeInterval.stop,
             isRegistered = newTimeInterval.isRegistered

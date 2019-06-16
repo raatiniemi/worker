@@ -22,7 +22,7 @@ data class NewTimeIntervalBuilder(
     var isRegistered: Boolean = false
 ) {
     internal fun build(project: Project) = NewTimeInterval(
-        projectId = project.id.value,
+        projectId = project.id,
         start = requireNotNull(start),
         stop = stop,
         isRegistered = isRegistered

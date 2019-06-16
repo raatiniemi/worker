@@ -60,7 +60,7 @@ internal data class TimeIntervalEntity(
 
 internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
     id = 0,
-    projectId = projectId,
+    projectId = projectId.value,
     startInMilliseconds = start.value,
     stopInMilliseconds = stop?.value ?: 0,
     registered = if (isRegistered) {
