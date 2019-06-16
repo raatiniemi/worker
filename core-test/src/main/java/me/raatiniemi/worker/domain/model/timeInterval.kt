@@ -24,7 +24,7 @@ data class TimeIntervalBuilder(
 ) {
     internal fun build(project: Project) = TimeInterval(
         id = id,
-        projectId = project.id.value,
+        projectId = project.id,
         start = requireNotNull(start),
         stop = stop,
         isRegistered = isRegistered

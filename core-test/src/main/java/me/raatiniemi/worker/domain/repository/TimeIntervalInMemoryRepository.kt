@@ -25,7 +25,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
 
     override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.filter {
-            it.projectId == project.id.value && it.start >= milliseconds
+            it.projectId == project.id && it.start >= milliseconds
         }
     }
 
@@ -33,12 +33,12 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         timeIntervals.firstOrNull { it.id == id }
 
     override fun findActiveByProjectId(projectId: ProjectId): TimeInterval? =
-        timeIntervals.firstOrNull { it.projectId == projectId.value && isActive(it) }
+        timeIntervals.firstOrNull { it.projectId == projectId && isActive(it) }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         val timeInterval = TimeInterval(
             id = incrementedId.incrementAndGet(),
-            projectId = newTimeInterval.projectId.value,
+            projectId = newTimeInterval.projectId,
             start = newTimeInterval.start,
             stop = newTimeInterval.stop,
             isRegistered = newTimeInterval.isRegistered
