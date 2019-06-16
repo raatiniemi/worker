@@ -94,7 +94,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find by id without time interval`() {
-        val actual = repository.findById(android.id)
+        val actual = repository.findById(android.id.value)
 
         assertNull(actual)
     }
@@ -113,14 +113,14 @@ class TimeIntervalInMemoryRepositoryTest {
             stop = Milliseconds(10)
         }
 
-        val actual = repository.findById(android.id)
+        val actual = repository.findById(android.id.value)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find active by project id without time intervals`() {
-        val actual = repository.findActiveByProjectId(android.id)
+        val actual = repository.findActiveByProjectId(android.id.value)
 
         assertNull(actual)
     }
@@ -134,7 +134,7 @@ class TimeIntervalInMemoryRepositoryTest {
             }
         )
 
-        val actual = repository.findActiveByProjectId(android.id)
+        val actual = repository.findActiveByProjectId(android.id.value)
 
         assertNull(actual)
     }
@@ -151,7 +151,7 @@ class TimeIntervalInMemoryRepositoryTest {
             start = Milliseconds(1)
         }
 
-        val actual = repository.findActiveByProjectId(android.id)
+        val actual = repository.findActiveByProjectId(android.id.value)
 
         assertEquals(expected, actual)
     }

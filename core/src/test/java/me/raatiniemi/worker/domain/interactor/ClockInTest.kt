@@ -49,7 +49,7 @@ class ClockInTest {
             }
         )
 
-        clockIn(android.id, Date())
+        clockIn(android.id.value, Date())
     }
 
     @Test
@@ -62,7 +62,7 @@ class ClockInTest {
             }
         )
 
-        clockIn(android.id, date)
+        clockIn(android.id.value, date)
 
         val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)

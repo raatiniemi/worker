@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-val web = Project(4, projectName("web"))
+val web = Project(ProjectId(4), projectName("web"))

@@ -41,12 +41,12 @@ class ProjectInMemoryRepository : ProjectRepository {
     }
 
     override fun findById(id: ProjectId): Project? {
-        return projects.firstOrNull { it.id == id.value }
+        return projects.firstOrNull { it.id == id }
     }
 
     override fun add(newProject: NewProject): Project {
         val project = Project(
-            id = incrementedId.incrementAndGet(),
+            id = ProjectId(incrementedId.incrementAndGet()),
             name = newProject.name
         )
         projects.add(project)

@@ -51,7 +51,7 @@ class TimeReportRoomRepositoryTest {
         database.projects()
             .add(
                 projectEntity {
-                    id = android.id
+                    id = android.id.value
                     name = android.name.value
                 }
             )
@@ -79,7 +79,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
 
@@ -93,12 +93,12 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
 
@@ -112,7 +112,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 2
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
         timeIntervals.add(
@@ -140,7 +140,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 0
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
                 registered = true
             }
         )
@@ -155,7 +155,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
 
@@ -169,12 +169,12 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
 
@@ -188,7 +188,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
         timeIntervals.add(
@@ -208,7 +208,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 2
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = android.id
+                projectId = android.id.value
             }
         )
         timeIntervals.add(
@@ -239,13 +239,13 @@ class TimeReportRoomRepositoryTest {
     fun findAll_withoutTimeIntervalForProject() {
         database.projects().add(
             projectEntity {
-                id = ios.id
+                id = ios.id.value
                 name = ios.name.value
             }
         )
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = ios.id
+                projectId = ios.id.value
                 startInMilliseconds = 1
                 stopInMilliseconds = 10
             }
@@ -264,12 +264,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsForSameDay() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 11
             stopInMilliseconds = 30
         }
@@ -298,12 +298,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsForDifferentDays() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -336,12 +336,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsWithPosition() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -368,12 +368,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withTimeIntervalsWithPageSize() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -414,13 +414,13 @@ class TimeReportRoomRepositoryTest {
     fun findNotRegistered_withoutTimeIntervalForProject() {
         database.projects().add(
             projectEntity {
-                id = ios.id
+                id = ios.id.value
                 name = ios.name.value
             }
         )
         timeIntervals.add(
             timeIntervalEntity {
-                projectId = ios.id
+                projectId = ios.id.value
                 startInMilliseconds = 1
                 stopInMilliseconds = 10
             }
@@ -439,12 +439,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsForSameDay() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 11
             stopInMilliseconds = 30
         }
@@ -472,12 +472,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsForDifferentDays() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -510,12 +510,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsWithPosition() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -542,12 +542,12 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withTimeIntervalsWithPageSize() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
@@ -574,13 +574,13 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withRegisteredTimeInterval() {
         val firstTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 1
             stopInMilliseconds = 10
             registered = true
         }
         val secondTimeInterval = timeIntervalEntity {
-            projectId = android.id
+            projectId = android.id.value
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }

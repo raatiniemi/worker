@@ -36,7 +36,7 @@ internal abstract class OngoingNotification(
     val project: Project,
     isOngoing: Boolean
 ) {
-    private val dataUri: Uri = OngoingUriCommunicator.createWith(project.id)
+    private val dataUri: Uri = OngoingUriCommunicator.createWith(project.id.value)
     private val builder: NotificationCompat.Builder
 
     @get:DrawableRes
@@ -54,7 +54,7 @@ internal abstract class OngoingNotification(
 
     private fun buildContentAction(): PendingIntent {
         val arguments = Bundle().apply {
-            putLong("projectId", project.id)
+            putLong("projectId", project.id.value)
             putString("projectName", project.name.value)
         }
 
@@ -71,7 +71,7 @@ internal abstract class OngoingNotification(
     }
 
     fun buildPendingIntentWithService(intent: Intent): PendingIntent {
-        return PendingIntent.getService(context, project.id.toInt(), intent, PENDING_INTENT_FLAG)
+        return PendingIntent.getService(context, project.id.value.toInt(), intent, PENDING_INTENT_FLAG)
     }
 
     fun getStringWithResourceId(@StringRes resourceId: Int): String {

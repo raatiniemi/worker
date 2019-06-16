@@ -156,8 +156,8 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject(cli.name))
         repository.add(NewProject(android.name))
         val expected = listOf(
-            Project(2, android.name),
-            Project(1, cli.name)
+            Project(ProjectId(2), android.name),
+            Project(ProjectId(1), cli.name)
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -191,8 +191,8 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject(cli.name))
         repository.add(NewProject(android.name))
         val expected = listOf(
-            Project(2, android.name),
-            Project(1, cli.name)
+            Project(ProjectId(2), android.name),
+            Project(ProjectId(1), cli.name)
         )
 
         val actual = repository.findAll()
@@ -218,7 +218,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findById_withoutProjects() {
-        val actual = repository.findById(ProjectId(android.id))
+        val actual = repository.findById(android.id)
 
         assertNull(actual)
     }
@@ -227,7 +227,7 @@ class ProjectRoomRepositoryTest {
     fun findById_withProject() {
         repository.add(NewProject(android.name))
 
-        val actual = repository.findById(ProjectId(android.id))
+        val actual = repository.findById(android.id)
 
         assertEquals(android, actual)
     }
@@ -237,7 +237,7 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
 
-        val actual = repository.findById(ProjectId(cli.id))
+        val actual = repository.findById(cli.id)
 
         assertEquals(cli, actual)
     }

@@ -41,13 +41,13 @@ class GetProjectTest {
     fun execute() {
         repository.add(NewProject(android.name))
 
-        val actual = getProject(android.id)
+        val actual = getProject(android.id.value)
 
         assertEquals(android, actual)
     }
 
     @Test(expected = NoProjectException::class)
     fun `execute withoutProject`() {
-        getProject(android.id)
+        getProject(android.id.value)
     }
 }

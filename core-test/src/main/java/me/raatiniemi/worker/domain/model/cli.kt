@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-val cli = Project(2, projectName("cli"))
+val cli = Project(ProjectId(2), projectName("cli"))
