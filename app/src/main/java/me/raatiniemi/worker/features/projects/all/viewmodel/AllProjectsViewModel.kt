@@ -159,7 +159,7 @@ internal class AllProjectsViewModel(
 
     suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockIn(project.id, date)
+            clockIn(project.id.value, date)
 
             usageAnalytics.log(Event.ProjectClockIn)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
@@ -172,7 +172,7 @@ internal class AllProjectsViewModel(
 
     suspend fun clockOut(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockOut(project.id, date)
+            clockOut(project.id.value, date)
 
             usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)

@@ -16,10 +16,11 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class IsProjectActive(private val repository: TimeIntervalRepository) {
     operator fun invoke(projectId: Long): Boolean {
-        return repository.findActiveByProjectId(projectId) != null
+        return repository.findActiveByProjectId(ProjectId(projectId)) != null
     }
 }

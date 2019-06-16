@@ -20,6 +20,7 @@ import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewTimeInterval
+import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.model.TimeInterval
 
 @Entity(
@@ -50,7 +51,7 @@ internal data class TimeIntervalEntity(
 ) {
     fun toTimeInterval() = TimeInterval(
         id = id,
-        projectId = projectId,
+        projectId = ProjectId(projectId),
         start = Milliseconds(startInMilliseconds),
         stop = stopInMilliseconds.takeUnless { it == 0L }
             ?.let { Milliseconds(it) },
@@ -60,7 +61,7 @@ internal data class TimeIntervalEntity(
 
 internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
     id = 0,
-    projectId = projectId,
+    projectId = projectId.value,
     startInMilliseconds = start.value,
     stopInMilliseconds = stop?.value ?: 0,
     registered = if (isRegistered) {
@@ -72,7 +73,7 @@ internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
 
 internal fun TimeInterval.toEntity() = TimeIntervalEntity(
     id = id,
-    projectId = projectId,
+    projectId = projectId.value,
     startInMilliseconds = start.value,
     stopInMilliseconds = stop?.value ?: 0,
     registered = if (isRegistered) {

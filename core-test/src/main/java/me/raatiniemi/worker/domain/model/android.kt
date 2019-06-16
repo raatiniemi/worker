@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-val android = Project(1, projectName("android"))
+val android = Project(ProjectId(1), projectName("android"))

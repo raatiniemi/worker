@@ -18,16 +18,13 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.toEntity
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.NewTimeInterval
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
     TimeIntervalRepository {
     override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
-        return timeIntervals.findAll(project.id, milliseconds.value)
+        return timeIntervals.findAll(project.id.value, milliseconds.value)
             .map { it.toTimeInterval() }
             .toList()
     }
@@ -37,8 +34,8 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             ?.run { toTimeInterval() }
     }
 
-    override fun findActiveByProjectId(projectId: Long): TimeInterval? {
-        return timeIntervals.findActiveTime(projectId)
+    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval? {
+        return timeIntervals.findActiveTime(projectId.value)
             ?.run { toTimeInterval() }
     }
 

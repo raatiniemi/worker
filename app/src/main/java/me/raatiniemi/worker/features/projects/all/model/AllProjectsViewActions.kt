@@ -49,7 +49,7 @@ internal sealed class AllProjectsViewActions {
         FragmentViewAction {
         override fun action(fragment: Fragment) {
             val destinationAction =
-                AllProjectsFragmentDirections.openTimeReport(project.id, project.name.value)
+                AllProjectsFragmentDirections.openTimeReport(project.id.value, project.name.value)
 
             fragment.findNavController()
                 .navigate(destinationAction)
@@ -123,7 +123,7 @@ internal sealed class AllProjectsViewActions {
             }
 
             notificationManager.cancel(
-                project.id.toString(),
+                project.id.value.toString(),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID
             )
         }

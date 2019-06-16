@@ -42,7 +42,7 @@ internal class ResumeService : OngoingService("ResumeService") {
 
             clockIn(project)
 
-            updateUserInterface(project.id)
+            updateUserInterface(project.id.value)
             sendOrDismissPauseNotification(project)
         } catch (e: Exception) {
             Timber.e(e, "Unable to resume project")
@@ -51,7 +51,7 @@ internal class ResumeService : OngoingService("ResumeService") {
 
     private fun clockIn(project: Project) {
         try {
-            clockIn(project.id, Date())
+            clockIn(project.id.value, Date())
 
             usageAnalytics.log(Event.NotificationClockIn)
         } catch (e: ActiveProjectException) {

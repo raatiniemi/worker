@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,18 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.exception.NoProjectException
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectId
-import me.raatiniemi.worker.domain.repository.ProjectRepository
-
-/**
- * Use case for getting a project.
- */
-class GetProject(private val repository: ProjectRepository) {
-    operator fun invoke(projectId: Long): Project {
-        return repository.findById(ProjectId(projectId)) ?: throw NoProjectException()
-    }
-}
+inline class ProjectId(val value: Long)

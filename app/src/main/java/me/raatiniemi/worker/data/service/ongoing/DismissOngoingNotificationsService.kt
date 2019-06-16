@@ -30,6 +30,6 @@ class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotific
 
     override fun onHandleIntent(intent: Intent?) {
         findAllProjects()
-            .forEach { dismissNotification(it.id) }
+            .forEach { dismissNotification(it.id.value) }
     }
 }

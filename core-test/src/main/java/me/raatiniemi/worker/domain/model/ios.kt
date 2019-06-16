@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-val ios = Project(3, projectName("ios"))
+val ios = Project(ProjectId(3), projectName("ios"))

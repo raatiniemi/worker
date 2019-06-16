@@ -21,6 +21,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.model.projectName
 
 @Entity(
@@ -33,5 +34,5 @@ internal data class ProjectEntity(
     val id: Long = 0,
     val name: String
 ) {
-    fun toProject() = Project(id = id, name = projectName(name))
+    fun toProject() = Project(id = ProjectId(id), name = projectName(name))
 }

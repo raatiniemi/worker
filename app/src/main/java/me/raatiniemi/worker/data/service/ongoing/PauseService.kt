@@ -52,7 +52,7 @@ internal class PauseService : OngoingService("PauseService") {
     }
 
     private fun clockOut(project: Project) {
-        clockOut(project.id, Date())
+        clockOut(project.id.value, Date())
 
         usageAnalytics.log(Event.NotificationClockOut)
     }

@@ -30,10 +30,10 @@ internal class TimeReportRoomRepository(
     private val timeReport: TimeReportDao,
     private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
-    override fun count(project: Project): Int = timeReport.count(project.id)
+    override fun count(project: Project): Int = timeReport.count(project.id.value)
 
     override fun countNotRegistered(project: Project): Int =
-        timeReport.countNotRegistered(project.id)
+        timeReport.countNotRegistered(project.id.value)
 
     private fun transform(group: TimeReportQueryGroup): TimeReportDay {
         val map = group.mapNotNull { timeIntervals.find(it) }
@@ -49,13 +49,13 @@ internal class TimeReportRoomRepository(
 
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> =
         with(loadRange) {
-            return timeReport.findAll(project.id, position.value, size.value)
+            return timeReport.findAll(project.id.value, position.value, size.value)
                 .map(::transform)
         }
 
     override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> =
         with(loadRange) {
-            return timeReport.findNotRegistered(project.id, position.value, size.value)
+            return timeReport.findNotRegistered(project.id.value, position.value, size.value)
                 .map(::transform)
         }
 }

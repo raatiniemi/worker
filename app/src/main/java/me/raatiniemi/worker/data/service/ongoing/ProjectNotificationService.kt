@@ -38,11 +38,11 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
             val projectId = getProjectId(intent)
             val project = getProject(projectId)
 
-            if (isProjectActive(project.id)) {
+            if (isProjectActive(project.id.value)) {
                 sendOrDismissPauseNotification(project)
                 return
             }
-            dismissNotification(project.id)
+            dismissNotification(project.id.value)
         } catch (e: Exception) {
             Timber.e(e, "Unable to update notification for project")
         }
@@ -62,7 +62,7 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
     companion object {
         fun startServiceWithContext(context: Context, project: Project) {
             val intent = Intent(context, ProjectNotificationService::class.java)
-            intent.data = OngoingUriCommunicator.createWith(project.id)
+            intent.data = OngoingUriCommunicator.createWith(project.id.value)
             context.startService(intent)
         }
     }

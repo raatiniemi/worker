@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.*
 
 /**
  * Represent a unified interface for working with projects using different data sources.
@@ -50,7 +47,7 @@ interface ProjectRepository {
      * @param id Id for the project.
      * @return Project, or null if none was found.
      */
-    fun findById(id: Long): Project?
+    fun findById(id: ProjectId): Project?
 
     /**
      * Add new project to the repository.
@@ -61,12 +58,11 @@ interface ProjectRepository {
     fun add(newProject: NewProject): Project
 
     /**
-     * Remove project by id.
-     *
+     * Remove project.
      *
      * The operation also removes time registered to the project.
      *
-     * @param id Id of the project to remove.
+     * @param project Project to remove.
      */
-    fun remove(id: Long)
+    fun remove(project: Project)
 }

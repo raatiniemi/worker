@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
@@ -69,7 +70,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         eventBus.register(this)
         projectHolder += Project(
-            id = arguments.projectId,
+            id = ProjectId(arguments.projectId),
             name = projectName(arguments.projectName)
         )
         projectHolder.value.observe(this, Observer {
@@ -227,7 +228,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
         projectHolder.value.run {
-            if (value?.id == event.projectId) {
+            if (value?.id?.value == event.projectId) {
                 vm.reloadTimeReport()
                 return@run
             }

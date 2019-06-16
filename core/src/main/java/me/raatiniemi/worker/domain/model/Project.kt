@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-data class Project(val id: Long, val name: ProjectName)
+data class Project(val id: ProjectId, val name: ProjectName)

@@ -42,7 +42,7 @@ class ClockOutTest {
 
     @Test(expected = InactiveProjectException::class)
     fun `clock out with inactive project`() {
-        clockOut(android.id, Date())
+        clockOut(android.id.value, Date())
     }
 
     @Test(expected = ClockOutBeforeClockInException::class)
@@ -54,7 +54,7 @@ class ClockOutTest {
             }
         )
 
-        clockOut(android.id, date)
+        clockOut(android.id.value, date)
     }
 
     @Test
@@ -73,7 +73,7 @@ class ClockOutTest {
             }
         )
 
-        clockOut(android.id, date)
+        clockOut(android.id.value, date)
 
         val actual = repository.findAll(android, Milliseconds(0))
         assertEquals(expected, actual)
