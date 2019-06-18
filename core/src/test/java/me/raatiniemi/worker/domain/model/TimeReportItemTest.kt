@@ -33,14 +33,4 @@ class TimeReportItemTest {
 
         assertSame(timeInterval, item.asTimeInterval())
     }
-
-    @Test
-    fun getId() {
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds(1)
-        }
-        val item = TimeReportItem.with(timeInterval)
-
-        assertEquals(timeInterval.id, item.id)
-    }
 }
