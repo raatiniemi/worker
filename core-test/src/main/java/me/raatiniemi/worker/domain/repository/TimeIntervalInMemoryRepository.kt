@@ -29,8 +29,8 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         }
     }
 
-    override fun findById(id: Long) =
-        timeIntervals.firstOrNull { it.id == id }
+    override fun findById(id: TimeIntervalId): TimeInterval? =
+        timeIntervals.firstOrNull { it.id == id.value }
 
     override fun findActiveByProjectId(projectId: ProjectId): TimeInterval? =
         timeIntervals.firstOrNull { it.projectId == projectId && isActive(it) }
@@ -48,7 +48,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     }
 
     override fun update(timeInterval: TimeInterval) =
-        findById(timeInterval.id)?.let {
+        findById(TimeIntervalId(timeInterval.id))?.let {
             val index = timeIntervals.indexOf(it)
             timeIntervals[index] = timeInterval
 

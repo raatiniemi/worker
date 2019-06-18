@@ -152,7 +152,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun findById_withoutTimeInterval() {
-        val actual = repository.findById(1)
+        val actual = repository.findById(TimeIntervalId(1))
 
         assertNull(actual)
     }
@@ -167,7 +167,7 @@ class TimeIntervalRoomRepositoryTest {
             isRegistered = entity.registered == 1L
         }
 
-        val actual = repository.findById(1)
+        val actual = repository.findById(TimeIntervalId(1))
 
         assertEquals(expected, actual)
     }
