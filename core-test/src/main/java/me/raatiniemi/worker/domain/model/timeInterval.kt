@@ -23,7 +23,7 @@ data class TimeIntervalBuilder(
     var isRegistered: Boolean = false
 ) {
     internal fun build(project: Project) = TimeInterval(
-        id = id,
+        id = TimeIntervalId(id),
         projectId = project.id,
         start = requireNotNull(start),
         stop = stop,

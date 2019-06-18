@@ -56,7 +56,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         this.timeIntervals.update(entities)
 
         return timeIntervals.map { it.id }
-            .mapNotNull { this.timeIntervals.find(it) }
+            .mapNotNull { this.timeIntervals.find(it.value) }
             .map { it.toTimeInterval() }
             .toList()
     }

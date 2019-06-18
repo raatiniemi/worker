@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalId
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 /**
@@ -30,7 +29,7 @@ class RemoveTime(private val repository: TimeIntervalRepository) {
      * @param time Time to remove.
      */
     operator fun invoke(time: TimeInterval) {
-        repository.remove(TimeIntervalId(time.id))
+        repository.remove(time.id)
     }
 
     /**
