@@ -94,7 +94,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find by id without time interval`() {
-        val actual = repository.findById(1)
+        val actual = repository.findById(TimeIntervalId(1))
 
         assertNull(actual)
     }
@@ -113,7 +113,7 @@ class TimeIntervalInMemoryRepositoryTest {
             stop = Milliseconds(10)
         }
 
-        val actual = repository.findById(1)
+        val actual = repository.findById(TimeIntervalId(1))
 
         assertEquals(expected, actual)
     }
@@ -225,7 +225,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `remove without time interval`() {
-        repository.remove(1)
+        repository.remove(TimeIntervalId(1))
     }
 
     @Test
@@ -238,7 +238,7 @@ class TimeIntervalInMemoryRepositoryTest {
         )
         val expected = emptyList<TimeInterval>()
 
-        repository.remove(1)
+        repository.remove(TimeIntervalId(1))
 
         val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)

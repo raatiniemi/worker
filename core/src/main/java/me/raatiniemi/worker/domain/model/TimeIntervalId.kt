@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-
-@RunWith(JUnit4::class)
-class TimeReportItemTest {
-    @Test
-    fun asTime() {
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds(1)
-        }
-        val item = TimeReportItem.with(timeInterval)
-
-        assertSame(timeInterval, item.asTimeInterval())
-    }
-}
+inline class TimeIntervalId(val value: Long)

@@ -37,7 +37,7 @@ interface TimeIntervalRepository {
      * @param id Id for the time interval.
      * @return Time interval, or null if none was found.
      */
-    fun findById(id: Long): TimeInterval?
+    fun findById(id: TimeIntervalId): TimeInterval?
 
     /**
      * Get active time interval for project.
@@ -76,7 +76,7 @@ interface TimeIntervalRepository {
      *
      * @param id Id of the time to remove.
      */
-    fun remove(id: Long)
+    fun remove(id: TimeIntervalId)
 
     /**
      * Remove multiple items.

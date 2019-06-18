@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
  * Represent a time interval registered to a project.
  */
 data class TimeInterval(
-    val id: Long,
+    val id: TimeIntervalId,
     val projectId: ProjectId,
     val start: Milliseconds,
     val stop: Milliseconds? = null,

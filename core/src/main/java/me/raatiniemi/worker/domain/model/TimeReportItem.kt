@@ -27,8 +27,6 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
     val hoursMinutes: HoursMinutes
         get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
 
-    val id = timeInterval.id
-
     val title: String
         get() {
             val title = buildTitleFromStartTime()

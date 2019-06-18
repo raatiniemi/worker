@@ -29,8 +29,8 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             .toList()
     }
 
-    override fun findById(id: Long): TimeInterval? {
-        return timeIntervals.find(id)
+    override fun findById(id: TimeIntervalId): TimeInterval? {
+        return timeIntervals.find(id.value)
             ?.run { toTimeInterval() }
     }
 
@@ -42,13 +42,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         val id = timeIntervals.add(newTimeInterval.toEntity())
 
-        return findById(id) ?: throw UnableToFindNewTimeIntervalException()
+        return findById(TimeIntervalId(id)) ?: throw UnableToFindNewTimeIntervalException()
     }
 
     override fun update(timeInterval: TimeInterval): TimeInterval? {
         return timeInterval.toEntity()
             .also { timeIntervals.update(listOf(it)) }
-            .run { findById(id) }
+            .run { findById(TimeIntervalId(id)) }
     }
 
     override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
@@ -56,13 +56,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         this.timeIntervals.update(entities)
 
         return timeIntervals.map { it.id }
-            .mapNotNull { this.timeIntervals.find(it) }
+            .mapNotNull { this.timeIntervals.find(it.value) }
             .map { it.toTimeInterval() }
             .toList()
     }
 
-    override fun remove(id: Long) {
-        val entity = timeIntervals.find(id) ?: return
+    override fun remove(id: TimeIntervalId) {
+        val entity = timeIntervals.find(id.value) ?: return
 
         timeIntervals.remove(listOf(entity))
     }

@@ -152,7 +152,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun findById_withoutTimeInterval() {
-        val actual = repository.findById(1)
+        val actual = repository.findById(TimeIntervalId(1))
 
         assertNull(actual)
     }
@@ -167,7 +167,7 @@ class TimeIntervalRoomRepositoryTest {
             isRegistered = entity.registered == 1L
         }
 
-        val actual = repository.findById(1)
+        val actual = repository.findById(TimeIntervalId(1))
 
         assertEquals(expected, actual)
     }
@@ -301,7 +301,7 @@ class TimeIntervalRoomRepositoryTest {
     fun remove_withoutTimeInterval() {
         val expected = emptyList<TimeIntervalEntity>()
 
-        repository.remove(1)
+        repository.remove(TimeIntervalId(1))
 
         val actual = timeIntervals.findAll(1, 0)
         assertEquals(expected, actual)
@@ -323,7 +323,7 @@ class TimeIntervalRoomRepositoryTest {
         timeIntervals.add(entity)
         val expected = listOf(entity)
 
-        repository.remove(1)
+        repository.remove(TimeIntervalId(1))
 
         val actual = timeIntervals.findAll(android.id.value, 0)
         assertEquals(expected, actual)

@@ -29,7 +29,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         }
     }
 
-    override fun findById(id: Long) =
+    override fun findById(id: TimeIntervalId): TimeInterval? =
         timeIntervals.firstOrNull { it.id == id }
 
     override fun findActiveByProjectId(projectId: ProjectId): TimeInterval? =
@@ -37,7 +37,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         val timeInterval = TimeInterval(
-            id = incrementedId.incrementAndGet(),
+            id = TimeIntervalId(incrementedId.incrementAndGet()),
             projectId = newTimeInterval.projectId,
             start = newTimeInterval.start,
             stop = newTimeInterval.stop,
@@ -58,7 +58,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     override fun update(timeIntervals: List<TimeInterval>) =
         timeIntervals.mapNotNull { update(it) }
 
-    override fun remove(id: Long) {
+    override fun remove(id: TimeIntervalId) {
         timeIntervals.removeIf { it.id == id }
     }
 
