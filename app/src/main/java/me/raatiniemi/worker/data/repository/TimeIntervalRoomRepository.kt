@@ -61,8 +61,8 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             .toList()
     }
 
-    override fun remove(id: Long) {
-        val entity = timeIntervals.find(id) ?: return
+    override fun remove(id: TimeIntervalId) {
+        val entity = timeIntervals.find(id.value) ?: return
 
         timeIntervals.remove(listOf(entity))
     }

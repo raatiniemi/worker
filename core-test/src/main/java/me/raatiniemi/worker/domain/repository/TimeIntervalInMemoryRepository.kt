@@ -58,12 +58,12 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     override fun update(timeIntervals: List<TimeInterval>) =
         timeIntervals.mapNotNull { update(it) }
 
-    override fun remove(id: Long) {
-        timeIntervals.removeIf { it.id == id }
+    override fun remove(id: TimeIntervalId) {
+        timeIntervals.removeIf { it.id == id.value }
     }
 
     override fun remove(timeIntervals: List<TimeInterval>) {
-        timeIntervals.map { it.id }
+        timeIntervals.map { TimeIntervalId(it.id) }
             .forEach { remove(it) }
     }
 }
