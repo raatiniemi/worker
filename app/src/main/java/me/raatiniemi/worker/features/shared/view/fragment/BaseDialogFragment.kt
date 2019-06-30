@@ -37,13 +37,13 @@ internal abstract class BaseDialogFragment : DialogFragment() {
         }
     }
 
-    override fun onCancel(dialog: DialogInterface?) {
+    override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
 
         onCancelListener?.onCancel(dialog)
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
 
         onDismissListener?.onDismiss(dialog)
