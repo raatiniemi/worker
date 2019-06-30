@@ -22,7 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_create_project.*
+import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
@@ -33,7 +33,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
+class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
@@ -42,7 +42,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_create_project, container, false)
+        return inflater.inflate(R.layout.dialogfragment_create_project, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,6 +99,6 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
 
     companion object {
         @JvmStatic
-        fun newInstance() = CreateProjectFragment()
+        fun newInstance() = CreateProjectDialogFragment()
     }
 }

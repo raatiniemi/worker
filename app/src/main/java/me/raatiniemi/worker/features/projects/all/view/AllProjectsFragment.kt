@@ -28,7 +28,7 @@ import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
-import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment
+import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectDialogFragment
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
@@ -110,7 +110,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun openCreateProject() {
-        show(CreateProjectFragment.newInstance())
+        show(CreateProjectDialogFragment.newInstance())
     }
 
     private fun configureView() {
