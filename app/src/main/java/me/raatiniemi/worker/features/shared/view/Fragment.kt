@@ -17,8 +17,10 @@
 package me.raatiniemi.worker.features.shared.view
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import timber.log.Timber
+import kotlin.reflect.KClass
 
 fun Fragment.setTitle(title: String) {
     try {
@@ -38,4 +40,12 @@ fun Fragment.setTitle(title: String) {
     } catch (e: IllegalStateException) {
         Timber.w(e, "Unable to set title from fragment without activity")
     }
+}
+
+internal fun Fragment.show(dialogFragment: DialogFragment) {
+    dialogFragment.show(childFragmentManager, tag(dialogFragment::class))
+}
+
+private fun <T : Fragment> tag(reference: KClass<T>): String {
+    return reference.java.simpleName
 }

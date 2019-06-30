@@ -33,10 +33,7 @@ import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingP
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.features.shared.view.ConfirmAction
-import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
-import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -113,8 +110,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun openCreateProject() {
-        CreateProjectFragment.newInstance()
-            .show(childFragmentManager, "create project")
+        show(CreateProjectFragment.newInstance())
     }
 
     private fun configureView() {
