@@ -28,12 +28,14 @@ import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
-import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectDialogFragment
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.features.shared.view.*
+import me.raatiniemi.worker.features.shared.view.ConfirmAction
+import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
+import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
+import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -103,14 +105,10 @@ class AllProjectsFragment : CoroutineScopedFragment() {
 
     override fun onOptionsItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
         R.id.actions_main_create_project -> {
-            openCreateProject()
+            vm.createProject()
             true
         }
         else -> super.onOptionsItemSelected(menuItem)
-    }
-
-    private fun openCreateProject() {
-        show(CreateProjectDialogFragment.newInstance())
     }
 
     private fun configureView() {
@@ -136,6 +134,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
+            is AllProjectsViewActions.CreateProject -> viewAction.action(this)
             is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
             is AllProjectsViewActions.OpenProject -> viewAction.action(this)
             is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(

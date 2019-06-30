@@ -102,6 +102,10 @@ internal class AllProjectsViewModel(
         }
     }
 
+    internal fun createProject() {
+        viewActions += AllProjectsViewActions.CreateProject
+    }
+
     fun reloadProjects() {
         projects.value?.run {
             dataSource.invalidate()

@@ -30,13 +30,22 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsFragmentDirections
 import me.raatiniemi.worker.features.projects.all.view.ClockActivityAtFragment
+import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectDialogFragment
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.FragmentViewAction
+import me.raatiniemi.worker.features.shared.view.show
 import timber.log.Timber
 import java.util.*
 
 internal sealed class AllProjectsViewActions {
+    object CreateProject : AllProjectsViewActions(), FragmentViewAction {
+        override fun action(fragment: Fragment) {
+            val dialogFragment = CreateProjectDialogFragment.newInstance()
+            fragment.show(dialogFragment)
+        }
+    }
+
     data class RefreshProjects(private val positions: List<Int>) : AllProjectsViewActions() {
         fun action(adapter: AllProjectsAdapter) {
             Timber.d("Refreshing %d projects", positions.size)
