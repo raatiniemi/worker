@@ -39,10 +39,21 @@ import timber.log.Timber
 import java.util.*
 
 internal sealed class AllProjectsViewActions {
-    object CreateProject : AllProjectsViewActions(), FragmentViewAction {
-        override fun action(fragment: Fragment) {
-            val dialogFragment = CreateProjectDialogFragment.newInstance()
+    object CreateProject : AllProjectsViewActions() {
+        fun action(fragment: Fragment, onCreateProject: () -> Unit) {
+            val dialogFragment = CreateProjectDialogFragment.newInstance(onCreateProject)
             fragment.show(dialogFragment)
+        }
+    }
+
+    object ProjectCreated : AllProjectsViewActions(), ActivityViewAction {
+        override fun action(activity: FragmentActivity) {
+            val snackBar = Snackbar.make(
+                activity.findViewById(android.R.id.content),
+                R.string.projects_all_project_created_message,
+                Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
         }
     }
 

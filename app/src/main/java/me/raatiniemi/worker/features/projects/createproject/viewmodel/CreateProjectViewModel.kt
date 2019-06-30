@@ -71,10 +71,10 @@ internal class CreateProjectViewModel(
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
         val viewAction: CreateProjectViewActions = try {
-            val project = createProject(projectName(name))
+            createProject(projectName(name))
 
             usageAnalytics.log(Event.ProjectCreate)
-            CreateProjectViewActions.CreatedProject(project)
+            CreateProjectViewActions.CreatedProject
         } catch (e: Exception) {
             when (e) {
                 is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage

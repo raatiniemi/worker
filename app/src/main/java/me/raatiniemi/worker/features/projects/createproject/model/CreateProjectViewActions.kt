@@ -20,10 +20,8 @@ import android.content.Context
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.model.DialogFragmentViewAction
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
-import org.greenrobot.eventbus.EventBus
 
 sealed class CreateProjectViewActions {
     object InvalidProjectNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
@@ -45,13 +43,8 @@ sealed class CreateProjectViewActions {
         }
     }
 
-    data class CreatedProject(val project: Project) : CreateProjectViewActions(),
-        DialogFragmentViewAction {
+    object CreatedProject : CreateProjectViewActions(), DialogFragmentViewAction {
         override fun action(fragment: DialogFragment) {
-            with(EventBus.getDefault()) {
-                post(CreateProjectEvent(project))
-            }
-
             fragment.dismiss()
         }
     }

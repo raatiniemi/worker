@@ -20,14 +20,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_all_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
-import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
@@ -134,7 +132,10 @@ class AllProjectsFragment : CoroutineScopedFragment() {
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
-            is AllProjectsViewActions.CreateProject -> viewAction.action(this)
+            is AllProjectsViewActions.CreateProject -> viewAction.action(this) {
+                vm.projectCreated()
+            }
+            is AllProjectsViewActions.ProjectCreated -> viewAction.action(requireActivity())
             is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
             is AllProjectsViewActions.OpenProject -> viewAction.action(this)
             is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(
@@ -198,20 +199,6 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     private fun cancelRefreshTimer() {
         refreshActiveProjectsTimer?.cancel()
         refreshActiveProjectsTimer = null
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMainThread(event: CreateProjectEvent) {
-        vm.reloadProjects()
-
-        with(requireActivity()) {
-            val snackBar = Snackbar.make(
-                findViewById(android.R.id.content),
-                R.string.projects_all_project_created_message,
-                Snackbar.LENGTH_SHORT
-            )
-            snackBar.show()
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

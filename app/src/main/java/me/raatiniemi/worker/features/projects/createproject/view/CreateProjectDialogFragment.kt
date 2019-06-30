@@ -37,6 +37,8 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
+    private lateinit var onCreateProject: () -> Unit
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +72,10 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
 
         vm.viewActions.observeAndConsume(this, Observer {
             when (it) {
-                is CreateProjectViewActions.CreatedProject -> it.action(this)
+                is CreateProjectViewActions.CreatedProject -> {
+                    onCreateProject()
+                    it.action(this)
+                }
                 is EditTextViewAction -> it.action(requireContext(), etProjectName)
             }
         })
@@ -99,6 +104,9 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
 
     companion object {
         @JvmStatic
-        fun newInstance() = CreateProjectDialogFragment()
+        fun newInstance(onCreateProject: () -> Unit) = CreateProjectDialogFragment()
+            .also {
+                it.onCreateProject = onCreateProject
+            }
     }
 }

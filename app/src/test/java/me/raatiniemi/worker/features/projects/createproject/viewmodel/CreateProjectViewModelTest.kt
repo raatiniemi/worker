@@ -131,7 +131,7 @@ class CreateProjectViewModelTest {
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.CreatedProject(android), it)
+            assertEquals(CreateProjectViewActions.CreatedProject, it)
         }
         val actual = repository.findAll()
         assertEquals(listOf(android), actual)
