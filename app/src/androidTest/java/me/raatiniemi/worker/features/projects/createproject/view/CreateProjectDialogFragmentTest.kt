@@ -16,30 +16,99 @@
 
 package me.raatiniemi.worker.features.projects.createproject.view
 
-import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.data.dataTestModule
+import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.features.shared.view.isDisabled
 import me.raatiniemi.worker.features.shared.view.withView
+import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.standalone.StandAloneContext.loadKoinModules
+import org.koin.test.KoinTest
+import java.util.concurrent.atomic.AtomicBoolean
 
 @RunWith(AndroidJUnit4::class)
-class CreateProjectDialogFragmentTest {
+class CreateProjectDialogFragmentTest : KoinTest {
+    @Before
+    fun setUp() {
+        loadKoinModules(dataTestModule)
+    }
+
     @Test
     fun createProjectIsNotEnabledByDefault() {
-        val scenario: FragmentScenario<CreateProjectDialogFragment> by lazy {
-            launchFragmentInContainer(themeResId = R.style.Theme) {
-                CreateProjectDialogFragment.newInstance { }
-            }
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            CreateProjectDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
 
         withView(R.id.btnCreate) {
             it.check(matches(isDisabled()))
+        }
+    }
+
+    @Test
+    fun createProjectIsEnabledWithProjectName() {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            CreateProjectDialogFragment.newInstance { }
+        }
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        withView(R.id.etProjectName) {
+            it.perform(replaceText(android.name.value))
+        }
+
+        withView(R.id.btnCreate) {
+            Thread.sleep(250)
+            it.check(matches(isEnabled()))
+        }
+    }
+
+    @Test
+    fun createProject() {
+        val isProjectCreated = AtomicBoolean()
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            CreateProjectDialogFragment.newInstance {
+                isProjectCreated.compareAndSet(false, true)
+            }
+        }
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        withView(R.id.etProjectName) {
+            it.perform(replaceText(android.name.value))
+        }
+
+        withView(R.id.btnCreate) {
+            Thread.sleep(250)
+            it.perform(click())
+
+            Thread.sleep(100)
+            assertTrue(isProjectCreated.get())
+        }
+    }
+
+    @Test
+    fun dismiss() {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            CreateProjectDialogFragment.newInstance { }
+        }
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        withView(R.id.btnDismiss) {
+            it.perform(click())
+        }
+
+        withView(R.id.btnDismiss) {
+            it.check(doesNotExist())
         }
     }
 }
