@@ -27,6 +27,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -82,7 +83,7 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
     }
 
     private fun bindUserInterfaceToViewModel() {
-        etProjectName.onChange { vm.name = it }
+        etProjectName.onChange { vm.name += it }
         etProjectName.on(EditorAction.DONE) {
             vm.createProject()
         }
