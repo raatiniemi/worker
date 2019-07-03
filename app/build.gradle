@@ -138,7 +138,7 @@ play {
 
 dependencies {
     def roomVersion = '2.1.0'
-    def lifecycleVersion = '2.0.0'
+    def lifecycleVersion = '2.1.0-beta01'
     def fragmentVersion = '1.1.0-beta01'
     def navigationVersion = '2.0.0'
     def coroutineVersion = '1.1.1'
@@ -155,6 +155,8 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.0.0'
     //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation 'androidx.paging:paging-runtime:2.1.0'
     //noinspection GradleDependency

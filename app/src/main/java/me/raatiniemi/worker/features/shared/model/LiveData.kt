@@ -24,10 +24,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-internal fun <T, R> LiveData<T>.map(function: (T) -> R): LiveData<R> {
-    return Transformations.map(this) { function(it) }
-}
-
 internal fun <T> LiveData<T>.debounce(
     scope: CoroutineScope,
     duration: Long = 250

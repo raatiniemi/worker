@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
@@ -27,7 +28,10 @@ import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.isValid
 import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
-import me.raatiniemi.worker.features.shared.model.*
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.combineLatest
+import me.raatiniemi.worker.features.shared.model.debounce
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
