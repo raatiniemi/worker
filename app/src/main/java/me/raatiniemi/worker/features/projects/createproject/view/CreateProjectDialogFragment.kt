@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.features.projects.createproject.view
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,9 +31,8 @@ import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
-class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
+class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
@@ -51,10 +49,7 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dialog?.also {
-            it.setTitle(R.string.projects_create_title)
-            it.setOnShowListener(this)
-        }
+        dialog?.setTitle(R.string.projects_create_title)
 
         observeViewModel()
         bindUserInterfaceToViewModel()
@@ -63,6 +58,7 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
     override fun onResume() {
         super.onResume()
 
+        showKeyboard(etProjectName)
         usageAnalytics.setCurrentScreen(this)
     }
 
@@ -90,17 +86,6 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment(), DialogInter
 
         btnCreate.onClick { vm.createProject() }
         btnDismiss.setOnClickListener { dismiss() }
-    }
-
-    override fun onShow(dialog: DialogInterface?) {
-        // We might have dismissed the dialog, we have to make sure that the
-        // dialog and activity are still available before we can continue.
-        if (dialog == null || activity == null) {
-            Timber.d("No dialog/activity available, exiting...")
-            return
-        }
-
-        showKeyboard(etProjectName)
     }
 
     companion object {
