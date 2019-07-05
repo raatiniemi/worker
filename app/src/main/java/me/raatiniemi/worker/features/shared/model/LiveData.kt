@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.shared.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
