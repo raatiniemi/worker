@@ -123,6 +123,7 @@ android {
                 includeNoLocationClasses = true
             }
         }
+        animationsDisabled = true
     }
 }
 
@@ -137,7 +138,14 @@ play {
 }
 
 dependencies {
-    kapt 'androidx.room:room-compiler:2.1.0'
+    def roomVersion = '2.1.0'
+    def lifecycleVersion = '2.1.0-beta01'
+    def fragmentVersion = '1.1.0-beta01'
+    def navigationVersion = '2.0.0'
+    def coroutineVersion = '1.1.1'
+    def koinVersion = '1.0.2'
+
+    kapt "androidx.room:room-compiler:$roomVersion"
 
     implementation project(':core')
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -146,22 +154,33 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.room:room-runtime:2.1.0'
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    //noinspection GradleDependency
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
     implementation 'androidx.paging:paging-runtime:2.1.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
+    //noinspection GradleDependency
+    implementation "androidx.fragment:fragment:$fragmentVersion"
+    //noinspection GradleDependency
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+    //noinspection GradleDependency
+    implementation("androidx.fragment:fragment-testing:$fragmentVersion") {
+        exclude group: 'androidx.test', module: 'core'
+    }
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 
-    implementation 'org.koin:koin-android:1.0.2'
-    implementation 'org.koin:koin-android-viewmodel:1.0.2'
+    implementation "org.koin:koin-android:$koinVersion"
+    implementation "org.koin:koin-android-viewmodel:$koinVersion"
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'org.greenrobot:eventbus:3.0.0'
@@ -171,9 +190,11 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.0.1'
 
     androidTestImplementation project(':core-test')
+    androidTestImplementation "org.koin:koin-test:$koinVersion"
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
-    androidTestImplementation 'androidx.room:room-testing:2.1.0'
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 }

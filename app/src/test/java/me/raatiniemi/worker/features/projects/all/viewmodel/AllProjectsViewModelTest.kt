@@ -90,6 +90,24 @@ class AllProjectsViewModelTest {
     }
 
     @Test
+    fun `create project`() {
+        vm.createProject()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(AllProjectsViewActions.CreateProject, it)
+        }
+    }
+
+    @Test
+    fun `project created`() {
+        vm.projectCreated()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(AllProjectsViewActions.ProjectCreated, it)
+        }
+    }
+
+    @Test
     fun `refresh active projects without projects`() = runBlocking {
         vm.refreshActiveProjects(emptyList())
 

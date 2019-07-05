@@ -16,42 +16,40 @@
 
 package me.raatiniemi.worker.features.projects.createproject.view
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_create_project.*
+import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
-class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
+class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
+
+    private lateinit var onCreateProject: () -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_create_project, container, false)
+        return inflater.inflate(R.layout.dialogfragment_create_project, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dialog?.also {
-            it.setTitle(R.string.projects_create_title)
-            it.setOnShowListener(this)
-        }
+        dialog?.setTitle(R.string.projects_create_title)
 
         observeViewModel()
         bindUserInterfaceToViewModel()
@@ -60,6 +58,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
     override fun onResume() {
         super.onResume()
 
+        showKeyboard(etProjectName)
         usageAnalytics.setCurrentScreen(this)
     }
 
@@ -70,14 +69,17 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
 
         vm.viewActions.observeAndConsume(this, Observer {
             when (it) {
-                is CreateProjectViewActions.CreatedProject -> it.action(this)
+                is CreateProjectViewActions.CreatedProject -> {
+                    onCreateProject()
+                    it.action(this)
+                }
                 is EditTextViewAction -> it.action(requireContext(), etProjectName)
             }
         })
     }
 
     private fun bindUserInterfaceToViewModel() {
-        etProjectName.onChange { vm.name = it }
+        etProjectName.onChange { vm.name += it }
         etProjectName.on(EditorAction.DONE) {
             vm.createProject()
         }
@@ -86,19 +88,11 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
         btnDismiss.setOnClickListener { dismiss() }
     }
 
-    override fun onShow(dialog: DialogInterface?) {
-        // We might have dismissed the dialog, we have to make sure that the
-        // dialog and activity are still available before we can continue.
-        if (dialog == null || activity == null) {
-            Timber.d("No dialog/activity available, exiting...")
-            return
-        }
-
-        showKeyboard(etProjectName)
-    }
-
     companion object {
         @JvmStatic
-        fun newInstance() = CreateProjectFragment()
+        fun newInstance(onCreateProject: () -> Unit) = CreateProjectDialogFragment()
+            .also {
+                it.onCreateProject = onCreateProject
+            }
     }
 }

@@ -26,6 +26,7 @@ import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import org.junit.Assert.*
@@ -58,16 +59,8 @@ class CreateProjectViewModelTest {
     }
 
     @Test
-    fun `is create enabled with initial value`() = runBlocking {
-        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertFalse(it)
-        }
-        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
-    }
-
-    @Test
     fun `is create enabled with empty name`() = runBlocking {
-        vm.name = ""
+        vm.name += ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
@@ -78,7 +71,7 @@ class CreateProjectViewModelTest {
     @Test
     fun `is create enabled with duplicated name`() = runBlocking {
         repository.add(NewProject(android.name))
-        vm.name = android.name.value
+        vm.name += android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
@@ -90,7 +83,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with valid name`() = runBlocking {
-        vm.name = android.name.value
+        vm.name += android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertTrue(it)
@@ -100,7 +93,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `create project with empty name`() = runBlocking {
-        vm.name = ""
+        vm.name += ""
 
         vm.createProject()
 
@@ -113,7 +106,7 @@ class CreateProjectViewModelTest {
     @Test
     fun `create project with duplicated name`() = runBlocking {
         repository.add(NewProject(android.name))
-        vm.name = android.name.value
+        vm.name += android.name.value
 
         vm.createProject()
 
@@ -125,13 +118,13 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `create project with valid name`() = runBlocking {
-        vm.name = android.name.value
+        vm.name += android.name.value
 
         vm.createProject()
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.CreatedProject(android), it)
+            assertEquals(CreateProjectViewActions.CreatedProject, it)
         }
         val actual = repository.findAll()
         assertEquals(listOf(android), actual)

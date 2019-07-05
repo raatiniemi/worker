@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.createproject.model
+package me.raatiniemi.worker.features.shared.view
 
-import me.raatiniemi.worker.domain.model.Project
+import androidx.annotation.IdRes
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers
+import org.hamcrest.Matchers
 
-data class CreateProjectEvent(val project: Project)
+internal fun isDisabled() = Matchers.not(ViewMatchers.isEnabled())
+
+internal fun withView(@IdRes id: Int, checks: (ViewInteraction) -> Unit) {
+    checks(Espresso.onView(ViewMatchers.withId(id)))
+}
