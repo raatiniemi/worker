@@ -123,6 +123,7 @@ android {
                 includeNoLocationClasses = true
             }
         }
+        animationsDisabled = true
     }
 }
 
