@@ -37,6 +37,11 @@ import org.koin.standalone.StandAloneContext.loadKoinModules
 import org.koin.test.KoinTest
 import java.util.concurrent.atomic.AtomicBoolean
 
+// This needs to be a bit more than the actual delay used in
+// the code, otherwise the test will be flakey.
+private const val debounceDelayInMilliseconds = 300L
+private const val createProjectDelayInMilliseconds = 100L
+
 @RunWith(AndroidJUnit4::class)
 class CreateProjectDialogFragmentTest : KoinTest {
     @Before
@@ -68,7 +73,7 @@ class CreateProjectDialogFragmentTest : KoinTest {
         }
 
         withView(R.id.btnCreate) {
-            Thread.sleep(250)
+            Thread.sleep(debounceDelayInMilliseconds)
             it.check(matches(isEnabled()))
         }
     }
@@ -88,10 +93,10 @@ class CreateProjectDialogFragmentTest : KoinTest {
         }
 
         withView(R.id.btnCreate) {
-            Thread.sleep(250)
+            Thread.sleep(debounceDelayInMilliseconds)
             it.perform(click())
 
-            Thread.sleep(100)
+            Thread.sleep(createProjectDelayInMilliseconds)
             assertTrue(isProjectCreated.get())
         }
     }
