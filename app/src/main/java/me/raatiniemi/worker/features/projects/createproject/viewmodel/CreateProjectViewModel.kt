@@ -47,21 +47,23 @@ internal class CreateProjectViewModel(
     private val isNameValid = name.map { isValid(it) }
 
     private val isNameAvailable = name.debounce(this)
-        .map {
-            try {
-                findProject(projectName(it)) ?: return@map true
-
-                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
-                false
-            } catch (e: InvalidProjectNameException) {
-                false
-            }
-        }
+        .map(::checkForAvailability)
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
         .map { it.first && it.second }
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
+
+    private fun checkForAvailability(value: String): Boolean {
+        return try {
+            findProject(projectName(value)) ?: return true
+
+            viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+            false
+        } catch (e: InvalidProjectNameException) {
+            false
+        }
+    }
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
         val viewAction: CreateProjectViewActions = try {
