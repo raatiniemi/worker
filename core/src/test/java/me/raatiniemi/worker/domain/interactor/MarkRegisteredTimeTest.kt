@@ -118,22 +118,18 @@ class MarkRegisteredTimeTest {
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             }
         )
         newTimeIntervals.forEach { repository.add(it) }
@@ -202,17 +198,14 @@ class MarkRegisteredTimeTest {
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
-                isRegistered = true
             }
         )
         newTimeIntervals.forEach { repository.add(it) }
