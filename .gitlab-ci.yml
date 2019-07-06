@@ -14,7 +14,7 @@ before_script:
 build:
   stage: build
   script:
-    - ./gradlew clean assembleRelease
+    - ./gradlew core:assemble core-test:assemble app:assembleRelease
   artifacts:
     paths:
       - app/build/outputs/
@@ -27,7 +27,7 @@ build:
 build for android test:
  stage: build
  script:
-   - ./gradlew assembleAndroidTest
+   - ./gradlew app:assembleAndroidTest
  artifacts:
    paths:
      - app/build/outputs/apk/androidTest/
@@ -40,7 +40,7 @@ build for android test:
 lint:
   stage: test
   script:
-    - ./gradlew lintRelease
+    - ./gradlew app:lintRelease
   dependencies:
     - build
   tags:
@@ -49,7 +49,7 @@ lint:
 test:
   stage: test
   script:
-    - ./gradlew testReleaseUnitTest
+    - ./gradlew core:test core-test:test app:testReleaseUnitTest
   dependencies:
     - build
   except:
@@ -60,7 +60,7 @@ test:
 sonar:
   stage: test
   script:
-    - ./gradlew testReleaseUnitTest jacocoTestReport sonarqube
+    - ./gradlew core:test core-test:test app:testReleaseUnitTest jacocoTestReport sonarqube
   dependencies:
     - build
   only:
@@ -89,7 +89,7 @@ deploy:
     - bin/configure-signing-environment
     - bin/configure-deploy-environment
   script:
-    - ./gradlew publishReleaseApk
+    - ./gradlew app:publishReleaseApk
   dependencies:
     - build
   only:
