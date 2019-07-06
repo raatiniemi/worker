@@ -23,6 +23,9 @@
 -keepclassmembers class me.raatiniemi.worker.domain.repository.** { *; }
 
 # AndroidX
+-keepclassmembers class androidx.core.graphics.TypefaceCompatApi28Impl { *; }
+-keep class androidx.lifecycle.Lifecycle$State { *; }
+-keepclassmembers class androidx.fragment.app.testing.** { *; }
 -keep class androidx.sqlite.db.SupportSQLiteOpenHelper$Factory { *; }
 -keepclassmembers class androidx.sqlite.db.SupportSQLiteOpenHelper { *; }
 -keep class androidx.sqlite.db.SupportSQLiteDatabase { *; }
