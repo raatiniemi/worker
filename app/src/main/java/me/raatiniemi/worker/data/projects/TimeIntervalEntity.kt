@@ -46,14 +46,14 @@ internal data class TimeIntervalEntity(
     val stopInMilliseconds: Long,
     val registered: Long
 ) {
-    fun toTimeInterval() = TimeInterval(
-        id = TimeIntervalId(id),
-        projectId = ProjectId(projectId),
-        start = Milliseconds(startInMilliseconds),
-        stop = stopInMilliseconds.takeUnless { it == 0L }
-            ?.let { Milliseconds(it) },
-        isRegistered = registered == 1L
-    )
+    fun toTimeInterval() = timeInterval { builder ->
+        builder.id = TimeIntervalId(id)
+        builder.projectId = ProjectId(projectId)
+        builder.start = Milliseconds(startInMilliseconds)
+        builder.stop = stopInMilliseconds.takeUnless { it == 0L }
+            ?.let { Milliseconds(it) }
+        builder.isRegistered = registered == 1L
+    }
 }
 
 internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(

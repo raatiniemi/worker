@@ -36,13 +36,13 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         timeIntervals.firstOrNull { it.projectId == projectId && isActive(it) }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
-        val timeInterval = TimeInterval(
-            id = TimeIntervalId(incrementedId.incrementAndGet()),
-            projectId = newTimeInterval.projectId,
-            start = newTimeInterval.start,
-            stop = null,
-            isRegistered = false
-        )
+        val timeInterval = timeInterval { builder ->
+            builder.id = TimeIntervalId(incrementedId.incrementAndGet())
+            builder.projectId = newTimeInterval.projectId
+            builder.start = newTimeInterval.start
+            builder.stop = null
+            builder.isRegistered = false
+        }
         timeIntervals.add(timeInterval)
         return timeInterval
     }
