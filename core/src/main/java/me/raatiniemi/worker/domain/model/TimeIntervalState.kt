@@ -21,13 +21,21 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 /**
  * Represent a time interval registered to a project.
  */
-data class TimeInterval(
-    val id: TimeIntervalId,
-    val projectId: ProjectId,
-    val start: Milliseconds,
-    val stop: Milliseconds? = null,
-    val isRegistered: Boolean = false
-) {
+sealed class TimeIntervalState {
+    abstract val id: TimeIntervalId
+    abstract val projectId: ProjectId
+    abstract val start: Milliseconds
+    abstract val stop: Milliseconds?
+    abstract val isRegistered: Boolean
+}
+
+data class TimeInterval constructor(
+    override val id: TimeIntervalId,
+    override val projectId: ProjectId,
+    override val start: Milliseconds,
+    override val stop: Milliseconds? = null,
+    override val isRegistered: Boolean = false
+) : TimeIntervalState() {
     init {
         if (stop != null && stop < start) {
             throw ClockOutBeforeClockInException()
