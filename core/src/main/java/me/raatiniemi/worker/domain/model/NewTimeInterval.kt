@@ -18,6 +18,5 @@ package me.raatiniemi.worker.domain.model
 
 data class NewTimeInterval(
     val projectId: ProjectId,
-    val start: Milliseconds,
-    val stop: Milliseconds? = null
+    val start: Milliseconds
 )

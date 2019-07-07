@@ -207,11 +207,10 @@ class TimeIntervalRoomRepositoryTest {
     fun add() {
         val newTimeInterval = newTimeInterval(android) {
             start = Milliseconds(1)
-            stop = Milliseconds(2)
         }
         val expected = timeInterval(android) {
             start = Milliseconds(1)
-            stop = Milliseconds(2)
+            stop = null
         }
 
         val actual = repository.add(newTimeInterval)

@@ -62,7 +62,6 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(10)
-                stop = Milliseconds(15)
             }
         )
 
@@ -76,14 +75,13 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(10)
-                stop = Milliseconds(15)
             }
         )
         val expected = listOf(
             timeInterval(android) {
                 id = 1
                 start = Milliseconds(10)
-                stop = Milliseconds(15)
+                stop = null
             }
         )
 
@@ -104,13 +102,12 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
         val expected = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
-            stop = Milliseconds(10)
+            stop = null
         }
 
         val actual = repository.findById(TimeIntervalId(1))
@@ -130,9 +127,10 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
-        )
+        ).also {
+            repository.update(it.copy(stop = Milliseconds(10)))
+        }
 
         val actual = repository.findActiveByProjectId(android.id)
 
@@ -233,7 +231,6 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -261,14 +258,13 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
         val timeIntervals = listOf(
             timeInterval(android) {
                 id = 1
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
+                stop = null
             }
         )
         val expected = emptyList<TimeInterval>()

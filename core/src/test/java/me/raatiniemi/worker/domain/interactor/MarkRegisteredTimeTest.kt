@@ -16,7 +16,10 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.model.newTimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -41,22 +44,25 @@ class MarkRegisteredTimeTest {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
         )
-        newTimeIntervals.forEach { repository.add(it) }
+        newTimeIntervals.forEach {
+            repository.add(it)
+                .also { timeInterval ->
+                    repository.update(
+                        timeInterval.copy(stop = Milliseconds(10))
+                    )
+                }
+        }
         val timeIntervals = listOf(
             timeInterval(android) {
                 id = 1
@@ -117,19 +123,15 @@ class MarkRegisteredTimeTest {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
         )
         newTimeIntervals.forEach { repository.add(it) }
@@ -193,22 +195,25 @@ class MarkRegisteredTimeTest {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
         )
-        newTimeIntervals.forEach { repository.add(it) }
+        newTimeIntervals.forEach {
+            repository.add(it)
+                .also { timeInterval ->
+                    repository.update(
+                        timeInterval.copy(stop = Milliseconds(2))
+                    )
+                }
+        }
         val timeIntervals = listOf(
             timeInterval(android) {
                 id = 1

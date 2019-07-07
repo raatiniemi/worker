@@ -17,13 +17,11 @@
 package me.raatiniemi.worker.domain.model
 
 data class NewTimeIntervalBuilder(
-    var start: Milliseconds? = null,
-    var stop: Milliseconds? = null
+    var start: Milliseconds? = null
 ) {
     internal fun build(project: Project) = NewTimeInterval(
         projectId = project.id,
-        start = requireNotNull(start),
-        stop = stop
+        start = requireNotNull(start)
     )
 }
 

@@ -78,9 +78,10 @@ class TimeReportViewModelTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
-        )
+        ).also {
+            timeIntervalRepository.update(it.copy(stop = Milliseconds(2)))
+        }
         val timeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
@@ -105,15 +106,17 @@ class TimeReportViewModelTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
-        )
+        ).also {
+            timeIntervalRepository.update(it.copy(stop = Milliseconds(2)))
+        }
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
-        )
+        ).also {
+            timeIntervalRepository.update(it.copy(stop = Milliseconds(2)))
+        }
         val firstTimeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)

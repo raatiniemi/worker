@@ -17,7 +17,9 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -52,9 +54,12 @@ class CalculateTimeTodayTest {
         repository.add(
             newTimeInterval(android) {
                 start = startingPoint
-                stop = startingPoint + 1.hours
             }
-        )
+        ).let {
+            it.copy(stop = startingPoint + 1.hours)
+        }.also {
+            repository.update(it)
+        }
         val expected = 1.hours
 
         val actual = calculateTimeToday(android)
@@ -84,9 +89,12 @@ class CalculateTimeTodayTest {
         repository.add(
             newTimeInterval(android) {
                 start = startingPoint
-                stop = startingPoint + 1.hours
             }
-        )
+        ).let {
+            it.copy(stop = startingPoint + 1.hours)
+        }.also {
+            repository.update(it)
+        }
         repository.add(
             newTimeInterval(android) {
                 start = startingPoint

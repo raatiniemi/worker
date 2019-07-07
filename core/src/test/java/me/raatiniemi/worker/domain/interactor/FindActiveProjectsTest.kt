@@ -63,9 +63,12 @@ class FindActiveProjectsTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
-        )
+        ).let {
+            it.copy(stop = Milliseconds(10))
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         timeIntervalRepository.add(
             newTimeInterval(cli) {
                 start = Milliseconds(1)
