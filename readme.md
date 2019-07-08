@@ -8,7 +8,7 @@
 
 Worker is a simple Android application for keeping track of time.
 
-[Introducing Worker](http://raatiniemi.me/thoughts/introducing-worker/)
+[Introducing Worker](https://raatiniemi.me/thoughts/introducing-worker/)
 
 ## Contributing
 
