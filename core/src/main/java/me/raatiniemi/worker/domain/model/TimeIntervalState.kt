@@ -27,6 +27,13 @@ sealed class TimeIntervalState {
     abstract val start: Milliseconds
     abstract val stop: Milliseconds?
     abstract val isRegistered: Boolean
+
+    data class Builder internal constructor(
+        var id: TimeIntervalId? = null,
+        var start: Milliseconds? = null,
+        var stop: Milliseconds? = null,
+        var isRegistered: Boolean = false
+    )
 }
 
 data class TimeInterval internal constructor(
@@ -41,25 +48,4 @@ data class TimeInterval internal constructor(
             throw ClockOutBeforeClockInException()
         }
     }
-}
-
-data class TimeIntervalStateBuilder internal constructor(
-    var id: TimeIntervalId? = null,
-    var projectId: ProjectId? = null,
-    var start: Milliseconds? = null,
-    var stop: Milliseconds? = null,
-    var isRegistered: Boolean = false
-)
-
-fun timeInterval(configure: (TimeIntervalStateBuilder) -> Unit): TimeInterval {
-    val builder = TimeIntervalStateBuilder()
-    configure(builder)
-
-    return TimeInterval(
-        id = requireNotNull(builder.id),
-        projectId = requireNotNull(builder.projectId),
-        start = requireNotNull(builder.start),
-        stop = builder.stop,
-        isRegistered = builder.isRegistered
-    )
 }

@@ -17,10 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.android
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -56,9 +53,9 @@ class ClockInTest {
     fun execute() {
         val date = Date()
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(date.time)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(date.time)
             }
         )
 

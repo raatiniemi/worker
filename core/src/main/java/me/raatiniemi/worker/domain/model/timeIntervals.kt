@@ -16,6 +16,22 @@
 
 package me.raatiniemi.worker.domain.model
 
+fun timeInterval(
+    projectId: ProjectId,
+    configure: (TimeIntervalState.Builder) -> Unit
+): TimeInterval {
+    val builder = TimeIntervalState.Builder()
+    configure(builder)
+
+    return TimeInterval(
+        id = requireNotNull(builder.id),
+        projectId = projectId,
+        start = requireNotNull(builder.start),
+        stop = builder.stop,
+        isRegistered = builder.isRegistered
+    )
+}
+
 fun isActive(timeInterval: TimeInterval) = timeInterval.stop == null
 
 fun calculateTime(timeInterval: TimeInterval): Milliseconds {

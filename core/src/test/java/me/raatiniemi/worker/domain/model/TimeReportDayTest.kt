@@ -50,9 +50,10 @@ class TimeReportDayTest(
                     HoursMinutes(1, 0),
                     HoursMinutes(-7, 0),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(3600000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(3600000)
                         }
                     )
                 ),
@@ -60,9 +61,10 @@ class TimeReportDayTest(
                     HoursMinutes(8, 0),
                     HoursMinutes.empty,
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(28800000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(28800000)
                         }
                     )
                 ),
@@ -70,9 +72,10 @@ class TimeReportDayTest(
                     HoursMinutes(9, 0),
                     HoursMinutes(1, 0),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(32400000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(32400000)
                         }
                     )
                 ),
@@ -80,13 +83,15 @@ class TimeReportDayTest(
                     HoursMinutes(9, 7),
                     HoursMinutes(1, 7),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(14380327)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(14380327)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(18407820)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(18407820)
                         }
                     )
                 ),
@@ -94,13 +99,15 @@ class TimeReportDayTest(
                     HoursMinutes(8, 46),
                     HoursMinutes(0, 46),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(13956031)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(13956031)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(17594386)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(17594386)
                         }
                     )
                 ),
@@ -108,13 +115,15 @@ class TimeReportDayTest(
                     HoursMinutes(7, 52),
                     HoursMinutes(0, -8),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(11661632)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(11661632)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(16707601)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(16707601)
                         }
                     )
                 )

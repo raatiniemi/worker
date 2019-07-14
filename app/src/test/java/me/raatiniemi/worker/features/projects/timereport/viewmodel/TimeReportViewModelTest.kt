@@ -82,10 +82,10 @@ class TimeReportViewModelTest {
         ).also {
             timeIntervalRepository.update(it.copy(stop = Milliseconds(2)))
         }
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(2)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(2)
         }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
@@ -117,15 +117,15 @@ class TimeReportViewModelTest {
         ).also {
             timeIntervalRepository.update(it.copy(stop = Milliseconds(2)))
         }
-        val firstTimeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(2)
+        val firstTimeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(2)
         }
-        val secondTimeInterval = timeInterval(android) {
-            id = 2
-            start = Milliseconds(1)
-            stop = Milliseconds(2)
+        val secondTimeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(2)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(2)
         }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
         val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
@@ -151,9 +151,9 @@ class TimeReportViewModelTest {
                 start = Milliseconds(1)
             }
         )
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
         }
         val timeReportItem = TimeReportItem.with(timeInterval)
         vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
@@ -176,9 +176,9 @@ class TimeReportViewModelTest {
                 start = Milliseconds(1)
             }
         )
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
         }
         val timeReportItem = TimeReportItem(timeInterval)
         val expected = emptyList<TimeInterval>()
@@ -205,15 +205,15 @@ class TimeReportViewModelTest {
             }
         )
         val firstTimeReportItem = TimeReportItem(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
             }
         )
         val secondTimeReportItem = TimeReportItem(
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -246,9 +246,10 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval(android) {
-                            start = now - 20.minutes
-                            stop = now
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = now - 20.minutes
+                            builder.stop = now
                         }
                     )
                 )
@@ -269,8 +270,9 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval(android) {
-                            start = now - 20.minutes
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = now - 20.minutes
                         }
                     )
                 )
@@ -295,9 +297,10 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval(android) {
-                            start = now - 20.minutes
-                            stop = now
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = now - 20.minutes
+                            builder.stop = now
                         }
                     )
                 )
@@ -306,8 +309,9 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(yesterday),
                 listOf(
                     TimeReportItem(
-                        timeInterval(android) {
-                            start = yesterday - 20.minutes
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = yesterday - 20.minutes
                         }
                     )
                 )

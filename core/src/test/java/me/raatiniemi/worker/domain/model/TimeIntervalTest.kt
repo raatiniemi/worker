@@ -27,8 +27,9 @@ class TimeIntervalTest {
     @Test
     fun `is active for active`() {
         val expected = true
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds.now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds.now
         }
 
         val actual = isActive(timeInterval)
@@ -39,9 +40,10 @@ class TimeIntervalTest {
     @Test
     fun `is active for inactive`() {
         val expected = false
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds.now - 1.hours
-            stop = Milliseconds.now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds.now - 1.hours
+            builder.stop = Milliseconds.now
         }
 
         val actual = isActive(timeInterval)
@@ -52,8 +54,9 @@ class TimeIntervalTest {
     @Test
     fun `calculate time for active`() {
         val expected = Milliseconds.empty
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds.now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds.now
         }
 
         val actual = calculateTime(timeInterval)
@@ -65,9 +68,10 @@ class TimeIntervalTest {
     fun `calculate time for inactive`() {
         val now = Milliseconds.now
         val expected = Milliseconds(1.hours)
-        val timeInterval = timeInterval(android) {
-            start = now - 1.hours
-            stop = now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = now - 1.hours
+            builder.stop = now
         }
 
         val actual = calculateTime(timeInterval)
@@ -79,8 +83,9 @@ class TimeIntervalTest {
     fun `calculate interval for active time interval`() {
         val now = Milliseconds.now
         val expected = Milliseconds(1.hours)
-        val timeInterval = timeInterval(android) {
-            start = now - 1.hours
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = now - 1.hours
         }
 
         val actual = calculateInterval(timeInterval, now)
@@ -92,9 +97,10 @@ class TimeIntervalTest {
     fun `calculate interval for inactive time interval`() {
         val now = Milliseconds.now
         val expected = Milliseconds(1.hours)
-        val timeInterval = timeInterval(android) {
-            start = now - 1.hours
-            stop = now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = now - 1.hours
+            builder.stop = now
         }
 
         val actual = calculateInterval(timeInterval)

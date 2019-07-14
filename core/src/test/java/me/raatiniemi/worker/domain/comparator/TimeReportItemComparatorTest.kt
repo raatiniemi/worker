@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.comparator
 
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.android
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,15 +45,17 @@ class TimeReportItemComparatorTest(
                     "Active with lhs.start = rhs.start",
                     0,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = null
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = null
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = null
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = null
                         }
                     )
                 ),
@@ -64,15 +63,17 @@ class TimeReportItemComparatorTest(
                     "Active with lhs.start > rhs.start",
                     -1,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(2)
-                            stop = null
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(2)
+                            builder.stop = null
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = null
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = null
                         }
                     )
                 ),
@@ -80,15 +81,17 @@ class TimeReportItemComparatorTest(
                     "Active with lhs.start < rhs.start",
                     1,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = null
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = null
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(2)
-                            stop = null
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(2)
+                            builder.stop = null
                         }
                     )
                 ),
@@ -96,15 +99,17 @@ class TimeReportItemComparatorTest(
                     "lhs == rhs",
                     0,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(2)
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(2)
                         }
                     )
                 ),
@@ -112,15 +117,17 @@ class TimeReportItemComparatorTest(
                     "lhs.start > rhs.start",
                     -1,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(2)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(2)
+                            builder.stop = Milliseconds(2)
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(2)
                         }
                     )
                 ),
@@ -128,15 +135,17 @@ class TimeReportItemComparatorTest(
                     "lhs.start < rhs.start",
                     1,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(2)
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(2)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(2)
+                            builder.stop = Milliseconds(2)
                         }
                     )
                 ),
@@ -144,15 +153,17 @@ class TimeReportItemComparatorTest(
                     "lhs.stop > rhs.stop",
                     -1,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(2)
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(1)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(1)
                         }
                     )
                 ),
@@ -160,15 +171,17 @@ class TimeReportItemComparatorTest(
                     "lhs.stop < rhs.stop",
                     1,
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(1)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(1)
                         }
                     ),
                     TimeReportItem.with(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(2)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(2)
                         }
                     )
                 )

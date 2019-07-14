@@ -44,31 +44,35 @@ class ProjectsItemGetTimeSummaryTest(
                 arrayOf(
                     "1h 0m",
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(0)
-                            stop = Milliseconds(3600000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(0)
+                            builder.stop = Milliseconds(3600000)
                         }
                     )
                 ),
                 arrayOf(
                     "2h 30m",
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(0)
-                            stop = Milliseconds(9000000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(0)
+                            builder.stop = Milliseconds(9000000)
                         }
                     )
                 ),
                 arrayOf(
                     "3h 30m",
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(0)
-                            stop = Milliseconds(3600000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(0)
+                            builder.stop = Milliseconds(3600000)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(0)
-                            stop = Milliseconds(9000000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(0)
+                            builder.stop = Milliseconds(9000000)
                         }
                     )
                 )

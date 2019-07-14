@@ -52,9 +52,10 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "1:00 (-7:00)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(3600000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(3600000)
                         }
                     )
                 ),
@@ -62,9 +63,10 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "8:00",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(28800000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(28800000)
                         }
                     )
                 ),
@@ -72,9 +74,10 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "9:00 (+1:00)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(32400000)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(32400000)
                         }
                     )
                 ),
@@ -82,13 +85,15 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "9:07 (+1:07)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(14380327)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(14380327)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(18407820)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(18407820)
                         }
                     )
                 ),
@@ -96,13 +101,15 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "8:46 (+0:46)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(13956031)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(13956031)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(17594386)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(17594386)
                         }
                     )
                 ),
@@ -110,13 +117,15 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "7:52 (-0:08)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(11661632)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(1)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(11661632)
                         },
-                        timeInterval(android) {
-                            start = Milliseconds(1)
-                            stop = Milliseconds(16707601)
+                        timeInterval(android.id) { builder ->
+                            builder.id = TimeIntervalId(2)
+                            builder.start = Milliseconds(1)
+                            builder.stop = Milliseconds(16707601)
                         }
                     )
                 )

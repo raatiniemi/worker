@@ -56,10 +56,10 @@ class GetProjectTimeSinceTest {
                 repository.update(it.copy(stop = expectedStop))
             }
         val expected = listOf(
-            timeInterval(android) {
-                id = 2
-                start = newTimeInterval.start
-                stop = expectedStop
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = newTimeInterval.start
+                builder.stop = expectedStop
             }
         )
 
@@ -86,10 +86,10 @@ class GetProjectTimeSinceTest {
                 repository.update(it.copy(stop = expectedStop))
             }
         val expected = listOf(
-            timeInterval(android) {
-                id = 2
-                start = newTimeInterval.start
-                stop = expectedStop
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = newTimeInterval.start
+                builder.stop = expectedStop
             }
         )
 
@@ -116,10 +116,10 @@ class GetProjectTimeSinceTest {
                 repository.update(it.copy(stop = expectedStop))
             }
         val expected = listOf(
-            timeInterval(android) {
-                id = 2
-                start = newTimeInterval.start
-                stop = expectedStop
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = newTimeInterval.start
+                builder.stop = expectedStop
             }
         )
 

@@ -86,10 +86,11 @@ class TimeIntervalRoomRepositoryTest {
         }
         timeIntervals.add(entity)
         val expected = listOf(
-            timeInterval(android) {
-                start = Milliseconds(entity.startInMilliseconds)
-                stop = Milliseconds(entity.stopInMilliseconds)
-                isRegistered = entity.registered == 1L
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(entity.startInMilliseconds)
+                builder.stop = Milliseconds(entity.stopInMilliseconds)
+                builder.isRegistered = entity.registered == 1L
             }
         )
 
@@ -105,10 +106,11 @@ class TimeIntervalRoomRepositoryTest {
         }
         timeIntervals.add(entity)
         val expected = listOf(
-            timeInterval(android) {
-                start = Milliseconds(entity.startInMilliseconds)
-                stop = Milliseconds(entity.stopInMilliseconds)
-                isRegistered = entity.registered == 1L
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(entity.startInMilliseconds)
+                builder.stop = Milliseconds(entity.stopInMilliseconds)
+                builder.isRegistered = entity.registered == 1L
             }
         )
 
@@ -138,10 +140,11 @@ class TimeIntervalRoomRepositoryTest {
         }
         timeIntervals.add(entity)
         val expected = listOf(
-            timeInterval(android) {
-                start = Milliseconds(entity.startInMilliseconds)
-                stop = null
-                isRegistered = entity.registered == 1L
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(entity.startInMilliseconds)
+                builder.stop = null
+                builder.isRegistered = entity.registered == 1L
             }
         )
 
@@ -161,10 +164,11 @@ class TimeIntervalRoomRepositoryTest {
     fun findById_withTimeInterval() {
         val entity = timeIntervalEntity()
         timeIntervals.add(entity)
-        val expected = timeInterval(android) {
-            start = Milliseconds(entity.startInMilliseconds)
-            stop = Milliseconds(entity.stopInMilliseconds)
-            isRegistered = entity.registered == 1L
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(entity.startInMilliseconds)
+            builder.stop = Milliseconds(entity.stopInMilliseconds)
+            builder.isRegistered = entity.registered == 1L
         }
 
         val actual = repository.findById(TimeIntervalId(1))
@@ -192,10 +196,11 @@ class TimeIntervalRoomRepositoryTest {
     fun getActiveTimeForProject_withTimeInterval() {
         val entity = timeIntervalEntity { stopInMilliseconds = 0 }
         timeIntervals.add(entity)
-        val expected = timeInterval(android) {
-            start = Milliseconds(entity.startInMilliseconds)
-            stop = null
-            isRegistered = entity.registered == 1L
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(entity.startInMilliseconds)
+            builder.stop = null
+            builder.isRegistered = entity.registered == 1L
         }
 
         val actual = repository.findActiveByProjectId(android.id)
@@ -208,9 +213,10 @@ class TimeIntervalRoomRepositoryTest {
         val newTimeInterval = newTimeInterval(android) {
             start = Milliseconds(1)
         }
-        val expected = timeInterval(android) {
-            start = Milliseconds(1)
-            stop = null
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = null
         }
 
         val actual = repository.add(newTimeInterval)
@@ -220,9 +226,10 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun update_withoutTimeInterval() {
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds(1)
-            stop = Milliseconds(2)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(2)
         }
 
         val actual = repository.update(timeInterval)
@@ -237,10 +244,11 @@ class TimeIntervalRoomRepositoryTest {
             registered = true
         }
         timeIntervals.add(entity)
-        val expected = timeInterval(android) {
-            start = Milliseconds(entity.startInMilliseconds)
-            stop = Milliseconds(entity.stopInMilliseconds)
-            isRegistered = entity.registered == 1L
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(entity.startInMilliseconds)
+            builder.stop = Milliseconds(entity.stopInMilliseconds)
+            builder.isRegistered = entity.registered == 1L
         }
 
         val actual = repository.update(expected)
@@ -250,10 +258,10 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun update_withoutTimeIntervals() {
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(2)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(2)
         }
 
         val actual = repository.update(
@@ -266,15 +274,15 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun update_withTimeIntervals() {
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(4)
-                stop = Milliseconds(6)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(4)
+                builder.stop = Milliseconds(6)
             }
         )
         timeIntervals.add(
@@ -330,9 +338,10 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun remove_withoutTimeIntervals() {
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds(1)
-            stop = Milliseconds(2)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(2)
         }
 
         repository.remove(
@@ -357,9 +366,10 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
         timeIntervals.add(entity)
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds(entity.startInMilliseconds)
-            stop = Milliseconds(entity.stopInMilliseconds)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(entity.startInMilliseconds)
+            builder.stop = Milliseconds(entity.stopInMilliseconds)
         }
         val expected = listOf(entity)
 

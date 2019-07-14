@@ -37,15 +37,17 @@ class TimeReportDayIsRegisteredTest(
 
     companion object {
         private val NOT_REGISTERED_TIME = TimeReportItem.with(
-            timeInterval(android) {
-                start = Milliseconds(1)
-                isRegistered = false
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.isRegistered = false
             }
         )
         private val REGISTERED_TIME = TimeReportItem.with(
-            timeInterval(android) {
-                start = Milliseconds(1)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.isRegistered = true
             }
         )
 

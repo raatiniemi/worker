@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.model
 
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,8 +25,9 @@ import org.junit.runners.JUnit4
 class TimeReportItemTest {
     @Test
     fun asTime() {
-        val timeInterval = timeInterval(android) {
-            start = Milliseconds(1)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
         }
         val item = TimeReportItem.with(timeInterval)
 

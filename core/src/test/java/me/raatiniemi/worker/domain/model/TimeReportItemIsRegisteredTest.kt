@@ -43,16 +43,18 @@ class TimeReportItemIsRegisteredTest(
                 arrayOf(
                     "is registered",
                     true,
-                    timeInterval(android) {
-                        start = Milliseconds(1)
-                        isRegistered = true
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = Milliseconds(1)
+                        builder.isRegistered = true
                     }
                 ),
                 arrayOf(
                     "is not registered",
                     false,
-                    timeInterval(android) {
-                        start = Milliseconds(1)
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = Milliseconds(1)
                     }
                 )
             )

@@ -46,9 +46,8 @@ internal data class TimeIntervalEntity(
     val stopInMilliseconds: Long,
     val registered: Long
 ) {
-    fun toTimeInterval() = timeInterval { builder ->
+    fun toTimeInterval() = timeInterval(ProjectId(projectId)) { builder ->
         builder.id = TimeIntervalId(id)
-        builder.projectId = ProjectId(projectId)
         builder.start = Milliseconds(startInMilliseconds)
         builder.stop = stopInMilliseconds.takeUnless { it == 0L }
             ?.let { Milliseconds(it) }
