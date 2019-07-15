@@ -35,6 +35,16 @@ fun timeInterval(
     )
 }
 
+fun timeInterval(timeInterval: TimeInterval, configure: (TimeIntervalState.Builder) -> Unit) =
+    timeInterval(timeInterval.projectId) {
+        it.id = timeInterval.id
+        it.start = timeInterval.start
+        it.stop = timeInterval.stop
+        it.isRegistered = timeInterval.isRegistered
+
+        configure(it)
+    }
+
 fun isActive(timeInterval: TimeInterval) = timeInterval.stop == null
 
 fun calculateTime(timeInterval: TimeInterval): Milliseconds {

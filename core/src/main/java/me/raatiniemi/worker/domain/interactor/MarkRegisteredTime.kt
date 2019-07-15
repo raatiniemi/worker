@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.isActive
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 /**
@@ -46,7 +47,9 @@ class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
 
     private fun toggleRegistered(isRegistered: Boolean): (TimeInterval) -> TimeInterval {
         return {
-            it.copy(isRegistered = isRegistered)
+            timeInterval(it) { builder ->
+                builder.isRegistered = isRegistered
+            }
         }
     }
 

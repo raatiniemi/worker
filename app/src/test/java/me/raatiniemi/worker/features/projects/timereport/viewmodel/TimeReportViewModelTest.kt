@@ -89,7 +89,9 @@ class TimeReportViewModelTest {
         }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
-            timeInterval.copy(isRegistered = true)
+            timeInterval(timeInterval) { builder ->
+                builder.isRegistered = true
+            }
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
@@ -130,8 +132,12 @@ class TimeReportViewModelTest {
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
         val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
         val expected = listOf(
-            firstTimeInterval.copy(isRegistered = true),
-            secondTimeInterval.copy(isRegistered = true)
+            timeInterval(firstTimeInterval) { builder ->
+                builder.isRegistered = true
+            },
+            timeInterval(secondTimeInterval) { builder ->
+                builder.isRegistered = true
+            }
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))

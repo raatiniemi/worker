@@ -84,8 +84,12 @@ class TimeReportInMemoryRepositoryTest {
             newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
-        ).also {
-            timeIntervalRepository.update(it.copy(isRegistered = true))
+        ).let {
+            timeInterval(it) { builder ->
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
         }
         timeIntervalRepository.add(
             newTimeInterval(android) {
@@ -114,8 +118,12 @@ class TimeReportInMemoryRepositoryTest {
             newTimeInterval(android) {
                 start = Milliseconds(1)
             }
-        ).also {
-            timeIntervalRepository.update(it.copy(isRegistered = true))
+        ).let {
+            timeInterval(it) { builder ->
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
         }
 
         val actual = repository.countNotRegistered(android)
@@ -168,8 +176,12 @@ class TimeReportInMemoryRepositoryTest {
             newTimeInterval(android) {
                 start = Milliseconds.now
             }
-        ).also {
-            timeIntervalRepository.update(it.copy(isRegistered = true))
+        ).let {
+            timeInterval(it) { builder ->
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
         }
 
         val actual = repository.countNotRegistered(android)
@@ -427,8 +439,13 @@ class TimeReportInMemoryRepositoryTest {
             }
         ).let {
             it.clockOut(stop = Milliseconds(45))
-                .copy(isRegistered = true)
-        }.also { timeIntervalRepository.update(it) }
+        }.let {
+            timeInterval(it) { builder ->
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
@@ -470,8 +487,13 @@ class TimeReportInMemoryRepositoryTest {
             }
         ).let {
             it.clockOut(stop = Milliseconds(183000000))
-                .copy(isRegistered = true)
-        }.also { timeIntervalRepository.update(it) }
+        }.let {
+            timeInterval(it) { builder ->
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
@@ -573,9 +595,13 @@ class TimeReportInMemoryRepositoryTest {
             }
         ).let {
             it.clockOut(stop = Milliseconds(10))
-                .copy(isRegistered = true)
-        }.also { timeIntervalRepository.update(it) }
-
+        }.let {
+            timeInterval(it) { builder ->
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
