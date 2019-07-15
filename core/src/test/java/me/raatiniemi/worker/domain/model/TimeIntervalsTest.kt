@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -44,6 +45,40 @@ class TimeIntervalsTest {
         }
     }
 
+    @Test
+    fun `time interval for active`() {
+        val expected = TimeInterval.Default(
+            id = TimeIntervalId(1),
+            projectId = android.id,
+            start = Milliseconds(1)
+        )
+
+        val actual = timeInterval(expected.projectId) { builder ->
+            builder.id = expected.id
+            builder.start = expected.start
+        }
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `time interval for inactive`() {
+        val expected = TimeInterval.Inactive(
+            id = TimeIntervalId(1),
+            projectId = android.id,
+            start = Milliseconds(1),
+            stop = Milliseconds(10)
+        )
+
+        val actual = timeInterval(expected.projectId) { builder ->
+            builder.id = expected.id
+            builder.start = expected.start
+            builder.stop = expected.stop
+        }
+
+        assertEquals(expected, actual)
+    }
+
     @Test(expected = ClockOutBeforeClockInException::class)
     fun `clock out with stop before start`() {
         val timeInterval = timeInterval(android.id) { builder ->
@@ -52,5 +87,34 @@ class TimeIntervalsTest {
         }
 
         timeInterval.clockOut(stop = Milliseconds(1))
+    }
+
+    @Test
+    fun `clock out with start before stop`() {
+        val expected = TimeInterval.Inactive(
+            id = TimeIntervalId(1),
+            projectId = android.id,
+            start = Milliseconds(1),
+            stop = Milliseconds(10)
+        )
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+        }
+
+        val actual = timeInterval.clockOut(stop = Milliseconds(10))
+
+        assertEquals(expected, actual)
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun `clock out with inactive`() {
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+        }
+
+        timeInterval.clockOut(stop = Milliseconds(10))
+            .clockOut(stop = Milliseconds(20))
     }
 }

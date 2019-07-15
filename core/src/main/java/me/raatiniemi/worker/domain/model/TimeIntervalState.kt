@@ -43,7 +43,31 @@ sealed class TimeInterval {
             }
         }
 
-        override fun clockOut(stop: Milliseconds): TimeInterval = copy(stop = stop)
+        override fun clockOut(stop: Milliseconds): TimeInterval = Inactive(
+            id = id,
+            projectId = projectId,
+            start = start,
+            stop = stop,
+            isRegistered = isRegistered
+        )
+    }
+
+    data class Inactive internal constructor(
+        override val id: TimeIntervalId,
+        override val projectId: ProjectId,
+        override val start: Milliseconds,
+        override val stop: Milliseconds? = null,
+        override val isRegistered: Boolean = false
+    ) : TimeInterval() {
+        init {
+            if (stop != null && stop < start) {
+                throw ClockOutBeforeClockInException()
+            }
+        }
+
+        override fun clockOut(stop: Milliseconds): TimeInterval {
+            throw UnsupportedOperationException()
+        }
     }
 
     data class Builder internal constructor(
