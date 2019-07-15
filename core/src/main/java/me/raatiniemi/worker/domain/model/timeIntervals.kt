@@ -23,10 +23,13 @@ fun timeInterval(
     val builder = TimeIntervalState.Builder()
     configure(builder)
 
+    val id = builder.id ?: throw MissingTimeIntervalIdException()
+    val start = builder.start ?: throw MissingTimeIntervalStartException()
+
     return TimeInterval(
-        id = requireNotNull(builder.id),
+        id = id,
         projectId = projectId,
-        start = requireNotNull(builder.start),
+        start = start,
         stop = builder.stop,
         isRegistered = builder.isRegistered
     )
