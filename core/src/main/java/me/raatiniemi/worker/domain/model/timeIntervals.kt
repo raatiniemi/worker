@@ -18,15 +18,15 @@ package me.raatiniemi.worker.domain.model
 
 fun timeInterval(
     projectId: ProjectId,
-    configure: (TimeIntervalState.Builder) -> Unit
+    configure: (TimeInterval.Builder) -> Unit
 ): TimeInterval {
-    val builder = TimeIntervalState.Builder()
+    val builder = TimeInterval.Builder()
     configure(builder)
 
     val id = builder.id ?: throw MissingTimeIntervalIdException()
     val start = builder.start ?: throw MissingTimeIntervalStartException()
 
-    return TimeInterval(
+    return TimeInterval.Default(
         id = id,
         projectId = projectId,
         start = start,
@@ -35,7 +35,7 @@ fun timeInterval(
     )
 }
 
-fun timeInterval(timeInterval: TimeInterval, configure: (TimeIntervalState.Builder) -> Unit) =
+fun timeInterval(timeInterval: TimeInterval, configure: (TimeInterval.Builder) -> Unit) =
     timeInterval(timeInterval.projectId) {
         it.id = timeInterval.id
         it.start = timeInterval.start
@@ -60,9 +60,10 @@ fun calculateInterval(
     timeInterval: TimeInterval,
     stopForActive: Milliseconds = Milliseconds.now
 ): Milliseconds {
-    if (timeInterval.stop == null) {
-        return stopForActive - timeInterval.start
+    val stop = timeInterval.stop
+    return if (stop == null) {
+        stopForActive - timeInterval.start
+    } else {
+        stop - timeInterval.start
     }
-
-    return timeInterval.stop - timeInterval.start
 }
