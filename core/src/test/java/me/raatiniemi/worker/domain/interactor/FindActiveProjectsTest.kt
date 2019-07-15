@@ -65,7 +65,7 @@ class FindActiveProjectsTest {
                 start = Milliseconds(1)
             }
         ).let {
-            it.copy(stop = Milliseconds(10))
+            it.clockOut(stop = Milliseconds(10))
         }.also {
             timeIntervalRepository.update(it)
         }

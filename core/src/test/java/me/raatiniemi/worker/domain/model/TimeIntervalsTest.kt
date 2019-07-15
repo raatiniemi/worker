@@ -43,4 +43,14 @@ class TimeIntervalsTest {
             builder.stop = Milliseconds(1)
         }
     }
+
+    @Test(expected = ClockOutBeforeClockInException::class)
+    fun `clock out with stop before start`() {
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(10)
+        }
+
+        timeInterval.clockOut(stop = Milliseconds(1))
+    }
 }

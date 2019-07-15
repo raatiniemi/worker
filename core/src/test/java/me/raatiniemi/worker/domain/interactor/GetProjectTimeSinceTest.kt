@@ -49,11 +49,11 @@ class GetProjectTimeSinceTest {
                 start = before(TimeIntervalStartingPoint.DAY)
             }
         ).also {
-            repository.update(it.copy(stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)))
+            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)))
         }
         repository.add(newTimeInterval)
             .also {
-                repository.update(it.copy(stop = expectedStop))
+                repository.update(it.clockOut(stop = expectedStop))
             }
         val expected = listOf(
             timeInterval(android.id) { builder ->
@@ -79,11 +79,11 @@ class GetProjectTimeSinceTest {
                 start = before(TimeIntervalStartingPoint.WEEK)
             }
         ).also {
-            repository.update(it.copy(stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)))
+            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)))
         }
         repository.add(newTimeInterval)
             .also {
-                repository.update(it.copy(stop = expectedStop))
+                repository.update(it.clockOut(stop = expectedStop))
             }
         val expected = listOf(
             timeInterval(android.id) { builder ->
@@ -109,11 +109,11 @@ class GetProjectTimeSinceTest {
                 start = before(TimeIntervalStartingPoint.MONTH)
             }
         ).also {
-            repository.update(it.copy(stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)))
+            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)))
         }
         repository.add(newTimeInterval)
             .also {
-                repository.update(it.copy(stop = expectedStop))
+                repository.update(it.clockOut(stop = expectedStop))
             }
         val expected = listOf(
             timeInterval(android.id) { builder ->

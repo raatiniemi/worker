@@ -31,9 +31,7 @@ class ClockOut(private val timeIntervalRepository: TimeIntervalRepository) {
             ?: throw InactiveProjectException()
 
         timeIntervalRepository.update(
-            timeInterval.copy(
-                stop = Milliseconds(date.time)
-            )
+            timeInterval.clockOut(stop = Milliseconds(date.time))
         )
     }
 }

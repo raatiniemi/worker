@@ -56,7 +56,7 @@ class MarkRegisteredTimeTest {
             repository.add(it)
                 .also { timeInterval ->
                     repository.update(
-                        timeInterval.copy(stop = Milliseconds(10))
+                        timeInterval.clockOut(stop = Milliseconds(10))
                     )
                 }
         }
@@ -207,7 +207,7 @@ class MarkRegisteredTimeTest {
             repository.add(it)
                 .also { timeInterval ->
                     repository.update(
-                        timeInterval.copy(stop = Milliseconds(2))
+                        timeInterval.clockOut(stop = Milliseconds(2))
                     )
                 }
         }

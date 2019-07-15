@@ -56,7 +56,7 @@ class CalculateTimeTodayTest {
                 start = startingPoint
             }
         ).let {
-            it.copy(stop = startingPoint + 1.hours)
+            it.clockOut(stop = startingPoint + 1.hours)
         }.also {
             repository.update(it)
         }
@@ -91,7 +91,7 @@ class CalculateTimeTodayTest {
                 start = startingPoint
             }
         ).let {
-            it.copy(stop = startingPoint + 1.hours)
+            it.clockOut(stop = startingPoint + 1.hours)
         }.also {
             repository.update(it)
         }

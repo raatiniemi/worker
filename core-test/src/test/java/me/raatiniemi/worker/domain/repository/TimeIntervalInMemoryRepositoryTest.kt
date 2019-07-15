@@ -129,7 +129,7 @@ class TimeIntervalInMemoryRepositoryTest {
                 start = Milliseconds(1)
             }
         ).also {
-            repository.update(it.copy(stop = Milliseconds(10)))
+            repository.update(it.clockOut(stop = Milliseconds(10)))
         }
 
         val actual = repository.findActiveByProjectId(android.id)

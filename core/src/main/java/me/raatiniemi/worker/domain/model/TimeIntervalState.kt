@@ -48,4 +48,6 @@ data class TimeInterval internal constructor(
             throw ClockOutBeforeClockInException()
         }
     }
+
+    fun clockOut(stop: Milliseconds): TimeInterval = copy(stop = stop)
 }
