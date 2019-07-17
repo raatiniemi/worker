@@ -29,39 +29,22 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
 
     val title: String
         get() {
-            val title = buildTitleFromStartTime()
-
-            if (!isActive(timeInterval)) {
-                appendStopTimeWithSeparator(title)
+            val values = when (timeInterval) {
+                is TimeInterval.Active -> listOf(timeInterval.start)
+                is TimeInterval.Inactive -> listOf(timeInterval.start, timeInterval.stop)
+                is TimeInterval.Registered -> listOf(timeInterval.start, timeInterval.stop)
             }
 
-            return title.toString()
+            return values.map(::buildDateFromMilliseconds)
+                .joinToString(separator = TIME_SEPARATOR) {
+                    timeFormat.format(it)
+                }
         }
 
     val isRegistered = timeInterval is TimeInterval.Registered
 
     fun asTimeInterval(): TimeInterval {
         return timeInterval
-    }
-
-    private fun buildTitleFromStartTime(): StringBuilder {
-        val builder = StringBuilder()
-        builder.append(timeFormat.format(buildDateFromStartTime()))
-
-        return builder
-    }
-
-    private fun buildDateFromStartTime(): Date {
-        return buildDateFromMilliseconds(timeInterval.start.value)
-    }
-
-    private fun appendStopTimeWithSeparator(title: StringBuilder) {
-        title.append(TIME_SEPARATOR)
-        title.append(timeFormat.format(buildDateFromStopTime()))
-    }
-
-    private fun buildDateFromStopTime(): Date {
-        return buildDateFromMilliseconds(timeInterval.stop?.value ?: 0)
     }
 
     fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
@@ -76,8 +59,8 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
         private const val TIME_SEPARATOR = " - "
         private val comparator = TimeReportItemComparator()
 
-        private fun buildDateFromMilliseconds(milliseconds: Long): Date {
-            return Date(milliseconds)
+        private fun buildDateFromMilliseconds(milliseconds: Milliseconds): Date {
+            return Date(milliseconds.value)
         }
 
         @JvmStatic

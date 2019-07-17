@@ -67,7 +67,11 @@ internal fun TimeInterval.toEntity() = TimeIntervalEntity(
     id = id.value,
     projectId = projectId.value,
     startInMilliseconds = start.value,
-    stopInMilliseconds = stop?.value ?: 0,
+    stopInMilliseconds = when (this) {
+        is TimeInterval.Active -> 0
+        is TimeInterval.Inactive -> stop.value
+        is TimeInterval.Registered -> stop.value
+    },
     registered = if (this is TimeInterval.Registered) {
         1
     } else {

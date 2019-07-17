@@ -24,14 +24,12 @@ import java.util.*
 
 class TimeReportItemComparator : Comparator<TimeReportItem> {
     private fun compare(lhs: TimeInterval, rhs: TimeInterval): Int {
-        if (lhs.stop != rhs.stop) {
-            if (isActive(lhs)) {
-                return -1
-            }
+        if (isActive(lhs) && !isActive(rhs)) {
+            return -1
+        }
 
-            if (isActive(rhs)) {
-                return 1
-            }
+        if (!isActive(lhs) && isActive(rhs)) {
+            return 1
         }
 
         if (lhs.start > rhs.start) {
@@ -42,15 +40,22 @@ class TimeReportItemComparator : Comparator<TimeReportItem> {
             return 1
         }
 
-        val lhsStop = lhs.stop ?: Milliseconds.empty
-        val rhsStop = rhs.stop ?: Milliseconds.empty
-        if (lhsStop > rhsStop) {
-            return -1
+        val lhsStop = when (lhs) {
+            is TimeInterval.Inactive -> lhs.stop
+            is TimeInterval.Registered -> lhs.stop
+            else -> Milliseconds.empty
+        }
+        val rhsStop = when (rhs) {
+            is TimeInterval.Inactive -> rhs.stop
+            is TimeInterval.Registered -> rhs.stop
+            else -> Milliseconds.empty
         }
 
-        return if (lhsStop < rhsStop) {
-            1
-        } else 0
+        return when {
+            lhsStop > rhsStop -> -1
+            lhsStop < rhsStop -> 1
+            else -> 0
+        }
     }
 
     override fun compare(o1: TimeReportItem, o2: TimeReportItem): Int {
