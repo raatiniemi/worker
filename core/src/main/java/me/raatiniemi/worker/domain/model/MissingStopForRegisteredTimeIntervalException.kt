@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-class MissingStopForRegisteredTimeIntervalException : IllegalStateException()
+class MissingStopForRegisteredTimeIntervalException internal constructor() : IllegalStateException()
