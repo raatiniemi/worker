@@ -27,16 +27,22 @@ fun timeInterval(
     val start = builder.start ?: throw MissingTimeIntervalStartException()
     val stop = builder.stop
 
-    return if (stop == null) {
-        TimeInterval.Default(
+    return when {
+        stop == null -> TimeInterval.Default(
             id = id,
             projectId = projectId,
             start = start,
             stop = stop,
             isRegistered = builder.isRegistered
         )
-    } else {
-        TimeInterval.Inactive(
+        builder.isRegistered -> TimeInterval.Registered(
+            id = id,
+            projectId = projectId,
+            start = start,
+            stop = stop,
+            isRegistered = true
+        )
+        else -> TimeInterval.Inactive(
             id = id,
             projectId = projectId,
             start = start,

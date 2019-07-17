@@ -79,6 +79,26 @@ class TimeIntervalsTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `time interval for registered`() {
+        val expected = TimeInterval.Registered(
+            id = TimeIntervalId(1),
+            projectId = android.id,
+            start = Milliseconds(1),
+            stop = Milliseconds(10),
+            isRegistered = true
+        )
+
+        val actual = timeInterval(expected.projectId) { builder ->
+            builder.id = expected.id
+            builder.start = expected.start
+            builder.stop = expected.stop
+            builder.isRegistered = true
+        }
+
+        assertEquals(expected, actual)
+    }
+
     @Test(expected = ClockOutBeforeClockInException::class)
     fun `clock out with stop before start`() {
         val timeInterval = timeInterval(android.id) { builder ->
@@ -116,5 +136,17 @@ class TimeIntervalsTest {
 
         timeInterval.clockOut(stop = Milliseconds(10))
             .clockOut(stop = Milliseconds(20))
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun `clock out with registered`() {
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(10)
+            builder.isRegistered = true
+        }
+
+        timeInterval.clockOut(stop = Milliseconds(20))
     }
 }

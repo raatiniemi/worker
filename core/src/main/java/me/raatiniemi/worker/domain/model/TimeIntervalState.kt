@@ -70,6 +70,24 @@ sealed class TimeInterval {
         }
     }
 
+    data class Registered internal constructor(
+        override val id: TimeIntervalId,
+        override val projectId: ProjectId,
+        override val start: Milliseconds,
+        override val stop: Milliseconds? = null,
+        override val isRegistered: Boolean = true
+    ) : TimeInterval() {
+        init {
+            if (stop != null && stop < start) {
+                throw ClockOutBeforeClockInException()
+            }
+        }
+
+        override fun clockOut(stop: Milliseconds): TimeInterval {
+            throw UnsupportedOperationException()
+        }
+    }
+
     data class Builder internal constructor(
         var id: TimeIntervalId? = null,
         var start: Milliseconds? = null,
