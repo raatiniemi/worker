@@ -119,6 +119,7 @@ class TimeReportsKtTest {
             }
         ).let {
             timeInterval(it) { builder ->
+                builder.stop = now + 5.minutes
                 builder.isRegistered = true
             }
         }.also {
@@ -469,6 +470,7 @@ class TimeReportsKtTest {
             }
         ).let {
             timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now + 5.minutes
                 builder.isRegistered = true
             }
         }.also {
@@ -510,6 +512,7 @@ class TimeReportsKtTest {
             }
         ).let {
             timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now + 5.minutes
                 builder.isRegistered = true
             }
         }.also {

@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -86,6 +87,7 @@ class TimeReportInMemoryRepositoryTest {
             }
         ).let {
             timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
                 builder.isRegistered = true
             }
         }.also {
@@ -179,6 +181,7 @@ class TimeReportInMemoryRepositoryTest {
             }
         ).let {
             timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now + 5.minutes
                 builder.isRegistered = true
             }
         }.also {
