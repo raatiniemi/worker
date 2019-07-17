@@ -28,7 +28,7 @@ class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeInter
 
     override fun countNotRegistered(project: Project): Int =
         timeIntervalRepository.findAll(project, Milliseconds(0))
-            .filter { !it.isRegistered }
+            .filter { it !is TimeInterval.Registered }
             .groupBy { resetToStartOfDay(it.start) }
             .count()
 
@@ -46,7 +46,7 @@ class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeInter
 
     override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
         val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))
-            .filter { !it.isRegistered }
+            .filter { it !is TimeInterval.Registered }
 
         return with(loadRange) {
             groupByDay(timeIntervals)

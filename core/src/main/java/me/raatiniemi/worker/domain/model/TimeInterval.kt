@@ -26,7 +26,6 @@ sealed class TimeInterval {
     abstract val projectId: ProjectId
     abstract val start: Milliseconds
     abstract val stop: Milliseconds?
-    abstract val isRegistered: Boolean
 
     abstract fun clockOut(stop: Milliseconds): TimeInterval
 
@@ -34,8 +33,7 @@ sealed class TimeInterval {
         override val id: TimeIntervalId,
         override val projectId: ProjectId,
         override val start: Milliseconds,
-        override val stop: Milliseconds? = null,
-        override val isRegistered: Boolean = false
+        override val stop: Milliseconds? = null
     ) : TimeInterval() {
         init {
             if (stop != null && stop < start) {
@@ -47,8 +45,7 @@ sealed class TimeInterval {
             id = id,
             projectId = projectId,
             start = start,
-            stop = stop,
-            isRegistered = isRegistered
+            stop = stop
         )
     }
 
@@ -56,8 +53,7 @@ sealed class TimeInterval {
         override val id: TimeIntervalId,
         override val projectId: ProjectId,
         override val start: Milliseconds,
-        override val stop: Milliseconds? = null,
-        override val isRegistered: Boolean = false
+        override val stop: Milliseconds? = null
     ) : TimeInterval() {
         init {
             if (stop != null && stop < start) {
@@ -74,8 +70,7 @@ sealed class TimeInterval {
         override val id: TimeIntervalId,
         override val projectId: ProjectId,
         override val start: Milliseconds,
-        override val stop: Milliseconds? = null,
-        override val isRegistered: Boolean = true
+        override val stop: Milliseconds? = null
     ) : TimeInterval() {
         init {
             if (stop != null && stop < start) {

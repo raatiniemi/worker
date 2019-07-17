@@ -38,7 +38,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
             return title.toString()
         }
 
-    val isRegistered = timeInterval.isRegistered
+    val isRegistered = timeInterval is TimeInterval.Registered
 
     fun asTimeInterval(): TimeInterval {
         return timeInterval

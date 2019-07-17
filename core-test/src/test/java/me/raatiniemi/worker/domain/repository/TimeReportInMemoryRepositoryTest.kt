@@ -120,6 +120,7 @@ class TimeReportInMemoryRepositoryTest {
             }
         ).let {
             timeInterval(it) { builder ->
+                builder.stop = Milliseconds(10)
                 builder.isRegistered = true
             }
         }.also {

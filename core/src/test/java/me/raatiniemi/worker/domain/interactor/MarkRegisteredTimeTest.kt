@@ -293,6 +293,7 @@ class MarkRegisteredTimeTest {
             timeInterval(android.id) { builder ->
                 builder.id = TimeIntervalId(1)
                 builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(10)
                 builder.isRegistered = true
             }
         )
@@ -303,6 +304,7 @@ class MarkRegisteredTimeTest {
             timeInterval(android.id) { builder ->
                 builder.id = TimeIntervalId(1)
                 builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(10)
             }
         )
         val actual = repository.findAll(android, Milliseconds.empty)

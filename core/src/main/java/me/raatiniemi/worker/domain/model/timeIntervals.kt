@@ -32,22 +32,19 @@ fun timeInterval(
             id = id,
             projectId = projectId,
             start = start,
-            stop = stop,
-            isRegistered = builder.isRegistered
+            stop = stop
         )
         builder.isRegistered -> TimeInterval.Registered(
             id = id,
             projectId = projectId,
             start = start,
-            stop = stop,
-            isRegistered = true
+            stop = stop
         )
         else -> TimeInterval.Inactive(
             id = id,
             projectId = projectId,
             start = start,
-            stop = stop,
-            isRegistered = builder.isRegistered
+            stop = stop
         )
     }
 }
@@ -57,7 +54,7 @@ fun timeInterval(timeInterval: TimeInterval, configure: (TimeInterval.Builder) -
         it.id = timeInterval.id
         it.start = timeInterval.start
         it.stop = timeInterval.stop
-        it.isRegistered = timeInterval.isRegistered
+        it.isRegistered = timeInterval is TimeInterval.Registered
 
         configure(it)
     }

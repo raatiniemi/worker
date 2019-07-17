@@ -85,8 +85,7 @@ class TimeIntervalsTest {
             id = TimeIntervalId(1),
             projectId = android.id,
             start = Milliseconds(1),
-            stop = Milliseconds(10),
-            isRegistered = true
+            stop = Milliseconds(10)
         )
 
         val actual = timeInterval(expected.projectId) { builder ->

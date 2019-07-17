@@ -37,7 +37,7 @@ class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
     private fun shouldMarkAsRegistered(timeIntervals: List<TimeInterval>): Boolean {
         val timeInterval = timeIntervals.firstOrNull() ?: return false
 
-        return !timeInterval.isRegistered
+        return timeInterval !is TimeInterval.Registered
     }
 
     private fun ensureNoTimeIntervalsIsActive(timeIntervals: List<TimeInterval>) {

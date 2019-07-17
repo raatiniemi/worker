@@ -47,6 +47,7 @@ class TimeReportDayIsRegisteredTest(
             timeInterval(android.id) { builder ->
                 builder.id = TimeIntervalId(2)
                 builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(10)
                 builder.isRegistered = true
             }
         )
