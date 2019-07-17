@@ -67,7 +67,7 @@ fun timeInterval(timeInterval: TimeInterval, configure: (TimeInterval.Builder) -
         configure(it)
     }
 
-fun isActive(timeInterval: TimeInterval) = timeInterval.stop == null
+fun isActive(timeInterval: TimeInterval) = timeInterval is TimeInterval.Active
 
 fun calculateTime(timeInterval: TimeInterval): Milliseconds {
     if (isActive(timeInterval)) {
