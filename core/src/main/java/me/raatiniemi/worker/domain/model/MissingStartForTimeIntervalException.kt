@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-class MissingTimeIntervalIdException internal constructor() : IllegalStateException()
+class MissingStartForTimeIntervalException internal constructor() : IllegalStateException()

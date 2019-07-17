@@ -24,12 +24,12 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class TimeIntervalsTest {
-    @Test(expected = MissingTimeIntervalIdException::class)
+    @Test(expected = MissingIdForTimeIntervalException::class)
     fun `time interval without id`() {
         timeInterval(android.id) { }
     }
 
-    @Test(expected = MissingTimeIntervalStartException::class)
+    @Test(expected = MissingStartForTimeIntervalException::class)
     fun `time interval without start`() {
         timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)

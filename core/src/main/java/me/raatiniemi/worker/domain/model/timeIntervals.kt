@@ -23,8 +23,8 @@ fun timeInterval(
     val builder = TimeInterval.Builder()
     configure(builder)
 
-    val id = builder.id ?: throw MissingTimeIntervalIdException()
-    val start = builder.start ?: throw MissingTimeIntervalStartException()
+    val id = builder.id ?: throw MissingIdForTimeIntervalException()
+    val start = builder.start ?: throw MissingStartForTimeIntervalException()
     val stop = builder.stop
 
     if (stop == null) {
