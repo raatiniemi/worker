@@ -47,7 +47,7 @@ class TimeIntervalsTest {
 
     @Test
     fun `time interval for active`() {
-        val expected = TimeInterval.Default(
+        val expected = TimeInterval.Active(
             id = TimeIntervalId(1),
             projectId = android.id,
             start = Milliseconds(1)

@@ -28,7 +28,7 @@ fun timeInterval(
     val stop = builder.stop
 
     return when {
-        stop == null -> TimeInterval.Default(
+        stop == null -> TimeInterval.Active(
             id = id,
             projectId = projectId,
             start = start,

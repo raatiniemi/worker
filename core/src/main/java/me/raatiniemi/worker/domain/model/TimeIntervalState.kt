@@ -30,7 +30,7 @@ sealed class TimeInterval {
 
     abstract fun clockOut(stop: Milliseconds): TimeInterval
 
-    data class Default internal constructor(
+    data class Active internal constructor(
         override val id: TimeIntervalId,
         override val projectId: ProjectId,
         override val start: Milliseconds,
