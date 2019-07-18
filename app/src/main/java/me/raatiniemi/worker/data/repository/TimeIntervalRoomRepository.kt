@@ -34,9 +34,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             ?.run { toTimeInterval() }
     }
 
-    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval? {
-        return timeIntervals.findActiveTime(projectId.value)
-            ?.run { toTimeInterval() }
+    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
+        val entity = timeIntervals.findActiveTime(projectId.value) ?: return null
+
+        return when (val timeInterval = entity.toTimeInterval()) {
+            is TimeInterval.Active -> timeInterval
+            else -> throw InvalidActiveTimeIntervalException()
+        }
     }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
