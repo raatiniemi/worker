@@ -282,7 +282,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
-                timeIntervals.map { TimeReportItem(it) }
+                timeIntervals.map { TimeReportItem.with(it) }
             )
         )
         val loadRange = LoadRange(
@@ -313,13 +313,13 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                    TimeReportItem.with(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
             ),
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    TimeReportItem.with(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
             )
         )
@@ -351,7 +351,7 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    TimeReportItem.with(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
             )
         )
@@ -383,7 +383,7 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                    TimeReportItem.with(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
             )
         )
@@ -454,8 +454,8 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval()),
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    TimeReportItem.with(secondTimeInterval.copy(id = 2).toTimeInterval()),
+                    TimeReportItem.with(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
             )
         )
@@ -487,13 +487,13 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                    TimeReportItem.with(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
             ),
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    TimeReportItem.with(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
             )
         )
@@ -525,7 +525,7 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    TimeReportItem.with(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
             )
         )
@@ -557,7 +557,7 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                    TimeReportItem.with(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
             )
         )
@@ -590,7 +590,7 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                    TimeReportItem.with(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
             )
         )

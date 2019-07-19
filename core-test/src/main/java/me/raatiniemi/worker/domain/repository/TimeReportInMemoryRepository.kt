@@ -67,7 +67,7 @@ class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeInter
         entry.let { (date, timeIntervals) ->
             val timeReportItems = timeIntervals
                 .sortedByDescending { it.start.value }
-                .map { TimeReportItem(it) }
+                .map { TimeReportItem.with(it) }
 
             TimeReportDay(date, timeReportItems)
         }

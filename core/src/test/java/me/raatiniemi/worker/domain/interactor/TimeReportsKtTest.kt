@@ -349,7 +349,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(
-                    TimeReportItem(timeInterval)
+                    TimeReportItem.with(timeInterval)
                 )
             )
         )
@@ -376,8 +376,8 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(secondTimeInterval),
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -404,13 +404,13 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -439,7 +439,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(
-                    TimeReportItem(timeInterval)
+                    TimeReportItem.with(timeInterval)
                 )
             )
         )
@@ -480,8 +480,8 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(secondTimeInterval),
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -522,13 +522,13 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -562,8 +562,8 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(secondTimeInterval),
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -597,13 +597,13 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -638,7 +638,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -673,7 +673,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -700,7 +700,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -727,7 +727,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             )
         )

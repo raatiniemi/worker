@@ -267,7 +267,7 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(Milliseconds(1)),
                 timeIntervals.reversed()
-                    .map { TimeReportItem(it) }
+                    .map { TimeReportItem.with(it) }
             )
         )
         val loadRange = LoadRange(
@@ -300,13 +300,13 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -340,7 +340,7 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeIntervals.start),
                 listOf(
-                    TimeReportItem(firstTimeIntervals)
+                    TimeReportItem.with(firstTimeIntervals)
                 )
             )
         )
@@ -374,7 +374,7 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             )
         )
@@ -454,8 +454,8 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(secondTimeInterval),
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -502,13 +502,13 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    TimeReportItem.with(firstTimeInterval)
                 )
             )
         )
@@ -542,7 +542,7 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeIntervals.start),
                 listOf(
-                    TimeReportItem(firstTimeIntervals)
+                    TimeReportItem.with(firstTimeIntervals)
                 )
             )
         )
@@ -576,7 +576,7 @@ class TimeReportInMemoryRepositoryTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem.with(secondTimeInterval)
                 )
             )
         )
