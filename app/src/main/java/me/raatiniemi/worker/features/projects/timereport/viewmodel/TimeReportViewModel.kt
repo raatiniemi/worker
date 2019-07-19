@@ -170,7 +170,7 @@ internal class TimeReportViewModel internal constructor(
             return TimeReportState.SELECTED
         }
 
-        if (item.isRegistered) {
+        if (item is TimeReportItem.Registered) {
             return TimeReportState.REGISTERED
         }
 

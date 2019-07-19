@@ -25,7 +25,6 @@ import java.util.*
 sealed class TimeReportItem : Comparable<TimeReportItem> {
     abstract val hoursMinutes: HoursMinutes
     abstract val title: String
-    abstract val isRegistered: Boolean
 
     abstract fun asTimeInterval(): TimeInterval
 
@@ -51,8 +50,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
                     }
             }
 
-        override val isRegistered = false
-
         override fun asTimeInterval() = timeInterval
 
         override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
@@ -75,8 +72,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
                     }
             }
 
-        override val isRegistered = false
-
         override fun asTimeInterval() = timeInterval
 
         override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
@@ -98,8 +93,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
                         timeFormat.format(it)
                     }
             }
-
-        override val isRegistered = true
 
         override fun asTimeInterval() = timeInterval
 
