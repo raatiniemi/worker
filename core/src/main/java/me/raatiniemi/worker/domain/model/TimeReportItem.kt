@@ -22,37 +22,47 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<TimeReportItem> {
-    private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-    val hoursMinutes: HoursMinutes
-        get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
+sealed class TimeReportItem : Comparable<TimeReportItem> {
+    abstract val hoursMinutes: HoursMinutes
+    abstract val title: String
+    abstract val isRegistered: Boolean
 
-    val title: String
-        get() {
-            val values = when (timeInterval) {
-                is TimeInterval.Active -> listOf(timeInterval.start)
-                is TimeInterval.Inactive -> listOf(timeInterval.start, timeInterval.stop)
-                is TimeInterval.Registered -> listOf(timeInterval.start, timeInterval.stop)
-            }
+    abstract fun asTimeInterval(): TimeInterval
 
-            return values.map(::buildDateFromMilliseconds)
-                .joinToString(separator = TIME_SEPARATOR) {
-                    timeFormat.format(it)
-                }
-        }
-
-    val isRegistered = timeInterval is TimeInterval.Registered
-
-    fun asTimeInterval(): TimeInterval {
-        return timeInterval
-    }
-
-    fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
-        return formatter.apply(hoursMinutes)
-    }
+    abstract fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String
 
     override fun compareTo(other: TimeReportItem): Int {
         return comparator.compare(this, other)
+    }
+
+    data class Default internal constructor(
+        private val timeInterval: TimeInterval
+    ) : TimeReportItem() {
+        private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
+        override val hoursMinutes: HoursMinutes
+            get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
+
+        override val title: String
+            get() {
+                val values = when (timeInterval) {
+                    is TimeInterval.Active -> listOf(timeInterval.start)
+                    is TimeInterval.Inactive -> listOf(timeInterval.start, timeInterval.stop)
+                    is TimeInterval.Registered -> listOf(timeInterval.start, timeInterval.stop)
+                }
+
+                return values.map(::buildDateFromMilliseconds)
+                    .joinToString(separator = TIME_SEPARATOR) {
+                        timeFormat.format(it)
+                    }
+            }
+
+        override val isRegistered = timeInterval is TimeInterval.Registered
+
+        override fun asTimeInterval() = timeInterval
+
+        override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
+            return formatter.apply(hoursMinutes)
+        }
     }
 
     companion object {
@@ -65,7 +75,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
 
         @JvmStatic
         fun with(time: TimeInterval): TimeReportItem {
-            return TimeReportItem(time)
+            return Default(time)
         }
     }
 }
