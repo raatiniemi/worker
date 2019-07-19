@@ -38,7 +38,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
     data class Default internal constructor(
         private val timeInterval: TimeInterval
     ) : TimeReportItem() {
-        private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
         override val hoursMinutes: HoursMinutes
             get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
 
@@ -65,17 +64,43 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
         }
     }
 
+    data class Inactive internal constructor(
+        private val timeInterval: TimeInterval.Inactive
+    ) : TimeReportItem() {
+        override val hoursMinutes: HoursMinutes
+            get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
+
+        override val title: String
+            get() {
+                val values = listOf(timeInterval.start, timeInterval.stop)
+                return values.map(::buildDateFromMilliseconds)
+                    .joinToString(separator = TIME_SEPARATOR) {
+                        timeFormat.format(it)
+                    }
+            }
+
+        override val isRegistered = false
+
+        override fun asTimeInterval() = timeInterval
+
+        override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
+            return formatter.apply(hoursMinutes)
+        }
+    }
+
     companion object {
         private const val TIME_SEPARATOR = " - "
         private val comparator = TimeReportItemComparator()
+        private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
 
         private fun buildDateFromMilliseconds(milliseconds: Milliseconds): Date {
             return Date(milliseconds.value)
         }
 
         @JvmStatic
-        fun with(time: TimeInterval): TimeReportItem {
-            return Default(time)
+        fun with(time: TimeInterval): TimeReportItem = when (time) {
+            is TimeInterval.Inactive -> Inactive(time)
+            else -> Default(time)
         }
     }
 }
