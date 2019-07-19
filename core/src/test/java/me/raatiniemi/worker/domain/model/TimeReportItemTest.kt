@@ -76,4 +76,27 @@ class TimeReportItemTest {
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `time report item with registered time interval`() {
+        val expected = TimeReportItem.Registered(
+            TimeInterval.Registered(
+                id = TimeIntervalId(1),
+                projectId = android.id,
+                start = Milliseconds(1),
+                stop = Milliseconds(10)
+
+            )
+        )
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(10)
+            builder.isRegistered = true
+        }
+
+        val actual = TimeReportItem.with(timeInterval)
+
+        assertEquals(expected, actual)
+    }
 }

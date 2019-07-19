@@ -88,6 +88,30 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
         }
     }
 
+    data class Registered internal constructor(
+        private val timeInterval: TimeInterval.Registered
+    ) : TimeReportItem() {
+        override val hoursMinutes: HoursMinutes
+            get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
+
+        override val title: String
+            get() {
+                val values = listOf(timeInterval.start, timeInterval.stop)
+                return values.map(::buildDateFromMilliseconds)
+                    .joinToString(separator = TIME_SEPARATOR) {
+                        timeFormat.format(it)
+                    }
+            }
+
+        override val isRegistered = true
+
+        override fun asTimeInterval() = timeInterval
+
+        override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
+            return formatter.apply(hoursMinutes)
+        }
+    }
+
     companion object {
         private const val TIME_SEPARATOR = " - "
         private val comparator = TimeReportItemComparator()
@@ -100,6 +124,7 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
         @JvmStatic
         fun with(time: TimeInterval): TimeReportItem = when (time) {
             is TimeInterval.Inactive -> Inactive(time)
+            is TimeInterval.Registered -> Registered(time)
             else -> Default(time)
         }
     }
