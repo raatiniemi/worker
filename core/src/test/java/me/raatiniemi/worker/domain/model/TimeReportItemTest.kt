@@ -37,7 +37,7 @@ class TimeReportItemTest {
 
     @Test
     fun `time report item with active time interval`() {
-        val expected = TimeReportItem.Default(
+        val expected = TimeReportItem.Active(
             TimeInterval.Active(
                 id = TimeIntervalId(1),
                 projectId = android.id,

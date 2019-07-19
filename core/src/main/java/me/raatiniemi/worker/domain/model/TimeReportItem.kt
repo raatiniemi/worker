@@ -35,19 +35,15 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
         return comparator.compare(this, other)
     }
 
-    data class Default internal constructor(
-        private val timeInterval: TimeInterval
+    data class Active internal constructor(
+        private val timeInterval: TimeInterval.Active
     ) : TimeReportItem() {
         override val hoursMinutes: HoursMinutes
             get() = CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
 
         override val title: String
             get() {
-                val values = when (timeInterval) {
-                    is TimeInterval.Active -> listOf(timeInterval.start)
-                    is TimeInterval.Inactive -> listOf(timeInterval.start, timeInterval.stop)
-                    is TimeInterval.Registered -> listOf(timeInterval.start, timeInterval.stop)
-                }
+                val values = listOf(timeInterval.start)
 
                 return values.map(::buildDateFromMilliseconds)
                     .joinToString(separator = TIME_SEPARATOR) {
@@ -55,7 +51,7 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
                     }
             }
 
-        override val isRegistered = timeInterval is TimeInterval.Registered
+        override val isRegistered = false
 
         override fun asTimeInterval() = timeInterval
 
@@ -123,9 +119,9 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
 
         @JvmStatic
         fun with(time: TimeInterval): TimeReportItem = when (time) {
+            is TimeInterval.Active -> Active(time)
             is TimeInterval.Inactive -> Inactive(time)
             is TimeInterval.Registered -> Registered(time)
-            else -> Default(time)
         }
     }
 }
