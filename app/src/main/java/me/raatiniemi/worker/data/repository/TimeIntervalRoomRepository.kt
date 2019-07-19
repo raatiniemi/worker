@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.repository
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.toEntity
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.repository.InvalidActiveTimeIntervalException
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
@@ -43,10 +44,15 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         }
     }
 
-    override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
+    override fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
         val id = timeIntervals.add(newTimeInterval.toEntity())
 
-        return findById(TimeIntervalId(id)) ?: throw UnableToFindNewTimeIntervalException()
+        val timeInterval = findById(TimeIntervalId(id))
+        if (timeInterval is TimeInterval.Active) {
+            return timeInterval
+        }
+
+        throw UnableToFindNewTimeIntervalException()
     }
 
     override fun update(timeInterval: TimeInterval): TimeInterval? {
