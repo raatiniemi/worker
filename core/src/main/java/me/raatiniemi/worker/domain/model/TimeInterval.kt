@@ -26,14 +26,12 @@ sealed class TimeInterval {
     abstract val projectId: ProjectId
     abstract val start: Milliseconds
 
-    abstract fun clockOut(stop: Milliseconds): TimeInterval
-
     data class Active internal constructor(
         override val id: TimeIntervalId,
         override val projectId: ProjectId,
         override val start: Milliseconds
     ) : TimeInterval() {
-        override fun clockOut(stop: Milliseconds): TimeInterval = Inactive(
+        fun clockOut(stop: Milliseconds): TimeInterval = Inactive(
             id = id,
             projectId = projectId,
             start = start,
@@ -52,10 +50,6 @@ sealed class TimeInterval {
                 throw ClockOutBeforeClockInException()
             }
         }
-
-        override fun clockOut(stop: Milliseconds): TimeInterval {
-            throw UnsupportedOperationException()
-        }
     }
 
     data class Registered internal constructor(
@@ -68,10 +62,6 @@ sealed class TimeInterval {
             if (stop < start) {
                 throw ClockOutBeforeClockInException()
             }
-        }
-
-        override fun clockOut(stop: Milliseconds): TimeInterval {
-            throw UnsupportedOperationException()
         }
     }
 

@@ -100,10 +100,11 @@ class TimeIntervalsTest {
 
     @Test(expected = ClockOutBeforeClockInException::class)
     fun `clock out with stop before start`() {
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(10)
-        }
+        val timeInterval = TimeInterval.Active(
+            id = TimeIntervalId(1),
+            projectId = android.id,
+            start = Milliseconds(10)
+        )
 
         timeInterval.clockOut(stop = Milliseconds(1))
     }
@@ -116,36 +117,14 @@ class TimeIntervalsTest {
             start = Milliseconds(1),
             stop = Milliseconds(10)
         )
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-        }
+        val timeInterval = TimeInterval.Active(
+            id = TimeIntervalId(1),
+            projectId = android.id,
+            start = Milliseconds(1)
+        )
 
         val actual = timeInterval.clockOut(stop = Milliseconds(10))
 
         assertEquals(expected, actual)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun `clock out with inactive`() {
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-        }
-
-        timeInterval.clockOut(stop = Milliseconds(10))
-            .clockOut(stop = Milliseconds(20))
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun `clock out with registered`() {
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(10)
-            builder.isRegistered = true
-        }
-
-        timeInterval.clockOut(stop = Milliseconds(20))
     }
 }
