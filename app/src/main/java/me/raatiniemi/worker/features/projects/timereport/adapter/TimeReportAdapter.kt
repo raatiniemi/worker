@@ -101,7 +101,7 @@ internal class TimeReportAdapter(
         val vh = ItemViewHolder(view)
         with(vh) {
             timeInterval.text = item.title
-            timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
+            timeSummary.text = formatter.apply(item.hoursMinutes)
 
             itemView.apply(stateManager.state(item))
 

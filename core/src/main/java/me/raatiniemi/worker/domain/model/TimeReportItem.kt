@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
-import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,8 +26,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
     abstract val title: String
 
     abstract fun asTimeInterval(): TimeInterval
-
-    abstract fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String
 
     override fun compareTo(other: TimeReportItem): Int {
         return comparator.compare(this, other)
@@ -52,9 +49,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
 
         override fun asTimeInterval() = timeInterval
 
-        override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
-            return formatter.apply(hoursMinutes)
-        }
     }
 
     data class Inactive internal constructor(
@@ -74,9 +68,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
 
         override fun asTimeInterval() = timeInterval
 
-        override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
-            return formatter.apply(hoursMinutes)
-        }
     }
 
     data class Registered internal constructor(
@@ -96,9 +87,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
 
         override fun asTimeInterval() = timeInterval
 
-        override fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
-            return formatter.apply(hoursMinutes)
-        }
     }
 
     companion object {
