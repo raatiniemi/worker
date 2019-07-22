@@ -19,42 +19,8 @@ package me.raatiniemi.worker.domain.model
 import java.util.*
 
 class TimeReportItemComparator : Comparator<TimeReportItem> {
-    private fun compare(lhs: TimeInterval, rhs: TimeInterval): Int {
-        if (isActive(lhs) && !isActive(rhs)) {
-            return -1
-        }
-
-        if (!isActive(lhs) && isActive(rhs)) {
-            return 1
-        }
-
-        if (lhs.start > rhs.start) {
-            return -1
-        }
-
-        if (lhs.start < rhs.start) {
-            return 1
-        }
-
-        val lhsStop = when (lhs) {
-            is TimeInterval.Inactive -> lhs.stop
-            is TimeInterval.Registered -> lhs.stop
-            else -> Milliseconds.empty
-        }
-        val rhsStop = when (rhs) {
-            is TimeInterval.Inactive -> rhs.stop
-            is TimeInterval.Registered -> rhs.stop
-            else -> Milliseconds.empty
-        }
-
-        return when {
-            lhsStop > rhsStop -> -1
-            lhsStop < rhsStop -> 1
-            else -> 0
-        }
-    }
-
     override fun compare(o1: TimeReportItem, o2: TimeReportItem): Int {
-        return compare(o1.asTimeInterval(), o2.asTimeInterval())
+        val comparator = TimeReportTimeIntervalComparator()
+        return comparator.compare(o1.asTimeInterval(), o2.asTimeInterval())
     }
 }
