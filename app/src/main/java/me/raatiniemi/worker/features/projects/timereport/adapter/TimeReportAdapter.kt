@@ -24,7 +24,9 @@ import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import me.raatiniemi.worker.features.projects.timereport.model.*
 import me.raatiniemi.worker.features.projects.timereport.view.DayViewHolder
 import me.raatiniemi.worker.features.projects.timereport.view.ItemViewHolder
@@ -100,8 +102,9 @@ internal class TimeReportAdapter(
     private fun bindTimeReportItemViewHolder(view: View, item: TimeReportItem) {
         val vh = ItemViewHolder(view)
         with(vh) {
+            val hoursMinutes = calculateHoursMinutes(calculateInterval(item.asTimeInterval()))
             timeInterval.text = item.title
-            timeSummary.text = formatter.apply(item.hoursMinutes)
+            timeSummary.text = formatter.apply(hoursMinutes)
 
             itemView.apply(stateManager.state(item))
 

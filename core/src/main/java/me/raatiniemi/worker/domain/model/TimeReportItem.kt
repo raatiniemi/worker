@@ -17,12 +17,10 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
-import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.text.SimpleDateFormat
 import java.util.*
 
 sealed class TimeReportItem : Comparable<TimeReportItem> {
-    abstract val hoursMinutes: HoursMinutes
     abstract val title: String
 
     abstract fun asTimeInterval(): TimeInterval
@@ -34,9 +32,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
     data class Active internal constructor(
         private val timeInterval: TimeInterval.Active
     ) : TimeReportItem() {
-        override val hoursMinutes: HoursMinutes
-            get() = calculateHoursMinutes(calculateInterval(timeInterval))
-
         override val title: String
             get() {
                 val values = listOf(timeInterval.start)
@@ -54,9 +49,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
     data class Inactive internal constructor(
         private val timeInterval: TimeInterval.Inactive
     ) : TimeReportItem() {
-        override val hoursMinutes: HoursMinutes
-            get() = calculateHoursMinutes(calculateInterval(timeInterval))
-
         override val title: String
             get() {
                 val values = listOf(timeInterval.start, timeInterval.stop)
@@ -73,9 +65,6 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
     data class Registered internal constructor(
         private val timeInterval: TimeInterval.Registered
     ) : TimeReportItem() {
-        override val hoursMinutes: HoursMinutes
-            get() = calculateHoursMinutes(calculateInterval(timeInterval))
-
         override val title: String
             get() {
                 val values = listOf(timeInterval.start, timeInterval.stop)
