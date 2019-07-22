@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
-
 sealed class TimeReportItem : Comparable<TimeReportItem> {
     abstract fun asTimeInterval(): TimeInterval
 
