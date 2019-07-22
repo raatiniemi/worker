@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import me.raatiniemi.worker.features.projects.timereport.model.*
 import me.raatiniemi.worker.features.projects.timereport.view.DayViewHolder
 import me.raatiniemi.worker.features.projects.timereport.view.ItemViewHolder
+import me.raatiniemi.worker.features.projects.timereport.view.title
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.visibleIf
@@ -103,7 +104,7 @@ internal class TimeReportAdapter(
         val vh = ItemViewHolder(view)
         with(vh) {
             val hoursMinutes = calculateHoursMinutes(calculateInterval(item.asTimeInterval()))
-            timeInterval.text = item.title
+            timeInterval.text = title(item.asTimeInterval())
             timeSummary.text = formatter.apply(hoursMinutes)
 
             itemView.apply(stateManager.state(item))

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.features.projects.timereport.view
 
+import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,22 +25,21 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimeReportItemGetTitleTest(
+class TimeIntervalTitleTest(
     private val message: String,
     private val expected: String,
     private val timeInterval: TimeInterval
 ) {
     @Test
     fun getTitle() {
-        val item = TimeReportItem.with(timeInterval)
-
-        assertEquals(message, expected, item.title)
+        assertEquals(message, expected, title(timeInterval))
     }
 
     companion object {
         private val START = GregorianCalendar(2016, 1, 28, 8, 0)
         private val STOP = GregorianCalendar(2016, 1, 28, 11, 30)
 
+        @Suppress("unused")
         @JvmStatic
         val parameters: Collection<Array<Any>>
             @Parameters
@@ -59,6 +59,16 @@ class TimeReportItemGetTitleTest(
                         builder.id = TimeIntervalId(2)
                         builder.start = Milliseconds(START.timeInMillis)
                         builder.stop = Milliseconds(STOP.timeInMillis)
+                    }
+                ),
+                arrayOf(
+                    "registered time interval",
+                    "08:00 - 11:30",
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(3)
+                        builder.start = Milliseconds(START.timeInMillis)
+                        builder.stop = Milliseconds(STOP.timeInMillis)
+                        builder.isRegistered = true
                     }
                 )
             )

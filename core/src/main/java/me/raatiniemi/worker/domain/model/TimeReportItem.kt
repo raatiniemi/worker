@@ -17,12 +17,8 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
-import java.text.SimpleDateFormat
-import java.util.*
 
 sealed class TimeReportItem : Comparable<TimeReportItem> {
-    abstract val title: String
-
     abstract fun asTimeInterval(): TimeInterval
 
     override fun compareTo(other: TimeReportItem): Int {
@@ -32,60 +28,23 @@ sealed class TimeReportItem : Comparable<TimeReportItem> {
     data class Active internal constructor(
         private val timeInterval: TimeInterval.Active
     ) : TimeReportItem() {
-        override val title: String
-            get() {
-                val values = listOf(timeInterval.start)
-
-                return values.map(::buildDateFromMilliseconds)
-                    .joinToString(separator = TIME_SEPARATOR) {
-                        timeFormat.format(it)
-                    }
-            }
-
         override fun asTimeInterval() = timeInterval
-
     }
 
     data class Inactive internal constructor(
         private val timeInterval: TimeInterval.Inactive
     ) : TimeReportItem() {
-        override val title: String
-            get() {
-                val values = listOf(timeInterval.start, timeInterval.stop)
-                return values.map(::buildDateFromMilliseconds)
-                    .joinToString(separator = TIME_SEPARATOR) {
-                        timeFormat.format(it)
-                    }
-            }
-
         override fun asTimeInterval() = timeInterval
-
     }
 
     data class Registered internal constructor(
         private val timeInterval: TimeInterval.Registered
     ) : TimeReportItem() {
-        override val title: String
-            get() {
-                val values = listOf(timeInterval.start, timeInterval.stop)
-                return values.map(::buildDateFromMilliseconds)
-                    .joinToString(separator = TIME_SEPARATOR) {
-                        timeFormat.format(it)
-                    }
-            }
-
         override fun asTimeInterval() = timeInterval
-
     }
 
     companion object {
-        private const val TIME_SEPARATOR = " - "
         private val comparator = TimeReportItemComparator()
-        private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-
-        private fun buildDateFromMilliseconds(milliseconds: Milliseconds): Date {
-            return Date(milliseconds.value)
-        }
 
         @JvmStatic
         fun with(time: TimeInterval): TimeReportItem = when (time) {
