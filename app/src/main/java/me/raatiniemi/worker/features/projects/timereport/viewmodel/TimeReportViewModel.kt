@@ -29,8 +29,8 @@ import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.interactor.UnableToMarkActiveTimeIntervalAsRegisteredException
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.isActive
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
@@ -60,7 +60,7 @@ internal class TimeReportViewModel internal constructor(
         repository
     )
 
-    private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
+    private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<Int>()
 
     var shouldHideRegisteredTime: Boolean
@@ -103,7 +103,7 @@ internal class TimeReportViewModel internal constructor(
     suspend fun toggleRegisteredStateForSelectedItems() = withContext(Dispatchers.IO) {
         try {
             val selectedItems = _selectedItems.value ?: return@withContext
-            val timeIntervals = selectedItems.map { it.asTimeInterval() }
+            val timeIntervals = selectedItems.toList()
 
             markRegisteredTime(timeIntervals)
 
@@ -121,7 +121,7 @@ internal class TimeReportViewModel internal constructor(
     suspend fun removeSelectedItems() = withContext(Dispatchers.IO) {
         try {
             val selectedItems = _selectedItems.value ?: return@withContext
-            val timeIntervals = selectedItems.map { it.asTimeInterval() }
+            val timeIntervals = selectedItems.toList()
 
             removeTime(timeIntervals)
 
@@ -149,7 +149,7 @@ internal class TimeReportViewModel internal constructor(
     @MainThread
     override fun state(day: TimeReportDay): TimeReportState {
         val selectedItems = _selectedItems.value
-        if (isSelected(selectedItems, day.items)) {
+        if (isSelected(selectedItems, day.items.map { it.asTimeInterval() })) {
             return TimeReportState.SELECTED
         }
 
@@ -160,24 +160,24 @@ internal class TimeReportViewModel internal constructor(
         return TimeReportState.EMPTY
     }
 
-    private fun isSelected(selectedItems: HashSet<TimeReportItem>?, items: List<TimeReportItem>) =
+    private fun isSelected(selectedItems: HashSet<TimeInterval>?, items: List<TimeInterval>) =
         selectedItems?.run { containsAll(items) } ?: false
 
     @MainThread
-    override fun state(item: TimeReportItem): TimeReportState {
+    override fun state(timeInterval: TimeInterval): TimeReportState {
         val selectedItems = _selectedItems.value
-        if (isSelected(selectedItems, item)) {
+        if (isSelected(selectedItems, timeInterval)) {
             return TimeReportState.SELECTED
         }
 
-        if (item is TimeReportItem.Registered) {
+        if (timeInterval is TimeInterval.Registered) {
             return TimeReportState.REGISTERED
         }
 
         return TimeReportState.EMPTY
     }
 
-    private fun isSelected(selectedItems: HashSet<TimeReportItem>?, item: TimeReportItem) =
+    private fun isSelected(selectedItems: HashSet<TimeInterval>?, item: TimeInterval) =
         selectedItems?.run { contains(item) } ?: false
 
     @MainThread
@@ -197,7 +197,7 @@ internal class TimeReportViewModel internal constructor(
         return true
     }
 
-    private fun isSelectionActivated(items: Set<TimeReportItem>?): Boolean {
+    private fun isSelectionActivated(items: Set<TimeInterval>?): Boolean {
         return !items.isNullOrEmpty()
     }
 

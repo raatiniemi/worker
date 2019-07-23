@@ -107,13 +107,13 @@ internal class TimeReportAdapter(
             timeInterval.text = title(item.asTimeInterval())
             timeSummary.text = formatter.apply(hoursMinutes)
 
-            itemView.apply(stateManager.state(item))
+            itemView.apply(stateManager.state(item.asTimeInterval()))
 
             itemView.setOnLongClickListener {
-                stateManager.consume(TimeReportLongPressAction.LongPressItem(item))
+                stateManager.consume(TimeReportLongPressAction.LongPressItem(item.asTimeInterval()))
             }
             itemView.setOnClickListener {
-                stateManager.consume(TimeReportTapAction.TapItem(item))
+                stateManager.consume(TimeReportTapAction.TapItem(item.asTimeInterval()))
             }
         }
     }

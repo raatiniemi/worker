@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
@@ -31,7 +31,7 @@ interface TimeReportStateManager {
 
     fun state(day: TimeReportDay): TimeReportState
 
-    fun state(item: TimeReportItem): TimeReportState
+    fun state(timeInterval: TimeInterval): TimeReportState
 
     fun consume(longPress: TimeReportLongPressAction): Boolean
 

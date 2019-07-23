@@ -18,8 +18,8 @@ package me.raatiniemi.worker.features.projects.timereport.model
 
 import androidx.annotation.MainThread
 import androidx.recyclerview.widget.RecyclerView
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
 class TimeReportStateManagerAdapterDecorator(
@@ -41,7 +41,8 @@ class TimeReportStateManagerAdapterDecorator(
     override fun state(day: TimeReportDay) = stateManager.state(day)
 
     @MainThread
-    override fun state(item: TimeReportItem) = stateManager.state(item)
+    override fun state(timeInterval: TimeInterval): TimeReportState =
+        stateManager.state(timeInterval)
 
     @MainThread
     override fun consume(longPress: TimeReportLongPressAction): Boolean {
