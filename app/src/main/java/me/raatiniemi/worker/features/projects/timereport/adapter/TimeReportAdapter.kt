@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
@@ -119,6 +120,15 @@ internal class TimeReportAdapter(
                     stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
                 }
             }
+    }
+
+    companion object {
+        private val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportDay>() {
+            override fun areItemsTheSame(old: TimeReportDay, new: TimeReportDay) =
+                old.date == new.date
+
+            override fun areContentsTheSame(old: TimeReportDay, new: TimeReportDay) = old == new
+        }
     }
 }
 
