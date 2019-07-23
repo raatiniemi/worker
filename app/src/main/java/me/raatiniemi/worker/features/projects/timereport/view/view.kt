@@ -22,12 +22,12 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val separator = " - "
+private const val SEPARATOR = " - "
 private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
 
 internal fun title(timeInterval: TimeInterval, dateFormat: DateFormat = timeFormat): String {
     val format = format(dateFormat)
-    val join = join(separator)
+    val join = join(SEPARATOR)
 
     return when (timeInterval) {
         is TimeInterval.Active -> format(timeInterval.start)
