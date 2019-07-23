@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 
 sealed class TimeReportLongPressAction : TimeReportSelectAction {
     data class LongPressDay(val day: TimeReportDay) : TimeReportLongPressAction() {
-        override val items = day.items.map { it.asTimeInterval() }
+        override val items = day.timeIntervals
     }
 
     data class LongPressItem(val timeInterval: TimeInterval) : TimeReportLongPressAction() {

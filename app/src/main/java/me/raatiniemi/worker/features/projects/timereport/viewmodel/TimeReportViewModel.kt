@@ -149,7 +149,7 @@ internal class TimeReportViewModel internal constructor(
     @MainThread
     override fun state(day: TimeReportDay): TimeReportState {
         val selectedItems = _selectedItems.value
-        if (isSelected(selectedItems, day.items.map { it.asTimeInterval() })) {
+        if (isSelected(selectedItems, day.timeIntervals)) {
             return TimeReportState.SELECTED
         }
 
@@ -230,5 +230,5 @@ internal class TimeReportViewModel internal constructor(
             viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
         }
 
-    private fun isActive(day: TimeReportDay) = day.items.any { isActive(it.asTimeInterval()) }
+    private fun isActive(day: TimeReportDay) = day.timeIntervals.any { isActive(it) }
 }

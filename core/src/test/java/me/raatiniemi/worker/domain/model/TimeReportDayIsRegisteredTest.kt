@@ -26,31 +26,27 @@ import java.util.*
 @RunWith(Parameterized::class)
 class TimeReportDayIsRegisteredTest(
     private val expected: Boolean,
-    private val items: List<TimeReportItem>
+    private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun isRegistered() {
-        val day = TimeReportDay(Date(), items)
+        val day = TimeReportDay(Date(), timeIntervals)
 
         assertEquals(expected, day.isRegistered)
     }
 
     companion object {
-        private val NOT_REGISTERED_TIME = TimeReportItem.with(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(1)
-                builder.isRegistered = false
-            }
-        )
-        private val REGISTERED_TIME = TimeReportItem.with(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(2)
-                builder.start = Milliseconds(1)
-                builder.stop = Milliseconds(10)
-                builder.isRegistered = true
-            }
-        )
+        private val NOT_REGISTERED_TIME = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.isRegistered = false
+        }
+        private val REGISTERED_TIME = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(2)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(10)
+            builder.isRegistered = true
+        }
 
         @Suppress("unused")
         @JvmStatic

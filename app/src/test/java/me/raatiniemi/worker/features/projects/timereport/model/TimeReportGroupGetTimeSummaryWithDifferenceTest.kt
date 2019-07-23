@@ -34,10 +34,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
-        val day = TimeReportDay(
-            Date(),
-            timeIntervals.map { TimeReportItem.with(it) }
-        )
+        val day = TimeReportDay(Date(), timeIntervals)
 
         assertEquals(expected, day.getTimeSummaryWithDifference(formatter))
     }

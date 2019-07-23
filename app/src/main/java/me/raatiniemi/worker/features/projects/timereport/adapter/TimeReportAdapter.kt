@@ -22,8 +22,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
@@ -66,7 +66,7 @@ internal class TimeReportAdapter(
 
             header.apply(stateManager.state(day))
 
-            buildTimeReportItemList(items, day.items)
+            buildTimeReportItemList(items, day.timeIntervals)
             items.visibleIf(View.GONE) { stateManager.expanded(position) }
 
             letter.setOnLongClickListener {
@@ -87,35 +87,38 @@ internal class TimeReportAdapter(
         }
     }
 
-    private fun buildTimeReportItemList(parent: LinearLayoutCompat, items: List<TimeReportItem>) {
+    private fun buildTimeReportItemList(
+        parent: LinearLayoutCompat,
+        timeIntervals: List<TimeInterval>
+    ) {
         val layoutInflater = LayoutInflater.from(parent.context)
 
         parent.removeAllViews()
-        items.forEach { item ->
+        timeIntervals.forEach { timeInterval ->
             val view =
                 layoutInflater.inflate(R.layout.fragment_project_time_report_item, parent, false)
-            bindTimeReportItemViewHolder(view, item)
+            bindTimeReportItemViewHolder(view, timeInterval)
 
             parent.addView(view)
         }
     }
 
-    private fun bindTimeReportItemViewHolder(view: View, item: TimeReportItem) {
-        val vh = ItemViewHolder(view)
-        with(vh) {
-            val hoursMinutes = calculateHoursMinutes(calculateInterval(item.asTimeInterval()))
-            timeInterval.text = title(item.asTimeInterval())
-            timeSummary.text = formatter.apply(hoursMinutes)
+    private fun bindTimeReportItemViewHolder(view: View, timeInterval: TimeInterval) {
+        ItemViewHolder(view)
+            .also {
+                val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
+                it.timeInterval.text = title(timeInterval)
+                it.timeSummary.text = formatter.apply(hoursMinutes)
 
-            itemView.apply(stateManager.state(item.asTimeInterval()))
+                it.itemView.apply(stateManager.state(timeInterval))
 
-            itemView.setOnLongClickListener {
-                stateManager.consume(TimeReportLongPressAction.LongPressItem(item.asTimeInterval()))
+                it.itemView.setOnLongClickListener {
+                    stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+                }
+                it.itemView.setOnClickListener {
+                    stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+                }
             }
-            itemView.setOnClickListener {
-                stateManager.consume(TimeReportTapAction.TapItem(item.asTimeInterval()))
-            }
-        }
     }
 }
 

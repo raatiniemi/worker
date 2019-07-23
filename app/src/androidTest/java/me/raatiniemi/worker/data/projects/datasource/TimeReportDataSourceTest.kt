@@ -89,7 +89,7 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(timeInterval.start),
-                listOf(TimeReportItem.with(timeInterval))
+                listOf(timeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -119,11 +119,11 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
-                listOf(TimeReportItem.with(secondTimeInterval))
+                listOf(secondTimeInterval)
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
-                listOf(TimeReportItem.with(firstTimeInterval))
+                listOf(firstTimeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -153,11 +153,11 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
-                listOf(TimeReportItem.with(secondTimeInterval))
+                listOf(secondTimeInterval)
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
-                listOf(TimeReportItem.with(firstTimeInterval))
+                listOf(firstTimeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -190,11 +190,11 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
-                listOf(TimeReportItem.with(secondTimeInterval))
+                listOf(secondTimeInterval)
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
-                listOf(TimeReportItem.with(firstTimeInterval))
+                listOf(firstTimeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -238,7 +238,7 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(timeInterval.start),
-                listOf(TimeReportItem.with(timeInterval))
+                listOf(timeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Range(data)
@@ -264,11 +264,11 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
-                listOf(TimeReportItem.with(secondTimeInterval))
+                listOf(secondTimeInterval)
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
-                listOf(TimeReportItem.with(firstTimeInterval))
+                listOf(firstTimeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Range(data)
@@ -294,11 +294,11 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
-                listOf(TimeReportItem.with(secondTimeInterval))
+                listOf(secondTimeInterval)
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
-                listOf(TimeReportItem.with(firstTimeInterval))
+                listOf(firstTimeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Range(data.drop(1))
@@ -327,11 +327,11 @@ class TimeReportDataSourceTest {
         val data = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
-                listOf(TimeReportItem.with(secondTimeInterval))
+                listOf(secondTimeInterval)
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
-                listOf(TimeReportItem.with(firstTimeInterval))
+                listOf(firstTimeInterval)
             )
         )
         val expected = PositionalDataSourceResult.Range(data.take(1))
