@@ -149,15 +149,11 @@ internal class TimeReportViewModel internal constructor(
     @MainThread
     override fun state(day: TimeReportDay): TimeReportState {
         val selectedItems = _selectedItems.value
-        if (isSelected(selectedItems, day.timeIntervals)) {
-            return TimeReportState.SELECTED
+        return when {
+            isSelected(selectedItems, day.timeIntervals) -> TimeReportState.SELECTED
+            day.isRegistered -> TimeReportState.REGISTERED
+            else -> TimeReportState.EMPTY
         }
-
-        if (day.isRegistered) {
-            return TimeReportState.REGISTERED
-        }
-
-        return TimeReportState.EMPTY
     }
 
     private fun isSelected(selectedItems: HashSet<TimeInterval>?, items: List<TimeInterval>) =
@@ -166,15 +162,11 @@ internal class TimeReportViewModel internal constructor(
     @MainThread
     override fun state(timeInterval: TimeInterval): TimeReportState {
         val selectedItems = _selectedItems.value
-        if (isSelected(selectedItems, timeInterval)) {
-            return TimeReportState.SELECTED
+        return when {
+            isSelected(selectedItems, timeInterval) -> TimeReportState.SELECTED
+            timeInterval is TimeInterval.Registered -> TimeReportState.REGISTERED
+            else -> TimeReportState.EMPTY
         }
-
-        if (timeInterval is TimeInterval.Registered) {
-            return TimeReportState.REGISTERED
-        }
-
-        return TimeReportState.EMPTY
     }
 
     private fun isSelected(selectedItems: HashSet<TimeInterval>?, item: TimeInterval) =
