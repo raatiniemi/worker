@@ -21,6 +21,10 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.util.*
 
+private const val FORMAT_FOR_EMPTY = ""
+private const val FORMAT_FOR_POSITIVE = " (+%s)"
+private const val FORMAT_FOR_NEGATIVE = " (%s)"
+
 internal fun getTimeSummaryWithDifference(
     day: TimeReportDay,
     formatter: HoursMinutesFormat
@@ -43,14 +47,8 @@ private fun formatTimeDifference(format: String, difference: String): String {
     return String.format(Locale.getDefault(), format, difference)
 }
 
-private fun getTimeDifferenceFormat(difference: HoursMinutes): String {
-    if (difference.empty) {
-        return ""
-    }
-
-    if (difference.positive) {
-        return " (+%s)"
-    }
-
-    return " (%s)"
+private fun getTimeDifferenceFormat(difference: HoursMinutes) = when {
+    difference.empty -> FORMAT_FOR_EMPTY
+    difference.positive -> FORMAT_FOR_POSITIVE
+    else -> FORMAT_FOR_NEGATIVE
 }
