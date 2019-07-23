@@ -27,16 +27,16 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimeReportGroupGetTimeSummaryWithDifferenceTest(
+class ViewTimeSummaryWithDifferenceTest(
     private val expected: String,
     private val formatter: HoursMinutesFormat,
     private val timeIntervals: List<TimeInterval>
 ) {
     @Test
-    fun getTimeSummaryWithDifference() {
+    fun timeSummaryWithDifference() {
         val day = TimeReportDay(Date(), timeIntervals)
 
-        assertEquals(expected, getTimeSummaryWithDifference(day, formatter))
+        assertEquals(expected, timeSummaryWithDifference(day, formatter))
     }
 
     companion object {

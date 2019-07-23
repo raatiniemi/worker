@@ -25,7 +25,7 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimeIntervalTitleTest(
+class ViewTitleTest(
     private val message: String,
     private val expected: String,
     private val timeInterval: TimeInterval

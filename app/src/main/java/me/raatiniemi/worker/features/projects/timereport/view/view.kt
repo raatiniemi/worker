@@ -16,14 +16,48 @@
 
 package me.raatiniemi.worker.features.projects.timereport.view
 
+import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val FORMAT_TIME_SUMMARY = "%s%s"
+private const val FORMAT_FOR_EMPTY = ""
+private const val FORMAT_FOR_POSITIVE = " (+%s)"
+private const val FORMAT_FOR_NEGATIVE = " (%s)"
 private const val SEPARATOR = " - "
+
 private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
+
+internal fun timeSummaryWithDifference(
+    day: TimeReportDay,
+    formatter: HoursMinutesFormat
+): String {
+    val calculatedDifference = day.timeDifference
+    return String.format(
+        Locale.getDefault(),
+        FORMAT_TIME_SUMMARY,
+        formatter.apply(day.timeSummary),
+        formatTimeDifference(
+            timeDifferenceFormat(calculatedDifference),
+            formatter.apply(calculatedDifference)
+        )
+    )
+}
+
+private fun formatTimeDifference(format: String, difference: String): String {
+    return String.format(Locale.getDefault(), format, difference)
+}
+
+private fun timeDifferenceFormat(difference: HoursMinutes) = when {
+    difference.empty -> FORMAT_FOR_EMPTY
+    difference.positive -> FORMAT_FOR_POSITIVE
+    else -> FORMAT_FOR_NEGATIVE
+}
 
 internal fun title(timeInterval: TimeInterval, dateFormat: DateFormat = timeFormat): String {
     val format = format(dateFormat)
