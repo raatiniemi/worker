@@ -21,9 +21,12 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.util.*
 
-internal fun TimeReportDay.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
-    val timeSummary = formatter.apply(timeSummary)
-    val calculatedDifference = timeDifference
+internal fun getTimeSummaryWithDifference(
+    day: TimeReportDay,
+    formatter: HoursMinutesFormat
+): String {
+    val timeSummary = formatter.apply(day.timeSummary)
+    val calculatedDifference = day.timeDifference
 
     return String.format(
         Locale.getDefault(),
