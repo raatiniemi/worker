@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.timereport.adapter
+package me.raatiniemi.worker.features.projects.timereport.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -29,9 +29,6 @@ import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import me.raatiniemi.worker.features.projects.timereport.model.*
-import me.raatiniemi.worker.features.projects.timereport.view.DayViewHolder
-import me.raatiniemi.worker.features.projects.timereport.view.ItemViewHolder
-import me.raatiniemi.worker.features.projects.timereport.view.title
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.visibleIf
