@@ -16,11 +16,13 @@
 
 package me.raatiniemi.worker.features.projects.timereport.view
 
+import android.view.View
 import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,4 +90,19 @@ private fun convertToDate(milliseconds: Milliseconds) = Date(milliseconds.value)
 
 private fun join(separator: String): (Pair<String, String>) -> String = {
     "${it.first}$separator${it.second}"
+}
+
+internal fun View.apply(state: TimeReportState) = when (state) {
+    TimeReportState.SELECTED -> {
+        isSelected = true
+        isActivated = false
+    }
+    TimeReportState.REGISTERED -> {
+        isSelected = false
+        isActivated = true
+    }
+    TimeReportState.EMPTY -> {
+        isSelected = false
+        isActivated = false
+    }
 }

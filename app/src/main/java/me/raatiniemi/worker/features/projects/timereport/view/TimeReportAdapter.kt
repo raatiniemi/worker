@@ -128,18 +128,3 @@ internal class TimeReportAdapter(
         }
     }
 }
-
-private fun View.apply(state: TimeReportState) = when (state) {
-    TimeReportState.SELECTED -> {
-        isSelected = true
-        isActivated = false
-    }
-    TimeReportState.REGISTERED -> {
-        isSelected = false
-        isActivated = true
-    }
-    TimeReportState.EMPTY -> {
-        isSelected = false
-        isActivated = false
-    }
-}
