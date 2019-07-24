@@ -33,7 +33,7 @@ import me.raatiniemi.worker.features.projects.timereport.model.TimeReportStateMa
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 import me.raatiniemi.worker.features.shared.view.visibleIf
-import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
+import me.raatiniemi.worker.features.shared.view.widget.letterDrawable
 
 internal class TimeReportAdapter(
     private val formatter: HoursMinutesFormat,
@@ -60,8 +60,8 @@ internal class TimeReportAdapter(
             title.text = title(day)
             timeSummary.text = timeSummaryWithDifference(day, formatter)
 
-            val firstLetterInTitle = title.text.run { first().toString() }
-            letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
+            val firstLetterInTitle = title.text.run { first() }
+            letter.setImageDrawable(letterDrawable(firstLetterInTitle))
 
             header.apply(stateManager.state(day))
 
