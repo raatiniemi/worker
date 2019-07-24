@@ -23,6 +23,7 @@ import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
+import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +35,8 @@ private const val FORMAT_FOR_NEGATIVE = " (%s)"
 private const val SEPARATOR = " - "
 
 private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
+
+internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(day.date).capitalize()
 
 internal fun timeSummaryWithDifference(
     day: TimeReportDay,

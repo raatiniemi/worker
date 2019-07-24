@@ -28,9 +28,10 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
-import me.raatiniemi.worker.features.projects.timereport.model.*
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportStateManagerAdapterDecorator
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
-import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 
@@ -56,7 +57,7 @@ internal class TimeReportAdapter(
         }
 
         with(vh) {
-            title.text = shortDayMonthDayInMonth(day.date).capitalize()
+            title.text = title(day)
             timeSummary.text = timeSummaryWithDifference(day, formatter)
 
             val firstLetterInTitle = title.text.run { first().toString() }
