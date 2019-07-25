@@ -57,11 +57,11 @@ internal class TimeReportAdapter(
         }
 
         with(vh) {
-            title.text = title(day)
+            title(day).also {
+                title.text = it
+                letter.setImageDrawable(letterDrawable(firstLetter(it)))
+            }
             timeSummary.text = timeSummaryWithDifference(day, formatter)
-
-            val firstLetterInTitle = title.text.run { first() }
-            letter.setImageDrawable(letterDrawable(firstLetterInTitle))
 
             header.apply(stateManager.state(day))
 

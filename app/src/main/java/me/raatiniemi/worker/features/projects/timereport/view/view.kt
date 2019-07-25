@@ -38,6 +38,10 @@ private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"
 
 internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(day.date).capitalize()
 
+internal fun firstLetter(text: CharSequence): Char {
+    return text.first()
+}
+
 internal fun timeSummaryWithDifference(
     day: TimeReportDay,
     formatter: HoursMinutesFormat

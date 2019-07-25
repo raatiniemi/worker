@@ -21,7 +21,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ShapeDrawable
 
-internal class LetterDrawable(private val text: String) : ShapeDrawable() {
+internal class LetterDrawable(private val character: Char) : ShapeDrawable() {
     private val textPaint = Paint()
     private val width
         get() = bounds.width()
@@ -31,6 +31,10 @@ internal class LetterDrawable(private val text: String) : ShapeDrawable() {
 
     private val textSize
         get() = Math.min(width, height).toFloat() / 2
+
+    private val text by lazy {
+        character.toString()
+    }
 
     init {
         textPaint.color = Color.WHITE
@@ -63,7 +67,7 @@ internal class LetterDrawable(private val text: String) : ShapeDrawable() {
 }
 
 internal fun letterDrawable(character: Char): LetterDrawable {
-    return LetterDrawable(character.toString())
+    return LetterDrawable(character)
 }
 
 private typealias Position = Pair<Float, Float>
