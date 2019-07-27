@@ -99,17 +99,17 @@ private fun join(separator: String): (Pair<String, String>) -> String = {
     "${it.first}$separator${it.second}"
 }
 
-internal fun View.apply(state: TimeReportState) = when (state) {
+internal fun apply(state: TimeReportState, view: View) = when (state) {
     TimeReportState.SELECTED -> {
-        isSelected = true
-        isActivated = false
+        view.isSelected = true
+        view.isActivated = false
     }
     TimeReportState.REGISTERED -> {
-        isSelected = false
-        isActivated = true
+        view.isSelected = false
+        view.isActivated = true
     }
     TimeReportState.EMPTY -> {
-        isSelected = false
-        isActivated = false
+        view.isSelected = false
+        view.isActivated = false
     }
 }

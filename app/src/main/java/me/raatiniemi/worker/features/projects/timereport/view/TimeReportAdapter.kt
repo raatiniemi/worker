@@ -63,7 +63,7 @@ internal class TimeReportAdapter(
             }
             timeSummary.text = timeSummaryWithDifference(day, formatter)
 
-            header.apply(stateManager.state(day))
+            apply(stateManager.state(day), header)
 
             buildTimeReportItemList(items, day.timeIntervals)
             items.visibleIf(View.GONE) { stateManager.expanded(position) }
@@ -109,7 +109,7 @@ internal class TimeReportAdapter(
                 it.timeInterval.text = title(timeInterval)
                 it.timeSummary.text = formatter.apply(hoursMinutes)
 
-                it.itemView.apply(stateManager.state(timeInterval))
+                apply(stateManager.state(timeInterval), it.itemView)
 
                 it.itemView.setOnLongClickListener {
                     stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
