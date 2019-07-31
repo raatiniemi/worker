@@ -16,17 +16,18 @@
 
 package me.raatiniemi.worker.domain.model
 
+import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.util.*
 
-data class TimeReportDay(val date: Date, val items: List<TimeReportItem>) {
+data class TimeReportDay(val date: Date, val timeIntervals: List<TimeInterval>) {
     val isRegistered: Boolean
-        get() = items.all { it.isRegistered }
+        get() = timeIntervals.all { it is TimeInterval.Registered }
 
     val timeSummary: HoursMinutes
         get() = accumulatedHoursMinutes()
 
     private fun accumulatedHoursMinutes(): HoursMinutes {
-        return items.map { it.hoursMinutes }
+        return timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
             .accumulated()
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.features.projects.timereport.view
 
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,40 +25,27 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimeReportItemGetTitleTest(
-    private val message: String,
+class ViewTitleTimeReportDayTest(
     private val expected: String,
-    private val timeInterval: TimeInterval
+    private val day: TimeReportDay
 ) {
     @Test
     fun getTitle() {
-        val item = TimeReportItem.with(timeInterval)
-
-        assertEquals(message, expected, item.title)
+        assertEquals(expected, title(day))
     }
 
     companion object {
-        private val START = GregorianCalendar(2016, 1, 28, 8, 0)
-        private val STOP = GregorianCalendar(2016, 1, 28, 11, 30)
+        private val DATE = GregorianCalendar(2016, 1, 28, 8, 0)
+            .run { time }
 
+        @Suppress("unused")
         @JvmStatic
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
                 arrayOf(
-                    "active time interval",
-                    "08:00",
-                    timeInterval(android) {
-                        start = Milliseconds(START.timeInMillis)
-                    }
-                ),
-                arrayOf(
-                    "inactive time interval",
-                    "08:00 - 11:30",
-                    timeInterval(android) {
-                        start = Milliseconds(START.timeInMillis)
-                        stop = Milliseconds(STOP.timeInMillis)
-                    }
+                    "Sun (Feb 28)",
+                    TimeReportDay(DATE, emptyList())
                 )
             )
     }

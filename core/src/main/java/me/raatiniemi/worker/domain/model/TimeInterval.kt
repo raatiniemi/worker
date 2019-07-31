@@ -21,16 +21,54 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 /**
  * Represent a time interval registered to a project.
  */
-data class TimeInterval(
-    val id: TimeIntervalId,
-    val projectId: ProjectId,
-    val start: Milliseconds,
-    val stop: Milliseconds? = null,
-    val isRegistered: Boolean = false
-) {
-    init {
-        if (stop != null && stop < start) {
-            throw ClockOutBeforeClockInException()
+sealed class TimeInterval {
+    abstract val id: TimeIntervalId
+    abstract val projectId: ProjectId
+    abstract val start: Milliseconds
+
+    data class Active internal constructor(
+        override val id: TimeIntervalId,
+        override val projectId: ProjectId,
+        override val start: Milliseconds
+    ) : TimeInterval() {
+        fun clockOut(stop: Milliseconds): TimeInterval = Inactive(
+            id = id,
+            projectId = projectId,
+            start = start,
+            stop = stop
+        )
+    }
+
+    data class Inactive internal constructor(
+        override val id: TimeIntervalId,
+        override val projectId: ProjectId,
+        override val start: Milliseconds,
+        val stop: Milliseconds
+    ) : TimeInterval() {
+        init {
+            if (stop < start) {
+                throw ClockOutBeforeClockInException()
+            }
         }
     }
+
+    data class Registered internal constructor(
+        override val id: TimeIntervalId,
+        override val projectId: ProjectId,
+        override val start: Milliseconds,
+        val stop: Milliseconds
+    ) : TimeInterval() {
+        init {
+            if (stop < start) {
+                throw ClockOutBeforeClockInException()
+            }
+        }
+    }
+
+    data class Builder internal constructor(
+        var id: TimeIntervalId? = null,
+        var start: Milliseconds? = null,
+        var stop: Milliseconds? = null,
+        var isRegistered: Boolean = false
+    )
 }

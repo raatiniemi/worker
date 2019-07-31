@@ -282,7 +282,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
-                timeIntervals.map { TimeReportItem(it) }
+                timeIntervals
             )
         )
         val loadRange = LoadRange(
@@ -312,15 +312,11 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                )
+                listOf(secondTimeInterval.copy(id = 2).toTimeInterval())
             ),
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                )
+                listOf(firstTimeInterval.copy(id = 1).toTimeInterval())
             )
         )
         val loadRange = LoadRange(
@@ -350,9 +346,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                )
+                listOf(firstTimeInterval.copy(id = 1).toTimeInterval())
             )
         )
         val loadRange = LoadRange(
@@ -382,9 +376,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                )
+                listOf(secondTimeInterval.copy(id = 2).toTimeInterval())
             )
         )
         val loadRange = LoadRange(
@@ -454,8 +446,8 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval()),
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    secondTimeInterval.copy(id = 2).toTimeInterval(),
+                    firstTimeInterval.copy(id = 1).toTimeInterval()
                 )
             )
         )
@@ -487,13 +479,13 @@ class TimeReportRoomRepositoryTest {
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                    secondTimeInterval.copy(id = 2).toTimeInterval()
                 )
             ),
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                    firstTimeInterval.copy(id = 1).toTimeInterval()
                 )
             )
         )
@@ -524,9 +516,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(firstTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                )
+                listOf(firstTimeInterval.copy(id = 1).toTimeInterval())
             )
         )
         val loadRange = LoadRange(
@@ -556,9 +546,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                )
+                listOf(secondTimeInterval.copy(id = 2).toTimeInterval())
             )
         )
         val loadRange = LoadRange(
@@ -589,9 +577,7 @@ class TimeReportRoomRepositoryTest {
         val expected = listOf(
             TimeReportDay(
                 Date(secondTimeInterval.startInMilliseconds),
-                listOf(
-                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                )
+                listOf(secondTimeInterval.copy(id = 2).toTimeInterval())
             )
         )
         val loadRange = LoadRange(

@@ -78,8 +78,9 @@ class AllProjectsViewModelTest {
     private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {
         val registeredTime = if (isActive) {
             listOf(
-                timeInterval(android) {
-                    start = Milliseconds(1)
+                timeInterval(android.id) { builder ->
+                    builder.id = TimeIntervalId(1)
+                    builder.start = Milliseconds(1)
                 }
             )
         } else {

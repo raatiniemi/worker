@@ -29,7 +29,6 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.ProjectId
 import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
-import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportViewModel

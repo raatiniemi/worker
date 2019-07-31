@@ -32,19 +32,24 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     override fun findById(id: TimeIntervalId): TimeInterval? =
         timeIntervals.firstOrNull { it.id == id }
 
-    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval? =
-        timeIntervals.firstOrNull { it.projectId == projectId && isActive(it) }
+    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? =
+        timeIntervals.filter { it.projectId == projectId }
+            .filterIsInstance<TimeInterval.Active>()
+            .firstOrNull()
 
-    override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
-        val timeInterval = TimeInterval(
-            id = TimeIntervalId(incrementedId.incrementAndGet()),
-            projectId = newTimeInterval.projectId,
-            start = newTimeInterval.start,
-            stop = newTimeInterval.stop,
-            isRegistered = newTimeInterval.isRegistered
-        )
-        timeIntervals.add(timeInterval)
-        return timeInterval
+    override fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
+        val timeInterval = timeInterval(newTimeInterval.projectId) { builder ->
+            builder.id = TimeIntervalId(incrementedId.incrementAndGet())
+            builder.start = newTimeInterval.start
+        }
+        if (timeInterval is TimeInterval.Active) {
+            timeIntervals.add(timeInterval)
+            return timeInterval
+        }
+
+        // This should never happen due to `timeInterval` always creating an
+        // `TimeInterval.Active` when no `stop` have been supplied.
+        throw InvalidActiveTimeIntervalException()
     }
 
     override fun update(timeInterval: TimeInterval) =

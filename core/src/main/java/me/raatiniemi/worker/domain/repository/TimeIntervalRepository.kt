@@ -45,7 +45,7 @@ interface TimeIntervalRepository {
      * @param projectId Id for project.
      * @return Active time interval for project, or null if project is inactive.
      */
-    fun findActiveByProjectId(projectId: ProjectId): TimeInterval?
+    fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active?
 
     /**
      * Add new time interval to the repository.
@@ -53,7 +53,7 @@ interface TimeIntervalRepository {
      * @param newTimeInterval New time interval to add.
      * @return Added time interval.
      */
-    fun add(newTimeInterval: NewTimeInterval): TimeInterval
+    fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active
 
     /**
      * Update time interval.

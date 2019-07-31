@@ -16,7 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-data class NewTimeInterval(
-    val projectId: ProjectId,
-    val start: Milliseconds
-)
+class MissingStartForTimeIntervalException internal constructor() : IllegalStateException()

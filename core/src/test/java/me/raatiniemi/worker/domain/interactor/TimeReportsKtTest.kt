@@ -112,12 +112,19 @@ class TimeReportsKtTest {
     @Test
     fun `count time reports with registered time interval`() {
         val expected = 1
+        val now = Milliseconds.now
         timeIntervalRepository.add(
             newTimeInterval(android) {
-                start = Milliseconds.now
-                isRegistered = true
+                start = now
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = now + 5.minutes
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -127,13 +134,20 @@ class TimeReportsKtTest {
     @Test
     fun `count time reports with registered time interval when hiding registered time`() {
         val expected = 0
+        val now = Milliseconds.now
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         timeIntervalRepository.add(
             newTimeInterval(android) {
-                start = Milliseconds.now
-                isRegistered = true
+                start = now
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -147,15 +161,27 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -169,15 +195,27 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -195,9 +233,15 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -215,9 +259,15 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -236,9 +286,15 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -257,9 +313,15 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
 
         val actual = countTimeReports(android)
 
@@ -286,9 +348,7 @@ class TimeReportsKtTest {
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(timeInterval.start),
-                listOf(
-                    TimeReportItem(timeInterval)
-                )
+                listOf(timeInterval)
             )
         )
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
@@ -314,8 +374,8 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    secondTimeInterval,
+                    firstTimeInterval
                 )
             )
         )
@@ -342,13 +402,13 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    secondTimeInterval
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    firstTimeInterval
                 )
             )
         )
@@ -364,14 +424,20 @@ class TimeReportsKtTest {
         val timeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(
-                    TimeReportItem(timeInterval)
+                    timeInterval
                 )
             )
         )
@@ -387,21 +453,33 @@ class TimeReportsKtTest {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now + 1.minutes
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now + 5.minutes
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    secondTimeInterval,
+                    firstTimeInterval
                 )
             )
         )
@@ -417,26 +495,38 @@ class TimeReportsKtTest {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now + 5.minutes
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    secondTimeInterval
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    firstTimeInterval
                 )
             )
         )
@@ -457,15 +547,21 @@ class TimeReportsKtTest {
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds(11)
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval),
-                    TimeReportItem(firstTimeInterval)
+                    secondTimeInterval,
+                    firstTimeInterval
                 )
             )
         )
@@ -486,20 +582,26 @@ class TimeReportsKtTest {
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    secondTimeInterval
                 )
             ),
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    firstTimeInterval
                 )
             )
         )
@@ -521,14 +623,20 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    firstTimeInterval
                 )
             )
         )
@@ -550,14 +658,20 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(
             newTimeInterval(android) {
                 start = Milliseconds.now
-                isRegistered = true
             }
-        )
+        ).let {
+            timeInterval(it) { builder ->
+                builder.stop = Milliseconds.now
+                builder.isRegistered = true
+            }
+        }.also {
+            timeIntervalRepository.update(it)
+        }
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    firstTimeInterval
                 )
             )
         )
@@ -584,7 +698,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
-                    TimeReportItem(firstTimeInterval)
+                    firstTimeInterval
                 )
             )
         )
@@ -611,7 +725,7 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
-                    TimeReportItem(secondTimeInterval)
+                    secondTimeInterval
                 )
             )
         )

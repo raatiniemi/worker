@@ -14,13 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.timereport.adapter
+package me.raatiniemi.worker.domain.repository
 
-import androidx.recyclerview.widget.DiffUtil
-import me.raatiniemi.worker.domain.model.TimeReportDay
-
-internal val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportDay>() {
-    override fun areItemsTheSame(old: TimeReportDay, new: TimeReportDay) = old.date == new.date
-
-    override fun areContentsTheSame(old: TimeReportDay, new: TimeReportDay) = old == new
-}
+class InvalidActiveTimeIntervalException : IllegalStateException()

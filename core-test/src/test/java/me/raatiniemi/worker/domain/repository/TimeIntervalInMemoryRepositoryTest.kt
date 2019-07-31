@@ -62,7 +62,6 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(10)
-                stop = Milliseconds(15)
             }
         )
 
@@ -76,14 +75,13 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(10)
-                stop = Milliseconds(15)
             }
         )
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(10)
-                stop = Milliseconds(15)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(10)
+                builder.stop = null
             }
         )
 
@@ -104,13 +102,12 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
-        val expected = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(10)
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = null
         }
 
         val actual = repository.findById(TimeIntervalId(1))
@@ -130,9 +127,10 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
-        )
+        ).also {
+            repository.update(it.clockOut(stop = Milliseconds(10)))
+        }
 
         val actual = repository.findActiveByProjectId(android.id)
 
@@ -146,9 +144,9 @@ class TimeIntervalInMemoryRepositoryTest {
                 start = Milliseconds(1)
             }
         )
-        val expected = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
         }
 
         val actual = repository.findActiveByProjectId(android.id)
@@ -158,10 +156,10 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `update without time interval`() {
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(10)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(10)
         }
 
         val actual = repository.update(timeInterval)
@@ -176,10 +174,10 @@ class TimeIntervalInMemoryRepositoryTest {
                 start = Milliseconds(1)
             }
         )
-        val expected = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(5)
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(5)
         }
 
         val actual = repository.update(expected)
@@ -190,10 +188,10 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `update without time intervals`() {
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(10)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(10)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -211,10 +209,10 @@ class TimeIntervalInMemoryRepositoryTest {
             }
         )
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(5)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(5)
             }
         )
 
@@ -233,7 +231,6 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -246,10 +243,10 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `remove without time intervals`() {
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(10)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = Milliseconds(10)
         }
         val timeIntervals = listOf(timeInterval)
 
@@ -261,14 +258,13 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(10)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = null
             }
         )
         val expected = emptyList<TimeInterval>()

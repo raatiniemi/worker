@@ -27,8 +27,8 @@ import org.junit.runners.Parameterized.Parameters
 @RunWith(Parameterized::class)
 class CalculateTimeTest(private val expected: HoursMinutes, private val milliseconds: Long) {
     @Test
-    fun calculateTime() {
-        val actual = CalculateTime.calculateHoursMinutes(Milliseconds(milliseconds))
+    fun `calculate hours minutes`() {
+        val actual = calculateHoursMinutes(Milliseconds(milliseconds))
 
         assertEquals("$expected", expected, actual)
     }

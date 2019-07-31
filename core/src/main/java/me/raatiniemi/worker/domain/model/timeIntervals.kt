@@ -16,24 +16,79 @@
 
 package me.raatiniemi.worker.domain.model
 
-fun isActive(timeInterval: TimeInterval) = timeInterval.stop == null
+fun timeInterval(
+    projectId: ProjectId,
+    configure: (TimeInterval.Builder) -> Unit
+): TimeInterval {
+    val builder = TimeInterval.Builder()
+    configure(builder)
 
-fun calculateTime(timeInterval: TimeInterval): Milliseconds {
-    if (isActive(timeInterval)) {
-        return Milliseconds.empty
+    val id = builder.id ?: throw MissingIdForTimeIntervalException()
+    val start = builder.start ?: throw MissingStartForTimeIntervalException()
+    val stop = builder.stop
+
+    if (stop == null) {
+        if (builder.isRegistered) {
+            throw MissingStopForRegisteredTimeIntervalException()
+        }
+
+        return TimeInterval.Active(
+            id = id,
+            projectId = projectId,
+            start = start
+        )
     }
 
-    val stop = timeInterval.stop ?: Milliseconds.empty
-    return calculateInterval(timeInterval, stop)
+    return if (builder.isRegistered) {
+        TimeInterval.Registered(
+            id = id,
+            projectId = projectId,
+            start = start,
+            stop = stop
+        )
+    } else {
+        TimeInterval.Inactive(
+            id = id,
+            projectId = projectId,
+            start = start,
+            stop = stop
+        )
+    }
+}
+
+fun timeInterval(timeInterval: TimeInterval, configure: (TimeInterval.Builder) -> Unit) =
+    timeInterval(timeInterval.projectId) {
+        it.id = timeInterval.id
+        it.start = timeInterval.start
+        it.stop = when (timeInterval) {
+            is TimeInterval.Inactive -> timeInterval.stop
+            is TimeInterval.Registered -> timeInterval.stop
+            else -> null
+        }
+        it.isRegistered = timeInterval is TimeInterval.Registered
+
+        configure(it)
+    }
+
+fun isActive(timeInterval: TimeInterval) = timeInterval is TimeInterval.Active
+
+fun calculateTime(timeInterval: TimeInterval) = when (timeInterval) {
+    is TimeInterval.Active -> Milliseconds.empty
+    is TimeInterval.Inactive -> calculateInterval(timeInterval, timeInterval.stop)
+    is TimeInterval.Registered -> calculateInterval(timeInterval, timeInterval.stop)
 }
 
 fun calculateInterval(
     timeInterval: TimeInterval,
     stopForActive: Milliseconds = Milliseconds.now
 ): Milliseconds {
-    if (timeInterval.stop == null) {
-        return stopForActive - timeInterval.start
+    val stop = when (timeInterval) {
+        is TimeInterval.Active -> stopForActive
+        is TimeInterval.Inactive -> timeInterval.stop
+        is TimeInterval.Registered -> timeInterval.stop
     }
 
-    return timeInterval.stop - timeInterval.start
+    return calculateInterval(timeInterval.start, stop)
 }
+
+private fun calculateInterval(start: Milliseconds, stop: Milliseconds) = stop - start

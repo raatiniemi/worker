@@ -40,22 +40,26 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun `get project time since day`() {
+        val expectedStop = after(TimeIntervalStartingPoint.DAY, 2.hours)
         val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.DAY)
-            stop = after(TimeIntervalStartingPoint.DAY, 2.hours)
         }
         repository.add(
             newTimeInterval(android) {
                 start = before(TimeIntervalStartingPoint.DAY)
-                stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)
             }
-        )
+        ).also {
+            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)))
+        }
         repository.add(newTimeInterval)
+            .also {
+                repository.update(it.clockOut(stop = expectedStop))
+            }
         val expected = listOf(
-            timeInterval(android) {
-                id = 2
-                start = newTimeInterval.start
-                stop = requireNotNull(newTimeInterval.stop)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = newTimeInterval.start
+                builder.stop = expectedStop
             }
         )
 
@@ -66,22 +70,26 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun `get project time since week`() {
+        val expectedStop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
         val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.WEEK)
-            stop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
         }
         repository.add(
             newTimeInterval(android) {
                 start = before(TimeIntervalStartingPoint.WEEK)
-                stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)
             }
-        )
+        ).also {
+            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)))
+        }
         repository.add(newTimeInterval)
+            .also {
+                repository.update(it.clockOut(stop = expectedStop))
+            }
         val expected = listOf(
-            timeInterval(android) {
-                id = 2
-                start = newTimeInterval.start
-                stop = requireNotNull(newTimeInterval.stop)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = newTimeInterval.start
+                builder.stop = expectedStop
             }
         )
 
@@ -92,22 +100,26 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun `get project time since month`() {
+        val expectedStop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
         val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.MONTH)
-            stop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
         }
         repository.add(
             newTimeInterval(android) {
                 start = before(TimeIntervalStartingPoint.MONTH)
-                stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)
             }
-        )
+        ).also {
+            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)))
+        }
         repository.add(newTimeInterval)
+            .also {
+                repository.update(it.clockOut(stop = expectedStop))
+            }
         val expected = listOf(
-            timeInterval(android) {
-                id = 2
-                start = newTimeInterval.start
-                stop = requireNotNull(newTimeInterval.stop)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = newTimeInterval.start
+                builder.stop = expectedStop
             }
         )
 

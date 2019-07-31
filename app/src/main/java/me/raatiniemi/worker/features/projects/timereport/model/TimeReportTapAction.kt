@@ -16,15 +16,15 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 
 sealed class TimeReportTapAction : TimeReportSelectAction {
     data class TapDay(val day: TimeReportDay) : TimeReportTapAction() {
-        override val items = day.items
+        override val items = day.timeIntervals
     }
 
-    data class TapItem(val item: TimeReportItem) : TimeReportTapAction() {
-        override val items = listOf(item)
+    data class TapItem(val timeInterval: TimeInterval) : TimeReportTapAction() {
+        override val items = listOf(timeInterval)
     }
 }

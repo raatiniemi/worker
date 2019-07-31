@@ -22,7 +22,6 @@ import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
 
@@ -36,14 +35,13 @@ internal class TimeReportRoomRepository(
         timeReport.countNotRegistered(project.id.value)
 
     private fun transform(group: TimeReportQueryGroup): TimeReportDay {
-        val map = group.mapNotNull { timeIntervals.find(it) }
+        val timeIntervals = group.mapNotNull { timeIntervals.find(it) }
             .map { it.toTimeInterval() }
             .sortedByDescending { it.start.value }
-            .map { TimeReportItem.with(it) }
 
         return TimeReportDay(
             Date(group.dateInMilliseconds),
-            map
+            timeIntervals
         )
     }
 

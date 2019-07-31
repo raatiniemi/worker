@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
+import me.raatiniemi.worker.features.projects.timereport.view.TimeReportAdapter
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 

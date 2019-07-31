@@ -16,15 +16,15 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
 
 sealed class TimeReportLongPressAction : TimeReportSelectAction {
     data class LongPressDay(val day: TimeReportDay) : TimeReportLongPressAction() {
-        override val items = day.items
+        override val items = day.timeIntervals
     }
 
-    data class LongPressItem(val item: TimeReportItem) : TimeReportLongPressAction() {
-        override val items = listOf(item)
+    data class LongPressItem(val timeInterval: TimeInterval) : TimeReportLongPressAction() {
+        override val items = listOf(timeInterval)
     }
 }

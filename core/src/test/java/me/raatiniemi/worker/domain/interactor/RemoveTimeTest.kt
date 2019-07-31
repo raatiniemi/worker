@@ -41,13 +41,12 @@ class RemoveTimeTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(10)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = null
         }
         val expected = emptyList<TimeInterval>()
 
@@ -62,13 +61,12 @@ class RemoveTimeTest {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(10)
             }
         )
-        val timeInterval = timeInterval(android) {
-            id = 1
-            start = Milliseconds(1)
-            stop = Milliseconds(10)
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = null
         }
         val expected = emptyList<TimeInterval>()
 

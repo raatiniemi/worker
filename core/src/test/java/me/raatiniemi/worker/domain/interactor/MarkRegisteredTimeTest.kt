@@ -41,71 +41,74 @@ class MarkRegisteredTimeTest {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             }
         )
-        newTimeIntervals.forEach { repository.add(it) }
+        newTimeIntervals.forEach {
+            repository.add(it)
+                .also { timeInterval ->
+                    repository.update(
+                        timeInterval.clockOut(stop = Milliseconds(10))
+                    )
+                }
+        }
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 3
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 4
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 3
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 4
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             }
         )
         val actual = repository.findAll(android, Milliseconds.empty)
@@ -117,75 +120,67 @@ class MarkRegisteredTimeTest {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 3
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 4
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 3
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 4
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             }
         )
         val actual = repository.findAll(android, Milliseconds.empty)
@@ -197,77 +192,77 @@ class MarkRegisteredTimeTest {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             },
             newTimeInterval(android) {
                 start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
             }
         )
-        newTimeIntervals.forEach { repository.add(it) }
+        newTimeIntervals.forEach {
+            repository.add(it)
+                .also { timeInterval ->
+                    repository.update(
+                        timeInterval.clockOut(stop = Milliseconds(2))
+                    )
+                }
+        }
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 3
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 4
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 2
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 3
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             },
-            timeInterval(android) {
-                id = 4
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(2)
+                builder.isRegistered = true
             }
         )
         val actual = repository.findAll(android, Milliseconds.empty)
@@ -277,9 +272,9 @@ class MarkRegisteredTimeTest {
     @Test(expected = UnableToMarkActiveTimeIntervalAsRegisteredException::class)
     fun `mark registered time with active time interval`() {
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
             }
         )
 
@@ -295,19 +290,21 @@ class MarkRegisteredTimeTest {
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
-                isRegistered = true
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(10)
+                builder.isRegistered = true
             }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-            timeInterval(android) {
-                id = 1
-                start = Milliseconds(1)
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = Milliseconds(1)
+                builder.stop = Milliseconds(10)
             }
         )
         val actual = repository.findAll(android, Milliseconds.empty)
