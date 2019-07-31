@@ -264,7 +264,7 @@ class TimeReportInMemoryRepositoryTest {
             }.also { timeIntervalRepository.update(it) }
         )
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(Milliseconds(1)),
                 timeIntervals.reversed()
             )
@@ -296,11 +296,11 @@ class TimeReportInMemoryRepositoryTest {
             it.clockOut(stop = Milliseconds(93000000))
         }.also { timeIntervalRepository.update(it) }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -334,7 +334,7 @@ class TimeReportInMemoryRepositoryTest {
             it.clockOut(stop = Milliseconds(93000000))
         }.also { timeIntervalRepository.update(it) }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeIntervals.start),
                 listOf(firstTimeIntervals)
             )
@@ -366,7 +366,7 @@ class TimeReportInMemoryRepositoryTest {
             it.clockOut(stop = Milliseconds(93000000))
         }.also { timeIntervalRepository.update(it) }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             )
@@ -444,7 +444,7 @@ class TimeReportInMemoryRepositoryTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     secondTimeInterval,
@@ -492,11 +492,11 @@ class TimeReportInMemoryRepositoryTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -530,7 +530,7 @@ class TimeReportInMemoryRepositoryTest {
             it.clockOut(stop = Milliseconds(93000000))
         }.also { timeIntervalRepository.update(it) }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeIntervals.start),
                 listOf(firstTimeIntervals)
             )
@@ -562,7 +562,7 @@ class TimeReportInMemoryRepositoryTest {
             it.clockOut(stop = Milliseconds(93000000))
         }.also { timeIntervalRepository.update(it) }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             )

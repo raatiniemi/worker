@@ -31,7 +31,7 @@ class TimeReportDayTest(
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
-        val day = TimeReportDay(Date(), timeIntervals)
+        val day = timeReportDay(Date(), timeIntervals)
 
         assertEquals(expectedTimeSummary, day.timeSummary)
         assertEquals(expectedTimeDifference, day.timeDifference)

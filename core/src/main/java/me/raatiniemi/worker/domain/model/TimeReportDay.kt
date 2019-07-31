@@ -19,7 +19,10 @@ package me.raatiniemi.worker.domain.model
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.util.*
 
-data class TimeReportDay(val date: Date, val timeIntervals: List<TimeInterval>) {
+data class TimeReportDay internal constructor(
+    val date: Date,
+    val timeIntervals: List<TimeInterval>
+) {
     val isRegistered: Boolean by lazy {
         timeIntervals.all { it is TimeInterval.Registered }
     }
@@ -35,4 +38,8 @@ data class TimeReportDay(val date: Date, val timeIntervals: List<TimeInterval>) 
     val timeDifference: HoursMinutes by lazy {
         timeSummary - HoursMinutes(8, 0)
     }
+}
+
+fun timeReportDay(date: Date, timeIntervals: List<TimeInterval>): TimeReportDay {
+    return TimeReportDay(date, timeIntervals)
 }

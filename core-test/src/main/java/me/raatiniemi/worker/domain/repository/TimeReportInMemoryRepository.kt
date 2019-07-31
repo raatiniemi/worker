@@ -65,6 +65,6 @@ class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeInter
 
     private fun buildTimeReportDay(entry: Map.Entry<Date, List<TimeInterval>>) =
         entry.let { (date, timeIntervals) ->
-            TimeReportDay(date, timeIntervals.sortedByDescending { it.start.value })
+            timeReportDay(date, timeIntervals.sortedByDescending { it.start.value })
         }
 }

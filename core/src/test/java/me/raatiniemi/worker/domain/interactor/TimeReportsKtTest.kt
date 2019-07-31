@@ -346,7 +346,7 @@ class TimeReportsKtTest {
             }
         )
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(timeInterval)
             )
@@ -371,7 +371,7 @@ class TimeReportsKtTest {
             }
         )
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     secondTimeInterval,
@@ -399,13 +399,13 @@ class TimeReportsKtTest {
             }
         )
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     secondTimeInterval
                 )
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -434,7 +434,7 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(
                     timeInterval
@@ -475,7 +475,7 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     secondTimeInterval,
@@ -517,13 +517,13 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     secondTimeInterval
                 )
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -557,7 +557,7 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     secondTimeInterval,
@@ -592,13 +592,13 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     secondTimeInterval
                 )
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -633,7 +633,7 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -668,7 +668,7 @@ class TimeReportsKtTest {
             timeIntervalRepository.update(it)
         }
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -695,7 +695,7 @@ class TimeReportsKtTest {
             }
         )
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     firstTimeInterval
@@ -722,7 +722,7 @@ class TimeReportsKtTest {
             }
         )
         val expected = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     secondTimeInterval

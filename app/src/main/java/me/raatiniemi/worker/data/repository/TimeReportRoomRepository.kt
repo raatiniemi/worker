@@ -22,6 +22,7 @@ import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.model.timeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
 
@@ -39,7 +40,7 @@ internal class TimeReportRoomRepository(
             .map { it.toTimeInterval() }
             .sortedByDescending { it.start.value }
 
-        return TimeReportDay(
+        return timeReportDay(
             Date(group.dateInMilliseconds),
             timeIntervals
         )
