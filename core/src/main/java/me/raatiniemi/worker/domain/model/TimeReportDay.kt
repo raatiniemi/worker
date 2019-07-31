@@ -20,8 +20,9 @@ import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.util.*
 
 data class TimeReportDay(val date: Date, val timeIntervals: List<TimeInterval>) {
-    val isRegistered: Boolean
-        get() = timeIntervals.all { it is TimeInterval.Registered }
+    val isRegistered: Boolean by lazy {
+        timeIntervals.all { it is TimeInterval.Registered }
+    }
 
     val timeSummary: HoursMinutes
         get() = accumulatedHoursMinutes()
