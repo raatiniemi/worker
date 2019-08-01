@@ -33,6 +33,22 @@ sealed class TimeReportDay {
 
     abstract override fun hashCode(): Int
 
+    data class Active internal constructor(
+        override val date: Date,
+        override val timeIntervals: List<TimeInterval>
+    ) : TimeReportDay() {
+        override val isRegistered: Boolean by lazy {
+            timeIntervals.all { it is TimeInterval.Registered }
+        }
+
+        override val timeSummary: HoursMinutes
+            get() = timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
+                .accumulated()
+
+        override val timeDifference: HoursMinutes
+            get() = timeSummary - HoursMinutes(8, 0)
+    }
+
     data class Default internal constructor(
         override val date: Date,
         override val timeIntervals: List<TimeInterval>
@@ -56,5 +72,10 @@ sealed class TimeReportDay {
 }
 
 fun timeReportDay(date: Date, timeIntervals: List<TimeInterval>): TimeReportDay {
+    val isActive = timeIntervals.any(::isActive)
+    if (isActive) {
+        return TimeReportDay.Active(date, timeIntervals)
+    }
+
     return TimeReportDay.Default(date, timeIntervals)
 }
