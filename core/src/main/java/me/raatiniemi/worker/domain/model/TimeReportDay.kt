@@ -49,7 +49,7 @@ sealed class TimeReportDay {
             get() = timeSummary - HoursMinutes(8, 0)
     }
 
-    data class Default internal constructor(
+    data class Inactive internal constructor(
         override val date: Date,
         override val timeIntervals: List<TimeInterval>
     ) : TimeReportDay() {
@@ -77,5 +77,5 @@ fun timeReportDay(date: Date, timeIntervals: List<TimeInterval>): TimeReportDay 
         return TimeReportDay.Active(date, timeIntervals)
     }
 
-    return TimeReportDay.Default(date, timeIntervals)
+    return TimeReportDay.Inactive(date, timeIntervals)
 }

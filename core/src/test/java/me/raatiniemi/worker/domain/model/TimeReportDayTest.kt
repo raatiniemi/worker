@@ -27,7 +27,7 @@ class TimeReportDayTest {
     @Test
     fun `time report day without time intervals`() {
         val date = Date()
-        val expected = TimeReportDay.Default(date, emptyList())
+        val expected = TimeReportDay.Inactive(date, emptyList())
 
         val actual = timeReportDay(date, emptyList())
 
@@ -44,7 +44,7 @@ class TimeReportDayTest {
                 timeInterval.stop = Milliseconds(10)
             }
         )
-        val expected = TimeReportDay.Default(date, timeIntervals)
+        val expected = TimeReportDay.Inactive(date, timeIntervals)
 
         val actual = timeReportDay(date, timeIntervals)
 
