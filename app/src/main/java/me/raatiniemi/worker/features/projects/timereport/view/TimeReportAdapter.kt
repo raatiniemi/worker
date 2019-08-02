@@ -56,33 +56,35 @@ internal class TimeReportAdapter(
             return
         }
 
-        with(vh) {
-            title(day).also {
-                title.text = it
-                letter.setImageDrawable(letterDrawable(firstLetter(it)))
+        vh.bind(day, position)
+    }
+
+    private fun DayViewHolder.bind(day: TimeReportDay, position: Int) {
+        title(day).also {
+            title.text = it
+            letter.setImageDrawable(letterDrawable(firstLetter(it)))
+        }
+        timeSummary.text = timeSummaryWithDifference(day, formatter)
+
+        apply(stateManager.state(day), header)
+
+        buildTimeReportItemList(items, day.timeIntervals)
+        items.visibleIf(View.GONE) { stateManager.expanded(position) }
+
+        letter.setOnLongClickListener {
+            stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
+        }
+
+        letter.setOnClickListener {
+            stateManager.consume(TimeReportTapAction.TapDay(day))
+        }
+
+        itemView.setOnClickListener {
+            if (items.visibility == View.VISIBLE) {
+                stateManager.collapse(position)
+                return@setOnClickListener
             }
-            timeSummary.text = timeSummaryWithDifference(day, formatter)
-
-            apply(stateManager.state(day), header)
-
-            buildTimeReportItemList(items, day.timeIntervals)
-            items.visibleIf(View.GONE) { stateManager.expanded(position) }
-
-            letter.setOnLongClickListener {
-                stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
-            }
-
-            letter.setOnClickListener {
-                stateManager.consume(TimeReportTapAction.TapDay(day))
-            }
-
-            itemView.setOnClickListener {
-                if (items.visibility == View.VISIBLE) {
-                    stateManager.collapse(position)
-                    return@setOnClickListener
-                }
-                stateManager.expand(position)
-            }
+            stateManager.expand(position)
         }
     }
 
