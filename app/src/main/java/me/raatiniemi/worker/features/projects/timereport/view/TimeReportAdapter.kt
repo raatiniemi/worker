@@ -106,20 +106,22 @@ internal class TimeReportAdapter(
 
     private fun bindTimeReportItemViewHolder(view: View, timeInterval: TimeInterval) {
         ItemViewHolder(view)
-            .also {
-                val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
-                it.timeInterval.text = title(timeInterval)
-                it.timeSummary.text = formatter.apply(hoursMinutes)
+            .also(bind(timeInterval))
+    }
 
-                apply(stateManager.state(timeInterval), it.itemView)
+    private fun bind(timeInterval: TimeInterval): (ItemViewHolder) -> Unit = { vh ->
+        val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
+        vh.timeInterval.text = title(timeInterval)
+        vh.timeSummary.text = formatter.apply(hoursMinutes)
 
-                it.itemView.setOnLongClickListener {
-                    stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
-                }
-                it.itemView.setOnClickListener {
-                    stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
-                }
-            }
+        apply(stateManager.state(timeInterval), vh.itemView)
+
+        vh.itemView.setOnLongClickListener {
+            stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+        }
+        vh.itemView.setOnClickListener {
+            stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+        }
     }
 
     companion object {
