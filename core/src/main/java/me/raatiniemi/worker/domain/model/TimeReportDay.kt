@@ -57,11 +57,8 @@ sealed class TimeReportDay {
             timeIntervals.all { it is TimeInterval.Registered }
         }
 
-        override val timeSummary: HoursMinutes
-            get() = accumulatedHoursMinutes()
-
-        private fun accumulatedHoursMinutes(): HoursMinutes {
-            return timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
+        override val timeSummary: HoursMinutes by lazy {
+            timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
                 .accumulated()
         }
 
