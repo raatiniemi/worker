@@ -71,7 +71,12 @@ internal abstract class OngoingNotification(
     }
 
     fun buildPendingIntentWithService(intent: Intent): PendingIntent {
-        return PendingIntent.getService(context, project.id.value.toInt(), intent, PENDING_INTENT_FLAG)
+        return PendingIntent.getService(
+            context,
+            project.id.value.toInt(),
+            intent,
+            PENDING_INTENT_FLAG
+        )
     }
 
     fun getStringWithResourceId(@StringRes resourceId: Int): String {

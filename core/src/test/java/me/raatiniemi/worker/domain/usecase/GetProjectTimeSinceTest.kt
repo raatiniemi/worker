@@ -79,7 +79,14 @@ class GetProjectTimeSinceTest {
                 start = before(TimeIntervalStartingPoint.WEEK)
             }
         ).also {
-            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)))
+            repository.update(
+                it.clockOut(
+                    stop = before(
+                        TimeIntervalStartingPoint.WEEK,
+                        30.minutes
+                    )
+                )
+            )
         }
         repository.add(newTimeInterval)
             .also {
@@ -109,7 +116,14 @@ class GetProjectTimeSinceTest {
                 start = before(TimeIntervalStartingPoint.MONTH)
             }
         ).also {
-            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)))
+            repository.update(
+                it.clockOut(
+                    stop = before(
+                        TimeIntervalStartingPoint.MONTH,
+                        30.minutes
+                    )
+                )
+            )
         }
         repository.add(newTimeInterval)
             .also {

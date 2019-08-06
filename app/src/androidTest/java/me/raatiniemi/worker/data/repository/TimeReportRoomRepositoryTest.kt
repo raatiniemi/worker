@@ -193,8 +193,8 @@ class TimeReportRoomRepositoryTest {
         )
         timeIntervals.add(
             timeIntervalEntity {
-            startInMilliseconds = Date().time
-            registered = true
+                startInMilliseconds = Date().time
+                registered = true
             }
         )
 
@@ -213,7 +213,7 @@ class TimeReportRoomRepositoryTest {
         )
         timeIntervals.add(
             timeIntervalEntity {
-            startInMilliseconds = Date().time
+                startInMilliseconds = Date().time
             }
         )
 
