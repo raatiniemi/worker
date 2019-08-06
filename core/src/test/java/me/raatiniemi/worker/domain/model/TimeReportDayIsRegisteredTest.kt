@@ -30,7 +30,7 @@ class TimeReportDayIsRegisteredTest(
 ) {
     @Test
     fun isRegistered() {
-        val day = TimeReportDay(Date(), timeIntervals)
+        val day = timeReportDay(Date(), timeIntervals)
 
         assertEquals(expected, day.isRegistered)
     }

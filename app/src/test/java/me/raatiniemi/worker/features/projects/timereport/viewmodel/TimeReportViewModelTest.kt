@@ -240,7 +240,7 @@ class TimeReportViewModelTest {
         projectHolder += android
         val now = Milliseconds(Date().time)
         val timeReportDays = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(now),
                 listOf(
                     timeInterval(android.id) { builder ->
@@ -262,7 +262,7 @@ class TimeReportViewModelTest {
         projectHolder += android
         val now = Milliseconds(Date().time)
         val timeReportDays = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(now),
                 listOf(
                     timeInterval(android.id) { builder ->
@@ -287,7 +287,7 @@ class TimeReportViewModelTest {
         val now = Milliseconds(Date().time)
         val yesterday = Milliseconds(Date().time) - 25.hours
         val timeReportDays = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(now),
                 listOf(
                     timeInterval(android.id) { builder ->
@@ -297,7 +297,7 @@ class TimeReportViewModelTest {
                     }
                 )
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(yesterday),
                 listOf(
                     timeInterval(android.id) { builder ->

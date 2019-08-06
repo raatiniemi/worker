@@ -56,33 +56,35 @@ internal class TimeReportAdapter(
             return
         }
 
-        with(vh) {
-            title(day).also {
-                title.text = it
-                letter.setImageDrawable(letterDrawable(firstLetter(it)))
+        vh.bind(day, position)
+    }
+
+    private fun DayViewHolder.bind(day: TimeReportDay, position: Int) {
+        title(day).also {
+            title.text = it
+            letter.setImageDrawable(letterDrawable(firstLetter(it)))
+        }
+        timeSummary.text = timeSummaryWithDifference(day, formatter)
+
+        apply(stateManager.state(day), header)
+
+        buildTimeReportItemList(items, day.timeIntervals)
+        items.visibleIf(View.GONE) { stateManager.expanded(position) }
+
+        letter.setOnLongClickListener {
+            stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
+        }
+
+        letter.setOnClickListener {
+            stateManager.consume(TimeReportTapAction.TapDay(day))
+        }
+
+        itemView.setOnClickListener {
+            if (items.visibility == View.VISIBLE) {
+                stateManager.collapse(position)
+                return@setOnClickListener
             }
-            timeSummary.text = timeSummaryWithDifference(day, formatter)
-
-            apply(stateManager.state(day), header)
-
-            buildTimeReportItemList(items, day.timeIntervals)
-            items.visibleIf(View.GONE) { stateManager.expanded(position) }
-
-            letter.setOnLongClickListener {
-                stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
-            }
-
-            letter.setOnClickListener {
-                stateManager.consume(TimeReportTapAction.TapDay(day))
-            }
-
-            itemView.setOnClickListener {
-                if (items.visibility == View.VISIBLE) {
-                    stateManager.collapse(position)
-                    return@setOnClickListener
-                }
-                stateManager.expand(position)
-            }
+            stateManager.expand(position)
         }
     }
 
@@ -104,20 +106,22 @@ internal class TimeReportAdapter(
 
     private fun bindTimeReportItemViewHolder(view: View, timeInterval: TimeInterval) {
         ItemViewHolder(view)
-            .also {
-                val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
-                it.timeInterval.text = title(timeInterval)
-                it.timeSummary.text = formatter.apply(hoursMinutes)
+            .also(bind(timeInterval))
+    }
 
-                apply(stateManager.state(timeInterval), it.itemView)
+    private fun bind(timeInterval: TimeInterval): (ItemViewHolder) -> Unit = { vh ->
+        val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
+        vh.timeInterval.text = title(timeInterval)
+        vh.timeSummary.text = formatter.apply(hoursMinutes)
 
-                it.itemView.setOnLongClickListener {
-                    stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
-                }
-                it.itemView.setOnClickListener {
-                    stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
-                }
-            }
+        apply(stateManager.state(timeInterval), vh.itemView)
+
+        vh.itemView.setOnLongClickListener {
+            stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+        }
+        vh.itemView.setOnClickListener {
+            stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+        }
     }
 
     companion object {

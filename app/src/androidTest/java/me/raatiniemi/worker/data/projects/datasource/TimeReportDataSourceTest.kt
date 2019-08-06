@@ -87,7 +87,7 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(timeInterval)
             )
@@ -117,11 +117,11 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(firstTimeInterval)
             )
@@ -151,11 +151,11 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(firstTimeInterval)
             )
@@ -188,11 +188,11 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(firstTimeInterval)
             )
@@ -236,7 +236,7 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(timeInterval.start),
                 listOf(timeInterval)
             )
@@ -262,11 +262,11 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(firstTimeInterval)
             )
@@ -292,11 +292,11 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(firstTimeInterval)
             )
@@ -325,11 +325,11 @@ class TimeReportDataSourceTest {
             }
         )
         val data = listOf(
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(secondTimeInterval.start),
                 listOf(secondTimeInterval)
             ),
-            TimeReportDay(
+            timeReportDay(
                 resetToStartOfDay(firstTimeInterval.start),
                 listOf(firstTimeInterval)
             )

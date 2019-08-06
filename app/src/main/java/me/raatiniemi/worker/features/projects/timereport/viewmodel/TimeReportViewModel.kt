@@ -31,7 +31,6 @@ import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.interactor.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.isActive
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
@@ -212,9 +211,7 @@ internal class TimeReportViewModel internal constructor(
 
     suspend fun refreshActiveTimeReportDay(timeReportDays: List<TimeReportDay>) =
         withContext(Dispatchers.Default) {
-            val positions = timeReportDays.filter(::isActive)
-                .map { timeReportDays.indexOf(it) }
-
+            val positions = findActivePositions(timeReportDays)
             if (positions.isEmpty()) {
                 return@withContext
             }
@@ -222,5 +219,7 @@ internal class TimeReportViewModel internal constructor(
             viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
         }
 
-    private fun isActive(day: TimeReportDay) = day.timeIntervals.any { isActive(it) }
+    private fun findActivePositions(days: List<TimeReportDay>) =
+        days.filterIsInstance<TimeReportDay.Active>()
+            .map(days::indexOf)
 }

@@ -19,19 +19,60 @@ package me.raatiniemi.worker.domain.model
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.util.*
 
-data class TimeReportDay(val date: Date, val timeIntervals: List<TimeInterval>) {
-    val isRegistered: Boolean
-        get() = timeIntervals.all { it is TimeInterval.Registered }
+sealed class TimeReportDay {
+    abstract val date: Date
+    abstract val timeIntervals: List<TimeInterval>
 
-    val timeSummary: HoursMinutes
-        get() = accumulatedHoursMinutes()
+    abstract val isRegistered: Boolean
 
-    private fun accumulatedHoursMinutes(): HoursMinutes {
-        return timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
-            .accumulated()
+    abstract val timeSummary: HoursMinutes
+
+    abstract val timeDifference: HoursMinutes
+
+    abstract override fun equals(other: Any?): Boolean
+
+    abstract override fun hashCode(): Int
+
+    data class Active internal constructor(
+        override val date: Date,
+        override val timeIntervals: List<TimeInterval>
+    ) : TimeReportDay() {
+        override val isRegistered: Boolean by lazy {
+            timeIntervals.all { it is TimeInterval.Registered }
+        }
+
+        override val timeSummary: HoursMinutes
+            get() = timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
+                .accumulated()
+
+        override val timeDifference: HoursMinutes
+            get() = timeSummary - HoursMinutes(8, 0)
     }
 
-    val timeDifference: HoursMinutes by lazy {
-        timeSummary - HoursMinutes(8, 0)
+    data class Inactive internal constructor(
+        override val date: Date,
+        override val timeIntervals: List<TimeInterval>
+    ) : TimeReportDay() {
+        override val isRegistered: Boolean by lazy {
+            timeIntervals.all { it is TimeInterval.Registered }
+        }
+
+        override val timeSummary: HoursMinutes by lazy {
+            timeIntervals.map { calculateHoursMinutes(calculateInterval(it)) }
+                .accumulated()
+        }
+
+        override val timeDifference: HoursMinutes by lazy {
+            timeSummary - HoursMinutes(8, 0)
+        }
     }
+}
+
+fun timeReportDay(date: Date, timeIntervals: List<TimeInterval>): TimeReportDay {
+    val isActive = timeIntervals.any(::isActive)
+    if (isActive) {
+        return TimeReportDay.Active(date, timeIntervals)
+    }
+
+    return TimeReportDay.Inactive(date, timeIntervals)
 }
