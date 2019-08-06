@@ -14,18 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
-import me.raatiniemi.worker.domain.exception.NoProjectException
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.ProjectId
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
-/**
- * Use case for getting a project.
- */
-class GetProject(private val repository: ProjectRepository) {
-    operator fun invoke(projectId: Long): Project {
-        return repository.findById(ProjectId(projectId)) ?: throw NoProjectException()
+class IsProjectActive(private val repository: TimeIntervalRepository) {
+    operator fun invoke(projectId: Long): Boolean {
+        return repository.findActiveByProjectId(ProjectId(projectId)) != null
     }
 }

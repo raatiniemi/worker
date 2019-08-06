@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.projects
 
-import me.raatiniemi.worker.domain.interactor.*
+import me.raatiniemi.worker.domain.usecase.*
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel

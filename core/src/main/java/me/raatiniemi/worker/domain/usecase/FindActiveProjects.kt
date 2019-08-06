@@ -14,24 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
-import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
-typealias CountProjects = () -> Int
-typealias FindProjects = (LoadRange) -> List<Project>
-typealias FindAllProjects = () -> List<Project>
+class FindActiveProjects(
+    private val projectRepository: ProjectRepository,
+    private val timeIntervalRepository: TimeIntervalRepository
+) {
+    operator fun invoke(): List<Project> = projectRepository.findAll()
+        .filter { isActive(it) }
 
-fun countProjects(repository: ProjectRepository): CountProjects = {
-    repository.count()
-}
-
-fun findProjects(repository: ProjectRepository): FindProjects = {
-    repository.findAll(it)
-}
-
-fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
-    repository.findAll()
+    private fun isActive(project: Project): Boolean {
+        return timeIntervalRepository.findActiveByProjectId(project.id) != null
+    }
 }

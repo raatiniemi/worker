@@ -14,9 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
-import me.raatiniemi.worker.domain.exception.NoProjectException
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
@@ -28,26 +28,32 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class GetProjectTest {
+class CreateProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var getProject: GetProject
+
+    private lateinit var findProject: FindProject
+    private lateinit var createProject: CreateProject
 
     @Before
     fun setUp() {
-        getProject = GetProject(repository)
+        findProject = FindProject(repository)
+        createProject = CreateProject(findProject, repository)
+    }
+
+    @Test(expected = ProjectAlreadyExistsException::class)
+    fun `invoke with existing project`() {
+        repository.add(NewProject(android.name))
+
+        createProject(android.name)
     }
 
     @Test
     fun execute() {
-        repository.add(NewProject(android.name))
+        val expected = listOf(android)
 
-        val actual = getProject(android.id.value)
+        createProject(android.name)
 
-        assertEquals(android, actual)
-    }
-
-    @Test(expected = NoProjectException::class)
-    fun `execute withoutProject`() {
-        getProject(android.id.value)
+        val actual = repository.findAll()
+        assertEquals(expected, actual)
     }
 }

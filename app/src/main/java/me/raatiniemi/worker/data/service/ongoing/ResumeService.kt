@@ -18,10 +18,10 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.interactor.CalculateTimeToday
-import me.raatiniemi.worker.domain.interactor.ClockIn
-import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
+import me.raatiniemi.worker.domain.usecase.ClockIn
+import me.raatiniemi.worker.domain.usecase.GetProject
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics

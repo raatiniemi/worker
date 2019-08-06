@@ -14,13 +14,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
-import me.raatiniemi.worker.domain.model.ProjectId
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
-class IsProjectActive(private val repository: TimeIntervalRepository) {
-    operator fun invoke(projectId: Long): Boolean {
-        return repository.findActiveByProjectId(ProjectId(projectId)) != null
+/**
+ * Use case for removing registered time.
+ */
+class RemoveTime(private val repository: TimeIntervalRepository) {
+    /**
+     * Remove registered time.
+     *
+     * @param time Time to remove.
+     */
+    operator fun invoke(time: TimeInterval) {
+        repository.remove(time.id)
+    }
+
+    /**
+     * Remove multiple items.
+     *
+     * @param items Items to remove.
+     */
+    operator fun invoke(items: List<TimeInterval>) {
+        repository.remove(items)
     }
 }

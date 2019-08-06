@@ -19,10 +19,10 @@ package me.raatiniemi.worker.data.projects.datasource
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.interactor.countTimeReports
-import me.raatiniemi.worker.domain.interactor.findTimeReports
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.*
+import me.raatiniemi.worker.domain.usecase.countTimeReports
+import me.raatiniemi.worker.domain.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.KeyValueStore

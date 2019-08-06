@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import me.raatiniemi.worker.domain.interactor.countProjects
-import me.raatiniemi.worker.domain.interactor.findProjects
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.usecase.countProjects
+import me.raatiniemi.worker.domain.usecase.findProjects
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

@@ -23,10 +23,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
-import me.raatiniemi.worker.domain.interactor.CreateProject
-import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.isValid
 import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.usecase.CreateProject
+import me.raatiniemi.worker.domain.usecase.FindProject
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.combineLatest

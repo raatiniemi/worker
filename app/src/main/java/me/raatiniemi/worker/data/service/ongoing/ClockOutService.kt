@@ -18,7 +18,7 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
-import me.raatiniemi.worker.domain.interactor.ClockOut
+import me.raatiniemi.worker.domain.usecase.ClockOut
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject

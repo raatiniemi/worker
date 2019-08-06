@@ -14,12 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
+import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.android
-import me.raatiniemi.worker.domain.model.cli
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -29,34 +28,26 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class RemoveProjectTest {
+class GetProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var removeProject: RemoveProject
+    private lateinit var getProject: GetProject
 
     @Before
     fun setUp() {
-        removeProject = RemoveProject(repository)
+        getProject = GetProject(repository)
     }
 
     @Test
-    fun `remove project with project`() {
+    fun execute() {
         repository.add(NewProject(android.name))
 
-        removeProject(android)
+        val actual = getProject(android.id.value)
 
-        val actual = repository.findAll()
-        assertEquals(emptyList<Project>(), actual)
+        assertEquals(android, actual)
     }
 
-    @Test
-    fun `remove project with projects`() {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
-        val expected = listOf(cli)
-
-        removeProject(android)
-
-        val actual = repository.findAll()
-        assertEquals(expected, actual)
+    @Test(expected = NoProjectException::class)
+    fun `execute withoutProject`() {
+        getProject(android.id.value)
     }
 }

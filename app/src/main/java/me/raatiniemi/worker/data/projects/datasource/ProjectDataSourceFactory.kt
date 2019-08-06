@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.interactor.countProjects
-import me.raatiniemi.worker.domain.interactor.findProjects
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.usecase.countProjects
+import me.raatiniemi.worker.domain.usecase.findProjects
 
 internal class ProjectDataSourceFactory(
     val repository: ProjectRepository

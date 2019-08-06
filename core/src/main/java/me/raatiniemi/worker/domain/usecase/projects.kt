@@ -14,6 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
-class UnableToMarkActiveTimeIntervalAsRegisteredException : RuntimeException()
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.repository.ProjectRepository
+
+typealias CountProjects = () -> Int
+typealias FindProjects = (LoadRange) -> List<Project>
+typealias FindAllProjects = () -> List<Project>
+
+fun countProjects(repository: ProjectRepository): CountProjects = {
+    repository.count()
+}
+
+fun findProjects(repository: ProjectRepository): FindProjects = {
+    repository.findAll(it)
+}
+
+fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
+    repository.findAll()
+}

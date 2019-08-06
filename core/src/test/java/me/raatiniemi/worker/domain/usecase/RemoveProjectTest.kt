@@ -14,55 +14,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.model.cli
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class FindProjectTest {
+class RemoveProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var findProject: FindProject
+    private lateinit var removeProject: RemoveProject
 
     @Before
     fun setUp() {
-        findProject = FindProject(repository)
+        removeProject = RemoveProject(repository)
     }
 
     @Test
-    fun `invoke without projects`() {
-        val actual = findProject(android.name)
-
-        assertNull(actual)
-    }
-
-    @Test
-    fun `invoke with projects`() {
+    fun `remove project with project`() {
         repository.add(NewProject(android.name))
 
-        val actual = findProject(android.name)
+        removeProject(android)
 
-        assertEquals(android, actual)
+        val actual = repository.findAll()
+        assertEquals(emptyList<Project>(), actual)
     }
 
     @Test
-    fun `invoke with lowercase project name`() {
+    fun `remove project with projects`() {
         repository.add(NewProject(android.name))
+        repository.add(NewProject(cli.name))
+        val expected = listOf(cli)
 
-        val actual = findProject(
-            android.name.value.toLowerCase()
-                .let { ProjectName(it) }
-        )
+        removeProject(android)
 
-        assertEquals(android, actual)
+        val actual = repository.findAll()
+        assertEquals(expected, actual)
     }
 }

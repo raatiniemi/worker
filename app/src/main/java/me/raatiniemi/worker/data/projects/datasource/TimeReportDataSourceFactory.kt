@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.interactor.countTimeReports
-import me.raatiniemi.worker.domain.interactor.findTimeReports
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.usecase.countTimeReports
+import me.raatiniemi.worker.domain.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.util.KeyValueStore
 

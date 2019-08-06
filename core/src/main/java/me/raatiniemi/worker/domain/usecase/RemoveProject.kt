@@ -14,20 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.repository.ProjectRepository
 
-class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
-    operator fun invoke(
-        project: Project,
-        startingPoint: TimeIntervalStartingPoint
-    ): List<TimeInterval> {
-        val milliseconds = startingPoint.calculateMilliseconds()
-
-        return repository.findAll(project, milliseconds)
+/**
+ * Use case for removing a project.
+ */
+class RemoveProject(private val repository: ProjectRepository) {
+    operator fun invoke(project: Project) {
+        repository.remove(project)
     }
 }

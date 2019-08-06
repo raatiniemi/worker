@@ -18,9 +18,9 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
-import me.raatiniemi.worker.domain.interactor.ClockOut
-import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.usecase.ClockOut
+import me.raatiniemi.worker.domain.usecase.GetProject
 import me.raatiniemi.worker.features.shared.view.notification.ResumeNotification
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics

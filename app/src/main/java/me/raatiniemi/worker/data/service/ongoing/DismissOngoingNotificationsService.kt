@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
-import me.raatiniemi.worker.domain.interactor.FindAllProjects
-import me.raatiniemi.worker.domain.interactor.findAllProjects
 import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.usecase.FindAllProjects
+import me.raatiniemi.worker.domain.usecase.findAllProjects
 import org.koin.android.ext.android.inject
 
 class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotificationsService") {

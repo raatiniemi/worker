@@ -18,9 +18,9 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.DomainException
-import me.raatiniemi.worker.domain.interactor.CalculateTimeToday
-import me.raatiniemi.worker.domain.interactor.FindActiveProjects
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
+import me.raatiniemi.worker.domain.usecase.FindActiveProjects
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
 import org.koin.android.ext.android.inject
 import timber.log.Timber

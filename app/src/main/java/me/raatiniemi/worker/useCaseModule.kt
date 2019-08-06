@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker
 
-import me.raatiniemi.worker.domain.interactor.*
+import me.raatiniemi.worker.domain.usecase.*
 import org.koin.dsl.module.module
 
 val useCaseModule = module {

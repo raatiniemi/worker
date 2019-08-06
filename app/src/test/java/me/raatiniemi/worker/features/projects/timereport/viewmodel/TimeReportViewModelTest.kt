@@ -20,10 +20,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
-import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
-import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.*
+import me.raatiniemi.worker.domain.usecase.MarkRegisteredTime
+import me.raatiniemi.worker.domain.usecase.RemoveTime
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction

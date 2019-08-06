@@ -18,11 +18,11 @@ package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.domain.interactor.CreateProject
-import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
+import me.raatiniemi.worker.domain.usecase.CreateProject
+import me.raatiniemi.worker.domain.usecase.FindProject
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull

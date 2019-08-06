@@ -18,13 +18,13 @@ package me.raatiniemi.worker.features.projects.all.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.domain.interactor.ClockIn
-import me.raatiniemi.worker.domain.interactor.ClockOut
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
-import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.usecase.ClockIn
+import me.raatiniemi.worker.domain.usecase.ClockOut
+import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince
+import me.raatiniemi.worker.domain.usecase.RemoveProject
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.model.observeNoValue

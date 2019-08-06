@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
-import me.raatiniemi.worker.domain.interactor.CountTimeReports
-import me.raatiniemi.worker.domain.interactor.FindTimeReports
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.usecase.FindTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import timber.log.Timber
 
