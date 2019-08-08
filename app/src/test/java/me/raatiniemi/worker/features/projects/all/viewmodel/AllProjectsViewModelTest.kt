@@ -49,7 +49,6 @@ class AllProjectsViewModelTest {
 
     private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
     private val usageAnalytics = InMemoryUsageAnalytics()
-    private val timeIntervalRepository = TimeIntervalInMemoryRepository()
 
     private lateinit var findProject: FindProject
     private lateinit var createProject: CreateProject
@@ -67,6 +66,8 @@ class AllProjectsViewModelTest {
     @Before
     fun setUp() {
         val projectRepository = ProjectInMemoryRepository()
+        val timeIntervalRepository = TimeIntervalInMemoryRepository()
+
         findProject = FindProject(projectRepository)
         createProject = CreateProject(findProject, projectRepository)
 
@@ -183,11 +184,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock in with active project`() {
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
+        clockIn(android.id.value, Date())
         val item = ProjectsItem(android, emptyList())
         val date = Date()
 
@@ -214,12 +211,8 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
+        clockIn(android.id.value, Date())
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val item = getProjectsItem(android, true)
         val date = Date()
 
@@ -274,11 +267,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock in with already active project`() = runBlocking {
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
+        clockIn(android.id.value, Date())
 
         vm.clockIn(android, Date())
 
@@ -308,11 +297,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
+        clockIn(android.id.value, Date())
 
         vm.clockOut(android, Date())
 
