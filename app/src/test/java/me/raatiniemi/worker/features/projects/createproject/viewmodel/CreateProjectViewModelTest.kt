@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.usecase.CreateProject
@@ -44,17 +43,19 @@ class CreateProjectViewModelTest {
 
     private val debounceDurationInMilliseconds: Long = 300
 
-    private val repository = ProjectInMemoryRepository()
     private val usageAnalytics = InMemoryUsageAnalytics()
 
     private lateinit var findProject: FindProject
     private lateinit var createProject: CreateProject
+
     private lateinit var vm: CreateProjectViewModel
 
     @Before
     fun setUp() {
+        val repository = ProjectInMemoryRepository()
         findProject = FindProject(repository)
         createProject = CreateProject(findProject, repository)
+
         vm = CreateProjectViewModel(usageAnalytics, createProject, findProject)
     }
 
@@ -70,7 +71,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with duplicated name`() = runBlocking {
-        repository.add(NewProject(android.name))
+        createProject(android.name)
         vm.name += android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -105,7 +106,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `create project with duplicated name`() = runBlocking {
-        repository.add(NewProject(android.name))
+        createProject(android.name)
         vm.name += android.name.value
 
         vm.createProject()
@@ -126,7 +127,7 @@ class CreateProjectViewModelTest {
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.CreatedProject, it)
         }
-        val actual = repository.findAll()
-        assertEquals(listOf(android), actual)
+        val actual = findProject(android.name)
+        assertEquals(android, actual)
     }
 }
