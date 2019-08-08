@@ -31,6 +31,7 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
+import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -46,7 +47,7 @@ class AllProjectsViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val keyValueStore = InMemoryKeyValueStore()
+    private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val timeIntervalRepository = TimeIntervalInMemoryRepository()
 
