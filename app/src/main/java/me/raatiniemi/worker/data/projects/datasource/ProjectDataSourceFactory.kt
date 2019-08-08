@@ -18,15 +18,12 @@ package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.domain.usecase.countProjects
-import me.raatiniemi.worker.domain.usecase.findProjects
+import me.raatiniemi.worker.domain.usecase.CountProjects
+import me.raatiniemi.worker.domain.usecase.FindProjects
 
 internal class ProjectDataSourceFactory(
-    val repository: ProjectRepository
+    private val countProjects: CountProjects,
+    private val findProjects: FindProjects
 ) : DataSource.Factory<Int, Project>() {
-    override fun create() = ProjectDataSource(
-        countProjects(repository),
-        findProjects(repository)
-    )
+    override fun create() = ProjectDataSource(countProjects, findProjects)
 }

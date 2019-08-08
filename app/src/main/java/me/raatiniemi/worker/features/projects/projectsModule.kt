@@ -37,7 +37,7 @@ val projectsModule = module {
         AllProjectsViewModel(
             keyValueStore = get(),
             usageAnalytics = get(),
-            projectRepository = get(),
+            projectDataSourceFactory = get(),
             getProjectTimeSince = getProjectTimeSince,
             clockIn = clockIn,
             clockOut = clockOut,

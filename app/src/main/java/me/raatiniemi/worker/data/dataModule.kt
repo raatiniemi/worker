@@ -19,12 +19,15 @@ package me.raatiniemi.worker.data
 import androidx.room.Room
 import me.raatiniemi.worker.data.migrations.Migration1To2
 import me.raatiniemi.worker.data.migrations.Migration2To3
+import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.usecase.countProjects
+import me.raatiniemi.worker.domain.usecase.findProjects
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 
@@ -52,5 +55,13 @@ val dataModule = module {
         val database: Database = get()
 
         TimeReportRoomRepository(database.timeReport(), database.timeIntervals())
+    }
+
+    single {
+        val repository = get<ProjectRepository>()
+        val countProjects = countProjects(repository)
+        val findProjects = findProjects(repository)
+
+        ProjectDataSourceFactory(countProjects, findProjects)
     }
 }

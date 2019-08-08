@@ -28,7 +28,6 @@ import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.usecase.ClockIn
 import me.raatiniemi.worker.domain.usecase.ClockOut
 import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince
@@ -49,7 +48,7 @@ import java.util.*
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    projectRepository: ProjectRepository,
+    projectDataSourceFactory: ProjectDataSourceFactory,
     private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
@@ -73,9 +72,6 @@ internal class AllProjectsViewModel(
 
     val projects: LiveData<PagedList<ProjectsItem>>
 
-    private val factory = ProjectDataSourceFactory(projectRepository)
-        .map { buildProjectsItem(it) }
-
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
 
     init {
@@ -84,6 +80,7 @@ internal class AllProjectsViewModel(
             .setEnablePlaceholders(true)
             .build()
 
+        val factory = projectDataSourceFactory.map(::buildProjectsItem)
         projects = LivePagedListBuilder(factory, config).build()
     }
 
