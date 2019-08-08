@@ -44,8 +44,8 @@ import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 internal class TimeReportViewModel internal constructor(
-    private val usageAnalytics: UsageAnalytics,
     private val keyValueStore: KeyValueStore,
+    private val usageAnalytics: UsageAnalytics,
     timeReportDataSourceFactory: TimeReportDataSourceFactory,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime

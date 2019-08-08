@@ -36,6 +36,7 @@ import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
+import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -50,13 +51,12 @@ class TimeReportViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
+    private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
 
     private lateinit var countTimeReports: CountTimeReports
     private lateinit var findTimeReports: FindTimeReports
-
-    private val keyValueStore = InMemoryKeyValueStore()
 
     private lateinit var timeIntervalRepository: TimeIntervalRepository
 
@@ -79,8 +79,8 @@ class TimeReportViewModelTest {
         )
 
         vm = TimeReportViewModel(
-            usageAnalytics,
             keyValueStore,
+            usageAnalytics,
             timeReportDataSourceFactory,
             MarkRegisteredTime(timeIntervalRepository),
             RemoveTime(timeIntervalRepository)

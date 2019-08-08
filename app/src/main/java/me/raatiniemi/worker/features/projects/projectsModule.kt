@@ -66,8 +66,8 @@ val projectsModule = module {
 
     viewModel {
         TimeReportViewModel(
-            usageAnalytics = get(),
             keyValueStore = get(),
+            usageAnalytics = get(),
             timeReportDataSourceFactory = get(),
             markRegisteredTime = MarkRegisteredTime(get()),
             removeTime = RemoveTime(get())
