@@ -18,20 +18,14 @@ package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.domain.usecase.countTimeReports
-import me.raatiniemi.worker.domain.usecase.findTimeReports
+import me.raatiniemi.worker.domain.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.usecase.FindTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
-import me.raatiniemi.worker.util.KeyValueStore
 
 internal class TimeReportDataSourceFactory(
     private val projectProvider: ProjectProvider,
-    private val keyValueStore: KeyValueStore,
-    private val repository: TimeReportRepository
+    private val countTimeReports: CountTimeReports,
+    private val findTimeReports: FindTimeReports
 ) : DataSource.Factory<Int, TimeReportDay>() {
-    override fun create() = TimeReportDataSource(
-        projectProvider,
-        countTimeReports(keyValueStore, repository),
-        findTimeReports(keyValueStore, repository)
-    )
+    override fun create() = TimeReportDataSource(projectProvider, countTimeReports, findTimeReports)
 }

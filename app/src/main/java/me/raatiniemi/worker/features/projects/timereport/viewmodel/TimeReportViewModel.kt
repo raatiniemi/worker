@@ -28,11 +28,9 @@ import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.domain.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.usecase.RemoveTime
 import me.raatiniemi.worker.domain.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException
-import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
@@ -47,18 +45,11 @@ import timber.log.Timber
 
 internal class TimeReportViewModel internal constructor(
     private val usageAnalytics: UsageAnalytics,
-    projectProvider: ProjectProvider,
     private val keyValueStore: KeyValueStore,
-    repository: TimeReportRepository,
+    timeReportDataSourceFactory: TimeReportDataSourceFactory,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
-    private val factory = TimeReportDataSourceFactory(
-        projectProvider,
-        keyValueStore,
-        repository
-    )
-
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<Int>()
 
@@ -84,7 +75,7 @@ internal class TimeReportViewModel internal constructor(
             .setEnablePlaceholders(true)
             .build()
 
-        timeReport = LivePagedListBuilder(factory, config).build()
+        timeReport = LivePagedListBuilder(timeReportDataSourceFactory, config).build()
     }
 
     fun reloadTimeReport() {
