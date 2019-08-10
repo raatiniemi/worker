@@ -60,7 +60,7 @@ internal class TimeReportViewModel internal constructor(
             reloadTimeReport()
         }
 
-    val isSelectionActivated: LiveData<Boolean> = _selectedItems.map { isSelectionActivated(it) }
+    val isSelectionActivated: LiveData<Boolean> = _selectedItems.map(::isSelectionActivated)
 
     val timeReport: LiveData<PagedList<TimeReportDay>>
 
