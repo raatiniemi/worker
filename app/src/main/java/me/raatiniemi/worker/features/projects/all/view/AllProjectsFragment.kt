@@ -169,7 +169,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
                     return@launch
                 }
 
-                vm.clockIn(projectsItem.asProject(), date)
+                vm.clockInAt(projectsItem.asProject(), date)
             }
         }
     }

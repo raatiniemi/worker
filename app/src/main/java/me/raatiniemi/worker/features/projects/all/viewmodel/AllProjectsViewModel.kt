@@ -139,7 +139,7 @@ internal class AllProjectsViewModel(
 
         launch {
             if (!item.isActive) {
-                clockIn(item.asProject(), date)
+                clockInAt(item.asProject(), date)
                 return@launch
             }
 
@@ -164,9 +164,9 @@ internal class AllProjectsViewModel(
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
-    suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockInAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockIn(project.id.value, date)
+            clockIn(project, date)
 
             usageAnalytics.log(Event.ProjectClockIn)
             viewActions += AllProjectsViewActions.UpdateNotification(project)

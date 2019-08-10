@@ -17,27 +17,30 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.NewTimeInterval
-import me.raatiniemi.worker.domain.model.ProjectId
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import java.util.*
 
 /**
  * Use case for clocking in.
  */
-class ClockIn(private val timeIntervalRepository: TimeIntervalRepository) {
-    operator fun invoke(projectId: Long, date: Date) {
-        val timeInterval = timeIntervalRepository.findActiveByProjectId(ProjectId(projectId))
-        if (timeInterval != null) {
+class ClockIn(private val repository: TimeIntervalRepository) {
+    operator fun invoke(project: Project, date: Date): TimeInterval.Active {
+        if (isActive(project.id)) {
             throw ActiveProjectException()
         }
 
         val newTimeInterval = NewTimeInterval(
-            projectId = ProjectId(projectId),
+            projectId = project.id,
             start = Milliseconds(date.time)
         )
 
-        timeIntervalRepository.add(newTimeInterval)
+        return repository.add(newTimeInterval)
+    }
+
+    private fun isActive(projectId: ProjectId): Boolean {
+        val timeInterval = repository.findActiveByProjectId(projectId)
+
+        return timeInterval != null
     }
 }

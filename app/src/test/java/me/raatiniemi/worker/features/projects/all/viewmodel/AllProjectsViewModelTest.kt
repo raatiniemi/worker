@@ -184,7 +184,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock in with active project`() {
-        clockIn(android.id.value, Date())
+        clockIn(android, Date())
         val item = ProjectsItem(android, emptyList())
         val date = Date()
 
@@ -211,7 +211,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
-        clockIn(android.id.value, Date())
+        clockIn(android, Date())
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
         val item = getProjectsItem(android, true)
         val date = Date()
@@ -266,10 +266,10 @@ class AllProjectsViewModelTest {
     }
 
     @Test
-    fun `clock in with already active project`() = runBlocking {
-        clockIn(android.id.value, Date())
+    fun `clock in at with already active project`() = runBlocking {
+        clockIn(android, Date())
 
-        vm.clockIn(android, Date())
+        vm.clockInAt(android, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
@@ -277,8 +277,8 @@ class AllProjectsViewModelTest {
     }
 
     @Test
-    fun `clock in project`() = runBlocking {
-        vm.clockIn(android, Date())
+    fun `clock in at project`() = runBlocking {
+        vm.clockInAt(android, Date())
 
         assertEquals(listOf(Event.ProjectClockIn), usageAnalytics.events)
         vm.viewActions.observeNonNull {
@@ -297,7 +297,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        clockIn(android.id.value, Date())
+        clockIn(android, Date())
 
         vm.clockOut(android, Date())
 

@@ -17,7 +17,10 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.model.TimeIntervalId
+import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -39,29 +42,23 @@ class ClockInTest {
     }
 
     @Test(expected = ActiveProjectException::class)
-    fun execute_withActiveTime() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-
-        clockIn(android.id.value, Date())
+    fun `clock in with active project`() {
+        clockIn(android, Date())
+        clockIn(android, Date())
     }
 
     @Test
-    fun execute() {
+    fun `clock in`() {
         val date = Date()
-        val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(date.time)
-            }
-        )
+        val expected = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(date.time)
+        }
 
-        clockIn(android.id.value, date)
+        val actual = clockIn(android, date)
 
-        val actual = repository.findAll(android, Milliseconds.empty)
+        val timeIntervals = repository.findAll(android, Milliseconds.empty)
+        assertEquals(listOf(expected), timeIntervals)
         assertEquals(expected, actual)
     }
 }
