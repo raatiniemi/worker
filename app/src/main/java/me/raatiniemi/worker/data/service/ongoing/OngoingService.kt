@@ -18,9 +18,8 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.app.IntentService
 import android.app.Notification
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
+import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
@@ -36,8 +35,8 @@ abstract class OngoingService internal constructor(name: String) : IntentService
     private val eventBus: EventBus = EventBus.getDefault()
     private val keyValueStore: KeyValueStore by inject()
 
-    private val notificationManager: NotificationManager by lazy {
-        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager: NotificationManagerCompat by lazy {
+        NotificationManagerCompat.from(applicationContext)
     }
 
     protected val isOngoingNotificationEnabled: Boolean by lazy {

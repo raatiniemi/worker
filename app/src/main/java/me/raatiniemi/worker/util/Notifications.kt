@@ -24,7 +24,9 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.res.Resources
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.R
+import timber.log.Timber
 
 class Notifications {
     companion object {
@@ -38,6 +40,16 @@ class Notifications {
 
         fun isOngoingChannelDisabled(notificationManager: NotificationManager): Boolean {
             val channel = notificationManager.getNotificationChannel(ongoingId)
+
+            return NotificationManager.IMPORTANCE_NONE == channel.importance
+        }
+
+        fun isOngoingChannelDisabled(notificationManager: NotificationManagerCompat): Boolean {
+            val channel = notificationManager.getNotificationChannel(ongoingId)
+            if (channel == null) {
+                Timber.d("Notification channels are not available for device")
+                return false
+            }
 
             return NotificationManager.IMPORTANCE_NONE == channel.importance
         }
