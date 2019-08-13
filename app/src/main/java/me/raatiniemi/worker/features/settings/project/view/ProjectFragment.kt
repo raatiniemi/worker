@@ -16,11 +16,10 @@
 
 package me.raatiniemi.worker.features.settings.project.view
 
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Observer
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
@@ -41,13 +40,8 @@ class ProjectFragment : PreferenceFragmentCompat() {
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean by lazy {
-        try {
-            val nm =
-                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            return@lazy !Notifications.isOngoingChannelDisabled(nm)
-        } catch (e: ClassCastException) {
-            return@lazy true
-        }
+        val notificationManager = NotificationManagerCompat.from(requireContext())
+        !Notifications.isOngoingChannelDisabled(notificationManager)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

@@ -38,12 +38,6 @@ class Notifications {
             notificationManager.createNotificationChannel(channel)
         }
 
-        fun isOngoingChannelDisabled(notificationManager: NotificationManager): Boolean {
-            val channel = notificationManager.getNotificationChannel(ongoingId)
-
-            return NotificationManager.IMPORTANCE_NONE == channel.importance
-        }
-
         fun isOngoingChannelDisabled(notificationManager: NotificationManagerCompat): Boolean {
             val channel = notificationManager.getNotificationChannel(ongoingId)
             if (channel == null) {
