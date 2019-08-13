@@ -148,7 +148,7 @@ internal class AllProjectsViewModel(
                 return@launch
             }
 
-            clockOut(item.asProject(), date)
+            clockOutAt(item.asProject(), date)
         }
     }
 
@@ -177,9 +177,9 @@ internal class AllProjectsViewModel(
         }
     }
 
-    suspend fun clockOut(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOutAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockOut(project.id.value, date)
+            clockOut(project, date)
 
             usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)

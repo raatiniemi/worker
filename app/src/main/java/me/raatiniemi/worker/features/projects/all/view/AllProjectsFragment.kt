@@ -157,7 +157,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         launch {
             val confirmAction = ConfirmClockOutDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
-                vm.clockOut(viewAction.item.asProject(), viewAction.date)
+                vm.clockOutAt(viewAction.item.asProject(), viewAction.date)
             }
         }
 
@@ -165,7 +165,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         viewAction.action(childFragmentManager) { projectsItem, date ->
             launch {
                 if (projectsItem.isActive) {
-                    vm.clockOut(projectsItem.asProject(), date)
+                    vm.clockOutAt(projectsItem.asProject(), date)
                     return@launch
                 }
 

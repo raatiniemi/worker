@@ -18,7 +18,9 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.usecase.ClockOut
+import me.raatiniemi.worker.domain.usecase.GetProject
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -27,28 +29,28 @@ import java.util.*
 
 internal class ClockOutService : OngoingService("ClockOutService") {
     private val usageAnalytics: UsageAnalytics by inject()
+    private val getProject: GetProject by inject()
     private val clockOut: ClockOut by inject()
 
     override fun onHandleIntent(intent: Intent?) {
         try {
             val projectId = getProjectId(intent)
+            val project = getProject(projectId)
 
-            clockOut(projectId)
+            clockOut(project)
 
             updateUserInterface(projectId)
             dismissNotification(projectId)
+        } catch (e: InactiveProjectException) {
+            Timber.w(e, "Clock out service called with inactive project")
         } catch (e: Exception) {
             Timber.e(e, "Unable to clock out project")
         }
     }
 
-    private fun clockOut(projectId: Long) {
-        try {
-            clockOut(projectId, Date())
+    private fun clockOut(project: Project) {
+        clockOut(project, Date())
 
-            usageAnalytics.log(Event.NotificationClockOut)
-        } catch (e: InactiveProjectException) {
-            Timber.w(e, "Clock out service called with inactive project")
-        }
+        usageAnalytics.log(Event.NotificationClockOut)
     }
 }

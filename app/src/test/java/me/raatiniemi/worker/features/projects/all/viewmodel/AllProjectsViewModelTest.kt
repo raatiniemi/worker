@@ -288,7 +288,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock out without active project`() = runBlocking {
-        vm.clockOut(android, Date())
+        vm.clockOutAt(android, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
@@ -299,7 +299,7 @@ class AllProjectsViewModelTest {
     fun `clock out project`() = runBlocking {
         clockIn(android, Date())
 
-        vm.clockOut(android, Date())
+        vm.clockOutAt(android, Date())
 
         assertEquals(listOf(Event.ProjectClockOut), usageAnalytics.events)
         vm.viewActions.observeNonNull {
