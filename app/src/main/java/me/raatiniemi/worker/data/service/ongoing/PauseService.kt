@@ -30,8 +30,8 @@ import java.util.*
 
 internal class PauseService : OngoingService("PauseService") {
     private val usageAnalytics: UsageAnalytics by inject()
-    private val clockOut: ClockOut by inject()
     private val getProject: GetProject by inject()
+    private val clockOut: ClockOut by inject()
 
     override fun onHandleIntent(intent: Intent?) {
         try {
@@ -52,7 +52,7 @@ internal class PauseService : OngoingService("PauseService") {
     }
 
     private fun clockOut(project: Project) {
-        clockOut(project.id.value, Date())
+        clockOut(project, Date())
 
         usageAnalytics.log(Event.NotificationClockOut)
     }

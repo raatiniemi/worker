@@ -17,9 +17,13 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.minus
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -32,50 +36,41 @@ import java.util.*
 @RunWith(JUnit4::class)
 class ClockOutTest {
     private lateinit var repository: TimeIntervalRepository
+    private lateinit var clockIn: ClockIn
     private lateinit var clockOut: ClockOut
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
+        clockIn = ClockIn(repository)
         clockOut = ClockOut(repository)
     }
 
     @Test(expected = InactiveProjectException::class)
     fun `clock out with inactive project`() {
-        clockOut(android.id.value, Date())
+        clockOut(android, Date())
     }
 
     @Test(expected = ClockOutBeforeClockInException::class)
     fun `clock out with date before clock in`() {
         val date = Date()
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(date.time) + 1.hours
-            }
-        )
+        clockIn(android, date + 1.hours)
 
-        clockOut(android.id.value, date)
+        clockOut(android, date)
     }
 
     @Test
     fun `clock out with active project`() {
         val date = Date()
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(1)
-                builder.stop = Milliseconds(date.time)
-            }
-        )
+        val timeInterval = clockIn(android, date - 1.hours)
+        val expected = timeInterval(timeInterval) { builder ->
+            builder.stop = Milliseconds(date.time)
+        }
 
-        clockOut(android.id.value, date)
+        val actual = clockOut(android, date)
 
-        val actual = repository.findAll(android, Milliseconds(0))
+        val timeIntervals = repository.findAll(android, Milliseconds(0))
+        assertEquals(listOf(expected), timeIntervals)
         assertEquals(expected, actual)
     }
 }

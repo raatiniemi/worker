@@ -28,7 +28,6 @@ import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.usecase.ClockIn
 import me.raatiniemi.worker.domain.usecase.ClockOut
 import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince
@@ -49,7 +48,7 @@ import java.util.*
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    projectRepository: ProjectRepository,
+    projectDataSourceFactory: ProjectDataSourceFactory,
     private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
@@ -73,9 +72,6 @@ internal class AllProjectsViewModel(
 
     val projects: LiveData<PagedList<ProjectsItem>>
 
-    private val factory = ProjectDataSourceFactory(projectRepository)
-        .map { buildProjectsItem(it) }
-
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
 
     init {
@@ -84,6 +80,7 @@ internal class AllProjectsViewModel(
             .setEnablePlaceholders(true)
             .build()
 
+        val factory = projectDataSourceFactory.map(::buildProjectsItem)
         projects = LivePagedListBuilder(factory, config).build()
     }
 
@@ -142,7 +139,7 @@ internal class AllProjectsViewModel(
 
         launch {
             if (!item.isActive) {
-                clockIn(item.asProject(), date)
+                clockInAt(item.asProject(), date)
                 return@launch
             }
 
@@ -151,7 +148,7 @@ internal class AllProjectsViewModel(
                 return@launch
             }
 
-            clockOut(item.asProject(), date)
+            clockOutAt(item.asProject(), date)
         }
     }
 
@@ -167,9 +164,9 @@ internal class AllProjectsViewModel(
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
-    suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockInAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockIn(project.id.value, date)
+            clockIn(project, date)
 
             usageAnalytics.log(Event.ProjectClockIn)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
@@ -180,9 +177,9 @@ internal class AllProjectsViewModel(
         }
     }
 
-    suspend fun clockOut(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOutAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockOut(project.id.value, date)
+            clockOut(project, date)
 
             usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)

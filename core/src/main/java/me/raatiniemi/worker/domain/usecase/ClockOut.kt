@@ -18,20 +18,32 @@ package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.ProjectId
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import java.util.*
 
 /**
  * Use case for clocking out.
  */
-class ClockOut(private val timeIntervalRepository: TimeIntervalRepository) {
-    operator fun invoke(projectId: Long, date: Date) {
-        val timeInterval = timeIntervalRepository.findActiveByProjectId(ProjectId(projectId))
-            ?: throw InactiveProjectException()
+class ClockOut(private val repository: TimeIntervalRepository) {
+    operator fun invoke(project: Project, date: Date): TimeInterval.Inactive {
+        val active = findActiveTimeInterval(project)
 
-        timeIntervalRepository.update(
-            timeInterval.clockOut(stop = Milliseconds(date.time))
-        )
+        return clockOut(active, date)
+    }
+
+    private fun findActiveTimeInterval(project: Project): TimeInterval.Active {
+        return repository.findActiveByProjectId(project.id)
+            ?: throw InactiveProjectException()
+    }
+
+    private fun clockOut(active: TimeInterval.Active, date: Date): TimeInterval.Inactive {
+        val inactive = active.clockOut(stop = Milliseconds(date.time))
+
+        return when (val timeInterval = repository.update(inactive)) {
+            is TimeInterval.Inactive -> timeInterval
+            else -> throw InvalidStateForTimeIntervalException()
+        }
     }
 }

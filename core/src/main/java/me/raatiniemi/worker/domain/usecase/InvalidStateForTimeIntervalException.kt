@@ -14,16 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects.datasource
+package me.raatiniemi.worker.domain.usecase
 
-import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.usecase.CountProjects
-import me.raatiniemi.worker.domain.usecase.FindProjects
-
-internal class ProjectDataSourceFactory(
-    private val countProjects: CountProjects,
-    private val findProjects: FindProjects
-) : DataSource.Factory<Int, Project>() {
-    override fun create() = ProjectDataSource(countProjects, findProjects)
-}
+class InvalidStateForTimeIntervalException internal constructor() : RuntimeException()

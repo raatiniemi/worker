@@ -51,7 +51,7 @@ internal class ResumeService : OngoingService("ResumeService") {
 
     private fun clockIn(project: Project) {
         try {
-            clockIn(project.id.value, Date())
+            clockIn(project, Date())
 
             usageAnalytics.log(Event.NotificationClockIn)
         } catch (e: ActiveProjectException) {

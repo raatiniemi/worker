@@ -18,12 +18,15 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
+import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.*
-import me.raatiniemi.worker.domain.repository.*
-import me.raatiniemi.worker.domain.usecase.MarkRegisteredTime
-import me.raatiniemi.worker.domain.usecase.RemoveTime
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
+import me.raatiniemi.worker.domain.repository.resetToStartOfDay
+import me.raatiniemi.worker.domain.usecase.*
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
@@ -33,6 +36,7 @@ import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
+import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -47,26 +51,37 @@ class TimeReportViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
+    private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
 
-    private val keyValueStore = InMemoryKeyValueStore()
+    private lateinit var countTimeReports: CountTimeReports
+    private lateinit var findTimeReports: FindTimeReports
 
-    private lateinit var timeReportRepository: TimeReportRepository
     private lateinit var timeIntervalRepository: TimeIntervalRepository
+
+    private lateinit var timeReportDataSourceFactory: TimeReportDataSourceFactory
 
     private lateinit var vm: TimeReportViewModel
 
     @Before
     fun setUp() {
         timeIntervalRepository = TimeIntervalInMemoryRepository()
-        timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
+        val timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
+
+        countTimeReports = countTimeReports(keyValueStore, timeReportRepository)
+        findTimeReports = findTimeReports(keyValueStore, timeReportRepository)
+
+        timeReportDataSourceFactory = TimeReportDataSourceFactory(
+            projectHolder,
+            countTimeReports,
+            findTimeReports
+        )
 
         vm = TimeReportViewModel(
-            usageAnalytics,
-            projectHolder,
             keyValueStore,
-            timeReportRepository,
+            usageAnalytics,
+            timeReportDataSourceFactory,
             MarkRegisteredTime(timeIntervalRepository),
             RemoveTime(timeIntervalRepository)
         )
