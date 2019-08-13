@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
-import android.app.NotificationManager
 import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -136,12 +136,7 @@ internal sealed class AllProjectsViewActions {
     data class DismissNotification(val project: Project) : AllProjectsViewActions(),
         ContextViewAction {
         override fun action(context: Context) {
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            if (notificationManager == null) {
-                Timber.w("Unable to get notification manager from context")
-                return
-            }
-
+            val notificationManager = NotificationManagerCompat.from(context)
             notificationManager.cancel(
                 project.id.value.toString(),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID
