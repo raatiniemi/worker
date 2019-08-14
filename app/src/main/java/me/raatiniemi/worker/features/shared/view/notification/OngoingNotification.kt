@@ -28,7 +28,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.util.Notifications
+import me.raatiniemi.worker.notifications.Notifications
 import me.raatiniemi.worker.util.OngoingUriCommunicator
 
 internal abstract class OngoingNotification(

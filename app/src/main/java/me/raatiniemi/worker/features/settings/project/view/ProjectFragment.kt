@@ -31,7 +31,7 @@ import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.Notifications
+import me.raatiniemi.worker.notifications.Notifications
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 

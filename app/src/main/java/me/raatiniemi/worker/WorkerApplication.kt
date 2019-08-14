@@ -24,7 +24,7 @@ import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import me.raatiniemi.worker.monitor.monitorModule
-import me.raatiniemi.worker.util.Notifications
+import me.raatiniemi.worker.notifications.Notifications
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree

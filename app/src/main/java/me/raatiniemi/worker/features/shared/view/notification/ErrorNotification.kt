@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.shared.view.notification
 import android.app.Notification
 import android.content.Context
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.util.Notifications
+import me.raatiniemi.worker.notifications.Notifications
 
 object ErrorNotification {
     private const val SMALL_ICON = R.drawable.ic_error_notification

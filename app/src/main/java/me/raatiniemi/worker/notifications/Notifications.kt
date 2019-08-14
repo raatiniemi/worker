@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 
 @file:JvmName("Notifications")
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.notifications
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -64,7 +64,10 @@ class Notifications {
         }
 
         fun ongoingBuilder(context: Context): NotificationCompat.Builder {
-            return NotificationCompat.Builder(context, ongoingId)
+            return NotificationCompat.Builder(
+                context,
+                ongoingId
+            )
         }
     }
 }
