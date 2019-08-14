@@ -34,7 +34,10 @@ class Notifications {
         private const val ongoingTitle = R.string.ongoing_notification_channel_title
         private const val ongoingDescription = R.string.ongoing_notification_channel_description
 
-        fun createChannel(notificationManager: NotificationManager, channel: NotificationChannel) {
+        fun createChannel(
+            notificationManager: NotificationManagerCompat,
+            channel: NotificationChannel
+        ) {
             notificationManager.createNotificationChannel(channel)
         }
 

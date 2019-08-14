@@ -17,8 +17,7 @@
 package me.raatiniemi.worker
 
 import android.app.Application
-import android.app.NotificationManager
-import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.features.projects.projectsModule
@@ -31,9 +30,6 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 open class WorkerApplication : Application() {
-    private val notificationManager: NotificationManager
-        get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
     internal open val isUnitTesting: Boolean
         get() = false
 
@@ -69,17 +65,8 @@ open class WorkerApplication : Application() {
     }
 
     private fun registerNotificationChannel() {
-        try {
-            val notificationManager = notificationManager
-            Notifications.createChannel(
-                notificationManager,
-                Notifications.ongoingChannel(resources)
-            )
-        } catch (e: ClassCastException) {
-            Timber.e(e, "Unable to register notification channel")
-        } catch (e: NullPointerException) {
-            Timber.e(e, "Unable to register notification channel")
-        }
+        val notificationManager = NotificationManagerCompat.from(this)
+        Notifications.createChannel(notificationManager, Notifications.ongoingChannel(resources))
     }
 
     companion object {
