@@ -23,7 +23,7 @@ import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.notifications.Notifications
+import me.raatiniemi.worker.notifications.isOngoingChannelDisabled
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.OngoingUriCommunicator
@@ -60,7 +60,7 @@ abstract class OngoingService internal constructor(name: String) : IntentService
 
     protected fun sendOrDismissOngoingNotification(project: Project, producer: () -> Notification) {
         if (isOngoingNotificationEnabled) {
-            if (!Notifications.isOngoingChannelDisabled(notificationManager)) {
+            if (!isOngoingChannelDisabled(applicationContext)) {
                 sendNotification(project.id.value, producer())
                 return
             }

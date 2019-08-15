@@ -32,6 +32,7 @@ import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.notifications.Notifications
+import me.raatiniemi.worker.notifications.isOngoingChannelDisabled
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -40,8 +41,7 @@ class ProjectFragment : PreferenceFragmentCompat() {
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean by lazy {
-        val notificationManager = NotificationManagerCompat.from(requireContext())
-        !Notifications.isOngoingChannelDisabled(notificationManager)
+        !isOngoingChannelDisabled(requireContext())
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

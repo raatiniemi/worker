@@ -26,27 +26,32 @@ import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.R
 import timber.log.Timber
 
+private const val ongoingId = "ongoing"
+
 internal fun Context.createNotificationChannel(channel: NotificationChannel) {
     val notificationManager = NotificationManagerCompat.from(this)
 
     notificationManager.createNotificationChannel(channel)
 }
 
+private fun isNotificationChannelDisabled(context: Context, channelId: String): Boolean {
+    val notificationManager = NotificationManagerCompat.from(context)
+    val channel = notificationManager.getNotificationChannel(channelId)
+    if (channel == null) {
+        Timber.d("Notification channels are not available for device")
+        return false
+    }
+
+    return NotificationManager.IMPORTANCE_NONE == channel.importance
+}
+
+internal fun isOngoingChannelDisabled(context: Context): Boolean =
+    isNotificationChannelDisabled(context, ongoingId)
+
 class Notifications {
     companion object {
-        private const val ongoingId = "ongoing"
         private const val ongoingTitle = R.string.ongoing_notification_channel_title
         private const val ongoingDescription = R.string.ongoing_notification_channel_description
-
-        fun isOngoingChannelDisabled(notificationManager: NotificationManagerCompat): Boolean {
-            val channel = notificationManager.getNotificationChannel(ongoingId)
-            if (channel == null) {
-                Timber.d("Notification channels are not available for device")
-                return false
-            }
-
-            return NotificationManager.IMPORTANCE_NONE == channel.importance
-        }
 
         fun ongoingChannel(resources: Resources): NotificationChannel {
             val channel = NotificationChannel(
