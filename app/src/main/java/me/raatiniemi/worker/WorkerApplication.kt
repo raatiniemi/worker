@@ -17,7 +17,6 @@
 package me.raatiniemi.worker
 
 import android.app.Application
-import androidx.core.app.NotificationManagerCompat
 import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.features.projects.projectsModule
@@ -25,6 +24,7 @@ import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import me.raatiniemi.worker.monitor.monitorModule
 import me.raatiniemi.worker.notifications.Notifications
+import me.raatiniemi.worker.notifications.createNotificationChannel
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -65,8 +65,7 @@ open class WorkerApplication : Application() {
     }
 
     private fun registerNotificationChannel() {
-        val notificationManager = NotificationManagerCompat.from(this)
-        Notifications.createChannel(notificationManager, Notifications.ongoingChannel(resources))
+        createNotificationChannel(Notifications.ongoingChannel(resources))
     }
 
     companion object {

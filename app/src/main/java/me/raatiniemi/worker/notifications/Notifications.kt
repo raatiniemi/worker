@@ -26,18 +26,17 @@ import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.R
 import timber.log.Timber
 
+internal fun Context.createNotificationChannel(channel: NotificationChannel) {
+    val notificationManager = NotificationManagerCompat.from(this)
+
+    notificationManager.createNotificationChannel(channel)
+}
+
 class Notifications {
     companion object {
         private const val ongoingId = "ongoing"
         private const val ongoingTitle = R.string.ongoing_notification_channel_title
         private const val ongoingDescription = R.string.ongoing_notification_channel_description
-
-        fun createChannel(
-            notificationManager: NotificationManagerCompat,
-            channel: NotificationChannel
-        ) {
-            notificationManager.createNotificationChannel(channel)
-        }
 
         fun isOngoingChannelDisabled(notificationManager: NotificationManagerCompat): Boolean {
             val channel = notificationManager.getNotificationChannel(ongoingId)
