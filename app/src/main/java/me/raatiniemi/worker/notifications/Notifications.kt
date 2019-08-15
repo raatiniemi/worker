@@ -59,13 +59,6 @@ internal fun Context.buildOngoingChannel(): NotificationChannel {
     return channel
 }
 
-class Notifications {
-    companion object {
-        fun ongoingBuilder(context: Context): NotificationCompat.Builder {
-            return NotificationCompat.Builder(
-                context,
-                ongoingId
-            )
-        }
-    }
+internal fun ongoingBuilder(context: Context): NotificationCompat.Builder {
+    return NotificationCompat.Builder(context, ongoingId)
 }

@@ -28,7 +28,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.notifications.Notifications
+import me.raatiniemi.worker.notifications.ongoingBuilder
 import me.raatiniemi.worker.util.OngoingUriCommunicator
 
 internal abstract class OngoingNotification(
@@ -46,7 +46,7 @@ internal abstract class OngoingNotification(
     protected abstract val whenForChronometer: Long
 
     init {
-        builder = Notifications.ongoingBuilder(context)
+        builder = ongoingBuilder(context)
             .setContentTitle(project.name.value)
             .setContentIntent(buildContentAction())
             .setOngoing(isOngoing)
