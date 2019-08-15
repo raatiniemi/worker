@@ -22,11 +22,11 @@ import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.ongoing.model.OngoingUriCommunicator
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.OngoingUriCommunicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.inject
 import timber.log.Timber

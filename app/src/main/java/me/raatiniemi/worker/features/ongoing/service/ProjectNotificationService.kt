@@ -22,8 +22,8 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
 import me.raatiniemi.worker.domain.usecase.GetProject
 import me.raatiniemi.worker.domain.usecase.IsProjectActive
+import me.raatiniemi.worker.features.ongoing.model.OngoingUriCommunicator
 import me.raatiniemi.worker.features.ongoing.view.PauseNotification
-import me.raatiniemi.worker.util.OngoingUriCommunicator
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
