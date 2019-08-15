@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service.ongoing
+package me.raatiniemi.worker.features.ongoing.service
 
 import android.app.IntentService
 import android.app.Notification

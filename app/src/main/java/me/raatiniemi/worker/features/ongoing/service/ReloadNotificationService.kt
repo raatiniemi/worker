@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,14 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service.ongoing
+package me.raatiniemi.worker.features.ongoing.service
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
 import me.raatiniemi.worker.domain.usecase.FindActiveProjects
-import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
+import me.raatiniemi.worker.features.ongoing.view.PauseNotification
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 

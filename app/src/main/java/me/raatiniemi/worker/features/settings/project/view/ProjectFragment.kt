@@ -24,8 +24,8 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.data.service.ongoing.DismissOngoingNotificationsService
-import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
+import me.raatiniemi.worker.features.ongoing.service.DismissOngoingNotificationsService
+import me.raatiniemi.worker.features.ongoing.service.ReloadNotificationService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange

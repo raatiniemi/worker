@@ -36,27 +36,27 @@
         </activity>
 
         <service
-            android:name=".data.service.ongoing.PauseService"
+            android:name=".features.ongoing.service.PauseService"
             android:exported="false" />
 
         <service
-            android:name=".data.service.ongoing.ClockOutService"
+            android:name=".features.ongoing.service.ClockOutService"
             android:exported="false" />
 
         <service
-            android:name=".data.service.ongoing.ResumeService"
+            android:name=".features.ongoing.service.ResumeService"
             android:exported="false" />
 
         <service
-            android:name=".data.service.ongoing.ReloadNotificationService"
+            android:name=".features.ongoing.service.ReloadNotificationService"
             android:exported="false" />
 
         <service
-            android:name=".data.service.ongoing.DismissOngoingNotificationsService"
+            android:name=".features.ongoing.service.DismissOngoingNotificationsService"
             android:exported="false" />
 
         <service
-            android:name=".data.service.ongoing.ProjectNotificationService"
+            android:name=".features.ongoing.service.ProjectNotificationService"
             android:exported="false" />
 
         <meta-data
