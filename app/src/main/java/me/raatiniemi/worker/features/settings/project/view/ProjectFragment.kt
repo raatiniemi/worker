@@ -28,9 +28,9 @@ import me.raatiniemi.worker.features.ongoing.service.DismissOngoingNotifications
 import me.raatiniemi.worker.features.ongoing.service.ReloadNotificationService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
+import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.notifications.isOngoingChannelDisabled
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 

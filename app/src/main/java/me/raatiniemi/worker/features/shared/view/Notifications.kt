@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.notifications
+package me.raatiniemi.worker.features.shared.view
 
 import android.app.Notification
 import android.app.NotificationChannel

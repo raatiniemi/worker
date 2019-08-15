@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.notifications.isOngoingChannelDisabled
+import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.OngoingUriCommunicator

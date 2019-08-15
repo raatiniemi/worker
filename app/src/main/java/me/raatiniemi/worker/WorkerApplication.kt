@@ -21,10 +21,10 @@ import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
+import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
+import me.raatiniemi.worker.features.shared.view.createNotificationChannel
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import me.raatiniemi.worker.monitor.monitorModule
-import me.raatiniemi.worker.notifications.buildOngoingChannel
-import me.raatiniemi.worker.notifications.createNotificationChannel
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
