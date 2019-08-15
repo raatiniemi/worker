@@ -20,7 +20,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.res.Resources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.R
@@ -48,23 +47,20 @@ private fun isNotificationChannelDisabled(context: Context, channelId: String): 
 internal fun isOngoingChannelDisabled(context: Context): Boolean =
     isNotificationChannelDisabled(context, ongoingId)
 
+internal fun Context.buildOngoingChannel(): NotificationChannel {
+    val channel = NotificationChannel(
+        ongoingId,
+        resources.getString(R.string.ongoing_notification_channel_title),
+        NotificationManager.IMPORTANCE_LOW
+    )
+    channel.description = resources.getString(R.string.ongoing_notification_channel_description)
+    channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+
+    return channel
+}
+
 class Notifications {
     companion object {
-        private const val ongoingTitle = R.string.ongoing_notification_channel_title
-        private const val ongoingDescription = R.string.ongoing_notification_channel_description
-
-        fun ongoingChannel(resources: Resources): NotificationChannel {
-            val channel = NotificationChannel(
-                ongoingId,
-                resources.getString(ongoingTitle),
-                NotificationManager.IMPORTANCE_LOW
-            )
-            channel.description = resources.getString(ongoingDescription)
-            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-
-            return channel
-        }
-
         fun ongoingBuilder(context: Context): NotificationCompat.Builder {
             return NotificationCompat.Builder(
                 context,
