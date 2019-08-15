@@ -14,8 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@file:JvmName("Notifications")
-
 package me.raatiniemi.worker.notifications
 
 import android.app.Notification
