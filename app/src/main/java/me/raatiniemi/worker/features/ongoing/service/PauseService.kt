@@ -40,7 +40,7 @@ internal class PauseService : OngoingService("PauseService") {
 
             clockOut(project)
 
-            updateUserInterface(projectId)
+            updateUserInterface(project)
             sendOrDismissResumeNotification(project)
         } catch (e: InactiveProjectException) {
             Timber.w(e, "Pause service called with inactive project")

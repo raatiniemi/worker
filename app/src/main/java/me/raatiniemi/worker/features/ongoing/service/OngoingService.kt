@@ -86,9 +86,7 @@ abstract class OngoingService internal constructor(name: String) : IntentService
         )
     }
 
-    protected fun updateUserInterface(projectId: Long) {
-        eventBus.post(
-            OngoingNotificationActionEvent(projectId)
-        )
+    protected fun updateUserInterface(project: Project) {
+        eventBus.post(OngoingNotificationActionEvent(project))
     }
 }

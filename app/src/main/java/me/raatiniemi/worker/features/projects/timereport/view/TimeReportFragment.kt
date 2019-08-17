@@ -225,8 +225,8 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        if (projectHolder.value?.id?.value == event.projectId) {
+    internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
+        if (projectHolder.value == event.project) {
             vm.reloadTimeReport()
             return
         }
