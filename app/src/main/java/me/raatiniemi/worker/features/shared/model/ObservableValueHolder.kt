@@ -20,10 +20,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 internal open class ObservableValueHolder<T> : ObservableValueProvider<T> {
-    private val _value = MutableLiveData<T>()
-    override val value: LiveData<T> = _value
+    private val _observable = MutableLiveData<T>()
+    override val observable: LiveData<T> = _observable
 
     operator fun plusAssign(value: T) {
-        _value += value
+        _observable += value
     }
 }

@@ -29,7 +29,7 @@ internal class TimeReportDataSource(
     private val findTimeReports: FindTimeReports
 ) : PositionalDataSource<TimeReportDay>() {
     private val project: Project?
-        get() = projectProvider.value.run {
+        get() = projectProvider.observable.run {
             val project = value
             if (project == null) {
                 Timber.w("No project is available from `ProjectHolder`")

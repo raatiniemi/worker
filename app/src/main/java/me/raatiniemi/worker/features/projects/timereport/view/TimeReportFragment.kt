@@ -72,7 +72,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
             id = ProjectId(arguments.projectId),
             name = projectName(arguments.projectName)
         )
-        projectHolder.value.observe(this, Observer {
+        projectHolder.observable.observe(this, Observer {
             setTitle(it.name.value)
         })
     }
@@ -226,7 +226,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        projectHolder.value.run {
+        projectHolder.observable.run {
             if (value?.id?.value == event.projectId) {
                 vm.reloadTimeReport()
                 return@run
