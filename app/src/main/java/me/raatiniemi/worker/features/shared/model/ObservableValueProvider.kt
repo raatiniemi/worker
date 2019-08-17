@@ -20,4 +20,7 @@ import androidx.lifecycle.LiveData
 
 internal interface ObservableValueProvider<T> {
     val observable: LiveData<T>
+
+    val value: T?
+        get() = observable.value
 }
