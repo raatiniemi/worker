@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service.ongoing
+package me.raatiniemi.worker.features.ongoing.service
 
 import android.content.Intent
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -30,6 +30,6 @@ class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotific
 
     override fun onHandleIntent(intent: Intent?) {
         findAllProjects()
-            .forEach { dismissNotification(it.id.value) }
+            .forEach { dismissNotification(it) }
     }
 }

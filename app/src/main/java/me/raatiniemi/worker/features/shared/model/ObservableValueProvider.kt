@@ -19,5 +19,8 @@ package me.raatiniemi.worker.features.shared.model
 import androidx.lifecycle.LiveData
 
 internal interface ObservableValueProvider<T> {
-    val value: LiveData<T>
+    val observable: LiveData<T>
+
+    val value: T?
+        get() = observable.value
 }

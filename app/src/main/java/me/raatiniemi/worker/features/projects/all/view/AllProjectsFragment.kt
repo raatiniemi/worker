@@ -202,7 +202,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMainThread(event: OngoingNotificationActionEvent) {
+    internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
         vm.reloadProjects()
     }
 

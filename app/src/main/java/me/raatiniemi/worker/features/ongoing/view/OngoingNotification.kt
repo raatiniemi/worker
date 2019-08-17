@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.view.notification
+package me.raatiniemi.worker.features.ongoing.view
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -28,8 +28,8 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.util.Notifications
-import me.raatiniemi.worker.util.OngoingUriCommunicator
+import me.raatiniemi.worker.features.ongoing.model.OngoingUriCommunicator
+import me.raatiniemi.worker.features.shared.view.ongoingBuilder
 
 internal abstract class OngoingNotification(
     val context: Context,
@@ -46,7 +46,7 @@ internal abstract class OngoingNotification(
     protected abstract val whenForChronometer: Long
 
     init {
-        builder = Notifications.ongoingBuilder(context)
+        builder = ongoingBuilder(context)
             .setContentTitle(project.name.value)
             .setContentIntent(buildContentAction())
             .setOngoing(isOngoing)

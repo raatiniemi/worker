@@ -17,23 +17,19 @@
 package me.raatiniemi.worker
 
 import android.app.Application
-import android.app.NotificationManager
-import android.content.Context
 import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
+import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
+import me.raatiniemi.worker.features.shared.view.createNotificationChannel
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import me.raatiniemi.worker.monitor.monitorModule
-import me.raatiniemi.worker.util.Notifications
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 open class WorkerApplication : Application() {
-    private val notificationManager: NotificationManager
-        get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
     internal open val isUnitTesting: Boolean
         get() = false
 
@@ -69,17 +65,7 @@ open class WorkerApplication : Application() {
     }
 
     private fun registerNotificationChannel() {
-        try {
-            val notificationManager = notificationManager
-            Notifications.createChannel(
-                notificationManager,
-                Notifications.ongoingChannel(resources)
-            )
-        } catch (e: ClassCastException) {
-            Timber.e(e, "Unable to register notification channel")
-        } catch (e: NullPointerException) {
-            Timber.e(e, "Unable to register notification channel")
-        }
+        createNotificationChannel(buildOngoingChannel())
     }
 
     companion object {

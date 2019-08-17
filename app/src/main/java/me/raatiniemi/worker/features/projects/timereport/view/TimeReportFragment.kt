@@ -72,7 +72,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
             id = ProjectId(arguments.projectId),
             name = projectName(arguments.projectName)
         )
-        projectHolder.value.observe(this, Observer {
+        projectHolder.observable.observe(this, Observer {
             setTitle(it.name.value)
         })
     }
@@ -225,14 +225,12 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        projectHolder.value.run {
-            if (value?.id?.value == event.projectId) {
-                vm.reloadTimeReport()
-                return@run
-            }
-
-            Timber.d("No need to refresh, event is related to another project")
+    internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
+        if (projectHolder.value == event.project) {
+            vm.reloadTimeReport()
+            return
         }
+
+        Timber.d("No need to refresh, event is related to another project")
     }
 }

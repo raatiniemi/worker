@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service.ongoing
+package me.raatiniemi.worker.features.ongoing.service
 
 import android.app.IntentService
 import android.app.Notification
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
+import androidx.core.app.NotificationManagerCompat
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.ongoing.model.OngoingUriCommunicator
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
+import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.Notifications
-import me.raatiniemi.worker.util.OngoingUriCommunicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -36,8 +35,8 @@ abstract class OngoingService internal constructor(name: String) : IntentService
     private val eventBus: EventBus = EventBus.getDefault()
     private val keyValueStore: KeyValueStore by inject()
 
-    private val notificationManager: NotificationManager by lazy {
-        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager: NotificationManagerCompat by lazy {
+        NotificationManagerCompat.from(applicationContext)
     }
 
     protected val isOngoingNotificationEnabled: Boolean by lazy {
@@ -48,7 +47,7 @@ abstract class OngoingService internal constructor(name: String) : IntentService
         keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
     }
 
-    private fun buildNotificationTag(projectId: Long): String = projectId.toString()
+    private fun buildNotificationTag(project: Project): String = "${project.id.value}"
 
     protected fun getProjectId(intent: Intent?): Long {
         val projectId = OngoingUriCommunicator.parseFrom(intent?.data)
@@ -61,35 +60,33 @@ abstract class OngoingService internal constructor(name: String) : IntentService
 
     protected fun sendOrDismissOngoingNotification(project: Project, producer: () -> Notification) {
         if (isOngoingNotificationEnabled) {
-            if (!Notifications.isOngoingChannelDisabled(notificationManager)) {
-                sendNotification(project.id.value, producer())
+            if (!isOngoingChannelDisabled(applicationContext)) {
+                sendNotification(project, producer())
                 return
             }
 
             Timber.d("Ongoing notification channel is disabled, ignoring notification")
         }
 
-        dismissNotification(project.id.value)
+        dismissNotification(project)
     }
 
-    private fun sendNotification(projectId: Long, notification: Notification) {
+    private fun sendNotification(project: Project, notification: Notification) {
         notificationManager.notify(
-            buildNotificationTag(projectId),
+            buildNotificationTag(project),
             WorkerApplication.NOTIFICATION_ON_GOING_ID,
             notification
         )
     }
 
-    protected fun dismissNotification(projectId: Long) {
+    protected fun dismissNotification(project: Project) {
         notificationManager.cancel(
-            buildNotificationTag(projectId),
+            buildNotificationTag(project),
             WorkerApplication.NOTIFICATION_ON_GOING_ID
         )
     }
 
-    protected fun updateUserInterface(projectId: Long) {
-        eventBus.post(
-            OngoingNotificationActionEvent(projectId)
-        )
+    protected fun updateUserInterface(project: Project) {
+        eventBus.post(OngoingNotificationActionEvent(project))
     }
 }

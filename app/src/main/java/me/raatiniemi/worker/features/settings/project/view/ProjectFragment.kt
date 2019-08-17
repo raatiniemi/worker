@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.features.settings.project.view
 
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -26,13 +24,13 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.data.service.ongoing.DismissOngoingNotificationsService
-import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
+import me.raatiniemi.worker.features.ongoing.service.DismissOngoingNotificationsService
+import me.raatiniemi.worker.features.ongoing.service.ReloadNotificationService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
+import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.Notifications
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -41,13 +39,7 @@ class ProjectFragment : PreferenceFragmentCompat() {
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean by lazy {
-        try {
-            val nm =
-                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            return@lazy !Notifications.isOngoingChannelDisabled(nm)
-        } catch (e: ClassCastException) {
-            return@lazy true
-        }
+        !isOngoingChannelDisabled(requireContext())
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

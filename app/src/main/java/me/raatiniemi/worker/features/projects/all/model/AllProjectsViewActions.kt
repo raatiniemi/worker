@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
-import android.app.NotificationManager
 import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -25,8 +25,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
-import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsFragmentDirections
 import me.raatiniemi.worker.features.projects.all.view.ClockActivityAtFragment
@@ -136,12 +136,7 @@ internal sealed class AllProjectsViewActions {
     data class DismissNotification(val project: Project) : AllProjectsViewActions(),
         ContextViewAction {
         override fun action(context: Context) {
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            if (notificationManager == null) {
-                Timber.w("Unable to get notification manager from context")
-                return
-            }
-
+            val notificationManager = NotificationManagerCompat.from(context)
             notificationManager.cancel(
                 project.id.value.toString(),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID
