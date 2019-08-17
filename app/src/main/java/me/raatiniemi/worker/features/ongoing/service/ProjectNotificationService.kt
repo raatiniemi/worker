@@ -41,7 +41,7 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
                 sendOrDismissPauseNotification(project)
                 return
             }
-            dismissNotification(project.id.value)
+            dismissNotification(project)
         } catch (e: Exception) {
             Timber.e(e, "Unable to update notification for project")
         }

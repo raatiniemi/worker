@@ -47,7 +47,7 @@ abstract class OngoingService internal constructor(name: String) : IntentService
         keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
     }
 
-    private fun buildNotificationTag(projectId: Long): String = projectId.toString()
+    private fun buildNotificationTag(project: Project): String = "${project.id.value}"
 
     protected fun getProjectId(intent: Intent?): Long {
         val projectId = OngoingUriCommunicator.parseFrom(intent?.data)
@@ -61,27 +61,27 @@ abstract class OngoingService internal constructor(name: String) : IntentService
     protected fun sendOrDismissOngoingNotification(project: Project, producer: () -> Notification) {
         if (isOngoingNotificationEnabled) {
             if (!isOngoingChannelDisabled(applicationContext)) {
-                sendNotification(project.id.value, producer())
+                sendNotification(project, producer())
                 return
             }
 
             Timber.d("Ongoing notification channel is disabled, ignoring notification")
         }
 
-        dismissNotification(project.id.value)
+        dismissNotification(project)
     }
 
-    private fun sendNotification(projectId: Long, notification: Notification) {
+    private fun sendNotification(project: Project, notification: Notification) {
         notificationManager.notify(
-            buildNotificationTag(projectId),
+            buildNotificationTag(project),
             WorkerApplication.NOTIFICATION_ON_GOING_ID,
             notification
         )
     }
 
-    protected fun dismissNotification(projectId: Long) {
+    protected fun dismissNotification(project: Project) {
         notificationManager.cancel(
-            buildNotificationTag(projectId),
+            buildNotificationTag(project),
             WorkerApplication.NOTIFICATION_ON_GOING_ID
         )
     }
