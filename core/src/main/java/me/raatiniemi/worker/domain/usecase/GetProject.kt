@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.usecase
 import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
 /**
  * Use case for getting a project.

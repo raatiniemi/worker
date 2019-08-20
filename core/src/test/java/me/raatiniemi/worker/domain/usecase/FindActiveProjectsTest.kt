@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
-import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before

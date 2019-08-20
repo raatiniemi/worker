@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectName
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
 class FindProject(private val repository: ProjectRepository) {
     operator fun invoke(projectName: ProjectName): Project? {

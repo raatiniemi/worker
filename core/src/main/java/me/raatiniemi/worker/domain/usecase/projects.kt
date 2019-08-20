@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
 typealias CountProjects = () -> Int
 typealias FindProjects = (LoadRange) -> List<Project>

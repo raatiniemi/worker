@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
-import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.usecase.*
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions

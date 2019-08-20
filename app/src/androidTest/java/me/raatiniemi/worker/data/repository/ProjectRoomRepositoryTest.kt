@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.*
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

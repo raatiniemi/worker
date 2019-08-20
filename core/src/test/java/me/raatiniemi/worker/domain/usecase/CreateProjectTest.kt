@@ -19,8 +19,8 @@ package me.raatiniemi.worker.domain.usecase
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

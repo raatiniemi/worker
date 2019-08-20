@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class FindActiveProjects(
