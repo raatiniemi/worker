@@ -33,7 +33,10 @@ class ProjectInMemoryRepository : ProjectRepository {
     override fun findAll(loadRange: LoadRange): List<Project> {
         val (position, size) = loadRange
         val fromIndex = indexWithCountCap(position.value, count())
-        val toIndex = indexWithCountCap(position.value + size.value, count())
+        val toIndex = indexWithCountCap(
+            position.value + size.value,
+            count()
+        )
 
         return projects.sortedBy { it.name.value }
             .subList(fromIndex, toIndex)
