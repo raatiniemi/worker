@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.model
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
+import me.raatiniemi.worker.domain.project.usecase.InvalidProjectNameException
 
 fun projectName(value: String?): ProjectName {
     if (value.isNullOrBlank()) {

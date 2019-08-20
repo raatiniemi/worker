@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.model
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
+import me.raatiniemi.worker.domain.project.usecase.InvalidProjectNameException
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
