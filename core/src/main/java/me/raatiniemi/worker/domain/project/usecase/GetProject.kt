@@ -14,14 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.project.usecase
 
+import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.project.model.ProjectName
+import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
-class FindProject(private val repository: ProjectRepository) {
-    operator fun invoke(projectName: ProjectName): Project? {
-        return repository.findByName(projectName)
+/**
+ * Use case for getting a project.
+ */
+class GetProject(private val repository: ProjectRepository) {
+    operator fun invoke(projectId: Long): Project {
+        return repository.findById(ProjectId(projectId)) ?: throw NoProjectException()
     }
 }

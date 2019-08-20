@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,12 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.project.usecase
 
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.project.model.NewProject
-import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.project.model.cli
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -29,32 +28,30 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class RemoveProjectTest {
+class CreateProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var removeProject: RemoveProject
+
+    private lateinit var findProject: FindProject
+    private lateinit var createProject: CreateProject
 
     @Before
     fun setUp() {
-        removeProject = RemoveProject(repository)
+        findProject = FindProject(repository)
+        createProject = CreateProject(findProject, repository)
+    }
+
+    @Test(expected = ProjectAlreadyExistsException::class)
+    fun `invoke with existing project`() {
+        repository.add(NewProject(android.name))
+
+        createProject(android.name)
     }
 
     @Test
-    fun `remove project with project`() {
-        repository.add(NewProject(android.name))
+    fun execute() {
+        val expected = listOf(android)
 
-        removeProject(android)
-
-        val actual = repository.findAll()
-        assertEquals(emptyList<Project>(), actual)
-    }
-
-    @Test
-    fun `remove project with projects`() {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
-        val expected = listOf(cli)
-
-        removeProject(android)
+        createProject(android.name)
 
         val actual = repository.findAll()
         assertEquals(expected, actual)

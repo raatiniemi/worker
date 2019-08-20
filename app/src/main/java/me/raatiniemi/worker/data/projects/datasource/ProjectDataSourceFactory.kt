@@ -18,8 +18,8 @@ package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.usecase.CountProjects
-import me.raatiniemi.worker.domain.usecase.FindProjects
+import me.raatiniemi.worker.domain.project.usecase.CountProjects
+import me.raatiniemi.worker.domain.project.usecase.FindProjects
 
 internal class ProjectDataSourceFactory(
     private val countProjects: CountProjects,

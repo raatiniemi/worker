@@ -19,9 +19,9 @@ package me.raatiniemi.worker.features.ongoing.service
 import android.content.Context
 import android.content.Intent
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.usecase.GetProject
+import me.raatiniemi.worker.domain.project.usecase.IsProjectActive
 import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
-import me.raatiniemi.worker.domain.usecase.GetProject
-import me.raatiniemi.worker.domain.usecase.IsProjectActive
 import me.raatiniemi.worker.features.ongoing.model.OngoingUriCommunicator
 import me.raatiniemi.worker.features.ongoing.view.PauseNotification
 import org.koin.android.ext.android.inject

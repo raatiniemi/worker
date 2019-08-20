@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,46 +14,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.project.usecase
 
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.project.model.NewProject
+import me.raatiniemi.worker.domain.project.model.ProjectName
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class CreateProjectTest {
+class FindProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-
     private lateinit var findProject: FindProject
-    private lateinit var createProject: CreateProject
 
     @Before
     fun setUp() {
         findProject = FindProject(repository)
-        createProject = CreateProject(findProject, repository)
-    }
-
-    @Test(expected = ProjectAlreadyExistsException::class)
-    fun `invoke with existing project`() {
-        repository.add(NewProject(android.name))
-
-        createProject(android.name)
     }
 
     @Test
-    fun execute() {
-        val expected = listOf(android)
+    fun `invoke without projects`() {
+        val actual = findProject(android.name)
 
-        createProject(android.name)
+        assertNull(actual)
+    }
 
-        val actual = repository.findAll()
-        assertEquals(expected, actual)
+    @Test
+    fun `invoke with projects`() {
+        repository.add(NewProject(android.name))
+
+        val actual = findProject(android.name)
+
+        assertEquals(android, actual)
+    }
+
+    @Test
+    fun `invoke with lowercase project name`() {
+        repository.add(NewProject(android.name))
+
+        val actual = findProject(
+            android.name.value.toLowerCase()
+                .let { ProjectName(it) }
+        )
+
+        assertEquals(android, actual)
     }
 }

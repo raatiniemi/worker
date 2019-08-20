@@ -28,10 +28,10 @@ import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.usecase.ClockIn
 import me.raatiniemi.worker.domain.usecase.ClockOut
 import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince
-import me.raatiniemi.worker.domain.usecase.RemoveProject
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener

@@ -16,6 +16,9 @@
 
 package me.raatiniemi.worker.features.projects
 
+import me.raatiniemi.worker.domain.project.usecase.CreateProject
+import me.raatiniemi.worker.domain.project.usecase.FindProject
+import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.usecase.*
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat

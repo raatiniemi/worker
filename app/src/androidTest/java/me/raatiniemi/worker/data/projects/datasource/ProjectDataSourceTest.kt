@@ -20,8 +20,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.project.model.*
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
-import me.raatiniemi.worker.domain.usecase.countProjects
-import me.raatiniemi.worker.domain.usecase.findProjects
+import me.raatiniemi.worker.domain.project.usecase.countProjects
+import me.raatiniemi.worker.domain.project.usecase.findProjects
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

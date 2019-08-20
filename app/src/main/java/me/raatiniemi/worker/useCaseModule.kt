@@ -16,7 +16,12 @@
 
 package me.raatiniemi.worker
 
-import me.raatiniemi.worker.domain.usecase.*
+import me.raatiniemi.worker.domain.project.usecase.FindActiveProjects
+import me.raatiniemi.worker.domain.project.usecase.GetProject
+import me.raatiniemi.worker.domain.project.usecase.IsProjectActive
+import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
+import me.raatiniemi.worker.domain.usecase.ClockIn
+import me.raatiniemi.worker.domain.usecase.ClockOut
 import org.koin.dsl.module.module
 
 val useCaseModule = module {

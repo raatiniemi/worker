@@ -25,8 +25,8 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.project.model.isValid
 import me.raatiniemi.worker.domain.project.model.projectName
-import me.raatiniemi.worker.domain.usecase.CreateProject
-import me.raatiniemi.worker.domain.usecase.FindProject
+import me.raatiniemi.worker.domain.project.usecase.CreateProject
+import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.combineLatest

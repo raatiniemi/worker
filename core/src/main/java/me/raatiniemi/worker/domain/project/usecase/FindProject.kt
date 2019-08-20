@@ -14,13 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.project.usecase
 
-import me.raatiniemi.worker.domain.project.model.ProjectId
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectName
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
-class IsProjectActive(private val repository: TimeIntervalRepository) {
-    operator fun invoke(projectId: Long): Boolean {
-        return repository.findActiveByProjectId(ProjectId(projectId)) != null
+class FindProject(private val repository: ProjectRepository) {
+    operator fun invoke(projectName: ProjectName): Project? {
+        return repository.findByName(projectName)
     }
 }

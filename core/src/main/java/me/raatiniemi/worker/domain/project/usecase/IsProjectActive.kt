@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Tobias Raatiniemi
+ * Copyright (C) 2018 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.project.usecase
 
-import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.project.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
-class FindActiveProjects(
-    private val projectRepository: ProjectRepository,
-    private val timeIntervalRepository: TimeIntervalRepository
-) {
-    operator fun invoke(): List<Project> = projectRepository.findAll()
-        .filter { isActive(it) }
-
-    private fun isActive(project: Project): Boolean {
-        return timeIntervalRepository.findActiveByProjectId(project.id) != null
+class IsProjectActive(private val repository: TimeIntervalRepository) {
+    operator fun invoke(projectId: Long): Boolean {
+        return repository.findActiveByProjectId(ProjectId(projectId)) != null
     }
 }
