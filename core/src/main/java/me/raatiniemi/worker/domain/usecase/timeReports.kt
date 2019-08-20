@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore

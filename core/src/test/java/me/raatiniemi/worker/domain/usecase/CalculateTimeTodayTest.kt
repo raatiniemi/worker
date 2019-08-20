@@ -18,8 +18,8 @@ package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.model.newTimeInterval
+import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals

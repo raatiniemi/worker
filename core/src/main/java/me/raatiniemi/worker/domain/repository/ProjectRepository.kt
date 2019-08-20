@@ -16,7 +16,11 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.project.model.NewProject
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.project.model.ProjectName
 
 /**
  * Represent a unified interface for working with projects using different data sources.

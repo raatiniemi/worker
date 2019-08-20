@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
+import me.raatiniemi.worker.domain.project.model.ProjectId
 
 /**
  * Represent a time interval registered to a project.

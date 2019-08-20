@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.all.model
 import android.content.res.Resources
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.util.DateIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat

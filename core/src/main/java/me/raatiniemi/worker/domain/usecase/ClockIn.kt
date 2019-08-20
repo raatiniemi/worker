@@ -17,7 +17,11 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.model.NewTimeInterval
+import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import java.util.*
 

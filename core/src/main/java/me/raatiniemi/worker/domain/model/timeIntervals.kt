@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.model
 
+import me.raatiniemi.worker.domain.project.model.ProjectId
+
 fun timeInterval(
     projectId: ProjectId,
     configure: (TimeInterval.Builder) -> Unit

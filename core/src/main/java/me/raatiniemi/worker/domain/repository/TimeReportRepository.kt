@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.project.model.Project
 
 interface TimeReportRepository {
     fun count(project: Project): Int

@@ -14,6 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.project.model
 
-val ios = Project(ProjectId(3), projectName("ios"))
+val ios = Project(
+    ProjectId(3),
+    projectName("ios")
+)

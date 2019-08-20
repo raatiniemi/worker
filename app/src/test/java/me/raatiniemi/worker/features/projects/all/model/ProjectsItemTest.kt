@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
-import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.project.model.android
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Test

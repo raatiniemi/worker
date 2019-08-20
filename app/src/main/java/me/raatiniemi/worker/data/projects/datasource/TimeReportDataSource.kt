@@ -17,7 +17,11 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
+import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.usecase.CountTimeReports
 import me.raatiniemi.worker.domain.usecase.FindTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider

@@ -19,6 +19,8 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.project.model.cli
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

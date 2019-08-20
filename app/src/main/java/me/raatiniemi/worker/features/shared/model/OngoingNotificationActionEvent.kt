@@ -16,6 +16,6 @@
 
 package me.raatiniemi.worker.features.shared.model
 
-import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.project.model.Project
 
 internal data class OngoingNotificationActionEvent(val project: Project)

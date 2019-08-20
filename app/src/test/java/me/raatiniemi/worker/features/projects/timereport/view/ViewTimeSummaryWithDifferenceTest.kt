@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects.timereport.view
 
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import org.junit.Assert.assertEquals

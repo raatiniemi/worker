@@ -16,7 +16,13 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
+import me.raatiniemi.worker.domain.project.model.NewProject
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.project.model.cli
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before

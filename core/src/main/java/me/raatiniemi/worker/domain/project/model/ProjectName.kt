@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.project.model
 
-val android = Project(ProjectId(1), projectName("android"))
+data class ProjectName internal constructor(val value: String)

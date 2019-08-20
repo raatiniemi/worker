@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.model
 
+import me.raatiniemi.worker.domain.project.model.ProjectId
+
 data class NewTimeInterval(
     val projectId: ProjectId,
     val start: Milliseconds

@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.usecase.countProjects

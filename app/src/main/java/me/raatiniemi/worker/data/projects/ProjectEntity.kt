@@ -20,9 +20,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectId
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.project.model.projectName
 
 @Entity(
     tableName = "projects",

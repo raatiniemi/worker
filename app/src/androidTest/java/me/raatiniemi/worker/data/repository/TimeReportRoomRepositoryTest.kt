@@ -26,6 +26,8 @@ import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.project.model.ios
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.junit.After
 import org.junit.Assert.assertEquals

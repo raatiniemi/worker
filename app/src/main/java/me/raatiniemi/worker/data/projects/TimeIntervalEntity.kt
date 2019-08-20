@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.projects
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.ProjectId
 
 @Entity(
     tableName = "time_intervals",

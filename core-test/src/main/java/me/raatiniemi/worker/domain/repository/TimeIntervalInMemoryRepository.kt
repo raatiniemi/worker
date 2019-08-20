@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectId
 import java.util.concurrent.atomic.AtomicLong
 
 class TimeIntervalInMemoryRepository : TimeIntervalRepository {

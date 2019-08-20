@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.project.model.Project
 import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :

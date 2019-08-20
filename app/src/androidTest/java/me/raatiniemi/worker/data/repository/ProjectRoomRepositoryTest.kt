@@ -21,7 +21,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.Database
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
+import me.raatiniemi.worker.domain.project.model.*
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.After
 import org.junit.Assert.*

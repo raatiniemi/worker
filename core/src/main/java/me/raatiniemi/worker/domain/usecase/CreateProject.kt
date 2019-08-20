@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.project.model.NewProject
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectName
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 /**

@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.model
 
+import me.raatiniemi.worker.domain.project.model.Project
+
 data class NewTimeIntervalBuilder(
     var start: Milliseconds? = null
 ) {

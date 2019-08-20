@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.domain.usecase
 
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class GetProjectTimeSince(private val repository: TimeIntervalRepository) {

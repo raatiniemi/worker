@@ -14,16 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.project.model
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
-
-fun projectName(value: String?): ProjectName {
-    if (value.isNullOrBlank()) {
-        throw InvalidProjectNameException()
-    }
-
-    return ProjectName(value)
-}
-
-fun isValid(name: String?): Boolean = !name.isNullOrEmpty()
+val web = Project(
+    ProjectId(4),
+    projectName("web")
+)

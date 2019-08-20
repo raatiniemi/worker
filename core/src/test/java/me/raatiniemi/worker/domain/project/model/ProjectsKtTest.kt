@@ -14,6 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.project.model
 
-inline class ProjectId(val value: Long)
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+
+@RunWith(JUnit4::class)
+class ProjectsKtTest {
+    @Test(expected = InvalidProjectNameException::class)
+    fun `project name with null as project name`() {
+        projectName(null)
+    }
+
+    @Test(expected = InvalidProjectNameException::class)
+    fun `project name with empty project name`() {
+        projectName("")
+    }
+
+    @Test
+    fun `project name with valid project name`() {
+        projectName("Project name")
+    }
+}

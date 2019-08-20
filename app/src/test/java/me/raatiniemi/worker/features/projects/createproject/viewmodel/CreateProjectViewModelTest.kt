@@ -18,7 +18,7 @@ package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.usecase.CreateProject
 import me.raatiniemi.worker.domain.usecase.FindProject

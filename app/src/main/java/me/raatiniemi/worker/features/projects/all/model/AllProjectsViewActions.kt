@@ -25,7 +25,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
-import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.features.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsFragmentDirections

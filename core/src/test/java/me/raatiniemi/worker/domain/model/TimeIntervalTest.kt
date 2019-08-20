@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
+import me.raatiniemi.worker.domain.project.model.android
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

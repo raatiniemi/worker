@@ -20,7 +20,7 @@ import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
-import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.usecase.CountProjects
 import me.raatiniemi.worker.domain.usecase.FindProjects
 
