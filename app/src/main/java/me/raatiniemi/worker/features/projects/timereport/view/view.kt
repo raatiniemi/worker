@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.timereport.view
 
+import android.annotation.SuppressLint
 import android.view.View
 import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.Milliseconds
@@ -36,6 +37,7 @@ private const val SEPARATOR = " - "
 
 private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
 
+@SuppressLint("DefaultLocale")
 internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(day.date).capitalize()
 
 internal fun firstLetter(text: CharSequence): Char {
