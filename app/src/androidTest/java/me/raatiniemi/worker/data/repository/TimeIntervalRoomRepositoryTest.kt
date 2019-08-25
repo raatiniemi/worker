@@ -25,10 +25,14 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeIntervalEntity
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

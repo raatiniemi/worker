@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 
 class CalculateTimeToday(private val repository: TimeIntervalRepository) {
     operator fun invoke(project: Project, stopForActive: Milliseconds = Milliseconds.now): Long {

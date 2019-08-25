@@ -16,6 +16,9 @@
 
 package me.raatiniemi.worker.domain.model
 
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
+import me.raatiniemi.worker.domain.timeinterval.model.isActive
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.util.*
 

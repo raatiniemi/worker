@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.features.projects.timereport.view
 
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalId
-import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

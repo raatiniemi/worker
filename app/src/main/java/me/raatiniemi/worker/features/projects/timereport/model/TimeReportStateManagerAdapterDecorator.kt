@@ -18,8 +18,8 @@ package me.raatiniemi.worker.features.projects.timereport.model
 
 import androidx.annotation.MainThread
 import androidx.recyclerview.widget.RecyclerView
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
 class TimeReportStateManagerAdapterDecorator(

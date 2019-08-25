@@ -14,11 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.timeinterval.model
 
-import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.model.Milliseconds
+import java.lang.Math.abs
 
-data class NewTimeInterval(
-    val projectId: ProjectId,
-    val start: Milliseconds
-)
+fun before(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
+    return startingPoint.calculateMilliseconds() - abs(offset)
+}
+
+fun after(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
+    return startingPoint.calculateMilliseconds() + abs(offset)
+}

@@ -16,9 +16,13 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.timeinterval.model.NewTimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import java.util.concurrent.atomic.AtomicLong
 
 class TimeIntervalInMemoryRepository : TimeIntervalRepository {

@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.settings.project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.util.AppKeys

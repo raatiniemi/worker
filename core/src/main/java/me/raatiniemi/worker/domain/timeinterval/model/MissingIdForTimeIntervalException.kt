@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.timeinterval.model
 
-class MissingStopForRegisteredTimeIntervalException internal constructor() : IllegalStateException()
+class MissingIdForTimeIntervalException internal constructor() : IllegalStateException()

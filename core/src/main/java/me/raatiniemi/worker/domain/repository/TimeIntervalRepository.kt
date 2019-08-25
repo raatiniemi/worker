@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.NewTimeInterval
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalId
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.timeinterval.model.NewTimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.

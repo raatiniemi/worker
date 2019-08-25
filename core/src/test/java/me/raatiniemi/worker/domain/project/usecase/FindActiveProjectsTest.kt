@@ -17,13 +17,13 @@
 package me.raatiniemi.worker.domain.project.usecase
 
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

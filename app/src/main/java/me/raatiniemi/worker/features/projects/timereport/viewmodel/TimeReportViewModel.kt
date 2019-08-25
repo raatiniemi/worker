@@ -26,8 +26,8 @@ import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.usecase.RemoveTime
 import me.raatiniemi.worker.domain.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException

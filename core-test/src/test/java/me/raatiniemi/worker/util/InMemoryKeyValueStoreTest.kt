@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.util
 
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

@@ -21,10 +21,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeReportDay
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.*
+import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.usecase.countTimeReports
 import me.raatiniemi.worker.domain.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder

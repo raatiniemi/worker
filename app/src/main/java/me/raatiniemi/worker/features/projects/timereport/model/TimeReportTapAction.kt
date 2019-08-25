@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 
 sealed class TimeReportTapAction : TimeReportSelectAction {
     data class TapDay(val day: TimeReportDay) : TimeReportTapAction() {

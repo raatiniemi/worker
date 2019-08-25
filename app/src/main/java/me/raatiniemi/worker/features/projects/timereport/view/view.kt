@@ -20,8 +20,8 @@ import android.annotation.SuppressLint
 import android.view.View
 import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth

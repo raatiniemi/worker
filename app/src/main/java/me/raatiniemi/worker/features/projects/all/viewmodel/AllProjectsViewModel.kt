@@ -25,10 +25,10 @@ import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.usecase.ClockIn
 import me.raatiniemi.worker.domain.usecase.ClockOut
 import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince

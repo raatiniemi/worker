@@ -14,6 +14,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.timeinterval.model
 
-inline class TimeIntervalId(val value: Long)
+import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.project.model.Project
+
+data class NewTimeIntervalBuilder(
+    var start: Milliseconds? = null
+) {
+    internal fun build(project: Project) = NewTimeInterval(
+        projectId = project.id,
+        start = requireNotNull(start)
+    )
+}
+
+fun newTimeInterval(
+    project: Project,
+    configure: NewTimeIntervalBuilder.() -> Unit
+): NewTimeInterval {
+    val builder = NewTimeIntervalBuilder()
+    builder.configure()
+
+    return builder.build(project)
+}

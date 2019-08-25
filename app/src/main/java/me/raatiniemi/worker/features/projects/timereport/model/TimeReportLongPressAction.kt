@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 
 sealed class TimeReportLongPressAction : TimeReportSelectAction {
     data class LongPressDay(val day: TimeReportDay) : TimeReportLongPressAction() {

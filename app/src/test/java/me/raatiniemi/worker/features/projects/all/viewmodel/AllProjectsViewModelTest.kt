@@ -20,14 +20,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeIntervalId
-import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.usecase.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.usecase.ClockIn
 import me.raatiniemi.worker.domain.usecase.ClockOut
 import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince
