@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository
+package me.raatiniemi.worker.domain.timeinterval.repository
 
 class InvalidActiveTimeIntervalException : IllegalStateException()

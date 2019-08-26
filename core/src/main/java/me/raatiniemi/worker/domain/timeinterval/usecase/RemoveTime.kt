@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 /**
  * Use case for removing registered time.

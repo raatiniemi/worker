@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.project.usecase
 
 import me.raatiniemi.worker.domain.project.model.ProjectId
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 class IsProjectActive(private val repository: TimeIntervalRepository) {
     operator fun invoke(projectId: Long): Boolean {

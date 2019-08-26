@@ -27,8 +27,8 @@ import me.raatiniemi.worker.data.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.project.usecase.countProjects
 import me.raatiniemi.worker.domain.project.usecase.findProjects
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.usecase.countTimeReports
 import me.raatiniemi.worker.domain.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider

@@ -16,10 +16,10 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.isActive
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 /**
  * Use case for marking time as registered.

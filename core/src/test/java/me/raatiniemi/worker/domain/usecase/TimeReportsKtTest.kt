@@ -20,9 +20,13 @@ import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.repository.*
+import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.repository.resetToStartOfDay
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.KeyValueStore

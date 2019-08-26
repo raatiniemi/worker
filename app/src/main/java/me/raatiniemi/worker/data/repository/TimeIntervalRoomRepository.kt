@@ -21,11 +21,11 @@ import me.raatiniemi.worker.data.projects.toEntity
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
-import me.raatiniemi.worker.domain.repository.InvalidActiveTimeIntervalException
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.model.NewTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.repository.InvalidActiveTimeIntervalException
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
     TimeIntervalRepository {

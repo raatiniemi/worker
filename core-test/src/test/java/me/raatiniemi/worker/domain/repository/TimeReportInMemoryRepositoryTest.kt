@@ -23,6 +23,8 @@ import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

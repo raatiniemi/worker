@@ -19,10 +19,10 @@ package me.raatiniemi.worker.domain.timeinterval.usecase
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.model.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

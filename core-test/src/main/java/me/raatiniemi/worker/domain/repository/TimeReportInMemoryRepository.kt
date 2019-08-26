@@ -22,6 +22,7 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.timeReportDay
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :
