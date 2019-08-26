@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 
-class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
-    operator fun invoke(
-        project: Project,
-        startingPoint: TimeIntervalStartingPoint
-    ): List<TimeInterval> {
-        val milliseconds = startingPoint.calculateMilliseconds()
-
-        return repository.findAll(project, milliseconds)
+class CalculateTimeToday(private val repository: TimeIntervalRepository) {
+    operator fun invoke(project: Project, stopForActive: Milliseconds = Milliseconds.now): Long {
+        val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val timeIntervals = repository.findAll(project, startingPoint)
+        return timeIntervals.map { calculateInterval(it, stopForActive) }
+            .map { it.value }
+            .sum()
     }
 }

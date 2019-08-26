@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.timeinterval.usecase
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.project.model.android
@@ -36,7 +36,8 @@ class CalculateTimeTodayTest {
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        calculateTimeToday = CalculateTimeToday(repository)
+        calculateTimeToday =
+            CalculateTimeToday(repository)
     }
 
     @Test

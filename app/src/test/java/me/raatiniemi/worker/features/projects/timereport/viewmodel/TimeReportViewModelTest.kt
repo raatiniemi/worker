@@ -33,7 +33,12 @@ import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
-import me.raatiniemi.worker.domain.usecase.*
+import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
+import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
+import me.raatiniemi.worker.domain.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.usecase.FindTimeReports
+import me.raatiniemi.worker.domain.usecase.countTimeReports
+import me.raatiniemi.worker.domain.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction

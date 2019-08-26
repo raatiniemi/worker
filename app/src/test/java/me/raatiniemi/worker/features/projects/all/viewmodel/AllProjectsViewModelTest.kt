@@ -28,9 +28,9 @@ import me.raatiniemi.worker.domain.project.usecase.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
-import me.raatiniemi.worker.domain.usecase.ClockIn
-import me.raatiniemi.worker.domain.usecase.ClockOut
-import me.raatiniemi.worker.domain.usecase.GetProjectTimeSince
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
+import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.model.observeNoValue

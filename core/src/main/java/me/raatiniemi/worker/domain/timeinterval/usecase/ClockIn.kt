@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.timeinterval.usecase
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
 import me.raatiniemi.worker.domain.model.Milliseconds

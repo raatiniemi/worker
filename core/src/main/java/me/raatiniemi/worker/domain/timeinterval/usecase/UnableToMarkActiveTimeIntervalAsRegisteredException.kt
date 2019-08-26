@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.timeinterval.usecase
 
 class UnableToMarkActiveTimeIntervalAsRegisteredException : RuntimeException()

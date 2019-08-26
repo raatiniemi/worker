@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,51 +14,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.timeinterval.usecase
 
-import me.raatiniemi.worker.domain.exception.ActiveProjectException
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
-class ClockInTest {
+class RemoveTimeTest {
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var clockIn: ClockIn
+    private lateinit var removeTime: RemoveTime
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        clockIn = ClockIn(repository)
-    }
-
-    @Test(expected = ActiveProjectException::class)
-    fun `clock in with active project`() {
-        clockIn(android, Date())
-        clockIn(android, Date())
+        removeTime = RemoveTime(repository)
     }
 
     @Test
-    fun `clock in`() {
-        val date = Date()
-        val expected = timeInterval(android.id) { builder ->
+    fun `remove with time interval`() {
+        repository.add(
+            newTimeInterval(android) {
+                start = Milliseconds(1)
+            }
+        )
+        val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(date.time)
+            builder.start = Milliseconds(1)
+            builder.stop = null
         }
+        val expected = emptyList<TimeInterval>()
 
-        val actual = clockIn(android, date)
+        removeTime(timeInterval)
 
-        val timeIntervals = repository.findAll(android, Milliseconds.empty)
-        assertEquals(listOf(expected), timeIntervals)
+        val actual = repository.findAll(android, Milliseconds.empty)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `remove with time intervals`() {
+        repository.add(
+            newTimeInterval(android) {
+                start = Milliseconds(1)
+            }
+        )
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds(1)
+            builder.stop = null
+        }
+        val expected = emptyList<TimeInterval>()
+
+        removeTime(listOf(timeInterval))
+
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 }
