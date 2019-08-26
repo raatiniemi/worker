@@ -14,9 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception
+package me.raatiniemi.worker.domain.timeinterval.usecase
 
-/**
- * Exception for when clock out occur before clock in.
- */
-class ClockOutBeforeClockInException : DomainException("Clock out occur before clock in")
+class InvalidStartingPointException(message: String) : RuntimeException(message)

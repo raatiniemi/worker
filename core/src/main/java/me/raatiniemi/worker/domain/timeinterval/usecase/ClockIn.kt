@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
-import me.raatiniemi.worker.domain.exception.ActiveProjectException
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId

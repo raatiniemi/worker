@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.exception.DomainException
-import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -32,6 +31,7 @@ import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
+import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener

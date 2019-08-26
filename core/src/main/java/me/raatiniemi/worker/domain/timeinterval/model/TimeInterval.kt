@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.domain.timeinterval.model
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOutBeforeClockInException
 
 /**
  * Represent a time interval registered to a project.

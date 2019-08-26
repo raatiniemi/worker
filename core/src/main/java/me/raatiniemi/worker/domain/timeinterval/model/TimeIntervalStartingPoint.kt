@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.domain.timeinterval.model
 
-import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import java.util.*
 
 enum class TimeIntervalStartingPoint(val rawValue: Int) {
