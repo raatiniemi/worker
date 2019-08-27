@@ -22,8 +22,6 @@ import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.timeReportDay
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.resetToStartOfDay
@@ -35,6 +33,8 @@ import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryR
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.usecase.CountTimeReports
 import me.raatiniemi.worker.domain.usecase.FindTimeReports
 import me.raatiniemi.worker.domain.usecase.countTimeReports

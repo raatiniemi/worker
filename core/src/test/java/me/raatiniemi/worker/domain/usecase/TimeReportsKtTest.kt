@@ -18,7 +18,10 @@ package me.raatiniemi.worker.domain.usecase
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
@@ -27,6 +30,8 @@ import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.KeyValueStore

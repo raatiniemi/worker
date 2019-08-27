@@ -14,8 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.timereport.model
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
@@ -67,11 +68,17 @@ class TimeReportDayIsRegisteredTest(
                 ),
                 arrayOf(
                     false,
-                    listOf(NOT_REGISTERED_TIME, REGISTERED_TIME)
+                    listOf(
+                        NOT_REGISTERED_TIME,
+                        REGISTERED_TIME
+                    )
                 ),
                 arrayOf(
                     true,
-                    listOf(REGISTERED_TIME, REGISTERED_TIME)
+                    listOf(
+                        REGISTERED_TIME,
+                        REGISTERED_TIME
+                    )
                 )
             )
     }

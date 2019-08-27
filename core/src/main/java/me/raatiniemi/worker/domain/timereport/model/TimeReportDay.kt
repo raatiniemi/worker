@@ -14,8 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.timereport.model
 
+import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.model.accumulated
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timeinterval.model.isActive

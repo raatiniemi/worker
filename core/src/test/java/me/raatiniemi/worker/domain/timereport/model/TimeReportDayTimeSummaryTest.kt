@@ -14,8 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.timereport.model
 
+import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
@@ -28,15 +30,15 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimeReportDayTimeDifferenceTest(
-    private val expectedTimeDifference: HoursMinutes,
+class TimeReportDayTimeSummaryTest(
+    private val expected: HoursMinutes,
     private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
         val day = timeReportDay(Date(), timeIntervals)
 
-        assertEquals(expectedTimeDifference, day.timeDifference)
+        assertEquals(expected, day.timeSummary)
     }
 
     companion object {
@@ -46,7 +48,7 @@ class TimeReportDayTimeDifferenceTest(
             @Parameters
             get() = listOf(
                 arrayOf(
-                    HoursMinutes(-7, 0),
+                    HoursMinutes(1, 0),
                     listOf(
                         timeInterval(android.id) { builder ->
                             builder.id = TimeIntervalId(1)
@@ -56,7 +58,7 @@ class TimeReportDayTimeDifferenceTest(
                     )
                 ),
                 arrayOf(
-                    HoursMinutes.empty,
+                    HoursMinutes(8, 0),
                     listOf(
                         timeInterval(android.id) { builder ->
                             builder.id = TimeIntervalId(1)
@@ -66,7 +68,7 @@ class TimeReportDayTimeDifferenceTest(
                     )
                 ),
                 arrayOf(
-                    HoursMinutes(1, 0),
+                    HoursMinutes(9, 0),
                     listOf(
                         timeInterval(android.id) { builder ->
                             builder.id = TimeIntervalId(1)
@@ -76,7 +78,7 @@ class TimeReportDayTimeDifferenceTest(
                     )
                 ),
                 arrayOf(
-                    HoursMinutes(1, 7),
+                    HoursMinutes(9, 7),
                     listOf(
                         timeInterval(android.id) { builder ->
                             builder.id = TimeIntervalId(1)
@@ -91,7 +93,7 @@ class TimeReportDayTimeDifferenceTest(
                     )
                 ),
                 arrayOf(
-                    HoursMinutes(0, 46),
+                    HoursMinutes(8, 46),
                     listOf(
                         timeInterval(android.id) { builder ->
                             builder.id = TimeIntervalId(1)
@@ -106,7 +108,7 @@ class TimeReportDayTimeDifferenceTest(
                     )
                 ),
                 arrayOf(
-                    HoursMinutes(0, -8),
+                    HoursMinutes(7, 52),
                     listOf(
                         timeInterval(android.id) { builder ->
                             builder.id = TimeIntervalId(1)

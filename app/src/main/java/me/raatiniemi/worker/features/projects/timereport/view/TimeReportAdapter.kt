@@ -23,9 +23,9 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction

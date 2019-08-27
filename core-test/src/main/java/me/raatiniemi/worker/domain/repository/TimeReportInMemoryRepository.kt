@@ -18,11 +18,11 @@ package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.timeReportDay
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :
