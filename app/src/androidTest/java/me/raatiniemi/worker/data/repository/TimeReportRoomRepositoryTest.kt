@@ -30,9 +30,9 @@ import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
+import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
