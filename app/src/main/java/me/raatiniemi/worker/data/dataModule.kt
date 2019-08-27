@@ -29,8 +29,8 @@ import me.raatiniemi.worker.domain.project.usecase.countProjects
 import me.raatiniemi.worker.domain.project.usecase.findProjects
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import me.raatiniemi.worker.domain.usecase.countTimeReports
-import me.raatiniemi.worker.domain.usecase.findTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.util.KeyValueStore
 import org.koin.android.ext.koin.androidContext

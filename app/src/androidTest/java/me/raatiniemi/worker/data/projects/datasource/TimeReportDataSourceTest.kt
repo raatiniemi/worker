@@ -29,8 +29,8 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import me.raatiniemi.worker.domain.usecase.countTimeReports
-import me.raatiniemi.worker.domain.usecase.findTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.KeyValueStore

@@ -35,10 +35,10 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
-import me.raatiniemi.worker.domain.usecase.CountTimeReports
-import me.raatiniemi.worker.domain.usecase.FindTimeReports
-import me.raatiniemi.worker.domain.usecase.countTimeReports
-import me.raatiniemi.worker.domain.usecase.findTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction

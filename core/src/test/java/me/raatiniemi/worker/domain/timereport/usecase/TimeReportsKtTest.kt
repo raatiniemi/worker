@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.usecase
+package me.raatiniemi.worker.domain.timereport.usecase
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minutes
@@ -56,8 +56,14 @@ class TimeReportsKtTest {
         timeIntervalRepository = TimeIntervalInMemoryRepository()
         repository = TimeReportInMemoryRepository(timeIntervalRepository)
 
-        countTimeReports = countTimeReports(keyValueStore, repository)
-        findTimeReports = findTimeReports(keyValueStore, repository)
+        countTimeReports = countTimeReports(
+            keyValueStore,
+            repository
+        )
+        findTimeReports = findTimeReports(
+            keyValueStore,
+            repository
+        )
     }
 
     @Test

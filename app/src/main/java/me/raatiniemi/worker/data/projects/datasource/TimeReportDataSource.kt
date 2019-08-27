@@ -22,8 +22,8 @@ import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.domain.usecase.CountTimeReports
-import me.raatiniemi.worker.domain.usecase.FindTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import timber.log.Timber
 
