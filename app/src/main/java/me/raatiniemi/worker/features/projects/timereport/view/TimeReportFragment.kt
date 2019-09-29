@@ -216,7 +216,10 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     private fun cancelRefreshTimer() {
-        refreshActiveTimeIntervalsTimer?.cancel()
+        refreshActiveTimeIntervalsTimer?.run {
+            cancel()
+            purge()
+        }
         refreshActiveTimeIntervalsTimer = null
     }
 
