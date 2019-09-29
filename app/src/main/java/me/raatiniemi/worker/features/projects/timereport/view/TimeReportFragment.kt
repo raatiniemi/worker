@@ -207,16 +207,16 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         refreshActiveTimeIntervalsTimer = Timer()
         refreshActiveTimeIntervalsTimer?.schedule(Date(), 1.minutes) {
-            launch {
-                val timeReportDays = timeReportAdapter.currentList ?: return@launch
-
-                vm.refreshActiveTimeReportDay(timeReportDays)
-            }
+            val timeReportDays = timeReportAdapter.currentList ?: return@schedule
+            vm.refreshActiveTimeReportDay(timeReportDays)
         }
     }
 
     private fun cancelRefreshTimer() {
-        refreshActiveTimeIntervalsTimer?.cancel()
+        refreshActiveTimeIntervalsTimer?.run {
+            cancel()
+            purge()
+        }
         refreshActiveTimeIntervalsTimer = null
     }
 
