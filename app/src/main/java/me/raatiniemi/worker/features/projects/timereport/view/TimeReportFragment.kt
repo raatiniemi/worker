@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.timereport.view
 
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_project_time_report.*
@@ -35,10 +34,7 @@ import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportVie
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.features.shared.view.ConfirmAction
-import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.features.shared.view.setTitle
-import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -72,9 +68,9 @@ class TimeReportFragment : CoroutineScopedFragment() {
             id = ProjectId(arguments.projectId),
             name = projectName(arguments.projectName)
         )
-        projectHolder.observable.observe(this, Observer {
+        observe(projectHolder.observable) {
             setTitle(it.name.value)
-        })
+        }
     }
 
     override fun onCreateView(
@@ -141,28 +137,28 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     private fun observeViewModel() {
-        vm.isSelectionActivated.observe(this, Observer { shouldShowActionMode ->
+        observe(vm.isSelectionActivated) { shouldShowActionMode ->
             if (shouldShowActionMode) {
                 showActionMode()
-                return@Observer
+            } else {
+                dismissActionMode()
             }
-            dismissActionMode()
-        })
+        }
 
-        vm.timeReport.observe(this, Observer {
+        observe(vm.timeReport) {
             timeReportAdapter.submitList(it)
 
             tvEmptyTimeReport.visibleIf { it.isEmpty() }
-        })
+        }
 
-        vm.viewActions.observeAndConsume(this, Observer {
+        observeAndConsume(vm.viewActions) {
             when (it) {
                 is TimeReportViewActions.RefreshTimeReportDays -> it.action(timeReportAdapter)
                 is ActivityViewAction -> it.action(requireActivity())
                 is ContextViewAction -> it.action(requireContext())
                 else -> Timber.w("No observation for ${it.javaClass.simpleName}")
             }
-        })
+        }
     }
 
     private fun showActionMode() {

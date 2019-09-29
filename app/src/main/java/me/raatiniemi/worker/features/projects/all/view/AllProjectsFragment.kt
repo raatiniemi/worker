@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.all.view
 
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_all_projects.*
 import kotlinx.coroutines.launch
@@ -30,10 +29,7 @@ import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingP
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.features.shared.view.ConfirmAction
-import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
-import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -119,15 +115,15 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun observeViewModel() {
-        vm.projects.observe(this, Observer {
+        observe(vm.projects) {
             allProjectsAdapter.submitList(it)
 
             tvEmptyProjects.visibleIf { it.isEmpty() }
-        })
+        }
 
-        vm.viewActions.observeAndConsume(this, Observer {
+        observeAndConsume(vm.viewActions) {
             processViewAction(it)
-        })
+        }
     }
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {

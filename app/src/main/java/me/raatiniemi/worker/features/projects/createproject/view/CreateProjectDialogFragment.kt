@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
@@ -63,11 +62,11 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
     }
 
     private fun observeViewModel() {
-        vm.isCreateEnabled.observe(this, Observer {
+        observe(vm.isCreateEnabled) {
             btnCreate.isEnabled = it
-        })
+        }
 
-        vm.viewActions.observeAndConsume(this, Observer {
+        observeAndConsume(vm.viewActions) {
             when (it) {
                 is CreateProjectViewActions.CreatedProject -> {
                     onCreateProject()
@@ -75,7 +74,7 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
                 }
                 is EditTextViewAction -> it.action(requireContext(), etProjectName)
             }
-        })
+        }
     }
 
     private fun bindUserInterfaceToViewModel() {

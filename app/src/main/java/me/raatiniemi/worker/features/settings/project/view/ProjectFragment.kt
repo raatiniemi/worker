@@ -19,7 +19,6 @@ package me.raatiniemi.worker.features.settings.project.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
@@ -29,6 +28,7 @@ import me.raatiniemi.worker.features.ongoing.service.ReloadNotificationService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
+import me.raatiniemi.worker.features.shared.view.observeAndConsume
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -136,9 +136,9 @@ class ProjectFragment : PreferenceFragmentCompat() {
     }
 
     private fun observeViewModel() {
-        vm.viewActions.observeAndConsume(this, Observer {
+        observeAndConsume(vm.viewActions) {
             it.action(requireActivity())
-        })
+        }
     }
 
     companion object {
