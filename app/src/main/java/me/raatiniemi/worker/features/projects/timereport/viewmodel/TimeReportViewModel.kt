@@ -200,15 +200,14 @@ internal class TimeReportViewModel internal constructor(
         _selectedItems.value = selectedItems
     }
 
-    suspend fun refreshActiveTimeReportDay(timeReportDays: List<TimeReportDay>) =
-        withContext(Dispatchers.Default) {
-            val positions = findActivePositions(timeReportDays)
-            if (positions.isEmpty()) {
-                return@withContext
-            }
-
-            viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
+    fun refreshActiveTimeReportDay(timeReportDays: List<TimeReportDay>) {
+        val positions = findActivePositions(timeReportDays)
+        if (positions.isEmpty()) {
+            return
         }
+
+        viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
+    }
 
     private fun findActivePositions(days: List<TimeReportDay>) =
         days.filterIsInstance<TimeReportDay.Active>()
