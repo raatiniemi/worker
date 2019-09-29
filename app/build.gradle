@@ -23,7 +23,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.0.0'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0'
         classpath 'com.github.triplet.gradle:play-publisher:2.2.1'
     }
 }
@@ -94,6 +94,10 @@ android {
         targetCompatibility targetCompatibilityVersion
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     sourceSets {
         test {
             java.srcDirs += 'src/sharedTest/java'
@@ -141,7 +145,7 @@ dependencies {
     def roomVersion = '2.1.0'
     def lifecycleVersion = '2.1.0'
     def fragmentVersion = '1.1.0'
-    def navigationVersion = '2.0.0'
+    def navigationVersion = '2.1.0'
     def coroutineVersion = '1.1.1'
     def koinVersion = '1.0.2'
 
