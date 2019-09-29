@@ -24,8 +24,7 @@ internal inline fun <reified T : Preference> PreferenceFragmentCompat.configureP
     key: CharSequence,
     configure: T.() -> Unit
 ) {
-    val preference = findPreference(key)
-    when (preference) {
+    when (val preference = findPreference<Preference>(key)) {
         is T -> preference.configure()
         null -> Timber.w("Unable to find preference with key: $key")
         else -> Timber.w("Preference type (${preference.javaClass.name}) do not match expected ${T::class.java.name}")
