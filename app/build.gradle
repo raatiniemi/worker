@@ -140,7 +140,7 @@ play {
 dependencies {
     def roomVersion = '2.1.0'
     def lifecycleVersion = '2.1.0'
-    def fragmentVersion = '1.1.0-beta01'
+    def fragmentVersion = '1.1.0'
     def navigationVersion = '2.0.0'
     def coroutineVersion = '1.1.1'
     def koinVersion = '1.0.2'
@@ -158,11 +158,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation 'androidx.paging:paging-runtime:2.1.0'
-    //noinspection GradleDependency
     implementation "androidx.fragment:fragment:$fragmentVersion"
-    //noinspection GradleDependency
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
-    //noinspection GradleDependency
     implementation("androidx.fragment:fragment-testing:$fragmentVersion") {
         exclude group: 'androidx.test', module: 'core'
     }
