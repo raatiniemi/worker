@@ -1,2 +1,4 @@
-refresh active days in time report each minute
-reload ongoing notifications when feature is enabled or disabled
+improve enforcing business rules
+convert remaining code over to kotlin
+resolve time report issue with active interval and lazy calculations
+attempt to resolve crash when app is resumed to show time report
