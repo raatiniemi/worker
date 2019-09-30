@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.repository
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
+import me.raatiniemi.worker.data.projects.timeInterval
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
@@ -37,7 +38,7 @@ internal class TimeReportRoomRepository(
 
     private fun transform(group: TimeReportQueryGroup): TimeReportDay {
         val timeIntervals = group.mapNotNull { timeIntervals.find(it) }
-            .map { it.toTimeInterval() }
+            .map(::timeInterval)
             .sortedByDescending { it.start.value }
 
         return timeReportDay(

@@ -50,36 +50,42 @@ internal data class TimeIntervalEntity(
     @ColumnInfo(name = "stop_in_milliseconds")
     val stopInMilliseconds: Long,
     val registered: Long
-) {
-    fun toTimeInterval() = timeInterval(ProjectId(projectId)) { builder ->
-        builder.id = TimeIntervalId(id)
-        builder.start = Milliseconds(startInMilliseconds)
-        builder.stop = stopInMilliseconds.takeUnless { it == 0L }
+)
+
+internal fun timeInterval(entity: TimeIntervalEntity): TimeInterval {
+    return timeInterval(ProjectId(entity.projectId)) { builder ->
+        builder.id = TimeIntervalId(entity.id)
+        builder.start = Milliseconds(entity.startInMilliseconds)
+        builder.stop = entity.stopInMilliseconds.takeUnless { it == 0L }
             ?.let { Milliseconds(it) }
-        builder.isRegistered = registered == 1L
+        builder.isRegistered = entity.registered == 1L
     }
 }
 
-internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
-    id = 0,
-    projectId = projectId.value,
-    startInMilliseconds = start.value,
-    stopInMilliseconds = 0,
-    registered = 0
-)
+internal fun timeIntervalEntity(newTimeInterval: NewTimeInterval): TimeIntervalEntity {
+    return TimeIntervalEntity(
+        id = 0,
+        projectId = newTimeInterval.projectId.value,
+        startInMilliseconds = newTimeInterval.start.value,
+        stopInMilliseconds = 0,
+        registered = 0
+    )
+}
 
-internal fun TimeInterval.toEntity() = TimeIntervalEntity(
-    id = id.value,
-    projectId = projectId.value,
-    startInMilliseconds = start.value,
-    stopInMilliseconds = when (this) {
-        is TimeInterval.Active -> 0
-        is TimeInterval.Inactive -> stop.value
-        is TimeInterval.Registered -> stop.value
-    },
-    registered = if (this is TimeInterval.Registered) {
-        1
-    } else {
-        0
-    }
-)
+internal fun timeIntervalEntity(timeInterval: TimeInterval): TimeIntervalEntity {
+    return TimeIntervalEntity(
+        id = timeInterval.id.value,
+        projectId = timeInterval.projectId.value,
+        startInMilliseconds = timeInterval.start.value,
+        stopInMilliseconds = when (timeInterval) {
+            is TimeInterval.Active -> 0
+            is TimeInterval.Inactive -> timeInterval.stop.value
+            is TimeInterval.Registered -> timeInterval.stop.value
+        },
+        registered = if (timeInterval is TimeInterval.Registered) {
+            1
+        } else {
+            0
+        }
+    )
+}

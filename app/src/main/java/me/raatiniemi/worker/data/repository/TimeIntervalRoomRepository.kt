@@ -17,7 +17,8 @@
 package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.toEntity
+import me.raatiniemi.worker.data.projects.timeInterval
+import me.raatiniemi.worker.data.projects.timeIntervalEntity
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.time.Milliseconds
@@ -31,26 +32,26 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
     TimeIntervalRepository {
     override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.findAll(project.id.value, milliseconds.value)
-            .map { it.toTimeInterval() }
+            .map(::timeInterval)
             .toList()
     }
 
     override fun findById(id: TimeIntervalId): TimeInterval? {
         return timeIntervals.find(id.value)
-            ?.run { toTimeInterval() }
+            ?.let(::timeInterval)
     }
 
     override fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
         val entity = timeIntervals.findActiveTime(projectId.value) ?: return null
 
-        return when (val timeInterval = entity.toTimeInterval()) {
+        return when (val timeInterval = timeInterval(entity)) {
             is TimeInterval.Active -> timeInterval
             else -> throw InvalidActiveTimeIntervalException()
         }
     }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
-        val id = timeIntervals.add(newTimeInterval.toEntity())
+        val id = timeIntervals.add(timeIntervalEntity(newTimeInterval))
 
         val timeInterval = findById(TimeIntervalId(id))
         if (timeInterval is TimeInterval.Active) {
@@ -61,18 +62,18 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
     }
 
     override fun update(timeInterval: TimeInterval): TimeInterval? {
-        return timeInterval.toEntity()
+        return timeIntervalEntity(timeInterval)
             .also { timeIntervals.update(listOf(it)) }
             .run { findById(TimeIntervalId(id)) }
     }
 
     override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
-        val entities = timeIntervals.map { it.toEntity() }.toList()
+        val entities = timeIntervals.map(::timeIntervalEntity).toList()
         this.timeIntervals.update(entities)
 
         return timeIntervals.map { it.id }
             .mapNotNull { this.timeIntervals.find(it.value) }
-            .map { it.toTimeInterval() }
+            .map(::timeInterval)
             .toList()
     }
 
@@ -83,7 +84,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
     }
 
     override fun remove(timeIntervals: List<TimeInterval>) {
-        val entities = timeIntervals.map { it.toEntity() }.toList()
+        val entities = timeIntervals.map(::timeIntervalEntity).toList()
 
         this.timeIntervals.remove(entities)
     }
