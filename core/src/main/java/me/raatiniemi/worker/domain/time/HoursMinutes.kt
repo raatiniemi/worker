@@ -18,7 +18,7 @@
 
 package me.raatiniemi.worker.domain.time
 
-import java.lang.Math.abs
+import kotlin.math.abs
 
 data class HoursMinutes(val hours: Long, val minutes: Long) {
     @get:JvmName("isEmpty")
