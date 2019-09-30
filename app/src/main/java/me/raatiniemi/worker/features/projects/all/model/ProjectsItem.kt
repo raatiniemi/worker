@@ -18,14 +18,14 @@ package me.raatiniemi.worker.features.projects.all.model
 
 import android.content.res.Resources
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.date.DateIntervalFormat
+import me.raatiniemi.worker.domain.date.HoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateTime
 import me.raatiniemi.worker.domain.timeinterval.model.isActive
-import me.raatiniemi.worker.domain.util.DateIntervalFormat
-import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 

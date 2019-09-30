@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.util
+package me.raatiniemi.worker.domain.date
 
 import me.raatiniemi.worker.domain.time.HoursMinutes
 import java.lang.Math.abs
@@ -29,7 +29,9 @@ class DigitalHoursMinutesIntervalFormat : HoursMinutesFormat {
             Locale.forLanguageTag("en_US"),
             formatFor(hoursMinutes),
             abs(hoursMinutes.hours),
-            padWithZeroes(abs(hoursMinutes.minutes))
+            padWithZeroes(
+                abs(hoursMinutes.minutes)
+            )
         )
     }
 
@@ -46,7 +48,11 @@ class DigitalHoursMinutesIntervalFormat : HoursMinutesFormat {
         private const val NEGATIVE_FORMAT = "-%1\$s:%2\$s"
 
         private fun padWithZeroes(value: Long): String {
-            return replaceSpacesWithZeroes(padWithSpaces(value.toString()))
+            return replaceSpacesWithZeroes(
+                padWithSpaces(
+                    value.toString()
+                )
+            )
         }
 
         private fun padWithSpaces(value: String): String {

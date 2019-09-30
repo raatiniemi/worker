@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.util
+package me.raatiniemi.worker.domain.date
 
-import me.raatiniemi.worker.domain.time.HoursMinutes
+import me.raatiniemi.worker.domain.time.Milliseconds
 
 /**
- * Interface for different hours and minutes formatter.
+ * Interface for different date interval formatter implementations.
  */
 @FunctionalInterface
-interface HoursMinutesFormat {
+interface DateIntervalFormat {
     /**
-     * Applies format to calculated time.
+     * Format an interval in milliseconds.
      *
-     * @param hoursMinutes Hours and minutes to apply format.
-     * @return Formatted hours and minutes.
+     * @param milliseconds Interval in milliseconds to format.
+     * @return Formatted interval.
      */
-    fun apply(hoursMinutes: HoursMinutes): String
+    fun format(milliseconds: Milliseconds): String
 }

@@ -18,11 +18,11 @@ package me.raatiniemi.worker.features.projects.timereport.view
 
 import android.annotation.SuppressLint
 import android.view.View
+import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import java.text.DateFormat
