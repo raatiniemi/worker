@@ -58,4 +58,13 @@ class LongTest {
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun days() {
+        val expected = 86_400_000L
+
+        val actual = 1L.days
+
+        assertEquals(expected, actual)
+    }
 }

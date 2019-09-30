@@ -27,3 +27,6 @@ val Long.minutes: Long
 
 val Long.hours: Long
     get() = minutes * MINUTES_IN_HOUR
+
+val Long.days: Long
+    get() = hours * HOURS_IN_DAY
