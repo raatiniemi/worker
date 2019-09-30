@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.timeinterval.model
 
 import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.time.Milliseconds
 import java.lang.Math.abs
 
 fun before(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {

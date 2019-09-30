@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.time.Milliseconds
 import java.util.*
 
 /**

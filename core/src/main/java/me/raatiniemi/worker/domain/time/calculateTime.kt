@@ -16,9 +16,6 @@
 
 package me.raatiniemi.worker.domain.time
 
-import me.raatiniemi.worker.domain.model.HoursMinutes
-import me.raatiniemi.worker.domain.model.Milliseconds
-
 private const val HOURS_IN_DAY = 24
 private const val MINUTES_IN_HOUR = 60
 private const val SECONDS_IN_MINUTE = 60

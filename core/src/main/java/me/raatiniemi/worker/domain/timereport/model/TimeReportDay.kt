@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.domain.timereport.model
 
-import me.raatiniemi.worker.domain.model.HoursMinutes
-import me.raatiniemi.worker.domain.model.accumulated
+import me.raatiniemi.worker.domain.time.HoursMinutes
+import me.raatiniemi.worker.domain.time.accumulated
 import me.raatiniemi.worker.domain.time.calculateHoursMinutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval

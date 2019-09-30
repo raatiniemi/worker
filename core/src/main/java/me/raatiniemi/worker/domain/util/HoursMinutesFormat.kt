@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.time.HoursMinutes
 
 /**
  * Interface for different hours and minutes formatter.

@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.time.Milliseconds
 
 /**
  * Interface for different date interval formatter implementations.

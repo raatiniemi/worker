@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.time.HoursMinutes
 import java.lang.Math.abs
 import java.util.*
 

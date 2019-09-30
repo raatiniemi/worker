@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.domain.time
 
-import me.raatiniemi.worker.domain.model.HoursMinutes
-import me.raatiniemi.worker.domain.model.Milliseconds
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

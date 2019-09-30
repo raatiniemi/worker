@@ -18,8 +18,8 @@ package me.raatiniemi.worker.features.projects.all.model
 
 import android.content.res.Resources
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateTime

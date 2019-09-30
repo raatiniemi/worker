@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
-import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.resetToStartOfDay
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
