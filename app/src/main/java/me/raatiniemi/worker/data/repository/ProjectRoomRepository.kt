@@ -18,10 +18,15 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.ProjectDao
 import me.raatiniemi.worker.data.projects.ProjectEntity
-import me.raatiniemi.worker.domain.model.*
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.project.model.NewProject
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.project.model.ProjectName
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
-internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
+internal class ProjectRoomRepository(val projects: ProjectDao) :
+    ProjectRepository {
     override fun count() = projects.count()
 
     override fun findAll(loadRange: LoadRange): List<Project> {

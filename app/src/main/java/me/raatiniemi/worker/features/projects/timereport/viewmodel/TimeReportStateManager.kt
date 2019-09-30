@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction

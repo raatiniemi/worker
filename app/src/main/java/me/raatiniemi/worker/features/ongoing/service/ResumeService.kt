@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.features.ongoing.service
 
 import android.content.Intent
-import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.usecase.CalculateTimeToday
-import me.raatiniemi.worker.domain.usecase.ClockIn
-import me.raatiniemi.worker.domain.usecase.GetProject
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.usecase.GetProject
+import me.raatiniemi.worker.domain.timeinterval.usecase.ActiveProjectException
+import me.raatiniemi.worker.domain.timeinterval.usecase.CalculateTimeToday
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.features.ongoing.view.PauseNotification
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics

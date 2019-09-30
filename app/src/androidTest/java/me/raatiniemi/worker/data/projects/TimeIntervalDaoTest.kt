@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.data.projects
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before

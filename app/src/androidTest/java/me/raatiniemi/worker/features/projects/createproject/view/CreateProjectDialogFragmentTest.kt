@@ -26,7 +26,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.dataTestModule
-import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.features.shared.view.isDisabled
 import me.raatiniemi.worker.features.shared.view.withView
 import org.junit.Assert.assertTrue

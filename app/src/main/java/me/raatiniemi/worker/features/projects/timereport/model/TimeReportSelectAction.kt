@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 
 internal interface TimeReportSelectAction {
     val items: List<TimeInterval>

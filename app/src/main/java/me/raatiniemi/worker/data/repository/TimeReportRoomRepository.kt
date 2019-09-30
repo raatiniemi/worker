@@ -20,10 +20,10 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
 import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.timeReportDay
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.timeReportDay
+import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import java.util.*
 
 internal class TimeReportRoomRepository(

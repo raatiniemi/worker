@@ -21,7 +21,7 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.features.ongoing.service.ClockOutService
 import me.raatiniemi.worker.features.ongoing.service.PauseService
 import java.util.*

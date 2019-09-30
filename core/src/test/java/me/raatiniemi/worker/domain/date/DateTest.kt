@@ -16,6 +16,10 @@
 
 package me.raatiniemi.worker.domain.date
 
+import me.raatiniemi.worker.domain.time.hours
+import me.raatiniemi.worker.domain.time.milliseconds
+import me.raatiniemi.worker.domain.time.minutes
+import me.raatiniemi.worker.domain.time.seconds
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

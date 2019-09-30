@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.usecase.CountTimeReports
-import me.raatiniemi.worker.domain.usecase.FindTimeReports
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 
 internal class TimeReportDataSourceFactory(

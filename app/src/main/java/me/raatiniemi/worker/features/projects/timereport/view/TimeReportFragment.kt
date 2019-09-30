@@ -23,10 +23,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_project_time_report.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.date.minutes
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectId
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.model.ProjectId
+import me.raatiniemi.worker.domain.project.model.projectName
+import me.raatiniemi.worker.domain.time.minutes
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions

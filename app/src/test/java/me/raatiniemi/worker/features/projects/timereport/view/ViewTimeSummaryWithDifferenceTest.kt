@@ -16,9 +16,14 @@
 
 package me.raatiniemi.worker.features.projects.timereport.view
 
-import me.raatiniemi.worker.domain.model.*
-import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
-import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.domain.date.DigitalHoursMinutesIntervalFormat
+import me.raatiniemi.worker.domain.date.HoursMinutesFormat
+import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
+import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
