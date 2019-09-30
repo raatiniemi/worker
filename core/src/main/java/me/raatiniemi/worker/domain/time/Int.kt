@@ -14,20 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.date
+package me.raatiniemi.worker.domain.time
 
-private const val MILLISECONDS_IN_SECOND = 1000
-private const val SECONDS_IN_MINUTE = 60
-private const val MINUTES_IN_HOUR = 60
+val Int.milliseconds: Long
+    get() = toLong().milliseconds
 
-val Long.milliseconds: Long
-    get() = this
+val Int.seconds: Long
+    get() = toLong().seconds
 
-val Long.seconds: Long
-    get() = milliseconds * MILLISECONDS_IN_SECOND
+val Int.minutes: Long
+    get() = toLong().minutes
 
-val Long.minutes: Long
-    get() = seconds * SECONDS_IN_MINUTE
-
-val Long.hours: Long
-    get() = minutes * MINUTES_IN_HOUR
+val Int.hours: Long
+    get() = toLong().hours

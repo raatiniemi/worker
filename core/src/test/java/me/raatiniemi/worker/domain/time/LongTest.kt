@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.date
+package me.raatiniemi.worker.domain.time
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -22,12 +22,12 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class IntTest {
+class LongTest {
     @Test
     fun milliseconds() {
         val expected = 200L
 
-        val actual = 200.milliseconds
+        val actual = 200L.milliseconds
 
         assertEquals(expected, actual)
     }
@@ -36,7 +36,7 @@ class IntTest {
     fun seconds() {
         val expected = 1_000L
 
-        val actual = 1.seconds
+        val actual = 1L.seconds
 
         assertEquals(expected, actual)
     }
@@ -45,7 +45,7 @@ class IntTest {
     fun minutes() {
         val expected = 60_000L
 
-        val actual = 1.minutes
+        val actual = 1L.minutes
 
         assertEquals(expected, actual)
     }
@@ -54,7 +54,7 @@ class IntTest {
     fun hours() {
         val expected = 3_600_000L
 
-        val actual = 1.hours
+        val actual = 1L.hours
 
         assertEquals(expected, actual)
     }

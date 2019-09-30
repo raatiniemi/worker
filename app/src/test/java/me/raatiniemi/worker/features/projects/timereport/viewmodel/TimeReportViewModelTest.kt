@@ -19,11 +19,11 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
-import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.date.minutes
-import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.resetToStartOfDay
+import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.hours
+import me.raatiniemi.worker.domain.time.minutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval

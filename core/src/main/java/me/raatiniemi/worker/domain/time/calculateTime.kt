@@ -16,12 +16,6 @@
 
 package me.raatiniemi.worker.domain.time
 
-private const val HOURS_IN_DAY = 24
-private const val MINUTES_IN_HOUR = 60
-private const val SECONDS_IN_MINUTE = 60
-private const val SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR
-private const val SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY
-
 fun calculateHoursMinutes(milliseconds: Milliseconds): HoursMinutes {
     val minutes = calculateMinutes(milliseconds.value)
     val hours = calculateHours(milliseconds.value)

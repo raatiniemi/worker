@@ -14,16 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.timeinterval.model
+package me.raatiniemi.worker.domain.time
 
-import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.time.hours
-import java.lang.Math.abs
+val Long.milliseconds: Long
+    get() = this
 
-fun before(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
-    return startingPoint.calculateMilliseconds() - abs(offset)
-}
+val Long.seconds: Long
+    get() = milliseconds * MILLISECONDS_IN_SECOND
 
-fun after(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
-    return startingPoint.calculateMilliseconds() + abs(offset)
-}
+val Long.minutes: Long
+    get() = seconds * SECONDS_IN_MINUTE
+
+val Long.hours: Long
+    get() = minutes * MINUTES_IN_HOUR

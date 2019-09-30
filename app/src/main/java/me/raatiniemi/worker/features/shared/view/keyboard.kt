@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.shared.view
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import kotlinx.coroutines.*
-import me.raatiniemi.worker.domain.date.milliseconds
+import me.raatiniemi.worker.domain.time.milliseconds
 
 private val delayBeforeShowingKeyboard = 100.milliseconds
 

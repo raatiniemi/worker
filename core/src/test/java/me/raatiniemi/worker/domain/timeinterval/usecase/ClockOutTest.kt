@@ -16,11 +16,11 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
-import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.minus
 import me.raatiniemi.worker.domain.date.plus
-import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository

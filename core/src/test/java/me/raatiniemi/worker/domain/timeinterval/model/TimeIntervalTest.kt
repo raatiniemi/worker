@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.domain.timeinterval.model
 
-import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.project.model.android
+import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOutBeforeClockInException
 import org.junit.Assert.assertEquals
 import org.junit.Test
