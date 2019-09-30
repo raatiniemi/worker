@@ -44,7 +44,7 @@ internal class TimeReportDataSource(
         }
 
     private fun countTotal(): Int {
-        return project?.let(countTimeReports) ?: 0
+        return project?.let { countTimeReports(it) } ?: 0
     }
 
     override fun loadInitial(

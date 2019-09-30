@@ -39,8 +39,6 @@ import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
-import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
-import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
@@ -81,8 +79,8 @@ class TimeReportViewModelTest {
         timeIntervalRepository = TimeIntervalInMemoryRepository()
         val timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
 
-        countTimeReports = countTimeReports(keyValueStore, timeReportRepository)
-        findTimeReports = findTimeReports(keyValueStore, timeReportRepository)
+        countTimeReports = CountTimeReports(keyValueStore, timeReportRepository)
+        findTimeReports = FindTimeReports(keyValueStore, timeReportRepository)
 
         timeReportDataSourceFactory = TimeReportDataSourceFactory(
             projectHolder,

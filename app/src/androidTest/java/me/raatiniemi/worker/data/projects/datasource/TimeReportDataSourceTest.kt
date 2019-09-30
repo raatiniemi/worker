@@ -31,8 +31,8 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
-import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -62,8 +62,8 @@ class TimeReportDataSourceTest {
 
         dataSource = TimeReportDataSource(
             projectHolder,
-            countTimeReports(keyValueStore, repository),
-            findTimeReports(keyValueStore, repository)
+            CountTimeReports(keyValueStore, repository),
+            FindTimeReports(keyValueStore, repository)
         )
     }
 

@@ -22,6 +22,8 @@ import me.raatiniemi.worker.domain.project.usecase.IsProjectActive
 import me.raatiniemi.worker.domain.timeinterval.usecase.CalculateTimeToday
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
 import org.koin.dsl.module.module
 
 val useCaseModule = module {
@@ -47,5 +49,19 @@ val useCaseModule = module {
 
     single {
         CalculateTimeToday(get())
+    }
+
+    single {
+        CountTimeReports(
+            keyValueStore = get(),
+            repository = get()
+        )
+    }
+
+    single {
+        FindTimeReports(
+            keyValueStore = get(),
+            repository = get()
+        )
     }
 }
