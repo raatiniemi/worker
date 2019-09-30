@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.util
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.time.calculateHoursMinutes
 import java.util.*
 
 /**

@@ -18,10 +18,10 @@ package me.raatiniemi.worker.domain.timereport.model
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.accumulated
+import me.raatiniemi.worker.domain.time.calculateHoursMinutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timeinterval.model.isActive
-import me.raatiniemi.worker.domain.util.calculateHoursMinutes
 import java.util.*
 
 sealed class TimeReportDay {
