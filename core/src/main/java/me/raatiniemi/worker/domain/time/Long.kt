@@ -30,3 +30,6 @@ val Long.hours: Long
 
 val Long.days: Long
     get() = hours * HOURS_IN_DAY
+
+val Long.weeks: Long
+    get() = days * DAYS_IN_WEEK

@@ -30,3 +30,6 @@ val Int.hours: Long
 
 val Int.days: Long
     get() = toLong().days
+
+val Int.weeks: Long
+    get() = toLong().weeks
