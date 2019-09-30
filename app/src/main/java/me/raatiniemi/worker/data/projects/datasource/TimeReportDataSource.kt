@@ -63,8 +63,7 @@ internal class TimeReportDataSource(
     }
 
     private fun loadData(loadRange: LoadRange): List<TimeReportDay> {
-        val project = this.project
-        return when (project) {
+        return when (val project = this.project) {
             is Project -> findTimeReports(project, loadRange)
             else -> emptyList()
         }
