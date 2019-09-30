@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.domain.configuration
 
 class InMemoryKeyValueStore : KeyValueStore {
     private var store = mutableMapOf<AppKeys, Any>()

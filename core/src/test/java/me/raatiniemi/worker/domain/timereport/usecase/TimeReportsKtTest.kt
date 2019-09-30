@@ -16,6 +16,9 @@
 
 package me.raatiniemi.worker.domain.timereport.usecase
 
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
@@ -32,9 +35,6 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

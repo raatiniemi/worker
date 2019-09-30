@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
@@ -40,8 +42,6 @@ import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 import java.util.*
 

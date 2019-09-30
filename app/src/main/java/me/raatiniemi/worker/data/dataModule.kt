@@ -24,6 +24,7 @@ import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.repository.TimeReportRoomRepository
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.project.usecase.countProjects
 import me.raatiniemi.worker.domain.project.usecase.findProjects
@@ -32,7 +33,6 @@ import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
 import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
-import me.raatiniemi.worker.util.KeyValueStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 

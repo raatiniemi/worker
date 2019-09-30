@@ -18,12 +18,12 @@ package me.raatiniemi.worker.features.settings.project.viewmodel
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {

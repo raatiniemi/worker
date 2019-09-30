@@ -18,6 +18,8 @@ package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.repository.resetToStartOfDay
 import me.raatiniemi.worker.domain.time.Milliseconds
@@ -32,8 +34,6 @@ import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import me.raatiniemi.worker.domain.timereport.usecase.countTimeReports
 import me.raatiniemi.worker.domain.timereport.usecase.findTimeReports
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
-import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

@@ -16,12 +16,12 @@
 
 package me.raatiniemi.worker.domain.timereport.usecase
 
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
 
 typealias CountTimeReports = (Project) -> Int
 typealias FindTimeReports = (Project, LoadRange) -> List<TimeReportDay>

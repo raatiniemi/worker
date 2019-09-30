@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.domain.configuration
 
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import org.junit.Assert.assertEquals

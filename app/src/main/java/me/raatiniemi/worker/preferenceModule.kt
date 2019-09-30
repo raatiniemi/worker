@@ -17,8 +17,8 @@
 package me.raatiniemi.worker
 
 import androidx.preference.PreferenceManager
-import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.SharedKeyValueStore
+import me.raatiniemi.worker.configuration.SharedKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 

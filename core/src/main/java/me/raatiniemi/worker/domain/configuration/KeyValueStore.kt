@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,12 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.domain.configuration
 
-enum class AppKeys(val rawValue: String) {
-    HIDE_REGISTERED_TIME("pref_hide_registered_time"),
-    CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
-    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
-    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
-    TIME_SUMMARY("pref_time_summary")
+interface KeyValueStore {
+    fun set(key: AppKeys, value: Boolean)
+    fun set(key: AppKeys, value: Int)
+
+    fun bool(key: AppKeys, defaultValue: Boolean): Boolean
+    fun int(key: AppKeys, defaultValue: Int = 0): Int
 }

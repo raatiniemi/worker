@@ -26,6 +26,8 @@ import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
@@ -39,8 +41,6 @@ import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 internal class TimeReportViewModel internal constructor(

@@ -19,6 +19,9 @@ package me.raatiniemi.worker.features.projects.all.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
@@ -37,9 +40,6 @@ import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
