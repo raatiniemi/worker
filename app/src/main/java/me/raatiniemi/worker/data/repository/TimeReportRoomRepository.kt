@@ -46,15 +46,17 @@ internal class TimeReportRoomRepository(
         )
     }
 
-    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> =
-        with(loadRange) {
-            return timeReport.findAll(project.id.value, position.value, size.value)
-                .map(::transform)
-        }
+    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
+        val (position, size) = loadRange
 
-    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> =
-        with(loadRange) {
-            return timeReport.findNotRegistered(project.id.value, position.value, size.value)
-                .map(::transform)
-        }
+        return timeReport.findAll(project.id.value, position.value, size.value)
+            .map(::transform)
+    }
+
+    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
+        val (position, size) = loadRange
+
+        return timeReport.findNotRegistered(project.id.value, position.value, size.value)
+            .map(::transform)
+    }
 }
