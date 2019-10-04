@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.viewmodel
+package me.raatiniemi.worker.features.settings.viewmodel
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
@@ -22,11 +22,12 @@ import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
-import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
+import me.raatiniemi.worker.features.settings.model.SettingsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import timber.log.Timber
 
-class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
+internal class SettingsViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
     var confirmClockOut: Boolean
         @MainThread
         get() = keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)
@@ -61,7 +62,7 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
             keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, value)
         }
 
-    val viewActions = ConsumableLiveData<ProjectViewActions>()
+    val viewActions = ConsumableLiveData<SettingsViewActions>()
 
     @MainThread
     fun changeTimeSummaryStartingPoint(newStartingPoint: Int) {
@@ -72,13 +73,12 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
         }
 
         try {
-            val startingPoint = TimeIntervalStartingPoint.from(newStartingPoint)
-            val viewAction = when (startingPoint) {
+            val viewAction = when (TimeIntervalStartingPoint.from(newStartingPoint)) {
                 TimeIntervalStartingPoint.WEEK -> {
                     Timber.d("Changing time summary starting point to week")
 
                     keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.WEEK.rawValue)
-                    ProjectViewActions.ShowTimeSummaryStartingPointChangedToWeek
+                    SettingsViewActions.ShowTimeSummaryStartingPointChangedToWeek
                 }
                 TimeIntervalStartingPoint.MONTH -> {
                     Timber.d("Changing time summary starting point to month")
@@ -87,16 +87,16 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
                         AppKeys.TIME_SUMMARY,
                         TimeIntervalStartingPoint.MONTH.rawValue
                     )
-                    ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth
+                    SettingsViewActions.ShowTimeSummaryStartingPointChangedToMonth
                 }
                 else -> throw InvalidStartingPointException("Starting point '$newStartingPoint' is not valid")
             }
 
-            viewActions.postValue(viewAction)
+            viewActions += viewAction
         } catch (e: InvalidStartingPointException) {
             Timber.e(e, "Unable to change time summary starting point")
 
-            viewActions.postValue(ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage)
+            viewActions += SettingsViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage
         }
     }
 }

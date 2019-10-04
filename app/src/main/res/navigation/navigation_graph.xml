@@ -35,21 +35,6 @@
     <fragment
         android:id="@+id/navSettings"
         android:name="me.raatiniemi.worker.features.settings.view.SettingsFragment"
-        android:label="@string/home_navigation_settings">
-
-        <action
-            android:id="@+id/settings_project"
-            app:destination="@+id/navSettingsProject"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/navSettingsProject"
-        android:name="me.raatiniemi.worker.features.settings.project.view.ProjectFragment"
-        android:label="@string/settings_project_title" />
+        android:label="@string/home_navigation_settings" />
 
 </navigation>

@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.PreferenceCategory android:title="@string/settings_title">
+    <androidx.preference.PreferenceCategory android:title="@string/settings_project_title">
 
-        <Preference
-            android:key="settings_project"
-            android:title="@string/settings_project_title"
-            app:fragment="me.raatiniemi.worker.features.settings.project.view.ProjectFragment" />
+        <androidx.preference.CheckBoxPreference
+            android:key="confirm_clock_out"
+            android:summary="@string/settings_confirm_clock_out_summary"
+            android:title="@string/settings_confirm_clock_out_title" />
+
+        <androidx.preference.ListPreference
+            android:entries="@array/settings_time_summary_alternative_text"
+            android:entryValues="@array/settings_time_summary_alternative_value"
+            android:key="time_summary"
+            android:summary="@string/settings_time_summary_summary"
+            android:title="@string/settings_time_summary_title" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory android:title="@string/settings_ongoing_notification_title">
+
+        <androidx.preference.CheckBoxPreference
+            android:key="ongoing_notification_enabled"
+            android:title="@string/settings_ongoing_notification_enabled_title" />
+
+        <androidx.preference.CheckBoxPreference
+            android:key="ongoing_notification_chronometer_enabled"
+            android:summary="@string/settings_ongoing_notification_chronometer_enabled_summary"
+            android:title="@string/settings_ongoing_notification_chronometer_enabled_title" />
 
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/settings_about_title">
 
         <Preference
-            android:key="settings_about_version"
-            android:title="@string/settings_about_version_title" />
+            android:key="version"
+            android:title="@string/settings_version_title" />
 
     </androidx.preference.PreferenceCategory>
 

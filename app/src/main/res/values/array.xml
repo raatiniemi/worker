@@ -15,11 +15,11 @@
   -->
 
 <resources>
-    <string-array name="project_time_summary_alternative_text">
-        <item>@string/settings_project_time_summary_starting_point_week</item>
-        <item>@string/settings_project_time_summary_starting_point_month</item>
+    <string-array name="settings_time_summary_alternative_text">
+        <item>@string/settings_time_summary_starting_point_week</item>
+        <item>@string/settings_time_summary_starting_point_month</item>
     </string-array>
-    <string-array name="project_time_summary_alternative_value">
+    <string-array name="settings_time_summary_alternative_value">
         <item>1</item>
         <item>2</item>
     </string-array>

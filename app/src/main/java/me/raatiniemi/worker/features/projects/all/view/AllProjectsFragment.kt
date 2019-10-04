@@ -25,7 +25,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
-import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
+import me.raatiniemi.worker.features.settings.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent

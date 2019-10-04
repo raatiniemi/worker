@@ -14,14 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.viewmodel
+package me.raatiniemi.worker.features.settings.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
+import me.raatiniemi.worker.features.settings.model.SettingsViewActions
 import me.raatiniemi.worker.features.shared.model.observeNonNull
 import org.junit.Assert.*
 import org.junit.Before
@@ -31,19 +31,21 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class ProjectViewModelTest {
+class SettingsViewModelTest {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
     private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
 
-    private lateinit var vm: ProjectViewModel
+    private lateinit var vm: SettingsViewModel
 
     @Before
     fun setUp() {
-        vm = ProjectViewModel(keyValueStore)
+        vm = SettingsViewModel(keyValueStore)
     }
+
+    // Confirm clock out
 
     @Test
     fun `confirm clock out with default value`() {
@@ -53,22 +55,24 @@ class ProjectViewModelTest {
     }
 
     @Test
-    fun `disable confirm clock out`() {
+    fun `confirm clock out when disabled`() {
         vm.confirmClockOut = false
 
         val actual = vm.confirmClockOut
+
         assertFalse(actual)
     }
 
     @Test
-    fun `enable confirm clock out`() {
-        vm.confirmClockOut = false
-
+    fun `confirm clock out when enabled`() {
         vm.confirmClockOut = true
 
         val actual = vm.confirmClockOut
+
         assertTrue(actual)
     }
+
+    // Time summary
 
     @Test
     fun `time summary with default value`() {
@@ -99,60 +103,66 @@ class ProjectViewModelTest {
         assertEquals(expected, actual)
     }
 
+    // Ongoing notification enabled
+
     @Test
-    fun `is ongoing notification enabled with default value`() {
+    fun `ongoing notification enabled with default value`() {
         val actual = vm.ongoingNotificationEnabled
 
         assertTrue(actual)
     }
 
     @Test
-    fun `disable ongoing notification`() {
+    fun `ongoing notification enabled when disabled`() {
         vm.ongoingNotificationEnabled = false
 
         val actual = vm.ongoingNotificationEnabled
+
         assertFalse(actual)
     }
 
     @Test
-    fun `enable ongoing notification`() {
-        vm.ongoingNotificationEnabled = false
-
+    fun `ongoing notification enabled when enabled`() {
         vm.ongoingNotificationEnabled = true
 
         val actual = vm.ongoingNotificationEnabled
+
         assertTrue(actual)
     }
 
-    @Test
-    fun `is ongoing notification chronometer enabled with ongoing notification disabled`() {
-        vm.ongoingNotificationEnabled = false
+    // Ongoing notification chronometer enabled
 
+    @Test
+    fun `ongoing notification chronometer enabled when ongoing notification is disabled`() {
+        vm.ongoingNotificationEnabled = false
         vm.ongoingNotificationChronometerEnabled = true
 
         val actual = vm.ongoingNotificationChronometerEnabled
+
         assertFalse(actual)
     }
 
     @Test
-    fun `disable ongoing notification chronometer`() {
+    fun `ongoing notification chronometer enabled when disabled`() {
         vm.ongoingNotificationEnabled = true
-
         vm.ongoingNotificationChronometerEnabled = false
 
         val actual = vm.ongoingNotificationChronometerEnabled
+
         assertFalse(actual)
     }
 
     @Test
-    fun `enable ongoing notification chronometer`() {
+    fun `ongoing notification chronometer enabled when enabled`() {
         vm.ongoingNotificationEnabled = true
-
         vm.ongoingNotificationChronometerEnabled = true
 
         val actual = vm.ongoingNotificationChronometerEnabled
+
         assertTrue(actual)
     }
+
+    // Change time summary starting point
 
     @Test
     fun `change time summary starting point with current starting point`() {
@@ -172,7 +182,7 @@ class ProjectViewModelTest {
 
         vm.viewActions.observeNonNull {
             assertEquals(
-                ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage,
+                SettingsViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage,
                 it
             )
         }
@@ -185,7 +195,7 @@ class ProjectViewModelTest {
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.rawValue)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToWeek, it)
+            assertEquals(SettingsViewActions.ShowTimeSummaryStartingPointChangedToWeek, it)
         }
     }
 
@@ -196,7 +206,7 @@ class ProjectViewModelTest {
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth, it)
+            assertEquals(SettingsViewActions.ShowTimeSummaryStartingPointChangedToMonth, it)
         }
     }
 }
