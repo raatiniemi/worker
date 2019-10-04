@@ -1,4 +1,1 @@
-improve enforcing business rules
-convert remaining code over to kotlin
-resolve time report issue with active interval and lazy calculations
-attempt to resolve crash when app is resumed to show time report
+resolve crash when viewing project settings
