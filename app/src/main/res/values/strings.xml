@@ -68,32 +68,32 @@
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Settings">-->
-    <string name="settings_title">Preferences</string>
+    <string name="settings_project_title">Project</string>
 
-    <string name="settings_project_confirm_clock_out_title">Confirm clock out</string>
-    <string name="settings_project_confirm_clock_out_summary">Require confirmation when clocking out to prevent accidental clocking out. Clock out from ongoing notification is not yet supported.</string>
+    <string name="settings_confirm_clock_out_title">Confirm clock out</string>
+    <string name="settings_confirm_clock_out_summary">Require confirmation when clocking out to prevent accidental clocking out. Clock out from ongoing notification is not yet supported.</string>
 
-    <string name="settings_project_time_summary_title">Time summary</string>
-    <string name="settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
-    <string name="settings_project_time_summary_starting_point_week">Week</string>
-    <string name="settings_project_time_summary_starting_point_month">Month</string>
+    <string name="settings_time_summary_title">Time summary</string>
+    <string name="settings_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
+    <string name="settings_time_summary_starting_point_week">Week</string>
+    <string name="settings_time_summary_starting_point_month">Month</string>
 
-    <string name="settings_project_time_summary_changed_starting_point_to_week_message">Time summary will show current week</string>
-    <string name="settings_project_time_summary_changed_starting_point_to_month_message">Time summary will show current month</string>
-    <string name="settings_project_time_summary_unable_to_change_starting_point_message">Unable to change time summary starting point.</string>
+    <string name="settings_time_summary_changed_starting_point_to_week_message">Time summary will show current week</string>
+    <string name="settings_time_summary_changed_starting_point_to_month_message">Time summary will show current month</string>
+    <string name="settings_time_summary_unable_to_change_starting_point_message">Unable to change time summary starting point.</string>
 
-    <string name="settings_project_ongoing_notification_title">Ongoing notification</string>
+    <string name="settings_ongoing_notification_title">Ongoing notification</string>
 
-    <string name="settings_project_ongoing_notification_enable_title">Enable</string>
-    <string name="settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
+    <string name="settings_ongoing_notification_enabled_title">Enable</string>
+    <string name="settings_ongoing_notification_enabled_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
 
-    <string name="settings_project_ongoing_notification_chronometer_title">Notification timer</string>
-    <string name="settings_project_ongoing_notification_chronometer_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
+    <string name="settings_ongoing_notification_chronometer_enabled_title">Notification timer</string>
+    <string name="settings_ongoing_notification_chronometer_enabled_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
 
     <string name="settings_about_title">About</string>
 
-    <string name="settings_about_version_title">Version</string>
-    <string name="settings_about_version_summary" formatted="false">%s (%d)</string>
+    <string name="settings_version_title">Version</string>
+    <string name="settings_version_summary" formatted="false">%s (%d)</string>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Ongoing notification">-->

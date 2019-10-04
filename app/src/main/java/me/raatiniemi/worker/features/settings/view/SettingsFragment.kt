@@ -36,6 +36,15 @@ import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
+private const val CONFIRM_CLOCK_OUT_KEY = "confirm_clock_out"
+private const val TIME_SUMMARY_KEY = "time_summary"
+
+private const val ONGOING_NOTIFICATION_ENABLED_KEY = "ongoing_notification_enabled"
+private const val ONGOING_NOTIFICATION_CHRONOMETER_ENABLED_KEY =
+    "ongoing_notification_chronometer_enabled"
+
+private const val VERSION_KEY = "version"
+
 class SettingsFragment : PreferenceFragmentCompat() {
     private val vm: SettingsViewModel by viewModel()
     private val usageAnalytics: UsageAnalytics by inject()
@@ -51,6 +60,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureUserInterface()
+        observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        usageAnalytics.setCurrentScreen(this)
+    }
+
+    private fun configureUserInterface() {
+        configureConfirmClockOut()
+        configureTimeSummary()
+        configureOngoingNotification()
+        configureVersion()
+    }
+
+    private fun configureConfirmClockOut() {
         configurePreference<CheckBoxPreference>(CONFIRM_CLOCK_OUT_KEY) {
             isChecked = vm.confirmClockOut
 
@@ -59,7 +86,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
+    }
 
+    private fun configureTimeSummary() {
         configurePreference<ListPreference>(TIME_SUMMARY_KEY) {
             value = vm.timeSummary.toString()
 
@@ -70,11 +99,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
+    }
 
-        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLE_KEY) {
+    private fun configureOngoingNotification() {
+        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLED_KEY) {
             isEnabled = isOngoingChannelEnabled
             isChecked = vm.ongoingNotificationEnabled
-            setSummary(R.string.settings_project_ongoing_notification_enable_summary)
+            setSummary(R.string.settings_ongoing_notification_enabled_summary)
 
             onCheckChange {
                 vm.ongoingNotificationEnabled = it
@@ -84,13 +115,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     dismissOngoingNotifications()
                 }
 
-                configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
+                configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_ENABLED_KEY) {
                     isEnabled = vm.ongoingNotificationEnabled
                 }
                 true
             }
         }
-        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
+
+        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_ENABLED_KEY) {
             isEnabled = isOngoingChannelEnabled && vm.ongoingNotificationEnabled
             isChecked = vm.ongoingNotificationChronometerEnabled
 
@@ -104,28 +136,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             }
         }
-
-        configurePreference<Preference>("settings_about_version") {
-            isSelectable = false
-            summary = getString(
-                R.string.settings_about_version_summary,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE
-            )
-        }
-        observeViewModel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        usageAnalytics.setCurrentScreen(this)
-    }
-
-    private fun observeViewModel() {
-        observeAndConsume(vm.viewActions) {
-            it.action(requireActivity())
-        }
     }
 
     private fun reloadOngoingNotifications() {
@@ -138,12 +148,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
             .let { requireContext().startService(it) }
     }
 
-    companion object {
-        private const val CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out"
-        private const val TIME_SUMMARY_KEY = "settings_project_time_summary"
-        private const val ONGOING_NOTIFICATION_ENABLE_KEY =
-            "settings_project_ongoing_notification_enable"
-        private const val ONGOING_NOTIFICATION_CHRONOMETER_KEY =
-            "settings_project_ongoing_notification_chronometer"
+    private fun configureVersion() {
+        configurePreference<Preference>(VERSION_KEY) {
+            isSelectable = false
+            summary = getString(
+                R.string.settings_version_summary,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE
+            )
+        }
+    }
+
+    private fun observeViewModel() {
+        observeAndConsume(vm.viewActions) {
+            it.action(requireActivity())
+        }
     }
 }
