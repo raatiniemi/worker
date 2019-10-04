@@ -40,6 +40,28 @@ internal class SettingsViewModel(private val keyValueStore: KeyValueStore) : Vie
         @MainThread
         get() = keyValueStore.int(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
 
+    var ongoingNotificationEnabled: Boolean
+        @MainThread
+        get() = keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED, true)
+        @MainThread
+        set(value) {
+            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_ENABLED, value)
+        }
+
+    var ongoingNotificationChronometerEnabled: Boolean
+        @MainThread
+        get() {
+            return if (ongoingNotificationEnabled) {
+                keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
+            } else {
+                false
+            }
+        }
+        @MainThread
+        set(value) {
+            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, value)
+        }
+
     val viewActions = ConsumableLiveData<SettingsViewActions>()
 
     @MainThread

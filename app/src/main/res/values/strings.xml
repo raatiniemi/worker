@@ -70,10 +70,6 @@
     <!--<editor-fold desc="Settings">-->
     <string name="settings_title">Preferences</string>
 
-    <string name="settings_project_title">Project</string>
-
-    <string name="settings_project_general_title">General</string>
-
     <string name="settings_project_confirm_clock_out_title">Confirm clock out</string>
     <string name="settings_project_confirm_clock_out_summary">Require confirmation when clocking out to prevent accidental clocking out. Clock out from ongoing notification is not yet supported.</string>
 
