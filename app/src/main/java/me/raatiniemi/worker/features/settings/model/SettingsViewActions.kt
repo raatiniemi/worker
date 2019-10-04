@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.model
+package me.raatiniemi.worker.features.settings.model
 
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
@@ -22,8 +22,8 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import org.greenrobot.eventbus.EventBus
 
-sealed class ProjectViewActions : ActivityViewAction {
-    object ShowTimeSummaryStartingPointChangedToWeek : ProjectViewActions() {
+internal sealed class SettingsViewActions : ActivityViewAction {
+    object ShowTimeSummaryStartingPointChangedToWeek : SettingsViewActions() {
         override fun action(activity: FragmentActivity) {
             with(EventBus.getDefault()) {
                 post(TimeSummaryStartingPointChangeEvent())
@@ -38,7 +38,7 @@ sealed class ProjectViewActions : ActivityViewAction {
         }
     }
 
-    object ShowTimeSummaryStartingPointChangedToMonth : ProjectViewActions() {
+    object ShowTimeSummaryStartingPointChangedToMonth : SettingsViewActions() {
         override fun action(activity: FragmentActivity) {
             with(EventBus.getDefault()) {
                 post(TimeSummaryStartingPointChangeEvent())
@@ -53,7 +53,7 @@ sealed class ProjectViewActions : ActivityViewAction {
         }
     }
 
-    object ShowUnableToChangeTimeSummaryStartingPointErrorMessage : ProjectViewActions() {
+    object ShowUnableToChangeTimeSummaryStartingPointErrorMessage : SettingsViewActions() {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                 activity.findViewById(android.R.id.content),

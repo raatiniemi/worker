@@ -16,26 +16,17 @@
 
 package me.raatiniemi.worker.features.settings.project.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
-import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
-import me.raatiniemi.worker.features.shared.model.observeNonNull
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class ProjectViewModelTest {
-    @JvmField
-    @Rule
-    val rule = InstantTaskExecutorRule()
-
     private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
 
     private lateinit var vm: ProjectViewModel
@@ -43,35 +34,6 @@ class ProjectViewModelTest {
     @Before
     fun setUp() {
         vm = ProjectViewModel(keyValueStore)
-    }
-
-    @Test
-    fun `time summary with default value`() {
-        val expected = TimeIntervalStartingPoint.MONTH.rawValue
-
-        val actual = vm.timeSummary
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `time summary with month`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-        val expected = TimeIntervalStartingPoint.MONTH.rawValue
-
-        val actual = vm.timeSummary
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `time summary with week`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.WEEK.rawValue)
-        val expected = TimeIntervalStartingPoint.WEEK.rawValue
-
-        val actual = vm.timeSummary
-
-        assertEquals(expected, actual)
     }
 
     @Test
@@ -127,51 +89,5 @@ class ProjectViewModelTest {
 
         val actual = vm.ongoingNotificationChronometerEnabled
         assertTrue(actual)
-    }
-
-    @Test
-    fun `change time summary starting point with current starting point`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-
-        vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
-
-        assertEquals(
-            TimeIntervalStartingPoint.MONTH.rawValue,
-            keyValueStore.int(AppKeys.TIME_SUMMARY)
-        )
-    }
-
-    @Test
-    fun `change time summary starting point with invalid starting point`() {
-        vm.changeTimeSummaryStartingPoint(-1)
-
-        vm.viewActions.observeNonNull {
-            assertEquals(
-                ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage,
-                it
-            )
-        }
-    }
-
-    @Test
-    fun `change time summary starting point from month to week`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-
-        vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.rawValue)
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToWeek, it)
-        }
-    }
-
-    @Test
-    fun `change time summary starting point from week to month`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.WEEK.rawValue)
-
-        vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth, it)
-        }
     }
 }

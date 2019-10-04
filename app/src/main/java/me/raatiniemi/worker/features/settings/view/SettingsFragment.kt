@@ -20,12 +20,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.CheckBoxPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.settings.viewmodel.SettingsViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
+import me.raatiniemi.worker.features.shared.view.observeAndConsume
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -51,6 +53,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        configurePreference<ListPreference>(TIME_SUMMARY_KEY) {
+            value = vm.timeSummary.toString()
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val startingPoint = Integer.parseInt(newValue as String)
+                vm.changeTimeSummaryStartingPoint(startingPoint)
+
+                true
+            }
+        }
+
         configurePreference<Preference>("settings_about_version") {
             isSelectable = false
             summary = getString(
@@ -59,6 +72,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 BuildConfig.VERSION_CODE
             )
         }
+        observeViewModel()
     }
 
     override fun onResume() {
@@ -74,7 +88,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         return super.onPreferenceTreeClick(preference)
     }
 
+    private fun observeViewModel() {
+        observeAndConsume(vm.viewActions) {
+            it.action(requireActivity())
+        }
+    }
+
     companion object {
         private const val CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out"
+        private const val TIME_SUMMARY_KEY = "settings_project_time_summary"
     }
 }

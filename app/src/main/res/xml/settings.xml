@@ -9,6 +9,13 @@
             android:summary="@string/settings_project_confirm_clock_out_summary"
             android:title="@string/settings_project_confirm_clock_out_title" />
 
+        <androidx.preference.ListPreference
+            android:entries="@array/project_time_summary_alternative_text"
+            android:entryValues="@array/project_time_summary_alternative_value"
+            android:key="settings_project_time_summary"
+            android:summary="@string/settings_project_time_summary_summary"
+            android:title="@string/settings_project_time_summary_title" />
+
         <Preference
             android:key="settings_project"
             android:title="@string/settings_project_title"

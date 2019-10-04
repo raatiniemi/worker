@@ -20,7 +20,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.preference.CheckBoxPreference
-import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.ongoing.service.DismissOngoingNotificationsService
@@ -28,7 +27,6 @@ import me.raatiniemi.worker.features.ongoing.service.ReloadNotificationService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.isOngoingChannelDisabled
-import me.raatiniemi.worker.features.shared.view.observeAndConsume
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -50,7 +48,6 @@ class ProjectFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
 
         configureView()
-        observeViewModel()
     }
 
     override fun onResume() {
@@ -60,21 +57,7 @@ class ProjectFragment : PreferenceFragmentCompat() {
     }
 
     private fun configureView() {
-        configureTimeSummaryStartingPoint()
         configureOngoingNotification()
-    }
-
-    private fun configureTimeSummaryStartingPoint() {
-        configurePreference<ListPreference>(TIME_SUMMARY_KEY) {
-            value = vm.timeSummary.toString()
-
-            setOnPreferenceChangeListener { _, newValue ->
-                val startingPoint = Integer.parseInt(newValue as String)
-                vm.changeTimeSummaryStartingPoint(startingPoint)
-
-                true
-            }
-        }
     }
 
     private fun configureOngoingNotification() {
@@ -123,14 +106,7 @@ class ProjectFragment : PreferenceFragmentCompat() {
             .let { requireContext().startService(it) }
     }
 
-    private fun observeViewModel() {
-        observeAndConsume(vm.viewActions) {
-            it.action(requireActivity())
-        }
-    }
-
     companion object {
-        private const val TIME_SUMMARY_KEY = "settings_project_time_summary"
         private const val ONGOING_NOTIFICATION_ENABLE_KEY =
             "settings_project_ongoing_notification_enable"
         private const val ONGOING_NOTIFICATION_CHRONOMETER_KEY =

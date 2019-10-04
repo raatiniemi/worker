@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.PreferenceCategory android:title="@string/settings_project_general_title">
-
-        <androidx.preference.ListPreference
-            android:entries="@array/project_time_summary_alternative_text"
-            android:entryValues="@array/project_time_summary_alternative_value"
-            android:key="settings_project_time_summary"
-            android:summary="@string/settings_project_time_summary_summary"
-            android:title="@string/settings_project_time_summary_title" />
-
-    </androidx.preference.PreferenceCategory>
-
     <androidx.preference.PreferenceCategory android:title="@string/settings_project_ongoing_notification_title">
 
         <androidx.preference.CheckBoxPreference
