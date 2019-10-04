@@ -60,20 +60,8 @@ class ProjectFragment : PreferenceFragmentCompat() {
     }
 
     private fun configureView() {
-        configureConfirmClockOut()
         configureTimeSummaryStartingPoint()
         configureOngoingNotification()
-    }
-
-    private fun configureConfirmClockOut() {
-        configurePreference<CheckBoxPreference>(CONFIRM_CLOCK_OUT_KEY) {
-            isChecked = vm.confirmClockOut
-
-            onCheckChange {
-                vm.confirmClockOut = it
-                true
-            }
-        }
     }
 
     private fun configureTimeSummaryStartingPoint() {
@@ -142,7 +130,6 @@ class ProjectFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        private const val CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out"
         private const val TIME_SUMMARY_KEY = "settings_project_time_summary"
         private const val ONGOING_NOTIFICATION_ENABLE_KEY =
             "settings_project_ongoing_notification_enable"

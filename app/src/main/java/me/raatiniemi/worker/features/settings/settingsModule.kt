@@ -17,10 +17,15 @@
 package me.raatiniemi.worker.features.settings
 
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
+import me.raatiniemi.worker.features.settings.viewmodel.SettingsViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val settingsModule = module {
+    viewModel {
+        SettingsViewModel(keyValueStore = get())
+    }
+
     viewModel {
         ProjectViewModel(get())
     }

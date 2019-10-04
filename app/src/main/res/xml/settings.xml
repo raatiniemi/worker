@@ -4,6 +4,11 @@
 
     <androidx.preference.PreferenceCategory android:title="@string/settings_title">
 
+        <androidx.preference.CheckBoxPreference
+            android:key="settings_project_confirm_clock_out"
+            android:summary="@string/settings_project_confirm_clock_out_summary"
+            android:title="@string/settings_project_confirm_clock_out_title" />
+
         <Preference
             android:key="settings_project"
             android:title="@string/settings_project_title"

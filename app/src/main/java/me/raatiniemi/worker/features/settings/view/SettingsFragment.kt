@@ -19,15 +19,20 @@ package me.raatiniemi.worker.features.settings.view
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.settings.viewmodel.SettingsViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
+import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
+    private val vm: SettingsViewModel by viewModel()
     private val usageAnalytics: UsageAnalytics by inject()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -36,6 +41,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        configurePreference<CheckBoxPreference>(CONFIRM_CLOCK_OUT_KEY) {
+            isChecked = vm.confirmClockOut
+
+            onCheckChange {
+                vm.confirmClockOut = it
+                true
+            }
+        }
 
         configurePreference<Preference>("settings_about_version") {
             isSelectable = false
@@ -58,5 +72,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             "settings_project" -> findNavController().navigate(R.id.settings_project)
         }
         return super.onPreferenceTreeClick(preference)
+    }
+
+    companion object {
+        private const val CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out"
     }
 }

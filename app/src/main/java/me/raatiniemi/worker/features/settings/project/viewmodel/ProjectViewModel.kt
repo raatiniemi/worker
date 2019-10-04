@@ -27,14 +27,6 @@ import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import timber.log.Timber
 
 class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
-    var confirmClockOut: Boolean
-        @MainThread
-        get() = keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)
-        @MainThread
-        set(value) {
-            keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, value)
-        }
-
     val timeSummary: Int
         @MainThread
         get() = keyValueStore.int(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)

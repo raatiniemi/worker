@@ -46,31 +46,6 @@ class ProjectViewModelTest {
     }
 
     @Test
-    fun `confirm clock out with default value`() {
-        val actual = vm.confirmClockOut
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun `disable confirm clock out`() {
-        vm.confirmClockOut = false
-
-        val actual = vm.confirmClockOut
-        assertFalse(actual)
-    }
-
-    @Test
-    fun `enable confirm clock out`() {
-        vm.confirmClockOut = false
-
-        vm.confirmClockOut = true
-
-        val actual = vm.confirmClockOut
-        assertTrue(actual)
-    }
-
-    @Test
     fun `time summary with default value`() {
         val expected = TimeIntervalStartingPoint.MONTH.rawValue
 
