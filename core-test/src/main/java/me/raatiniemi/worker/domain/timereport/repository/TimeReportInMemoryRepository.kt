@@ -20,14 +20,29 @@ import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.repository.resetToStartOfDay
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.setToStartOfWeek
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import java.util.*
 
-class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :
-    TimeReportRepository {
+class TimeReportInMemoryRepository(
+    private val timeIntervalRepository: TimeIntervalRepository
+) : TimeReportRepository {
+    override fun countWeeks(project: Project): Int {
+        return timeIntervalRepository.findAll(project, Milliseconds(0))
+            .groupBy { setToStartOfWeek(it.start) }
+            .count()
+    }
+
+    override fun countNotRegisteredWeeks(project: Project): Int {
+        return timeIntervalRepository.findAll(project, Milliseconds(0))
+            .filter { it !is TimeInterval.Registered }
+            .groupBy { setToStartOfWeek(it.start) }
+            .count()
+    }
+
     override fun count(project: Project): Int =
         timeIntervalRepository.findAll(project, Milliseconds(0))
             .groupBy { resetToStartOfDay(it.start) }

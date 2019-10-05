@@ -21,6 +21,10 @@ import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 
 interface TimeReportRepository {
+    fun countWeeks(project: Project): Int
+
+    fun countNotRegisteredWeeks(project: Project): Int
+
     fun count(project: Project): Int
 
     fun countNotRegistered(project: Project): Int

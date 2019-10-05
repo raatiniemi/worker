@@ -31,6 +31,14 @@ internal class TimeReportRoomRepository(
     private val timeReport: TimeReportDao,
     private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
+    override fun countWeeks(project: Project): Int {
+        return timeReport.countWeeks(project.id.value)
+    }
+
+    override fun countNotRegisteredWeeks(project: Project): Int {
+        return timeReport.countNotRegisteredWeeks(project.id.value)
+    }
+
     override fun count(project: Project): Int = timeReport.count(project.id.value)
 
     override fun countNotRegistered(project: Project): Int =

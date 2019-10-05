@@ -16,19 +16,22 @@
 
 package me.raatiniemi.worker.domain.timereport.repository
 
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
+import me.raatiniemi.worker.domain.project.model.ios
 import me.raatiniemi.worker.domain.repository.resetToStartOfDay
-import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.time.hours
-import me.raatiniemi.worker.domain.time.minutes
+import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
+import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import org.junit.Assert.assertEquals
@@ -36,16 +39,219 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
     private lateinit var timeIntervalRepository: TimeIntervalRepository
+    private lateinit var clockIn: ClockIn
+    private lateinit var clockOut: ClockOut
+    private lateinit var markRegisteredTime: MarkRegisteredTime
+
     private lateinit var repository: TimeReportRepository
 
     @Before
     fun setUp() {
         timeIntervalRepository = TimeIntervalInMemoryRepository()
+        clockIn = ClockIn(timeIntervalRepository)
+        clockOut = ClockOut(timeIntervalRepository)
+        markRegisteredTime = MarkRegisteredTime(timeIntervalRepository)
+
         repository = TimeReportInMemoryRepository(timeIntervalRepository)
+    }
+
+    // Count weeks
+
+    @Test
+    fun `count weeks without time intervals`() {
+        val expected = 0
+
+        val actual = repository.countWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count weeks without time interval for project`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        val expected = 0
+
+        val actual = repository.countWeeks(ios)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count weeks with time interval`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        val expected = 1
+
+        val actual = repository.countWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count weeks with time intervals`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockOut(android, date = Date(startOfDay.value) + 30.minutes)
+        val expected = 1
+
+        val actual = repository.countWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count weeks with time intervals within same week`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
+        clockIn(android, date = Date(startOfWeek.value))
+        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
+        clockIn(android, date = Date(endOfWeek.value))
+        clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
+        val expected = 1
+
+        val actual = repository.countWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count weeks with time intervals in different weeks`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = startOfWeek + 2.weeks
+        clockIn(android, date = Date(startOfWeek.value))
+        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
+        clockIn(android, date = Date(nextWeek.value))
+        clockOut(android, date = Date(nextWeek.value) + 10.minutes)
+        val expected = 2
+
+        val actual = repository.countWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count weeks with registered time interval`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        clockIn(android, date = Date(startOfWeek.value))
+        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
+            .also { timeInterval ->
+                markRegisteredTime(listOf(timeInterval))
+            }
+        val expected = 1
+
+        val actual = repository.countWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    // Count not registered weeks
+
+    @Test
+    fun `count not registered weeks without time intervals`() {
+        val expected = 0
+
+        val actual = repository.countNotRegisteredWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered weeks without time interval for project`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        val expected = 0
+
+        val actual = repository.countNotRegisteredWeeks(ios)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered weeks with time interval`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        val expected = 1
+
+        val actual = repository.countNotRegisteredWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered weeks with time intervals`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockOut(android, date = Date(startOfDay.value) + 30.minutes)
+        val expected = 1
+
+        val actual = repository.countNotRegisteredWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered weeks with time intervals within same week`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
+        clockIn(android, date = Date(startOfWeek.value))
+        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
+        clockIn(android, date = Date(endOfWeek.value))
+        clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
+        val expected = 1
+
+        val actual = repository.countNotRegisteredWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered weeks with time intervals in different weeks`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = startOfWeek + 2.weeks
+        clockIn(android, date = Date(startOfWeek.value))
+        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
+        clockIn(android, date = Date(nextWeek.value))
+        clockOut(android, date = Date(nextWeek.value) + 10.minutes)
+        val expected = 2
+
+        val actual = repository.countNotRegisteredWeeks(android)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered weeks with registered time interval`() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        clockIn(android, date = Date(startOfWeek.value))
+        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
+            .also { timeInterval ->
+                markRegisteredTime(listOf(timeInterval))
+            }
+        val expected = 0
+
+        val actual = repository.countNotRegisteredWeeks(android)
+
+        assertEquals(expected, actual)
     }
 
     @Test
