@@ -397,6 +397,414 @@ class TimeReportDaoTest : BaseDaoTest() {
         assertEquals(expected, actual)
     }
 
+    // Find weeks
+
+    @Test
+    fun findWeeks_withoutTimeIntervals() {
+        val expected = emptyList<TimeReportQueryGroup>()
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withoutTimeIntervalForProject() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+            }
+        )
+        val expected = emptyList<TimeReportQueryGroup>()
+
+        val actual = timeReport.findWeeks(ios.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withTimeInterval() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfDay.value, "1")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withTimeIntervals() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value + 20.minutes
+                stopInMilliseconds = startOfDay.value + 30.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfDay.value, "1,2")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withTimeIntervalWithinSameWeek() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfWeek.value
+                stopInMilliseconds = endOfWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfWeek.value, "1,2")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withTimeIntervalInDifferentWeeks() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val nextWeek = startOfWeek + 1.weeks
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = nextWeek.value
+                stopInMilliseconds = nextWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(nextWeek.value, "2"),
+            TimeReportQueryGroup(startOfWeek.value, "1")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withRegisteredTimeInterval() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+                registered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfDay.value, "1")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_whenExcludingByLoadPosition() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value + 20.minutes
+                stopInMilliseconds = startOfWeek.value + 30.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = nextWeek.value
+                stopInMilliseconds = nextWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfWeek.value, "1,2")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 1, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_whenExcludingByLoadSize() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value + 20.minutes
+                stopInMilliseconds = startOfWeek.value + 30.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = nextWeek.value
+                stopInMilliseconds = nextWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(nextWeek.value, "3")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 1)
+
+        assertEquals(expected, actual)
+    }
+
+    // Find not registered weeks
+
+    @Test
+    fun findNotRegisteredWeeks_withoutTimeIntervals() {
+        val expected = emptyList<TimeReportQueryGroup>()
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withoutTimeIntervalForProject() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+            }
+        )
+        val expected = emptyList<TimeReportQueryGroup>()
+
+        val actual = timeReport.findNotRegisteredWeeks(ios.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withTimeInterval() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfDay.value, "1")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withTimeIntervals() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value + 20.minutes
+                stopInMilliseconds = startOfDay.value + 30.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfDay.value, "1,2")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withTimeIntervalWithinSameWeek() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfWeek.value
+                stopInMilliseconds = endOfWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfWeek.value, "1,2")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withTimeIntervalInDifferentWeeks() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = nextWeek.value
+                stopInMilliseconds = nextWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(nextWeek.value, "2"),
+            TimeReportQueryGroup(startOfWeek.value, "1")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withRegisteredTimeInterval() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfDay.value
+                stopInMilliseconds = startOfDay.value + 10.minutes
+                registered = true
+            }
+        )
+        val expected = emptyList<TimeReportQueryGroup>()
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_whenExcludingByLoadPosition() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value + 20.minutes
+                stopInMilliseconds = startOfWeek.value + 30.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = nextWeek.value
+                stopInMilliseconds = nextWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfWeek.value, "1,2")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 1, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_whenExcludingByLoadSize() {
+        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value + 20.minutes
+                stopInMilliseconds = startOfWeek.value + 30.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = nextWeek.value
+                stopInMilliseconds = nextWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(nextWeek.value, "3")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 1)
+
+        assertEquals(expected, actual)
+    }
+
     @Test
     fun findAll_withoutTimeIntervals() {
         val actual = timeReport.findAll(1, 0, 10)
