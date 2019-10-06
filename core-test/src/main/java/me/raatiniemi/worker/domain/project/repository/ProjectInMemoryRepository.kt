@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.project.model.ProjectName
-import me.raatiniemi.worker.domain.repository.indexWithCountCap
+import me.raatiniemi.worker.domain.repository.paginate
 import java.util.concurrent.atomic.AtomicLong
 
 class ProjectInMemoryRepository : ProjectRepository {
@@ -31,15 +31,7 @@ class ProjectInMemoryRepository : ProjectRepository {
     override fun count() = projects.count()
 
     override fun findAll(loadRange: LoadRange): List<Project> {
-        val (position, size) = loadRange
-        val fromIndex = indexWithCountCap(position.value, count())
-        val toIndex = indexWithCountCap(
-            position.value + size.value,
-            count()
-        )
-
-        return projects.sortedBy { it.name.value }
-            .subList(fromIndex, toIndex)
+        return paginate(loadRange, projects.sortedBy { it.name.value })
     }
 
     override fun findAll(): List<Project> = projects.sortedBy { it.name.value }

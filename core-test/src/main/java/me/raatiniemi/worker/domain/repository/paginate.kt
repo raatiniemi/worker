@@ -16,18 +16,29 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.time.Milliseconds
-import java.util.*
+import me.raatiniemi.worker.domain.model.LoadRange
+
+internal fun <T> paginate(
+    loadRange: LoadRange,
+    elements: List<T>
+): List<T> {
+    val (position, size) = loadRange
+    val fromIndex = indexWithCountCap(position.value, elements.count())
+    val toIndex = indexWithCountCap(
+        position.value + size.value,
+        elements.count()
+    )
+
+    return elements.subList(fromIndex, toIndex)
+}
 
 /**
- * Reset timestamp in milliseconds to start of day.
+ * Use index unless it's above count, in which count will be used.
  */
-fun resetToStartOfDay(time: Milliseconds): Date = Calendar.getInstance()
-    .apply { timeInMillis = time.value }
-    .also {
-        it.set(Calendar.HOUR_OF_DAY, 0)
-        it.set(Calendar.MINUTE, 0)
-        it.set(Calendar.SECOND, 0)
-        it.set(Calendar.MILLISECOND, 0)
+private fun indexWithCountCap(index: Int, count: Int): Int {
+    return if (index > count) {
+        count
+    } else {
+        index
     }
-    .let { it.time }
+}
