@@ -284,6 +284,8 @@ class TimeReportRoomRepositoryTest {
         assertEquals(expected, actual)
     }
 
+    // Count
+
     @Test
     fun count_withoutTimeIntervals() {
         val expected = 0
@@ -344,6 +346,8 @@ class TimeReportRoomRepositoryTest {
 
         assertEquals(expected, actual)
     }
+
+    // Count not registered
 
     @Test
     fun countNotRegistered_withoutTimeIntervals() {
@@ -994,6 +998,8 @@ class TimeReportRoomRepositoryTest {
         assertEquals(expected, actual)
     }
 
+    // Find all
+
     @Test
     fun findAll_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
@@ -1160,6 +1166,8 @@ class TimeReportRoomRepositoryTest {
 
         assertEquals(expected, actual)
     }
+
+    // Find not registered
 
     @Test
     fun findNotRegistered_withoutTimeIntervals() {

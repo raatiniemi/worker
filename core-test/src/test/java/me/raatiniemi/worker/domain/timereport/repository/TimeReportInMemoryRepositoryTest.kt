@@ -257,6 +257,8 @@ class TimeReportInMemoryRepositoryTest {
         assertEquals(expected, actual)
     }
 
+    // Count
+
     @Test
     fun `count without time intervals`() {
         val expected = 0
@@ -324,6 +326,8 @@ class TimeReportInMemoryRepositoryTest {
 
         assertEquals(expected, actual)
     }
+
+    // Count not registered
 
     @Test
     fun `count not registered without time intervals`() {
@@ -986,6 +990,8 @@ class TimeReportInMemoryRepositoryTest {
         assertEquals(expected, actual)
     }
 
+    // Find all
+
     @Test
     fun `find all without time intervals`() {
         val expected = emptyList<TimeReportDay>()
@@ -1154,6 +1160,8 @@ class TimeReportInMemoryRepositoryTest {
 
         assertEquals(expected, actual)
     }
+
+    // Find not registered
 
     @Test
     fun `find not registered without time intervals`() {
