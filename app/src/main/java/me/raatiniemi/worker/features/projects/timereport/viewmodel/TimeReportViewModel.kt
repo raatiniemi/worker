@@ -25,7 +25,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
+import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -46,7 +46,7 @@ import timber.log.Timber
 internal class TimeReportViewModel internal constructor(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    timeReportDataSourceFactory: TimeReportDataSourceFactory,
+    timeReportDataSourceFactory: TimeReportDataSource.Factory,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {

@@ -18,7 +18,7 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
+import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSource
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.android
@@ -70,7 +70,7 @@ class TimeReportViewModelTest {
 
     private lateinit var timeIntervalRepository: TimeIntervalRepository
 
-    private lateinit var timeReportDataSourceFactory: TimeReportDataSourceFactory
+    private lateinit var timeReportDataSourceFactory: TimeReportDataSource.Factory
 
     private lateinit var vm: TimeReportViewModel
 
@@ -82,7 +82,7 @@ class TimeReportViewModelTest {
         countTimeReports = CountTimeReports(keyValueStore, timeReportRepository)
         findTimeReports = FindTimeReports(keyValueStore, timeReportRepository)
 
-        timeReportDataSourceFactory = TimeReportDataSourceFactory(
+        timeReportDataSourceFactory = TimeReportDataSource.Factory(
             projectHolder,
             countTimeReports,
             findTimeReports

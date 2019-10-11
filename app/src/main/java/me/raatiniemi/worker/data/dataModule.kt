@@ -20,7 +20,7 @@ import androidx.room.Room
 import me.raatiniemi.worker.data.migrations.Migration1To2
 import me.raatiniemi.worker.data.migrations.Migration2To3
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
-import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
+import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSource
 import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.repository.TimeReportRoomRepository
@@ -67,7 +67,7 @@ val dataModule = module {
     }
 
     single {
-        TimeReportDataSourceFactory(
+        TimeReportDataSource.Factory(
             projectProvider = get(),
             countTimeReports = get(),
             findTimeReports = get()

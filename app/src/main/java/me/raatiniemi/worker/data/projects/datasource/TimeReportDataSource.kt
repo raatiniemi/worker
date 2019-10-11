@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.data.projects.datasource
 
+import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
@@ -75,5 +76,15 @@ internal class TimeReportDataSource(
             LoadSize(params.loadSize)
         )
         callback.onResult(loadData(loadRange))
+    }
+
+    class Factory(
+        private val projectProvider: ProjectProvider,
+        private val countTimeReports: CountTimeReports,
+        private val findTimeReports: FindTimeReports
+    ) : DataSource.Factory<Int, TimeReportDay>() {
+        override fun create(): TimeReportDataSource {
+            return TimeReportDataSource(projectProvider, countTimeReports, findTimeReports)
+        }
     }
 }
