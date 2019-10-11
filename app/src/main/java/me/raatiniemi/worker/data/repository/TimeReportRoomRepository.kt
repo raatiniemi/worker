@@ -22,9 +22,12 @@ import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
 import me.raatiniemi.worker.data.projects.timeInterval
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
 import java.util.*
 
 internal class TimeReportRoomRepository(
@@ -53,6 +56,32 @@ internal class TimeReportRoomRepository(
             Date(group.dateInMilliseconds),
             timeIntervals
         )
+    }
+
+    override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
+        val (position, size) = loadRange
+
+        val groups = timeReport.findWeeks(project.id.value, position.value, size.value)
+        val timeIntervals = timeIntervals(groups)
+        return groupByWeek(timeIntervals)
+    }
+
+    override fun findNotRegisteredWeeks(
+        project: Project,
+        loadRange: LoadRange
+    ): List<TimeReportWeek> {
+        val (position, size) = loadRange
+
+        val groups = timeReport.findNotRegisteredWeeks(project.id.value, position.value, size.value)
+        val timeIntervals = timeIntervals(groups)
+        return groupByWeek(timeIntervals)
+    }
+
+    private fun timeIntervals(entities: List<TimeReportQueryGroup>): List<TimeInterval> {
+        return entities.flatMap { group ->
+            group.mapNotNull { timeIntervals.find(it) }
+                .map(::timeInterval)
+        }
     }
 
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {

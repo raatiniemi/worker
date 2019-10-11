@@ -25,7 +25,9 @@ import me.raatiniemi.worker.domain.time.setToStartOfWeek
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
+import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
 import java.util.*
 
 class TimeReportInMemoryRepository(
@@ -54,6 +56,22 @@ class TimeReportInMemoryRepository(
             .filter { it !is TimeInterval.Registered }
             .groupBy { resetToStartOfDay(it.start) }
             .count()
+
+    override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
+        val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds.empty)
+
+        return paginate(loadRange, groupByWeek(timeIntervals))
+    }
+
+    override fun findNotRegisteredWeeks(
+        project: Project,
+        loadRange: LoadRange
+    ): List<TimeReportWeek> {
+        val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds.empty)
+            .filter { it !is TimeInterval.Registered }
+
+        return paginate(loadRange, groupByWeek(timeIntervals))
+    }
 
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
         val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))

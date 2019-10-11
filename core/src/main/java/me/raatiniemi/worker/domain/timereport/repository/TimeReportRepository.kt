@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.timereport.repository
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 
 interface TimeReportRepository {
     fun countWeeks(project: Project): Int
@@ -28,6 +29,10 @@ interface TimeReportRepository {
     fun count(project: Project): Int
 
     fun countNotRegistered(project: Project): Int
+
+    fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
+
+    fun findNotRegisteredWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
 
     fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay>
 
