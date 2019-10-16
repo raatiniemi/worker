@@ -20,13 +20,19 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.repository.resetToStartOfDay
 import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.time.hours
-import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
+import me.raatiniemi.worker.domain.time.days
+import me.raatiniemi.worker.domain.time.minutes
+import me.raatiniemi.worker.domain.time.setToStartOfDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
+import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
@@ -39,6 +45,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportDataSourceTest {
@@ -46,11 +53,15 @@ class TimeReportDataSourceTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val projectHolder = ProjectHolder()
-
     private lateinit var keyValueStore: KeyValueStore
     private lateinit var timeIntervalRepository: TimeIntervalRepository
-    private lateinit var repository: TimeReportRepository
+    private lateinit var timeReportRepository: TimeReportRepository
+
+    private lateinit var clockIn: ClockIn
+    private lateinit var clockOut: ClockOut
+    private lateinit var markRegisteredTime: MarkRegisteredTime
+
+    private lateinit var projectHolder: ProjectHolder
 
     private lateinit var dataSource: TimeReportDataSource
 
@@ -58,14 +69,22 @@ class TimeReportDataSourceTest {
     fun setUp() {
         keyValueStore = InMemoryKeyValueStore()
         timeIntervalRepository = TimeIntervalInMemoryRepository()
-        repository = TimeReportInMemoryRepository(timeIntervalRepository)
+        timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
+
+        clockIn = ClockIn(timeIntervalRepository)
+        clockOut = ClockOut(timeIntervalRepository)
+        markRegisteredTime = MarkRegisteredTime(timeIntervalRepository)
+
+        projectHolder = ProjectHolder()
 
         dataSource = TimeReportDataSource(
             projectHolder,
-            CountTimeReports(keyValueStore, repository),
-            FindTimeReports(keyValueStore, repository)
+            CountTimeReports(keyValueStore, timeReportRepository),
+            FindTimeReports(keyValueStore, timeReportRepository)
         )
     }
+
+    // Load initial
 
     @Test
     fun loadInitial_withoutProject() {
@@ -88,16 +107,20 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeInterval() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += android
-        val timeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(timeInterval.start),
-                listOf(timeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -113,25 +136,27 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeIntervals() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         projectHolder += android
-        val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now - 25.hours
-            }
-        )
-        val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(secondTimeInterval.start),
-                listOf(secondTimeInterval)
-            ),
-            timeReportDay(
-                resetToStartOfDay(firstTimeInterval.start),
-                listOf(firstTimeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(2)
+                        builder.start = startOfDay + 20.minutes
+                        builder.stop = startOfDay + 30.minutes
+                    },
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -147,25 +172,33 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPosition() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val nextDay = startOfDay + 1.days
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(nextDay.value))
+        clockOut(android, date = Date(nextDay.value) + 10.minutes)
         projectHolder += android
-        val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now - 25.hours
-            }
-        )
-        val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(secondTimeInterval.start),
-                listOf(secondTimeInterval)
+                Date(nextDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(2)
+                        builder.start = nextDay
+                        builder.stop = nextDay + 10.minutes
+                    }
+                )
             ),
             timeReportDay(
-                resetToStartOfDay(firstTimeInterval.start),
-                listOf(firstTimeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -184,25 +217,33 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPageSize() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val nextDay = startOfDay + 1.days
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(nextDay.value))
+        clockOut(android, date = Date(nextDay.value) + 10.minutes)
         projectHolder += android
-        val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now - 25.hours
-            }
-        )
-        val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(secondTimeInterval.start),
-                listOf(secondTimeInterval)
+                Date(nextDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(2)
+                        builder.start = nextDay
+                        builder.stop = nextDay + 10.minutes
+                    }
+                )
             ),
             timeReportDay(
-                resetToStartOfDay(firstTimeInterval.start),
-                listOf(firstTimeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Initial(
@@ -215,6 +256,8 @@ class TimeReportDataSourceTest {
             assertEquals(expected, it)
         })
     }
+
+    // Load range
 
     @Test
     fun loadRange_withoutProject() {
@@ -237,16 +280,20 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeInterval() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += android
-        val timeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(timeInterval.start),
-                listOf(timeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Range(data)
@@ -258,25 +305,27 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeIntervals() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         projectHolder += android
-        val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now - 25.hours
-            }
-        )
-        val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(secondTimeInterval.start),
-                listOf(secondTimeInterval)
-            ),
-            timeReportDay(
-                resetToStartOfDay(firstTimeInterval.start),
-                listOf(firstTimeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(2)
+                        builder.start = startOfDay + 20.minutes
+                        builder.stop = startOfDay + 30.minutes
+                    },
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Range(data)
@@ -288,25 +337,33 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPosition() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val nextDay = startOfDay + 1.days
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(nextDay.value))
+        clockOut(android, date = Date(nextDay.value) + 10.minutes)
         projectHolder += android
-        val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now - 25.hours
-            }
-        )
-        val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(secondTimeInterval.start),
-                listOf(secondTimeInterval)
+                Date(nextDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(2)
+                        builder.start = nextDay
+                        builder.stop = nextDay + 10.minutes
+                    }
+                )
             ),
             timeReportDay(
-                resetToStartOfDay(firstTimeInterval.start),
-                listOf(firstTimeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Range(data.drop(1))
@@ -321,25 +378,33 @@ class TimeReportDataSourceTest {
 
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPageSize() {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val nextDay = startOfDay + 1.days
+        clockIn(android, date = Date(startOfDay.value))
+        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
+        clockIn(android, date = Date(nextDay.value))
+        clockOut(android, date = Date(nextDay.value) + 10.minutes)
         projectHolder += android
-        val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now - 25.hours
-            }
-        )
-        val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds.now
-            }
-        )
         val data = listOf(
             timeReportDay(
-                resetToStartOfDay(secondTimeInterval.start),
-                listOf(secondTimeInterval)
+                Date(nextDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(2)
+                        builder.start = nextDay
+                        builder.stop = nextDay + 10.minutes
+                    }
+                )
             ),
             timeReportDay(
-                resetToStartOfDay(firstTimeInterval.start),
-                listOf(firstTimeInterval)
+                Date(startOfDay.value),
+                listOf(
+                    timeInterval(android.id) { builder ->
+                        builder.id = TimeIntervalId(1)
+                        builder.start = startOfDay
+                        builder.stop = startOfDay + 10.minutes
+                    }
+                )
             )
         )
         val expected = PositionalDataSourceResult.Range(data.take(1))
