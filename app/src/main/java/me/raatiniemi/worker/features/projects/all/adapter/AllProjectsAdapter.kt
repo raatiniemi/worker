@@ -23,12 +23,13 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.projects.all.view.ViewHolder
-import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
+import me.raatiniemi.worker.features.shared.view.click
+import me.raatiniemi.worker.features.shared.view.hintContentDescription
+import me.raatiniemi.worker.features.shared.view.longClick
 import java.util.*
 
 internal class AllProjectsAdapter(
-    private val listener: AllProjectsActionListener,
-    private val hintedImageButtonListener: HintedImageButtonListener
+    private val listener: AllProjectsActionListener
 ) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
@@ -53,30 +54,24 @@ internal class AllProjectsAdapter(
         vh.apply {
             bind(item)
 
-            itemView.setOnClickListener {
+            click(itemView) {
                 listener.open(item)
             }
 
-            with(clockActivityToggle) {
-                setOnClickListener {
-                    listener.toggle(item, Date())
-                }
-                setOnLongClickListener(hintedImageButtonListener)
+            click(clockActivityToggle) {
+                listener.toggle(item, Date())
             }
+            longClick(clockActivityToggle, ::hintContentDescription)
 
-            with(clockActivityAt) {
-                setOnClickListener {
-                    listener.at(item)
-                }
-                setOnLongClickListener(hintedImageButtonListener)
+            click(clockActivityAt) {
+                listener.at(item)
             }
+            longClick(clockActivityAt, ::hintContentDescription)
 
-            with(delete) {
-                setOnClickListener {
-                    listener.remove(item)
-                }
-                setOnLongClickListener(hintedImageButtonListener)
+            click(delete) {
+                listener.remove(item)
             }
+            longClick(delete, ::hintContentDescription)
         }
     }
 }

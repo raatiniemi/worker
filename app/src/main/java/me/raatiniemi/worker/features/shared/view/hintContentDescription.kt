@@ -21,35 +21,30 @@ import android.view.View
 import android.widget.Toast
 
 /**
- * Enable display of hint for images via long click.
+ * Display the content description of the view in a toast message.
+ *
+ * @param view View pressed by the user.
+ * @return True if the toast was shown, otherwise false.
  */
-internal class HintedImageButtonListener : View.OnLongClickListener {
-    /**
-     * Display the content description of the view in a toast message.
-     *
-     * @param view View pressed by the user.
-     * @return True if the long click was consumed, otherwise false.
-     */
-    override fun onLongClick(view: View?): Boolean {
-        val description = view?.contentDescription
-        if (description.isNullOrBlank()) {
-            return false
-        }
-
-        return Toast.makeText(view.context, description, Toast.LENGTH_SHORT)
-            .apply {
-                val location = view.getLocationInWindow()
-                setGravity(
-                    Gravity.TOP or Gravity.START,
-                    location.x,
-                    location.y
-                )
-            }
-            .run {
-                show()
-                true
-            }
+internal fun hintContentDescription(view: View): Boolean {
+    val description = view.contentDescription
+    if (description.isNullOrBlank()) {
+        return false
     }
+
+    return Toast.makeText(view.context, description, Toast.LENGTH_SHORT)
+        .apply {
+            val location = view.getLocationInWindow()
+            setGravity(
+                Gravity.TOP or Gravity.START,
+                location.x,
+                location.y
+            )
+        }
+        .run {
+            show()
+            true
+        }
 }
 
 private data class Location(val x: Int, val y: Int)
