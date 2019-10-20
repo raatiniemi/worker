@@ -25,6 +25,7 @@ import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.projects.all.view.ViewHolder
 import me.raatiniemi.worker.features.shared.view.click
 import me.raatiniemi.worker.features.shared.view.hintContentDescription
+import me.raatiniemi.worker.features.shared.view.longClick
 import java.util.*
 
 internal class AllProjectsAdapter(
@@ -60,23 +61,17 @@ internal class AllProjectsAdapter(
             click(clockActivityToggle) {
                 listener.toggle(item, Date())
             }
-            with(clockActivityToggle) {
-                setOnLongClickListener(::hintContentDescription)
-            }
+            longClick(clockActivityToggle, ::hintContentDescription)
 
             click(clockActivityAt) {
                 listener.at(item)
             }
-            with(clockActivityAt) {
-                setOnLongClickListener(::hintContentDescription)
-            }
+            longClick(clockActivityAt, ::hintContentDescription)
 
             click(delete) {
                 listener.remove(item)
             }
-            with(delete) {
-                setOnLongClickListener(::hintContentDescription)
-            }
+            longClick(delete, ::hintContentDescription)
         }
     }
 }

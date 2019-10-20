@@ -24,6 +24,12 @@ internal inline fun <T : View> click(view: T, crossinline block: (T) -> Unit) {
     }
 }
 
+internal inline fun <T : View> longClick(view: T, crossinline block: (T) -> Boolean) {
+    view.setOnLongClickListener {
+        block(view)
+    }
+}
+
 fun View.visibleIf(defaultVisibility: Int = View.INVISIBLE, predicate: () -> Boolean) {
     if (defaultVisibility != View.INVISIBLE && defaultVisibility != View.GONE) {
         throw IllegalArgumentException("defaultVisibility needs to be either `View.GONE` or `View.INVISIBLE`")
