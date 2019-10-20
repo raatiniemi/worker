@@ -23,13 +23,12 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.projects.all.view.ViewHolder
-import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
 import me.raatiniemi.worker.features.shared.view.click
+import me.raatiniemi.worker.features.shared.view.hintContentDescription
 import java.util.*
 
 internal class AllProjectsAdapter(
-    private val listener: AllProjectsActionListener,
-    private val hintedImageButtonListener: HintedImageButtonListener
+    private val listener: AllProjectsActionListener
 ) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
@@ -62,21 +61,21 @@ internal class AllProjectsAdapter(
                 listener.toggle(item, Date())
             }
             with(clockActivityToggle) {
-                setOnLongClickListener(hintedImageButtonListener)
+                setOnLongClickListener(::hintContentDescription)
             }
 
             click(clockActivityAt) {
                 listener.at(item)
             }
             with(clockActivityAt) {
-                setOnLongClickListener(hintedImageButtonListener)
+                setOnLongClickListener(::hintContentDescription)
             }
 
             click(delete) {
                 listener.remove(item)
             }
             with(delete) {
-                setOnLongClickListener(hintedImageButtonListener)
+                setOnLongClickListener(::hintContentDescription)
             }
         }
     }
