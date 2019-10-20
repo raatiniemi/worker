@@ -33,10 +33,7 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
+import me.raatiniemi.worker.features.projects.timereport.model.*
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
@@ -163,7 +160,19 @@ internal class TimeReportViewModel internal constructor(
         selectedItems?.run { contains(item) } ?: false
 
     @MainThread
-    override fun consume(longPress: TimeReportLongPressAction): Boolean {
+    override fun consume(action: TimeReportSelectAction) {
+        try {
+            when (action) {
+                is TimeReportLongPressAction -> consume(action)
+                is TimeReportTapAction -> consume(action)
+                else -> throw IllegalArgumentException("Unable to consume unknown select action: $action")
+            }
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e)
+        }
+    }
+
+    private fun consume(longPress: TimeReportLongPressAction): Boolean {
         val selectedItems = _selectedItems.value ?: HashSet()
         if (isSelectionActivated(selectedItems)) {
             return false
@@ -183,8 +192,7 @@ internal class TimeReportViewModel internal constructor(
         return !items.isNullOrEmpty()
     }
 
-    @MainThread
-    override fun consume(tap: TimeReportTapAction) {
+    private fun consume(tap: TimeReportTapAction) {
         val selectedItems = _selectedItems.value ?: HashSet()
         if (!isSelectionActivated(selectedItems)) {
             return

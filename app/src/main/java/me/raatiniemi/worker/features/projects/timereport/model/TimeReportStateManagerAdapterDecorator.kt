@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
-class TimeReportStateManagerAdapterDecorator(
+internal class TimeReportStateManagerAdapterDecorator(
     private val adapter: RecyclerView.Adapter<*>,
     private val stateManager: TimeReportStateManager
 ) : TimeReportStateManager {
@@ -44,15 +44,8 @@ class TimeReportStateManagerAdapterDecorator(
     override fun state(timeInterval: TimeInterval): TimeReportState =
         stateManager.state(timeInterval)
 
-    @MainThread
-    override fun consume(longPress: TimeReportLongPressAction): Boolean {
-        return stateManager.consume(longPress)
-            .apply { adapter.notifyDataSetChanged() }
-    }
-
-    @MainThread
-    override fun consume(tap: TimeReportTapAction) {
-        return stateManager.consume(tap)
+    override fun consume(action: TimeReportSelectAction) {
+        return stateManager.consume(action)
             .apply { adapter.notifyDataSetChanged() }
     }
 }

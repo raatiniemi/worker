@@ -75,6 +75,7 @@ internal class TimeReportAdapter(
 
         longClick(letter) {
             stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
+            true
         }
 
         click(letter) {
@@ -120,6 +121,7 @@ internal class TimeReportAdapter(
 
         longClick(vh.itemView) {
             stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+            true
         }
         click(vh.itemView) {
             stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
