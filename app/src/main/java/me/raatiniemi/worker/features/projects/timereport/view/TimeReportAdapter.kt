@@ -32,6 +32,7 @@ import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPre
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportStateManagerAdapterDecorator
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
+import me.raatiniemi.worker.features.shared.view.click
 import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.features.shared.view.widget.letterDrawable
 
@@ -75,14 +76,14 @@ internal class TimeReportAdapter(
             stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
         }
 
-        letter.setOnClickListener {
+        click(letter) {
             stateManager.consume(TimeReportTapAction.TapDay(day))
         }
 
-        itemView.setOnClickListener {
+        click(itemView) {
             if (items.visibility == View.VISIBLE) {
                 stateManager.collapse(position)
-                return@setOnClickListener
+                return@click
             }
             stateManager.expand(position)
         }
@@ -119,7 +120,7 @@ internal class TimeReportAdapter(
         vh.itemView.setOnLongClickListener {
             stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
         }
-        vh.itemView.setOnClickListener {
+        click(vh.itemView) {
             stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
         }
     }

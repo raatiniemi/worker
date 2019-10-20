@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialogfragment_create_project.*
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
@@ -83,8 +84,14 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
             vm.createProject()
         }
 
-        btnCreate.onClick { vm.createProject() }
-        btnDismiss.setOnClickListener { dismiss() }
+        click(btnCreate) {
+            launch {
+                vm.createProject()
+            }
+        }
+        click(btnDismiss) {
+            dismiss()
+        }
     }
 
     companion object {

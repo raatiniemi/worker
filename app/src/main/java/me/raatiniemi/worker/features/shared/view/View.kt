@@ -17,15 +17,10 @@
 package me.raatiniemi.worker.features.shared.view
 
 import android.view.View
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
-fun View.onClick(action: suspend () -> Unit) {
-    setOnClickListener {
-        GlobalScope.launch(Dispatchers.Default) {
-            action()
-        }
+internal inline fun <T : View> click(view: T, crossinline block: (T) -> Unit) {
+    view.setOnClickListener {
+        block(view)
     }
 }
 

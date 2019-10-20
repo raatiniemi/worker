@@ -24,6 +24,7 @@ import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.projects.all.view.ViewHolder
 import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
+import me.raatiniemi.worker.features.shared.view.click
 import java.util.*
 
 internal class AllProjectsAdapter(
@@ -53,28 +54,28 @@ internal class AllProjectsAdapter(
         vh.apply {
             bind(item)
 
-            itemView.setOnClickListener {
+            click(itemView) {
                 listener.open(item)
             }
 
+            click(clockActivityToggle) {
+                listener.toggle(item, Date())
+            }
             with(clockActivityToggle) {
-                setOnClickListener {
-                    listener.toggle(item, Date())
-                }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
+            click(clockActivityAt) {
+                listener.at(item)
+            }
             with(clockActivityAt) {
-                setOnClickListener {
-                    listener.at(item)
-                }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
+            click(delete) {
+                listener.remove(item)
+            }
             with(delete) {
-                setOnClickListener {
-                    listener.remove(item)
-                }
                 setOnLongClickListener(hintedImageButtonListener)
             }
         }
