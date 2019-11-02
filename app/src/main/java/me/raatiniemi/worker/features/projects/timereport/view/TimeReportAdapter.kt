@@ -42,7 +42,7 @@ internal class TimeReportAdapter(
 
     override fun onBindViewHolder(vh: DayViewHolder, position: Int) {
         val day = getItem(position)
-        vh.bind(day, position)
+        vh.bind(day)
     }
 
     companion object {

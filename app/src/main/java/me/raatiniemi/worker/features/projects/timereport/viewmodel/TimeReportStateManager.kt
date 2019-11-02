@@ -22,11 +22,11 @@ import me.raatiniemi.worker.features.projects.timereport.model.TimeReportSelectA
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 
 internal interface TimeReportStateManager {
-    fun expanded(position: Int): Boolean
+    fun expanded(day: TimeReportDay): Boolean
 
-    fun expand(position: Int)
+    fun expand(day: TimeReportDay)
 
-    fun collapse(position: Int)
+    fun collapse(day: TimeReportDay)
 
     fun state(day: TimeReportDay): TimeReportState
 

@@ -48,7 +48,7 @@ internal class TimeReportViewModel internal constructor(
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
-    private val expandedDays = mutableSetOf<Int>()
+    private val expandedDays = mutableSetOf<TimeReportDay>()
 
     var shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
@@ -121,16 +121,16 @@ internal class TimeReportViewModel internal constructor(
     }
 
     @MainThread
-    override fun expanded(position: Int): Boolean = expandedDays.contains(position)
+    override fun expanded(day: TimeReportDay): Boolean = expandedDays.contains(day)
 
     @MainThread
-    override fun expand(position: Int) {
-        expandedDays.add(position)
+    override fun expand(day: TimeReportDay) {
+        expandedDays.add(day)
     }
 
     @MainThread
-    override fun collapse(position: Int) {
-        expandedDays.remove(position)
+    override fun collapse(day: TimeReportDay) {
+        expandedDays.remove(day)
     }
 
     @MainThread

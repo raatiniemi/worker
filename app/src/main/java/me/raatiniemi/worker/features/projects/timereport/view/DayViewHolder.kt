@@ -46,13 +46,13 @@ internal class DayViewHolder(
     private val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
     private val items: LinearLayoutCompat = view.findViewById(R.id.llItems)
 
-    fun bind(day: TimeReportDay?, position: Int) {
+    fun bind(day: TimeReportDay?) {
         if (day == null) {
             clearValues()
             return
         }
 
-        bindDay(day, position)
+        bindDay(day)
     }
 
     private fun clearValues() {
@@ -66,7 +66,7 @@ internal class DayViewHolder(
         items.removeAllViews()
     }
 
-    private fun bindDay(day: TimeReportDay, position: Int) {
+    private fun bindDay(day: TimeReportDay) {
         title(day).also {
             title.text = it
             letter.setImageDrawable(letterDrawable(firstLetter(it)))
@@ -83,14 +83,14 @@ internal class DayViewHolder(
         }
         click(itemView) {
             if (items.visibility == View.VISIBLE) {
-                stateManager.collapse(position)
+                stateManager.collapse(day)
                 return@click
             }
-            stateManager.expand(position)
+            stateManager.expand(day)
         }
 
         buildItemList(items, day.timeIntervals)
-        items.visibleIf(View.GONE) { stateManager.expanded(position) }
+        items.visibleIf(View.GONE) { stateManager.expanded(day) }
     }
 
     private fun buildItemList(items: LinearLayoutCompat, timeIntervals: List<TimeInterval>) {
