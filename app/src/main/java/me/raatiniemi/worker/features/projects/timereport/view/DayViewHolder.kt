@@ -55,6 +55,17 @@ internal class DayViewHolder(
         bindDay(day, position)
     }
 
+    private fun clearValues() {
+        title.text = null
+        timeSummary.text = null
+
+        letter.setOnLongClickListener(null)
+        letter.setOnClickListener(null)
+        itemView.setOnClickListener(null)
+
+        items.removeAllViews()
+    }
+
     private fun bindDay(day: TimeReportDay, position: Int) {
         title(day).also {
             title.text = it
@@ -63,19 +74,13 @@ internal class DayViewHolder(
         timeSummary.text = timeSummaryWithDifference(day, formatter)
 
         apply(stateManager.state(day), header)
-
-        buildTimeReportItemList(items, day.timeIntervals)
-        items.visibleIf(View.GONE) { stateManager.expanded(position) }
-
         longClick(letter) {
             stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
             true
         }
-
         click(letter) {
             stateManager.consume(TimeReportTapAction.TapDay(day))
         }
-
         click(itemView) {
             if (items.visibility == View.VISIBLE) {
                 stateManager.collapse(position)
@@ -83,33 +88,30 @@ internal class DayViewHolder(
             }
             stateManager.expand(position)
         }
+
+        buildItemList(items, day.timeIntervals)
+        items.visibleIf(View.GONE) { stateManager.expanded(position) }
     }
 
-    private fun clearValues() {
-        title.text = null
-        timeSummary.text = null
-
+    private fun buildItemList(items: LinearLayoutCompat, timeIntervals: List<TimeInterval>) {
         items.removeAllViews()
-    }
 
-    private fun buildTimeReportItemList(
-        parent: LinearLayoutCompat,
-        timeIntervals: List<TimeInterval>
-    ) {
-        val layoutInflater = LayoutInflater.from(parent.context)
-
-        parent.removeAllViews()
+        val layoutInflater = LayoutInflater.from(items.context)
         timeIntervals.forEach { timeInterval ->
-            val view =
-                layoutInflater.inflate(R.layout.fragment_project_time_report_item, parent, false)
-            bindTimeReportItemViewHolder(view, timeInterval)
-
-            parent.addView(view)
+            layoutInflater.inflateItemView(items)
+                .also {
+                    bindItemView(it, timeInterval)
+                    items.addView(it)
+                }
         }
     }
 
-    private fun bindTimeReportItemViewHolder(view: View, timeInterval: TimeInterval) {
+    private fun bindItemView(view: View, timeInterval: TimeInterval) {
         val viewHolder = ItemViewHolder(stateManager, formatter, view)
         viewHolder.bind(timeInterval)
     }
+}
+
+private fun LayoutInflater.inflateItemView(items: LinearLayoutCompat): View {
+    return inflate(R.layout.fragment_project_time_report_item, items, false)
 }
