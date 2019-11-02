@@ -18,10 +18,8 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportSelectAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
 
 internal interface TimeReportStateManager {
     fun expanded(position: Int): Boolean
