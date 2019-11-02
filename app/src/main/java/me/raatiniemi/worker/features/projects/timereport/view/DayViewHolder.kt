@@ -22,7 +22,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -38,13 +37,13 @@ import me.raatiniemi.worker.features.shared.view.widget.letterDrawable
 internal class DayViewHolder(
     private val stateManager: TimeReportStateManager,
     private val formatter: HoursMinutesFormat,
-    view: View
-) : RecyclerView.ViewHolder(view) {
-    private val header: ConstraintLayout = view.findViewById(R.id.clHeader)
-    private val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
-    private val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
-    private val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
-    private val items: LinearLayoutCompat = view.findViewById(R.id.llItems)
+    private val itemView: View
+) {
+    private val header: ConstraintLayout = itemView.findViewById(R.id.clHeader)
+    private val letter: AppCompatImageView = itemView.findViewById(R.id.ivLetter)
+    private val title: AppCompatTextView = itemView.findViewById(R.id.tvTitle)
+    private val timeSummary: AppCompatTextView = itemView.findViewById(R.id.tvTimeSummary)
+    private val items: LinearLayoutCompat = itemView.findViewById(R.id.llItems)
 
     fun bind(day: TimeReportDay?) {
         if (day == null) {

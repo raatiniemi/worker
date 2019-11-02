@@ -25,7 +25,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSource
+import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -33,6 +33,7 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.features.projects.timereport.model.*
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
@@ -43,7 +44,7 @@ import timber.log.Timber
 internal class TimeReportViewModel internal constructor(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    timeReportDataSourceFactory: TimeReportDataSource.Factory,
+    dataSourceFactory: TimeReportWeekDataSource.Factory,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
@@ -59,7 +60,7 @@ internal class TimeReportViewModel internal constructor(
 
     val isSelectionActivated: LiveData<Boolean> = _selectedItems.map(::isSelectionActivated)
 
-    val timeReport: LiveData<PagedList<TimeReportDay>>
+    val weeks: LiveData<PagedList<TimeReportWeek>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
@@ -72,13 +73,13 @@ internal class TimeReportViewModel internal constructor(
             .setEnablePlaceholders(true)
             .build()
 
-        timeReport = LivePagedListBuilder(timeReportDataSourceFactory, config).build()
+        weeks = LivePagedListBuilder(dataSourceFactory, config).build()
     }
 
     fun reloadTimeReport() {
         clearSelection()
 
-        timeReport.value?.run {
+        weeks.value?.run {
             dataSource.invalidate()
         }
     }
@@ -208,16 +209,23 @@ internal class TimeReportViewModel internal constructor(
         _selectedItems.value = selectedItems
     }
 
-    fun refreshActiveTimeReportDay(timeReportDays: List<TimeReportDay>) {
-        val positions = findActivePositions(timeReportDays)
-        if (positions.isEmpty()) {
+    fun refreshActiveTimeReportWeek(weeks: List<TimeReportWeek>) {
+        val position = findActivePosition(weeks)
+        if (position == null) {
+            Timber.d("No time report week is active")
             return
         }
 
-        viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
+        viewActions += TimeReportViewActions.RefreshTimeReportWeek(position)
     }
 
-    private fun findActivePositions(days: List<TimeReportDay>) =
-        days.filterIsInstance<TimeReportDay.Active>()
-            .map(days::indexOf)
+    private fun findActivePosition(weeks: List<TimeReportWeek>): Int? {
+        return weeks.filter(::containsActiveDay)
+            .map(weeks::indexOf)
+            .firstOrNull()
+    }
+
+    private fun containsActiveDay(week: TimeReportWeek): Boolean {
+        return week.days.firstOrNull { it is TimeReportDay.Active } != null
+    }
 }

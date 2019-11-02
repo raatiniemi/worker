@@ -18,14 +18,11 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSource
+import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.repository.resetToStartOfDay
-import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.time.hours
-import me.raatiniemi.worker.domain.time.minutes
+import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
@@ -34,11 +31,12 @@ import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryR
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
+import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
-import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
-import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
@@ -65,12 +63,12 @@ class TimeReportViewModelTest {
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
 
-    private lateinit var countTimeReports: CountTimeReports
-    private lateinit var findTimeReports: FindTimeReports
+    private lateinit var countTimeReportWeeks: CountTimeReportWeeks
+    private lateinit var findTimeReportWeeks: FindTimeReportWeeks
 
     private lateinit var timeIntervalRepository: TimeIntervalRepository
 
-    private lateinit var timeReportDataSourceFactory: TimeReportDataSource.Factory
+    private lateinit var dataSourceFactory: TimeReportWeekDataSource.Factory
 
     private lateinit var vm: TimeReportViewModel
 
@@ -79,19 +77,19 @@ class TimeReportViewModelTest {
         timeIntervalRepository = TimeIntervalInMemoryRepository()
         val timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
 
-        countTimeReports = CountTimeReports(keyValueStore, timeReportRepository)
-        findTimeReports = FindTimeReports(keyValueStore, timeReportRepository)
+        countTimeReportWeeks = CountTimeReportWeeks(keyValueStore, timeReportRepository)
+        findTimeReportWeeks = FindTimeReportWeeks(keyValueStore, timeReportRepository)
 
-        timeReportDataSourceFactory = TimeReportDataSource.Factory(
+        dataSourceFactory = TimeReportWeekDataSource.Factory(
             projectHolder,
-            countTimeReports,
-            findTimeReports
+            countTimeReportWeeks,
+            findTimeReportWeeks
         )
 
         vm = TimeReportViewModel(
             keyValueStore,
             usageAnalytics,
-            timeReportDataSourceFactory,
+            dataSourceFactory,
             MarkRegisteredTime(timeIntervalRepository),
             RemoveTime(timeIntervalRepository)
         )
@@ -250,94 +248,155 @@ class TimeReportViewModelTest {
         assertEquals(expected, actual)
     }
 
-    @Test
-    fun `refresh active time report day without day`() = runBlocking {
-        projectHolder += android
-        val timeReportDays = emptyList<TimeReportDay>()
+    // Refresh active time report week
 
-        vm.refreshActiveTimeReportDay(timeReportDays)
+    @Test
+    fun `refresh active time report week without weeks`() = runBlocking {
+        projectHolder += android
+        val weeks = emptyList<TimeReportWeek>()
+
+        vm.refreshActiveTimeReportWeek(weeks)
 
         vm.viewActions.observeNoValue()
     }
 
     @Test
-    fun `refresh active time report day without active day`() = runBlocking {
+    fun `refresh active time report week without active week`() = runBlocking {
         projectHolder += android
-        val now = Milliseconds(Date().time)
-        val timeReportDays = listOf(
-            timeReportDay(
-                resetToStartOfDay(now),
+        val now = Milliseconds.now
+        val weeks = listOf(
+            timeReportWeek(
+                setToStartOfWeek(now),
                 listOf(
-                    timeInterval(android.id) { builder ->
-                        builder.id = TimeIntervalId(1)
-                        builder.start = now - 20.minutes
-                        builder.stop = now
-                    }
+                    timeReportDay(
+                        Date(now.value),
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(1)
+                                builder.start = now
+                                builder.stop = now + 20.minutes
+                            }
+                        )
+                    )
                 )
             )
         )
 
-        vm.refreshActiveTimeReportDay(timeReportDays)
+        vm.refreshActiveTimeReportWeek(weeks)
 
         vm.viewActions.observeNoValue()
     }
 
     @Test
-    fun `refresh active time report day with day`() = runBlocking {
+    fun `refresh active time report week with week`() = runBlocking {
         projectHolder += android
-        val now = Milliseconds(Date().time)
-        val timeReportDays = listOf(
-            timeReportDay(
-                resetToStartOfDay(now),
+        val now = Milliseconds.now
+        val weeks = listOf(
+            timeReportWeek(
+                setToStartOfWeek(now),
                 listOf(
-                    timeInterval(android.id) { builder ->
-                        builder.id = TimeIntervalId(1)
-                        builder.start = now - 20.minutes
-                    }
+                    timeReportDay(
+                        Date(now.value),
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(1)
+                                builder.start = now
+                            }
+                        )
+                    )
                 )
             )
         )
 
-        vm.refreshActiveTimeReportDay(timeReportDays)
+        vm.refreshActiveTimeReportWeek(weeks)
 
         vm.viewActions.observeNonNull {
-            val positions = listOf(0)
-            assertEquals(TimeReportViewActions.RefreshTimeReportDays(positions), it)
+            assertEquals(TimeReportViewActions.RefreshTimeReportWeek(0), it)
         }
     }
 
     @Test
-    fun `refresh active time report day with days`() = runBlocking {
+    fun `refresh active time report week with days`() = runBlocking {
         projectHolder += android
-        val now = Milliseconds(Date().time)
-        val yesterday = Milliseconds(Date().time) - 25.hours
-        val timeReportDays = listOf(
-            timeReportDay(
-                resetToStartOfDay(now),
+        val now = Milliseconds.now
+        val startOfWeek = setToStartOfWeek(now)
+        val nextDay = startOfWeek + 1.days
+        val weeks = listOf(
+            timeReportWeek(
+                startOfWeek,
                 listOf(
-                    timeInterval(android.id) { builder ->
-                        builder.id = TimeIntervalId(1)
-                        builder.start = now - 20.minutes
-                        builder.stop = now
-                    }
-                )
-            ),
-            timeReportDay(
-                resetToStartOfDay(yesterday),
-                listOf(
-                    timeInterval(android.id) { builder ->
-                        builder.id = TimeIntervalId(1)
-                        builder.start = yesterday - 20.minutes
-                    }
+                    timeReportDay(
+                        Date(nextDay.value),
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(2)
+                                builder.start = nextDay
+                            }
+                        )
+                    ),
+                    timeReportDay(
+                        Date(startOfWeek.value),
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(1)
+                                builder.start = startOfWeek
+                                builder.stop = startOfWeek + 2.hours
+                            }
+                        )
+                    )
                 )
             )
         )
 
-        vm.refreshActiveTimeReportDay(timeReportDays)
+        vm.refreshActiveTimeReportWeek(weeks)
 
         vm.viewActions.observeNonNull {
-            val positions = listOf(1)
-            assertEquals(TimeReportViewActions.RefreshTimeReportDays(positions), it)
+            assertEquals(TimeReportViewActions.RefreshTimeReportWeek(0), it)
+        }
+    }
+
+    @Test
+    fun `refresh active time report week with weeks`() = runBlocking {
+        projectHolder += android
+        val now = Milliseconds.now
+        val startOfWeek = setToStartOfWeek(now)
+        val nextWeek = startOfWeek + 1.weeks
+        val weeks = listOf(
+            timeReportWeek(
+                nextWeek,
+                listOf(
+                    timeReportDay(
+                        Date(nextWeek.value),
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(2)
+                                builder.start = nextWeek
+                                builder.stop = nextWeek + 2.hours
+                            }
+                        )
+                    )
+                )
+            ),
+            timeReportWeek(
+                startOfWeek,
+                listOf(
+                    timeReportDay(
+                        Date(startOfWeek.value),
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(1)
+                                builder.start = startOfWeek
+                            }
+                        )
+                    )
+                )
+            )
+        )
+
+        vm.refreshActiveTimeReportWeek(weeks)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(TimeReportViewActions.RefreshTimeReportWeek(1), it)
         }
     }
 }

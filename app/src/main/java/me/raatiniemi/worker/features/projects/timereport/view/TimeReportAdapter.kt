@@ -22,35 +22,34 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportStateManagerAdapterDecorator
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
 internal class TimeReportAdapter(
     stateManager: TimeReportStateManager,
     private val formatter: HoursMinutesFormat
-) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
+) : PagedListAdapter<TimeReportWeek, WeekViewHolder>(timeReportDiffCallback) {
     private val stateManager: TimeReportStateManager =
         TimeReportStateManagerAdapterDecorator(this, stateManager)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeekViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.fragment_project_time_report_day, parent, false)
+        val view = inflater.inflate(R.layout.fragment_project_time_report_week, parent, false)
 
-        return DayViewHolder(stateManager, formatter, view)
+        return WeekViewHolder(stateManager, formatter, view)
     }
 
-    override fun onBindViewHolder(vh: DayViewHolder, position: Int) {
-        val day = getItem(position)
-        vh.bind(day)
+    override fun onBindViewHolder(vh: WeekViewHolder, position: Int) {
+        vh.bind(getItem(position))
     }
 
     companion object {
-        private val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportDay>() {
-            override fun areItemsTheSame(old: TimeReportDay, new: TimeReportDay) =
-                old.date == new.date
+        private val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportWeek>() {
+            override fun areItemsTheSame(old: TimeReportWeek, new: TimeReportWeek) =
+                old.start == new.start
 
-            override fun areContentsTheSame(old: TimeReportDay, new: TimeReportDay) = old == new
+            override fun areContentsTheSame(old: TimeReportWeek, new: TimeReportWeek) = old == new
         }
     }
 }

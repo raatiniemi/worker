@@ -19,16 +19,12 @@ package me.raatiniemi.worker.domain.timereport.repository
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.repository.paginate
-import me.raatiniemi.worker.domain.repository.resetToStartOfDay
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.setToStartOfWeek
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
-import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
-import java.util.*
 
 class TimeReportInMemoryRepository(
     private val timeIntervalRepository: TimeIntervalRepository
@@ -46,17 +42,6 @@ class TimeReportInMemoryRepository(
             .count()
     }
 
-    override fun count(project: Project): Int =
-        timeIntervalRepository.findAll(project, Milliseconds(0))
-            .groupBy { resetToStartOfDay(it.start) }
-            .count()
-
-    override fun countNotRegistered(project: Project): Int =
-        timeIntervalRepository.findAll(project, Milliseconds(0))
-            .filter { it !is TimeInterval.Registered }
-            .groupBy { resetToStartOfDay(it.start) }
-            .count()
-
     override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
         val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds.empty)
 
@@ -72,34 +57,4 @@ class TimeReportInMemoryRepository(
 
         return paginate(loadRange, groupByWeek(timeIntervals))
     }
-
-    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))
-        val days = groupByDay(timeIntervals)
-            .map(::buildTimeReportDay)
-            .sortedByDescending { it.date }
-
-        return paginate(loadRange, days)
-    }
-
-    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))
-            .filter { it !is TimeInterval.Registered }
-        val days = groupByDay(timeIntervals)
-            .map(::buildTimeReportDay)
-            .sortedByDescending { it.date }
-
-        return paginate(loadRange, days)
-    }
-
-    private fun groupByDay(timeIntervals: List<TimeInterval>): Map<Date, List<TimeInterval>> {
-        return timeIntervals.groupBy {
-            resetToStartOfDay(it.start)
-        }
-    }
-
-    private fun buildTimeReportDay(entry: Map.Entry<Date, List<TimeInterval>>) =
-        entry.let { (date, timeIntervals) ->
-            timeReportDay(date, timeIntervals.sortedByDescending { it.start.value })
-        }
 }

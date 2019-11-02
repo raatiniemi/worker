@@ -23,12 +23,9 @@ import me.raatiniemi.worker.data.projects.timeInterval
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
-import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
-import java.util.*
 
 internal class TimeReportRoomRepository(
     private val timeReport: TimeReportDao,
@@ -40,22 +37,6 @@ internal class TimeReportRoomRepository(
 
     override fun countNotRegisteredWeeks(project: Project): Int {
         return timeReport.countNotRegisteredWeeks(project.id.value)
-    }
-
-    override fun count(project: Project): Int = timeReport.count(project.id.value)
-
-    override fun countNotRegistered(project: Project): Int =
-        timeReport.countNotRegistered(project.id.value)
-
-    private fun transform(group: TimeReportQueryGroup): TimeReportDay {
-        val timeIntervals = group.mapNotNull { timeIntervals.find(it) }
-            .map(::timeInterval)
-            .sortedByDescending { it.start.value }
-
-        return timeReportDay(
-            Date(group.dateInMilliseconds),
-            timeIntervals
-        )
     }
 
     override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
@@ -82,19 +63,5 @@ internal class TimeReportRoomRepository(
             group.mapNotNull { timeIntervals.find(it) }
                 .map(::timeInterval)
         }
-    }
-
-    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val (position, size) = loadRange
-
-        return timeReport.findAll(project.id.value, position.value, size.value)
-            .map(::transform)
-    }
-
-    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val (position, size) = loadRange
-
-        return timeReport.findNotRegistered(project.id.value, position.value, size.value)
-            .map(::transform)
     }
 }
