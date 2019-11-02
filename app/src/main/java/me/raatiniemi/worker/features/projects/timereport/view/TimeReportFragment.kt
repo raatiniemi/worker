@@ -54,7 +54,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: TimeReportViewModel by viewModel()
     private val timeReportAdapter: TimeReportAdapter by lazy {
-        TimeReportAdapter(get(), vm)
+        TimeReportAdapter(vm, get())
     }
 
     private var refreshActiveTimeIntervalsTimer: Timer? = null

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.timereport.view
 
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -23,18 +24,110 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.date.HoursMinutesFormat
+import me.raatiniemi.worker.domain.time.calculateHoursMinutes
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
+import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
+import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
+import me.raatiniemi.worker.features.shared.view.click
+import me.raatiniemi.worker.features.shared.view.longClick
+import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.features.shared.view.widget.letterDrawable
 
-internal class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val header: ConstraintLayout = view.findViewById(R.id.clHeader)
-    val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
-    val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
-    val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
-    val items: LinearLayoutCompat = view.findViewById(R.id.llItems)
+internal class DayViewHolder(
+    private val stateManager: TimeReportStateManager,
+    private val formatter: HoursMinutesFormat,
+    view: View
+) : RecyclerView.ViewHolder(view) {
+    private val header: ConstraintLayout = view.findViewById(R.id.clHeader)
+    private val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
+    private val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
+    private val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+    private val items: LinearLayoutCompat = view.findViewById(R.id.llItems)
 
-    fun clearValues() {
+    fun bind(day: TimeReportDay?, position: Int) {
+        if (day == null) {
+            clearValues()
+            return
+        }
+
+        bindDay(day, position)
+    }
+
+    private fun bindDay(day: TimeReportDay, position: Int) {
+        title(day).also {
+            title.text = it
+            letter.setImageDrawable(letterDrawable(firstLetter(it)))
+        }
+        timeSummary.text = timeSummaryWithDifference(day, formatter)
+
+        apply(stateManager.state(day), header)
+
+        buildTimeReportItemList(items, day.timeIntervals)
+        items.visibleIf(View.GONE) { stateManager.expanded(position) }
+
+        longClick(letter) {
+            stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
+            true
+        }
+
+        click(letter) {
+            stateManager.consume(TimeReportTapAction.TapDay(day))
+        }
+
+        click(itemView) {
+            if (items.visibility == View.VISIBLE) {
+                stateManager.collapse(position)
+                return@click
+            }
+            stateManager.expand(position)
+        }
+    }
+
+    private fun clearValues() {
         title.text = null
         timeSummary.text = null
 
         items.removeAllViews()
+    }
+
+    private fun buildTimeReportItemList(
+        parent: LinearLayoutCompat,
+        timeIntervals: List<TimeInterval>
+    ) {
+        val layoutInflater = LayoutInflater.from(parent.context)
+
+        parent.removeAllViews()
+        timeIntervals.forEach { timeInterval ->
+            val view =
+                layoutInflater.inflate(R.layout.fragment_project_time_report_item, parent, false)
+            bindTimeReportItemViewHolder(view, timeInterval)
+
+            parent.addView(view)
+        }
+    }
+
+    private fun bindTimeReportItemViewHolder(view: View, timeInterval: TimeInterval) {
+        ItemViewHolder(view)
+            .also(bind(timeInterval))
+    }
+
+    private fun bind(timeInterval: TimeInterval): (ItemViewHolder) -> Unit = { vh ->
+        val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
+        vh.timeInterval.text = title(timeInterval)
+        vh.timeSummary.text = formatter.apply(hoursMinutes)
+
+        apply(stateManager.state(timeInterval), vh.itemView)
+
+        longClick(vh.itemView) {
+            stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+            true
+        }
+        click(vh.itemView) {
+            stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+        }
     }
 }
