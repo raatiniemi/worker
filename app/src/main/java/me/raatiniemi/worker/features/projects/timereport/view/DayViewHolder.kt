@@ -25,9 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
-import me.raatiniemi.worker.domain.time.calculateHoursMinutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
@@ -111,23 +109,7 @@ internal class DayViewHolder(
     }
 
     private fun bindTimeReportItemViewHolder(view: View, timeInterval: TimeInterval) {
-        ItemViewHolder(view)
-            .also(bind(timeInterval))
-    }
-
-    private fun bind(timeInterval: TimeInterval): (ItemViewHolder) -> Unit = { vh ->
-        val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
-        vh.timeInterval.text = title(timeInterval)
-        vh.timeSummary.text = formatter.apply(hoursMinutes)
-
-        apply(stateManager.state(timeInterval), vh.itemView)
-
-        longClick(vh.itemView) {
-            stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
-            true
-        }
-        click(vh.itemView) {
-            stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
-        }
+        val viewHolder = ItemViewHolder(stateManager, formatter, view)
+        viewHolder.bind(timeInterval)
     }
 }
