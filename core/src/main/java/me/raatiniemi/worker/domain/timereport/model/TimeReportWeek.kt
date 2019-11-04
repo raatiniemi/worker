@@ -16,12 +16,27 @@
 
 package me.raatiniemi.worker.domain.timereport.model
 
+import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.accumulated
 
 data class TimeReportWeek internal constructor(
     val start: Milliseconds,
     val days: List<TimeReportDay>
 )
+
+/**
+ * Calculates time summary for week.
+ *
+ * @param week Week for which to calculate the time summary.
+ *
+ * @return Calculated time summary for the week.
+ */
+fun timeSummary(week: TimeReportWeek): HoursMinutes {
+    return week.days
+        .map { it.timeSummary }
+        .accumulated()
+}
 
 fun timeReportWeek(start: Milliseconds, days: List<TimeReportDay>): TimeReportWeek {
     return TimeReportWeek(start, days)

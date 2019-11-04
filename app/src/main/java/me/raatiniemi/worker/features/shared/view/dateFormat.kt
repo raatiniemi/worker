@@ -19,6 +19,10 @@ package me.raatiniemi.worker.features.shared.view
 import java.text.SimpleDateFormat
 import java.util.*
 
+internal fun week(date: Date): String {
+    return SimpleDateFormat("w", Locale.getDefault()).run { format(date) }
+}
+
 fun shortDayMonthDayInMonth(date: Date): String {
     return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
         .run { format(date) }

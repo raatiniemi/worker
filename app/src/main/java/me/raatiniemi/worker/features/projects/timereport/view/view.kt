@@ -23,8 +23,10 @@ import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
+import me.raatiniemi.worker.features.shared.view.week
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,6 +38,8 @@ private const val FORMAT_FOR_NEGATIVE = " (%s)"
 private const val SEPARATOR = " - "
 
 private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
+
+internal fun week(week: TimeReportWeek) = week(Date(week.start.value))
 
 @SuppressLint("DefaultLocale")
 internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(day.date).capitalize()

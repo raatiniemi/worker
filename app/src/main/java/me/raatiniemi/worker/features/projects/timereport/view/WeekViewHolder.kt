@@ -18,12 +18,14 @@ package me.raatiniemi.worker.features.projects.timereport.view
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
+import me.raatiniemi.worker.domain.timereport.model.timeSummary
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
 internal class WeekViewHolder(
@@ -31,13 +33,30 @@ internal class WeekViewHolder(
     private val formatter: HoursMinutesFormat,
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
+    private val title: AppCompatTextView = itemView.findViewById(R.id.tvTitle)
+    private val summary: AppCompatTextView = itemView.findViewById(R.id.tvSummary)
     private val days: LinearLayoutCompat = itemView.findViewById(R.id.llDays)
 
     fun bind(week: TimeReportWeek?) {
         if (week == null) {
-            days.removeAllViews()
+            clearValues()
             return
         }
+
+        bindWeek(week)
+    }
+
+    private fun clearValues() {
+        title.text = ""
+        summary.text = ""
+
+        days.removeAllViews()
+    }
+
+    private fun bindWeek(week: TimeReportWeek) {
+        title.text = itemView.resources.getString(R.string.projects_time_report_week, week(week))
+        summary.text = formatter.apply(timeSummary(week))
+
         buildItemList(days, week.days)
     }
 
