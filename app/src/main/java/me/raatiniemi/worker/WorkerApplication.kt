@@ -18,15 +18,10 @@ package me.raatiniemi.worker
 
 import android.app.Application
 import io.fabric.sdk.android.Fabric
-import me.raatiniemi.worker.koin.modules.data
-import me.raatiniemi.worker.koin.modules.projects
-import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
 import me.raatiniemi.worker.features.shared.view.createNotificationChannel
-import me.raatiniemi.worker.koin.modules.preference
-import me.raatiniemi.worker.koin.modules.useCase
+import me.raatiniemi.worker.koin.modules.*
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
-import me.raatiniemi.worker.koin.modules.monitor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -48,7 +43,7 @@ open class WorkerApplication : Application() {
                         preference,
                         data,
                         projects,
-                        settingsModule,
+                        settings,
                         useCase
                     )
                 )
