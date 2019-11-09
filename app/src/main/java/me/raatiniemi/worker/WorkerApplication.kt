@@ -18,7 +18,7 @@ package me.raatiniemi.worker
 
 import android.app.Application
 import io.fabric.sdk.android.Fabric
-import me.raatiniemi.worker.data.dataModule
+import me.raatiniemi.worker.koin.modules.data
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
@@ -44,7 +44,7 @@ open class WorkerApplication : Application() {
                     listOf(
                         monitorModule,
                         preferenceModule,
-                        dataModule,
+                        data,
                         projectsModule,
                         settingsModule,
                         useCaseModule

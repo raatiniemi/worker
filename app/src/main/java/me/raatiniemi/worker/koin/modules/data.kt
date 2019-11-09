@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data
+package me.raatiniemi.worker.koin.modules
 
 import androidx.room.Room
+import me.raatiniemi.worker.data.Database
 import me.raatiniemi.worker.data.migrations.Migration1To2
 import me.raatiniemi.worker.data.migrations.Migration2To3
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
@@ -32,7 +33,7 @@ import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val dataModule = module {
+internal val data = module {
     single {
         Room.databaseBuilder(androidContext(), Database::class.java, "worker")
             .allowMainThreadQueries()
