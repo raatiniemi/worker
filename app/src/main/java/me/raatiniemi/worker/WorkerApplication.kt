@@ -26,7 +26,7 @@ import me.raatiniemi.worker.features.shared.view.createNotificationChannel
 import me.raatiniemi.worker.koin.modules.preference
 import me.raatiniemi.worker.koin.modules.useCase
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
-import me.raatiniemi.worker.monitor.monitorModule
+import me.raatiniemi.worker.koin.modules.monitor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -44,7 +44,7 @@ open class WorkerApplication : Application() {
                 androidContext(applicationContext)
                 modules(
                     listOf(
-                        monitorModule,
+                        monitor,
                         preference,
                         data,
                         projectsModule,

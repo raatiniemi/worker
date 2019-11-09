@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.monitor
+package me.raatiniemi.worker.koin.modules
 
 import com.google.firebase.analytics.FirebaseAnalytics
 import me.raatiniemi.worker.monitor.analytics.FirebaseUsageAnalytics
@@ -22,7 +22,7 @@ import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val monitorModule = module {
+internal val monitor = module {
     single<UsageAnalytics> {
         val firebaseAnalytics = FirebaseAnalytics.getInstance(androidContext())
 
