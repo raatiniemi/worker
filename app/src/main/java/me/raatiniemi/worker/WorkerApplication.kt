@@ -23,6 +23,7 @@ import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
 import me.raatiniemi.worker.features.shared.view.createNotificationChannel
+import me.raatiniemi.worker.koin.modules.preference
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import me.raatiniemi.worker.monitor.monitorModule
 import org.koin.android.ext.koin.androidContext
@@ -43,7 +44,7 @@ open class WorkerApplication : Application() {
                 modules(
                     listOf(
                         monitorModule,
-                        preferenceModule,
+                        preference,
                         data,
                         projectsModule,
                         settingsModule,
