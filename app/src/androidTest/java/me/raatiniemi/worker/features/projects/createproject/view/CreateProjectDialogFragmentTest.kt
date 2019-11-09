@@ -25,15 +25,15 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.data.dataTestModule
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.features.shared.view.isDisabled
 import me.raatiniemi.worker.features.shared.view.withView
+import me.raatiniemi.worker.koin.modules.dataTest
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.standalone.StandAloneContext.loadKoinModules
+import org.koin.core.context.loadKoinModules
 import org.koin.test.KoinTest
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -46,7 +46,7 @@ private const val createProjectDelayInMilliseconds = 100L
 class CreateProjectDialogFragmentTest : KoinTest {
     @Before
     fun setUp() {
-        loadKoinModules(dataTestModule)
+        loadKoinModules(dataTest)
     }
 
     @Test

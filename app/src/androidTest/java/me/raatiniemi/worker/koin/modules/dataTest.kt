@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.koin.modules
 
-import androidx.preference.PreferenceManager
-import me.raatiniemi.worker.configuration.SharedKeyValueStore
-import me.raatiniemi.worker.domain.configuration.KeyValueStore
+import androidx.room.Room
+import me.raatiniemi.worker.data.Database
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
-val preferenceModule = module {
-    single<KeyValueStore> {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
-        sharedPreferences.edit()
-            .remove("pref_time_sheet_summary_format")
-            .apply()
-
-        SharedKeyValueStore(sharedPreferences)
+internal val dataTest = module {
+    single(override = true) {
+        Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
+            .allowMainThreadQueries()
+            .build()
     }
 }

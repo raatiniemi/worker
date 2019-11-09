@@ -14,16 +14,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data
+package me.raatiniemi.worker.koin.modules
 
-import androidx.room.Room
+import androidx.preference.PreferenceManager
+import me.raatiniemi.worker.configuration.SharedKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
-val dataTestModule = module {
-    single(override = true) {
-        Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
-            .allowMainThreadQueries()
-            .build()
+internal val preference = module {
+    single<KeyValueStore> {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
+        sharedPreferences.edit()
+            .remove("pref_time_sheet_summary_format")
+            .apply()
+
+        SharedKeyValueStore(sharedPreferences)
     }
 }
