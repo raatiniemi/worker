@@ -19,42 +19,49 @@ package me.raatiniemi.worker.data.repository
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
+import me.raatiniemi.worker.data.projects.timeInterval
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.domain.timereport.model.timeReportDay
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import java.util.*
+import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
 
 internal class TimeReportRoomRepository(
     private val timeReport: TimeReportDao,
     private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
-    override fun count(project: Project): Int = timeReport.count(project.id.value)
-
-    override fun countNotRegistered(project: Project): Int =
-        timeReport.countNotRegistered(project.id.value)
-
-    private fun transform(group: TimeReportQueryGroup): TimeReportDay {
-        val timeIntervals = group.mapNotNull { timeIntervals.find(it) }
-            .map { it.toTimeInterval() }
-            .sortedByDescending { it.start.value }
-
-        return timeReportDay(
-            Date(group.dateInMilliseconds),
-            timeIntervals
-        )
+    override fun countWeeks(project: Project): Int {
+        return timeReport.countWeeks(project.id.value)
     }
 
-    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> =
-        with(loadRange) {
-            return timeReport.findAll(project.id.value, position.value, size.value)
-                .map(::transform)
-        }
+    override fun countNotRegisteredWeeks(project: Project): Int {
+        return timeReport.countNotRegisteredWeeks(project.id.value)
+    }
 
-    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> =
-        with(loadRange) {
-            return timeReport.findNotRegistered(project.id.value, position.value, size.value)
-                .map(::transform)
+    override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
+        val (position, size) = loadRange
+
+        val groups = timeReport.findWeeks(project.id.value, position.value, size.value)
+        val timeIntervals = timeIntervals(groups)
+        return groupByWeek(timeIntervals)
+    }
+
+    override fun findNotRegisteredWeeks(
+        project: Project,
+        loadRange: LoadRange
+    ): List<TimeReportWeek> {
+        val (position, size) = loadRange
+
+        val groups = timeReport.findNotRegisteredWeeks(project.id.value, position.value, size.value)
+        val timeIntervals = timeIntervals(groups)
+        return groupByWeek(timeIntervals)
+    }
+
+    private fun timeIntervals(entities: List<TimeReportQueryGroup>): List<TimeInterval> {
+        return entities.flatMap { group ->
+            group.mapNotNull { timeIntervals.find(it) }
+                .map(::timeInterval)
         }
+    }
 }

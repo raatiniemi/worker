@@ -58,4 +58,22 @@ class IntTest {
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun days() {
+        val expected = 86_400_000L
+
+        val actual = 1.days
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun weeks() {
+        val expected = 604_800_000L
+
+        val actual = 1.weeks
+
+        assertEquals(expected, actual)
+    }
 }

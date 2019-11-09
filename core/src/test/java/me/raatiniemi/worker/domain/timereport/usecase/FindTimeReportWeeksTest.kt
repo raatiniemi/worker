@@ -14,8 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.timereport.repository
+package me.raatiniemi.worker.domain.timereport.usecase
 
+import me.raatiniemi.worker.domain.configuration.AppKeys
+import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
@@ -26,13 +29,14 @@ import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
+import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
+import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -41,245 +45,56 @@ import org.junit.runners.JUnit4
 import java.util.*
 
 @RunWith(JUnit4::class)
-class TimeReportInMemoryRepositoryTest {
-    private lateinit var timeIntervalRepository: TimeIntervalRepository
+class FindTimeReportWeeksTest {
     private lateinit var clockIn: ClockIn
     private lateinit var clockOut: ClockOut
     private lateinit var markRegisteredTime: MarkRegisteredTime
 
-    private lateinit var repository: TimeReportRepository
+    private lateinit var keyValueStore: KeyValueStore
+    private lateinit var timeReportRepository: TimeReportRepository
+
+    private lateinit var findTimeReportWeeks: FindTimeReportWeeks
 
     @Before
     fun setUp() {
-        timeIntervalRepository = TimeIntervalInMemoryRepository()
+        val timeIntervalRepository = TimeIntervalInMemoryRepository()
         clockIn = ClockIn(timeIntervalRepository)
         clockOut = ClockOut(timeIntervalRepository)
         markRegisteredTime = MarkRegisteredTime(timeIntervalRepository)
 
-        repository = TimeReportInMemoryRepository(timeIntervalRepository)
+        keyValueStore = InMemoryKeyValueStore()
+        timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
+
+        findTimeReportWeeks = FindTimeReportWeeks(keyValueStore, timeReportRepository)
     }
 
-    // Count weeks
+    // When not hiding registered time
 
     @Test
-    fun `count weeks without time intervals`() {
-        val expected = 0
-
-        val actual = repository.countWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count weeks without time interval for project`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
-        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        val expected = 0
-
-        val actual = repository.countWeeks(ios)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count weeks with time interval`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
-        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        val expected = 1
-
-        val actual = repository.countWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count weeks with time intervals`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
-        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
-        clockOut(android, date = Date(startOfDay.value) + 30.minutes)
-        val expected = 1
-
-        val actual = repository.countWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count weeks with time intervals within same week`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
-        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
-        clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
-        val expected = 1
-
-        val actual = repository.countWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count weeks with time intervals in different weeks`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
-        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
-        clockOut(android, date = Date(nextWeek.value) + 10.minutes)
-        val expected = 2
-
-        val actual = repository.countWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count weeks with registered time interval`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
-        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-            .also { timeInterval ->
-                markRegisteredTime(listOf(timeInterval))
-            }
-        val expected = 1
-
-        val actual = repository.countWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    // Count not registered weeks
-
-    @Test
-    fun `count not registered weeks without time intervals`() {
-        val expected = 0
-
-        val actual = repository.countNotRegisteredWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count not registered weeks without time interval for project`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
-        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        val expected = 0
-
-        val actual = repository.countNotRegisteredWeeks(ios)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count not registered weeks with time interval`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
-        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        val expected = 1
-
-        val actual = repository.countNotRegisteredWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count not registered weeks with time intervals`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
-        clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
-        clockOut(android, date = Date(startOfDay.value) + 30.minutes)
-        val expected = 1
-
-        val actual = repository.countNotRegisteredWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count not registered weeks with time intervals within same week`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
-        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
-        clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
-        val expected = 1
-
-        val actual = repository.countNotRegisteredWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count not registered weeks with time intervals in different weeks`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
-        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
-        clockOut(android, date = Date(nextWeek.value) + 10.minutes)
-        val expected = 2
-
-        val actual = repository.countNotRegisteredWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count not registered weeks with registered time interval`() {
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
-        clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-            .also { timeInterval ->
-                markRegisteredTime(listOf(timeInterval))
-            }
-        val expected = 0
-
-        val actual = repository.countNotRegisteredWeeks(android)
-
-        assertEquals(expected, actual)
-    }
-
-    // Find weeks
-
-    @Test
-    fun `find weeks without time intervals`() {
+    fun `find time report weeks without time intervals`() {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks without time interval for project`() {
+    fun `find time report weeks without time interval for project`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, date = Date(startOfDay.value))
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
-        val actual = repository.findWeeks(ios, loadRange)
+        val actual = findTimeReportWeeks(ios, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks with time interval`() {
+    fun `find time report weeks with time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, date = Date(startOfDay.value))
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
@@ -302,13 +117,13 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks with time intervals`() {
+    fun `find time report weeks with time intervals`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, date = Date(startOfDay.value))
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
@@ -338,13 +153,13 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks with time intervals within same week`() {
+    fun `find time report weeks with time intervals within same week`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
         clockIn(android, date = Date(startOfWeek.value))
@@ -380,13 +195,13 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks with time intervals in different weeks`() {
+    fun `find time report weeks with time intervals in different weeks`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, date = Date(startOfWeek.value))
@@ -427,13 +242,13 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks with registered time interval`() {
+    fun `find time report weeks with registered time interval`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         clockIn(android, date = Date(startOfWeek.value))
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
@@ -460,13 +275,13 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks when excluding by load position`() {
+    fun `find time report weeks when excluding by load position`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, date = Date(startOfWeek.value))
@@ -499,13 +314,13 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find weeks when excluding by load size`() {
+    fun `find time report weeks when excluding by load size`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, date = Date(startOfWeek.value))
@@ -533,38 +348,41 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
-    // Find not registered weeks
+    // When hiding registered time
 
     @Test
-    fun `find not registered weeks without time intervals`() {
+    fun `find time report weeks when hiding registered time without time intervals`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks without time interval for project`() {
+    fun `find time report weeks when hiding registered time without time interval for project`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, date = Date(startOfDay.value))
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
-        val actual = repository.findNotRegisteredWeeks(ios, loadRange)
+        val actual = findTimeReportWeeks(ios, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks with time interval`() {
+    fun `find time report weeks when hiding registered time with time interval`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, date = Date(startOfDay.value))
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
@@ -587,13 +405,14 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks with time intervals`() {
+    fun `find time report weeks when hiding registered time with time intervals`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, date = Date(startOfDay.value))
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
@@ -623,13 +442,14 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks with time intervals within same week`() {
+    fun `find time report weeks when hiding registered time with time intervals within same week`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
         clockIn(android, date = Date(startOfWeek.value))
@@ -665,13 +485,14 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks with time intervals in different weeks`() {
+    fun `find time report weeks when hiding registered time with time intervals in different weeks`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, date = Date(startOfWeek.value))
@@ -712,13 +533,14 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks with registered time interval`() {
+    fun `find time report weeks when hiding registered time with registered time interval`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         clockIn(android, date = Date(startOfWeek.value))
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
@@ -728,13 +550,14 @@ class TimeReportInMemoryRepositoryTest {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks when excluding by load position`() {
+    fun `find time report weeks when hiding registered time when excluding by load position`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, date = Date(startOfWeek.value))
@@ -767,13 +590,14 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `find not registered weeks when excluding by load size`() {
+    fun `find time report weeks when hiding registered time when excluding by load size`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, date = Date(startOfWeek.value))
@@ -801,7 +625,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegisteredWeeks(android, loadRange)
+        val actual = findTimeReportWeeks(android, loadRange)
 
         assertEquals(expected, actual)
     }

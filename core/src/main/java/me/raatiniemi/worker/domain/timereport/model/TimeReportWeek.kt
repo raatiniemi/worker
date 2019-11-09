@@ -14,20 +14,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository
+package me.raatiniemi.worker.domain.timereport.model
 
+import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.Milliseconds
-import java.util.*
+import me.raatiniemi.worker.domain.time.accumulated
+
+data class TimeReportWeek internal constructor(
+    val start: Milliseconds,
+    val days: List<TimeReportDay>
+)
 
 /**
- * Reset timestamp in milliseconds to start of day.
+ * Calculates time summary for week.
+ *
+ * @param week Week for which to calculate the time summary.
+ *
+ * @return Calculated time summary for the week.
  */
-fun resetToStartOfDay(time: Milliseconds): Date = Calendar.getInstance()
-    .apply { timeInMillis = time.value }
-    .also {
-        it.set(Calendar.HOUR_OF_DAY, 0)
-        it.set(Calendar.MINUTE, 0)
-        it.set(Calendar.SECOND, 0)
-        it.set(Calendar.MILLISECOND, 0)
-    }
-    .let { it.time }
+fun timeSummary(week: TimeReportWeek): HoursMinutes {
+    return week.days
+        .map { it.timeSummary }
+        .accumulated()
+}
+
+fun timeReportWeek(start: Milliseconds, days: List<TimeReportDay>): TimeReportWeek {
+    return TimeReportWeek(start, days)
+}

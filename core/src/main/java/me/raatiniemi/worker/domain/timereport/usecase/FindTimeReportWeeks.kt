@@ -20,36 +20,19 @@ import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 
-typealias CountTimeReports = (Project) -> Int
-typealias FindTimeReports = (Project, LoadRange) -> List<TimeReportDay>
-
-fun countTimeReports(
-    keyValueStore: KeyValueStore,
-    repository: TimeReportRepository
-): CountTimeReports {
-    return { project ->
+class FindTimeReportWeeks(
+    private val keyValueStore: KeyValueStore,
+    private val repository: TimeReportRepository
+) {
+    operator fun invoke(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
         val shouldHideRegisteredTime = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
-        if (shouldHideRegisteredTime) {
-            repository.countNotRegistered(project)
+        return if (shouldHideRegisteredTime) {
+            repository.findNotRegisteredWeeks(project, loadRange)
         } else {
-            repository.count(project)
-        }
-    }
-}
-
-fun findTimeReports(
-    keyValueStore: KeyValueStore,
-    repository: TimeReportRepository
-): FindTimeReports {
-    return { project, loadRange ->
-        val shouldHideRegisteredTime = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
-        if (shouldHideRegisteredTime) {
-            repository.findNotRegistered(project, loadRange)
-        } else {
-            repository.findAll(project, loadRange)
+            repository.findWeeks(project, loadRange)
         }
     }
 }

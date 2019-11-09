@@ -16,22 +16,23 @@
 
 package me.raatiniemi.worker.data.projects.datasource
 
+import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReports
-import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReports
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import timber.log.Timber
 
-internal class TimeReportDataSource(
+internal class TimeReportWeekDataSource(
     private val projectProvider: ProjectProvider,
-    private val countTimeReports: CountTimeReports,
-    private val findTimeReports: FindTimeReports
-) : PositionalDataSource<TimeReportDay>() {
+    private val countTimeReportWeeks: CountTimeReportWeeks,
+    private val findTimeReportWeeks: FindTimeReportWeeks
+) : PositionalDataSource<TimeReportWeek>() {
     private val project: Project?
         get() {
             val project = projectProvider.value
@@ -44,12 +45,12 @@ internal class TimeReportDataSource(
         }
 
     private fun countTotal(): Int {
-        return project?.let(countTimeReports) ?: 0
+        return project?.let { countTimeReportWeeks(it) } ?: 0
     }
 
     override fun loadInitial(
         params: LoadInitialParams,
-        callback: LoadInitialCallback<TimeReportDay>
+        callback: LoadInitialCallback<TimeReportWeek>
     ) {
         val totalCount = countTotal()
         val position = computeInitialLoadPosition(params, totalCount)
@@ -62,19 +63,32 @@ internal class TimeReportDataSource(
         callback.onResult(loadData(loadRange), position, totalCount)
     }
 
-    private fun loadData(loadRange: LoadRange): List<TimeReportDay> {
-        val project = this.project
-        return when (project) {
-            is Project -> findTimeReports(project, loadRange)
+    private fun loadData(loadRange: LoadRange): List<TimeReportWeek> {
+        return when (val project = this.project) {
+            is Project -> findTimeReportWeeks(project, loadRange)
             else -> emptyList()
         }
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportDay>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportWeek>) {
         val loadRange = LoadRange(
             LoadPosition(params.startPosition),
             LoadSize(params.loadSize)
         )
         callback.onResult(loadData(loadRange))
+    }
+
+    class Factory(
+        private val projectProvider: ProjectProvider,
+        private val countTimeReportWeeks: CountTimeReportWeeks,
+        private val findTimeReportWeeks: FindTimeReportWeeks
+    ) : DataSource.Factory<Int, TimeReportWeek>() {
+        override fun create(): TimeReportWeekDataSource {
+            return TimeReportWeekDataSource(
+                projectProvider,
+                countTimeReportWeeks,
+                findTimeReportWeeks
+            )
+        }
     }
 }

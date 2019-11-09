@@ -20,6 +20,7 @@ internal const val MILLISECONDS_IN_SECOND = 1000
 internal const val SECONDS_IN_MINUTE = 60
 internal const val MINUTES_IN_HOUR = 60
 internal const val HOURS_IN_DAY = 24
+internal const val DAYS_IN_WEEK = 7
 
 internal const val SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR
 internal const val SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY

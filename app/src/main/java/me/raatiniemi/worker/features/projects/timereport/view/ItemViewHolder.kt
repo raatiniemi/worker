@@ -20,9 +20,38 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.date.HoursMinutesFormat
+import me.raatiniemi.worker.domain.time.calculateHoursMinutes
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
+import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
+import me.raatiniemi.worker.features.shared.view.click
+import me.raatiniemi.worker.features.shared.view.longClick
 
-internal class ItemViewHolder(view: View) {
-    val itemView: ConstraintLayout = view.findViewById(R.id.clItem)
-    val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
-    val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+internal class ItemViewHolder(
+    private val stateManager: TimeReportStateManager,
+    private val formatter: HoursMinutesFormat,
+    view: View
+) {
+    private val itemView: ConstraintLayout = view.findViewById(R.id.clItem)
+    private val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
+    private val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+
+    fun bind(timeInterval: TimeInterval) {
+        this.timeInterval.text = title(timeInterval)
+
+        val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
+        timeSummary.text = formatter.apply(hoursMinutes)
+
+        apply(stateManager.state(timeInterval), itemView)
+        longClick(itemView) {
+            stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+            true
+        }
+        click(itemView) {
+            stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+        }
+    }
 }

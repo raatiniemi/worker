@@ -54,7 +54,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: TimeReportViewModel by viewModel()
     private val timeReportAdapter: TimeReportAdapter by lazy {
-        TimeReportAdapter(get(), vm)
+        TimeReportAdapter(vm, get())
     }
 
     private var refreshActiveTimeIntervalsTimer: Timer? = null
@@ -145,7 +145,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
             }
         }
 
-        observe(vm.timeReport) {
+        observe(vm.weeks) {
             timeReportAdapter.submitList(it)
 
             tvEmptyTimeReport.visibleIf { it.isEmpty() }
@@ -153,7 +153,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         observeAndConsume(vm.viewActions) {
             when (it) {
-                is TimeReportViewActions.RefreshTimeReportDays -> it.action(timeReportAdapter)
+                is TimeReportViewActions.RefreshTimeReportWeek -> it.action(timeReportAdapter)
                 is ActivityViewAction -> it.action(requireActivity())
                 is ContextViewAction -> it.action(requireContext())
                 else -> Timber.w("No observation for ${it.javaClass.simpleName}")
@@ -207,8 +207,8 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         refreshActiveTimeIntervalsTimer = Timer()
         refreshActiveTimeIntervalsTimer?.schedule(Date(), 1.minutes) {
-            val timeReportDays = timeReportAdapter.currentList ?: return@schedule
-            vm.refreshActiveTimeReportDay(timeReportDays)
+            val weeks = timeReportAdapter.currentList ?: return@schedule
+            vm.refreshActiveTimeReportWeek(weeks)
         }
     }
 

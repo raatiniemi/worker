@@ -25,7 +25,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
+import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -33,10 +33,8 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
+import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
+import me.raatiniemi.worker.features.projects.timereport.model.*
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
@@ -46,12 +44,12 @@ import timber.log.Timber
 internal class TimeReportViewModel internal constructor(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    timeReportDataSourceFactory: TimeReportDataSourceFactory,
+    dataSourceFactory: TimeReportWeekDataSource.Factory,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
-    private val expandedDays = mutableSetOf<Int>()
+    private val expandedDays = mutableSetOf<TimeReportDay>()
 
     var shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
@@ -62,7 +60,7 @@ internal class TimeReportViewModel internal constructor(
 
     val isSelectionActivated: LiveData<Boolean> = _selectedItems.map(::isSelectionActivated)
 
-    val timeReport: LiveData<PagedList<TimeReportDay>>
+    val weeks: LiveData<PagedList<TimeReportWeek>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
@@ -75,13 +73,13 @@ internal class TimeReportViewModel internal constructor(
             .setEnablePlaceholders(true)
             .build()
 
-        timeReport = LivePagedListBuilder(timeReportDataSourceFactory, config).build()
+        weeks = LivePagedListBuilder(dataSourceFactory, config).build()
     }
 
     fun reloadTimeReport() {
         clearSelection()
 
-        timeReport.value?.run {
+        weeks.value?.run {
             dataSource.invalidate()
         }
     }
@@ -124,16 +122,16 @@ internal class TimeReportViewModel internal constructor(
     }
 
     @MainThread
-    override fun expanded(position: Int): Boolean = expandedDays.contains(position)
+    override fun expanded(day: TimeReportDay): Boolean = expandedDays.contains(day)
 
     @MainThread
-    override fun expand(position: Int) {
-        expandedDays.add(position)
+    override fun expand(day: TimeReportDay) {
+        expandedDays.add(day)
     }
 
     @MainThread
-    override fun collapse(position: Int) {
-        expandedDays.remove(position)
+    override fun collapse(day: TimeReportDay) {
+        expandedDays.remove(day)
     }
 
     @MainThread
@@ -163,7 +161,19 @@ internal class TimeReportViewModel internal constructor(
         selectedItems?.run { contains(item) } ?: false
 
     @MainThread
-    override fun consume(longPress: TimeReportLongPressAction): Boolean {
+    override fun consume(action: TimeReportSelectAction) {
+        try {
+            when (action) {
+                is TimeReportLongPressAction -> consume(action)
+                is TimeReportTapAction -> consume(action)
+                else -> throw IllegalArgumentException("Unable to consume unknown select action: $action")
+            }
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e)
+        }
+    }
+
+    private fun consume(longPress: TimeReportLongPressAction): Boolean {
         val selectedItems = _selectedItems.value ?: HashSet()
         if (isSelectionActivated(selectedItems)) {
             return false
@@ -183,8 +193,7 @@ internal class TimeReportViewModel internal constructor(
         return !items.isNullOrEmpty()
     }
 
-    @MainThread
-    override fun consume(tap: TimeReportTapAction) {
+    private fun consume(tap: TimeReportTapAction) {
         val selectedItems = _selectedItems.value ?: HashSet()
         if (!isSelectionActivated(selectedItems)) {
             return
@@ -200,16 +209,23 @@ internal class TimeReportViewModel internal constructor(
         _selectedItems.value = selectedItems
     }
 
-    fun refreshActiveTimeReportDay(timeReportDays: List<TimeReportDay>) {
-        val positions = findActivePositions(timeReportDays)
-        if (positions.isEmpty()) {
+    fun refreshActiveTimeReportWeek(weeks: List<TimeReportWeek>) {
+        val position = findActivePosition(weeks)
+        if (position == null) {
+            Timber.d("No time report week is active")
             return
         }
 
-        viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
+        viewActions += TimeReportViewActions.RefreshTimeReportWeek(position)
     }
 
-    private fun findActivePositions(days: List<TimeReportDay>) =
-        days.filterIsInstance<TimeReportDay.Active>()
-            .map(days::indexOf)
+    private fun findActivePosition(weeks: List<TimeReportWeek>): Int? {
+        return weeks.filter(::containsActiveDay)
+            .map(weeks::indexOf)
+            .firstOrNull()
+    }
+
+    private fun containsActiveDay(week: TimeReportWeek): Boolean {
+        return week.days.firstOrNull { it is TimeReportDay.Active } != null
+    }
 }

@@ -18,22 +18,19 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportSelectAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportState
-import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
 
-interface TimeReportStateManager {
-    fun expanded(position: Int): Boolean
+internal interface TimeReportStateManager {
+    fun expanded(day: TimeReportDay): Boolean
 
-    fun expand(position: Int)
+    fun expand(day: TimeReportDay)
 
-    fun collapse(position: Int)
+    fun collapse(day: TimeReportDay)
 
     fun state(day: TimeReportDay): TimeReportState
 
     fun state(timeInterval: TimeInterval): TimeReportState
 
-    fun consume(longPress: TimeReportLongPressAction): Boolean
-
-    fun consume(tap: TimeReportTapAction)
+    fun consume(action: TimeReportSelectAction)
 }

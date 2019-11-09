@@ -54,6 +54,8 @@
     <string name="projects_time_report_menu_register">Mark as registered</string>
     <string name="projects_time_report_menu_delete">Delete</string>
 
+    <string name="projects_time_report_week">Week %s</string>
+
     <string name="projects_time_report_group_selection_content_description">Select or deselect item group</string>
 
     <string name="projects_time_report_unable_to_register_message">Failed to update item(s).</string>

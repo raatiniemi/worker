@@ -22,20 +22,20 @@ import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
-class TimeReportStateManagerAdapterDecorator(
+internal class TimeReportStateManagerAdapterDecorator(
     private val adapter: RecyclerView.Adapter<*>,
     private val stateManager: TimeReportStateManager
 ) : TimeReportStateManager {
     @MainThread
-    override fun expanded(position: Int): Boolean = stateManager.expanded(position)
+    override fun expanded(day: TimeReportDay): Boolean = stateManager.expanded(day)
 
     @MainThread
-    override fun expand(position: Int) = stateManager.expand(position)
-        .apply { adapter.notifyItemChanged(position) }
+    override fun expand(day: TimeReportDay) = stateManager.expand(day)
+        .apply { adapter.notifyDataSetChanged() }
 
     @MainThread
-    override fun collapse(position: Int) = stateManager.collapse(position)
-        .apply { adapter.notifyItemChanged(position) }
+    override fun collapse(day: TimeReportDay) = stateManager.collapse(day)
+        .apply { adapter.notifyDataSetChanged() }
 
     @MainThread
     override fun state(day: TimeReportDay) = stateManager.state(day)
@@ -44,15 +44,8 @@ class TimeReportStateManagerAdapterDecorator(
     override fun state(timeInterval: TimeInterval): TimeReportState =
         stateManager.state(timeInterval)
 
-    @MainThread
-    override fun consume(longPress: TimeReportLongPressAction): Boolean {
-        return stateManager.consume(longPress)
-            .apply { adapter.notifyDataSetChanged() }
-    }
-
-    @MainThread
-    override fun consume(tap: TimeReportTapAction) {
-        return stateManager.consume(tap)
+    override fun consume(action: TimeReportSelectAction) {
+        return stateManager.consume(action)
             .apply { adapter.notifyDataSetChanged() }
     }
 }

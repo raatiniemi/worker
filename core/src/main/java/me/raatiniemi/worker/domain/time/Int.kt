@@ -27,3 +27,9 @@ val Int.minutes: Long
 
 val Int.hours: Long
     get() = toLong().hours
+
+val Int.days: Long
+    get() = toLong().days
+
+val Int.weeks: Long
+    get() = toLong().weeks

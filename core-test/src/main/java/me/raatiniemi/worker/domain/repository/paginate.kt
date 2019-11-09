@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,18 +14,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.timereport.repository
+package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 
-interface TimeReportRepository {
-    fun countWeeks(project: Project): Int
+internal fun <T> paginate(
+    loadRange: LoadRange,
+    elements: List<T>
+): List<T> {
+    val (position, size) = loadRange
+    val fromIndex = indexWithCountCap(position.value, elements.count())
+    val toIndex = indexWithCountCap(
+        position.value + size.value,
+        elements.count()
+    )
 
-    fun countNotRegisteredWeeks(project: Project): Int
+    return elements.subList(fromIndex, toIndex)
+}
 
-    fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
-
-    fun findNotRegisteredWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
+/**
+ * Use index unless it's above count, in which count will be used.
+ */
+private fun indexWithCountCap(index: Int, count: Int): Int {
+    return if (index > count) {
+        count
+    } else {
+        index
+    }
 }
