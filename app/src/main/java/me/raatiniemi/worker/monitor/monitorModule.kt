@@ -20,7 +20,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import me.raatiniemi.worker.monitor.analytics.FirebaseUsageAnalytics
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
 val monitorModule = module {
     single<UsageAnalytics> {

@@ -25,7 +25,8 @@ import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
 import me.raatiniemi.worker.features.shared.view.createNotificationChannel
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import me.raatiniemi.worker.monitor.monitorModule
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -37,17 +38,19 @@ open class WorkerApplication : Application() {
         super.onCreate()
 
         if (!isUnitTesting) {
-            startKoin(
-                this,
-                listOf(
-                    monitorModule,
-                    preferenceModule,
-                    dataModule,
-                    projectsModule,
-                    settingsModule,
-                    useCaseModule
+            startKoin {
+                androidContext(applicationContext)
+                modules(
+                    listOf(
+                        monitorModule,
+                        preferenceModule,
+                        dataModule,
+                        projectsModule,
+                        settingsModule,
+                        useCaseModule
+                    )
                 )
-            )
+            }
 
             configureLogging()
             registerNotificationChannel()

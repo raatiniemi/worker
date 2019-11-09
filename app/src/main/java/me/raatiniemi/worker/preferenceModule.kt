@@ -20,7 +20,7 @@ import androidx.preference.PreferenceManager
 import me.raatiniemi.worker.configuration.SharedKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
 val preferenceModule = module {
     single<KeyValueStore> {

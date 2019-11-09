@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.project.usecase.findProjects
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
 val dataModule = module {
     single {

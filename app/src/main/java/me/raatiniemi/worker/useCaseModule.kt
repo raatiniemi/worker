@@ -24,7 +24,7 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
 val useCaseModule = module {
     single {

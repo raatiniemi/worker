@@ -18,7 +18,7 @@ package me.raatiniemi.worker.data
 
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
 val dataTestModule = module {
     single(override = true) {

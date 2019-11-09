@@ -147,7 +147,7 @@ dependencies {
     def fragmentVersion = '1.1.0'
     def navigationVersion = '2.1.0'
     def coroutineVersion = '1.1.1'
-    def koinVersion = '1.0.2'
+    def koinVersion = '2.0.1'
     def archCoreTestingVersion = '2.1.0'
 
     kapt "androidx.room:room-compiler:$roomVersion"

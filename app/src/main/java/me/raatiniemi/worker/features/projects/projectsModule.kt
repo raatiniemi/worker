@@ -27,8 +27,8 @@ import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProj
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportViewModel
-import org.koin.android.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.module
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 val projectsModule = module {
     viewModel {
