@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.koin.modules
 
 import me.raatiniemi.worker.domain.project.usecase.FindActiveProjects
 import me.raatiniemi.worker.domain.project.usecase.GetProject
@@ -26,7 +26,7 @@ import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import org.koin.dsl.module
 
-val useCaseModule = module {
+internal val useCase = module {
     single {
         ClockIn(get())
     }
