@@ -19,7 +19,7 @@ package me.raatiniemi.worker
 import android.app.Application
 import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.koin.modules.data
-import me.raatiniemi.worker.features.projects.projectsModule
+import me.raatiniemi.worker.koin.modules.projects
 import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
 import me.raatiniemi.worker.features.shared.view.createNotificationChannel
@@ -47,7 +47,7 @@ open class WorkerApplication : Application() {
                         monitor,
                         preference,
                         data,
-                        projectsModule,
+                        projects,
                         settingsModule,
                         useCase
                     )
