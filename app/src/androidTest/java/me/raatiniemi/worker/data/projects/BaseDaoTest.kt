@@ -41,15 +41,12 @@ open class BaseDaoTest {
         database.close()
     }
 
-    internal val projects: ProjectDao by lazy {
-        database.projects()
-    }
+    internal val projects: ProjectDao
+        get() = database.projects()
 
-    internal val timeIntervals: TimeIntervalDao by lazy {
-        database.timeIntervals()
-    }
+    internal val timeIntervals: TimeIntervalDao
+        get() = database.timeIntervals()
 
-    internal val timeReport: TimeReportDao by lazy {
-        database.timeReport()
-    }
+    internal val timeReport: TimeReportDao
+        get() = database.timeReport()
 }
