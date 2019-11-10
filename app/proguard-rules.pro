@@ -32,6 +32,7 @@
 -keepclassmembers class androidx.room.RoomOpenHelper$Delegate { *; }
 
 # Kotlin
+-keep class kotlin.reflect.** { *; }
 -keep class kotlin.jvm.functions.** { *; }
 -keep class kotlin.collections.** { *; }
 -keep class kotlin.comparisons.** { *; }
@@ -40,6 +41,9 @@
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
+
+# Koin
+-keep class org.koin.core.** { *; }
 
 # EventBus
 -keepattributes *Annotation*
