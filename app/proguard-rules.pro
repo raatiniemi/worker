@@ -33,6 +33,8 @@
 
 # Kotlin
 -keep class kotlin.jvm.functions.** { *; }
+-keep class kotlin.collections.** { *; }
+-keep class kotlin.comparisons.** { *; }
 
 # Most of volatile fields are updated with AFU and should not be mangled
 -keepclassmembernames class kotlinx.** {
