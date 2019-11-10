@@ -107,4 +107,9 @@
     <string name="ongoing_notification_action_resume">Resume</string>
     <!--</editor-fold>-->
 
+    <!--<editor-fold desc="Date time picker">-->
+    <string name="date_time_picker_date_title">Date</string>
+    <string name="date_time_picker_time_title">Time</string>
+    <!--</editor-fold>-->
+
 </resources>
