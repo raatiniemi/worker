@@ -20,7 +20,7 @@
 
 # Application
 -keep @androidx.room.Dao class me.raatiniemi.worker.** { *; }
--keepclassmembers class me.raatiniemi.worker.domain.repository.** { *; }
+-keep interface me.raatiniemi.worker.** { *; }
 
 # AndroidX
 -keepclassmembers class androidx.core.graphics.TypefaceCompatApi28Impl { *; }
