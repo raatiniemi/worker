@@ -14,26 +14,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.view
+package me.raatiniemi.worker.features.shared.datetime.viewmodel
 
-import java.text.SimpleDateFormat
-import java.util.*
+import androidx.lifecycle.ViewModel
+import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.plusAssign
 
-internal fun yearMonthDay(date: Date): String {
-    return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        .run { format(date) }
-}
+internal class DateTimeViewModel : ViewModel() {
+    val viewActions = ConsumableLiveData<DateTimeViewActions>()
 
-internal fun hourMinute(date: Date): String {
-    return SimpleDateFormat("HH:mm", Locale.getDefault())
-        .run { format(date) }
-}
+    fun chooseDate() {
+        viewActions += DateTimeViewActions.ChooseDate
+    }
 
-internal fun week(date: Date): String {
-    return SimpleDateFormat("w", Locale.getDefault()).run { format(date) }
-}
-
-fun shortDayMonthDayInMonth(date: Date): String {
-    return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
-        .run { format(date) }
+    fun chooseTime() {
+        viewActions += DateTimeViewActions.ChooseTime
+    }
 }

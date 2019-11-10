@@ -21,9 +21,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.dialogfragment_date_time_picker.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
+import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
+import me.raatiniemi.worker.features.shared.view.click
+import me.raatiniemi.worker.features.shared.view.hourMinute
+import me.raatiniemi.worker.features.shared.view.observeAndConsume
+import me.raatiniemi.worker.features.shared.view.yearMonthDay
+import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class DateTimePickerDialogFragment : DialogFragment() {
+    private val vm: DateTimeViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +46,40 @@ class DateTimePickerDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.dialogfragment_date_time_picker, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        configureUserInterface()
+        bindUserInterfaceToViewModel()
+        observeViewModel()
+    }
+
+    private fun configureUserInterface() {
+        tpTime.setIs24HourView(true)
+
+        val now = Date()
+        tvDate.text = yearMonthDay(now)
+        tvTime.text = hourMinute(now)
+    }
+
+    private fun bindUserInterfaceToViewModel() {
+        click(tvDate) {
+            vm.chooseDate()
+        }
+        click(tvTime) {
+            vm.chooseTime()
+        }
+    }
+
+    private fun observeViewModel() {
+        observeAndConsume(vm.viewActions) { viewAction ->
+            when (viewAction) {
+                is DateTimeViewActions.ChooseDate -> viewAction(view)
+                is DateTimeViewActions.ChooseTime -> viewAction(view)
+            }
+        }
     }
 
     companion object {
