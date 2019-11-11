@@ -20,5 +20,6 @@ import java.util.*
 
 internal data class DateTimeConfiguration(
     var date: Date = Date(),
-    var minDate: Date? = null
+    var minDate: Date? = null,
+    var maxDate: Date? = null
 )

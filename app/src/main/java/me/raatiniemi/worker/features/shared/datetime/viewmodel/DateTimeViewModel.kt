@@ -32,6 +32,9 @@ internal class DateTimeViewModel : ViewModel() {
     private val _minDate = MutableLiveData<Long>()
     val minDate: LiveData<Long> = _minDate
 
+    private val _maxDate = MutableLiveData<Long>()
+    val maxDate: LiveData<Long> = _maxDate
+
     private val _date = MutableLiveData<Date>()
 
     val date: LiveData<String> = _date.map(::yearMonthDay)
@@ -42,6 +45,9 @@ internal class DateTimeViewModel : ViewModel() {
     fun configure(configuration: DateTimeConfiguration) {
         configuration.minDate?.run {
             _minDate += time
+        }
+        configuration.maxDate?.run {
+            _maxDate += time
         }
 
         _date += configuration.date

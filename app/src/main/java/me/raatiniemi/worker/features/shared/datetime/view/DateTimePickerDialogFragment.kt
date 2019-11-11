@@ -75,6 +75,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
         observe(vm.minDate) {
             dpDate.minDate = it
         }
+        observe(vm.maxDate) {
+            dpDate.maxDate = it
+        }
         observe(vm.date) {
             tvDate.text = it
         }

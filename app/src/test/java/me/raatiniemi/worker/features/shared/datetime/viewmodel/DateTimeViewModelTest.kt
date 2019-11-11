@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.shared.datetime.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.date.minus
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
@@ -73,6 +74,37 @@ class DateTimeViewModelTest {
         vm.configure(configuration)
 
         vm.minDate.observeNonNull {
+            assertEquals(expected, it)
+        }
+    }
+
+    // Max. date
+
+    @Test
+    fun `max date without configuration`() {
+        vm.maxDate.observeNoValue()
+    }
+
+    @Test
+    fun `max date with empty min date`() {
+        val configuration = DateTimeConfiguration()
+
+        vm.configure(configuration)
+
+        vm.maxDate.observeNoValue()
+    }
+
+    @Test
+    fun `max date with date`() {
+        val maxDate = Date() + 1.hours
+        val configuration = DateTimeConfiguration(
+            maxDate = maxDate
+        )
+        val expected = maxDate.time
+
+        vm.configure(configuration)
+
+        vm.maxDate.observeNonNull {
             assertEquals(expected, it)
         }
     }
