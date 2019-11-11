@@ -23,16 +23,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialogfragment_date_time_picker.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
 import me.raatiniemi.worker.features.shared.view.click
-import me.raatiniemi.worker.features.shared.view.hourMinute
+import me.raatiniemi.worker.features.shared.view.observe
 import me.raatiniemi.worker.features.shared.view.observeAndConsume
-import me.raatiniemi.worker.features.shared.view.yearMonthDay
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
 class DateTimePickerDialogFragment : DialogFragment() {
+    private lateinit var configuration: DateTimeConfiguration
     private val vm: DateTimeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +51,8 @@ class DateTimePickerDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vm.configure(configuration)
+
         configureUserInterface()
         bindUserInterfaceToViewModel()
         observeViewModel()
@@ -58,10 +60,6 @@ class DateTimePickerDialogFragment : DialogFragment() {
 
     private fun configureUserInterface() {
         tpTime.setIs24HourView(true)
-
-        val now = Date()
-        tvDate.text = yearMonthDay(now)
-        tvTime.text = hourMinute(now)
     }
 
     private fun bindUserInterfaceToViewModel() {
@@ -74,6 +72,12 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun observeViewModel() {
+        observe(vm.date) {
+            tvDate.text = it
+        }
+        observe(vm.time) {
+            tvTime.text = it
+        }
         observeAndConsume(vm.viewActions) { viewAction ->
             when (viewAction) {
                 is DateTimeViewActions.ChooseDate -> viewAction(view)
@@ -83,6 +87,12 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     companion object {
-        internal fun newInstance() = DateTimePickerDialogFragment()
+        internal fun newInstance(configure: (DateTimeConfiguration) -> Unit): DateTimePickerDialogFragment {
+            val configuration = DateTimeConfiguration()
+            configure(configuration)
+
+            return DateTimePickerDialogFragment()
+                .also { it.configuration = configuration }
+        }
     }
 }

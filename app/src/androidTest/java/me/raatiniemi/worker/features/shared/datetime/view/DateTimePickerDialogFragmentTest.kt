@@ -21,6 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.withView
@@ -31,9 +32,33 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DateTimePickerDialogFragmentTest {
     @Test
+    fun date() {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            DateTimePickerDialogFragment.newInstance { }
+        }
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        withView(R.id.tvDate) {
+            it.check(matches(not(withText(""))))
+        }
+    }
+
+    @Test
+    fun time() {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            DateTimePickerDialogFragment.newInstance { }
+        }
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        withView(R.id.tvTime) {
+            it.check(matches(not(withText(""))))
+        }
+    }
+
+    @Test
     fun chooseTimeIsVisibleByDefault() {
         val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
-            DateTimePickerDialogFragment.newInstance()
+            DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -48,7 +73,7 @@ class DateTimePickerDialogFragmentTest {
     @Test
     fun chooseTime() {
         val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
-            DateTimePickerDialogFragment.newInstance()
+            DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -67,7 +92,7 @@ class DateTimePickerDialogFragmentTest {
     @Test
     fun chooseDate() {
         val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
-            DateTimePickerDialogFragment.newInstance()
+            DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
 

@@ -16,13 +16,29 @@
 
 package me.raatiniemi.worker.features.shared.datetime.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
+import me.raatiniemi.worker.features.shared.view.hourMinute
+import me.raatiniemi.worker.features.shared.view.yearMonthDay
+import java.util.*
 
 internal class DateTimeViewModel : ViewModel() {
+    private val _date = MutableLiveData<Date>()
+
+    val date: LiveData<String> = _date.map(::yearMonthDay)
+    val time: LiveData<String> = _date.map(::hourMinute)
+
     val viewActions = ConsumableLiveData<DateTimeViewActions>()
+
+    fun configure(configuration: DateTimeConfiguration) {
+        _date += configuration.date
+    }
 
     fun chooseDate() {
         viewActions += DateTimeViewActions.ChooseDate
