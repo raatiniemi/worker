@@ -29,6 +29,9 @@ import me.raatiniemi.worker.features.shared.view.yearMonthDay
 import java.util.*
 
 internal class DateTimeViewModel : ViewModel() {
+    private val _minDate = MutableLiveData<Long>()
+    val minDate: LiveData<Long> = _minDate
+
     private val _date = MutableLiveData<Date>()
 
     val date: LiveData<String> = _date.map(::yearMonthDay)
@@ -37,6 +40,10 @@ internal class DateTimeViewModel : ViewModel() {
     val viewActions = ConsumableLiveData<DateTimeViewActions>()
 
     fun configure(configuration: DateTimeConfiguration) {
+        configuration.minDate?.run {
+            _minDate += time
+        }
+
         _date += configuration.date
     }
 

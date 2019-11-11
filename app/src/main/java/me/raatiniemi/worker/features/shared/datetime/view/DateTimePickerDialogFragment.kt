@@ -72,6 +72,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun observeViewModel() {
+        observe(vm.minDate) {
+            dpDate.minDate = it
+        }
         observe(vm.date) {
             tvDate.text = it
         }

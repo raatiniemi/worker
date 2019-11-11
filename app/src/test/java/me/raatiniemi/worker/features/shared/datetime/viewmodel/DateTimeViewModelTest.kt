@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.features.shared.datetime.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import me.raatiniemi.worker.domain.date.minus
+import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
@@ -29,6 +31,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class DateTimeViewModelTest {
@@ -41,6 +44,37 @@ class DateTimeViewModelTest {
     @Before
     fun setUp() {
         vm = DateTimeViewModel()
+    }
+
+    // Min. date
+
+    @Test
+    fun `min date without configuration`() {
+        vm.minDate.observeNoValue()
+    }
+
+    @Test
+    fun `min date with empty date`() {
+        val configuration = DateTimeConfiguration()
+
+        vm.configure(configuration)
+
+        vm.minDate.observeNoValue()
+    }
+
+    @Test
+    fun `min date with min date`() {
+        val minDate = Date() - 1.hours
+        val configuration = DateTimeConfiguration(
+            minDate = minDate
+        )
+        val expected = minDate.time
+
+        vm.configure(configuration)
+
+        vm.minDate.observeNonNull {
+            assertEquals(expected, it)
+        }
     }
 
     // Date

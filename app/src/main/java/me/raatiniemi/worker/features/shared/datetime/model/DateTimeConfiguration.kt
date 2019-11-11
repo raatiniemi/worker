@@ -19,5 +19,6 @@ package me.raatiniemi.worker.features.shared.datetime.model
 import java.util.*
 
 internal data class DateTimeConfiguration(
-    var date: Date = Date()
+    var date: Date = Date(),
+    var minDate: Date? = null
 )
