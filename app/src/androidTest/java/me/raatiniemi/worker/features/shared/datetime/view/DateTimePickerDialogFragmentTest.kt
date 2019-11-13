@@ -107,4 +107,20 @@ class DateTimePickerDialogFragmentTest {
             it.check(matches(not(isDisplayed())))
         }
     }
+
+    @Test(expected = RuntimeException::class)
+    fun dismiss() {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+            DateTimePickerDialogFragment.newInstance { }
+        }
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        withView(R.id.btnCancel) {
+            it.perform(click())
+        }
+
+        // When the fragment used for the scenario have been dismissed it throws an
+        // `RuntimeException` with the root exception as it's cause.
+        scenario.onFragment { }
+    }
 }

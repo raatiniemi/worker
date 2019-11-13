@@ -73,6 +73,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
         click(tvTime) {
             vm.chooseTime()
         }
+        click(btnCancel) {
+            dismiss()
+        }
     }
 
     private fun observeViewModel() {
