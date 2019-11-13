@@ -26,6 +26,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
+import me.raatiniemi.worker.features.shared.view.change
 import me.raatiniemi.worker.features.shared.view.click
 import me.raatiniemi.worker.features.shared.view.observe
 import me.raatiniemi.worker.features.shared.view.observeAndConsume
@@ -63,6 +64,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun bindUserInterfaceToViewModel() {
+        change(dpDate) {
+            vm.chooseDate(it)
+        }
         click(tvDate) {
             vm.chooseDate()
         }

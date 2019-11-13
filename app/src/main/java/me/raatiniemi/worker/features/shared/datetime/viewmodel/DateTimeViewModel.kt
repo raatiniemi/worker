@@ -20,6 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import me.raatiniemi.worker.domain.time.YearsMonthsDays
+import me.raatiniemi.worker.domain.time.date
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
@@ -55,6 +57,12 @@ internal class DateTimeViewModel : ViewModel() {
 
     fun chooseDate() {
         viewActions += DateTimeViewActions.ChooseDate
+    }
+
+    fun chooseDate(yearsMonthsDays: YearsMonthsDays) {
+        _date.value?.let { date ->
+            _date += date(date, yearsMonthsDays)
+        }
     }
 
     fun chooseTime() {
