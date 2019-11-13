@@ -67,6 +67,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
         change(dpDate) {
             vm.chooseDate(it)
         }
+        change(tpTime) {
+            vm.chooseTime(it)
+        }
         click(tvDate) {
             vm.chooseDate()
         }

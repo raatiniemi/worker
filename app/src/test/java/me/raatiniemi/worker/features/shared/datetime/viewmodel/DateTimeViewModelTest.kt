@@ -20,6 +20,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.date.minus
 import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.time.hours
+import me.raatiniemi.worker.domain.time.hoursMinutes
 import me.raatiniemi.worker.domain.time.weeks
 import me.raatiniemi.worker.domain.time.yearsMonthsDays
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
@@ -190,6 +191,28 @@ class DateTimeViewModelTest {
 
         vm.viewActions.observeNonNull {
             assertEquals(DateTimeViewActions.ChooseTime, it)
+        }
+    }
+
+    @Test
+    fun `choose time without date`() {
+        val now = yearsMonthsDays(Date())
+
+        vm.chooseDate(now)
+
+        vm.date.observeNoValue()
+    }
+
+    @Test
+    fun `choose time with date`() {
+        vm.configure(DateTimeConfiguration())
+        val lastHour = Date() - 1.hours
+        val expected = hourMinute(lastHour)
+
+        vm.chooseTime(hoursMinutes(lastHour))
+
+        vm.time.observeNonNull {
+            assertEquals(expected, it)
         }
     }
 }

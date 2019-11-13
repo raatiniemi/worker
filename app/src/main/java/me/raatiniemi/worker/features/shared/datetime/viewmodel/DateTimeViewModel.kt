@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.YearsMonthsDays
 import me.raatiniemi.worker.domain.time.date
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
@@ -67,5 +68,11 @@ internal class DateTimeViewModel : ViewModel() {
 
     fun chooseTime() {
         viewActions += DateTimeViewActions.ChooseTime
+    }
+
+    fun chooseTime(hoursMinutes: HoursMinutes) {
+        _date.value?.let { date ->
+            _date += date(date, hoursMinutes)
+        }
     }
 }

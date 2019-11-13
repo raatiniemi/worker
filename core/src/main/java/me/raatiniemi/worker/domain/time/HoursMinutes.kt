@@ -18,6 +18,7 @@
 
 package me.raatiniemi.worker.domain.time
 
+import java.util.*
 import kotlin.math.abs
 
 data class HoursMinutes(val hours: Long, val minutes: Long) {
@@ -76,6 +77,38 @@ data class HoursMinutes(val hours: Long, val minutes: Long) {
 
         val empty = HoursMinutes(hours = 0, minutes = 0)
     }
+}
+
+inline class Hours(val value: Int)
+inline class Minutes(val value: Int)
+
+fun hoursMinutes(hours: Hours, minutes: Minutes): HoursMinutes {
+    return HoursMinutes(
+        hours = hours.value.toLong(),
+        minutes = minutes.value.toLong()
+    )
+}
+
+fun date(date: Date, hoursMinutes: HoursMinutes): Date {
+    return Calendar.getInstance()
+        .also { it.timeInMillis = date.time }
+        .apply {
+            val (hours, minutes) = hoursMinutes
+            set(Calendar.HOUR_OF_DAY, hours.toInt())
+            set(Calendar.MINUTE, minutes.toInt())
+        }
+        .run { time }
+}
+
+fun hoursMinutes(date: Date): HoursMinutes {
+    return Calendar.getInstance()
+        .also { it.timeInMillis = date.time }
+        .run {
+            hoursMinutes(
+                hours = Hours(get(Calendar.HOUR_OF_DAY)),
+                minutes = Minutes(get(Calendar.MINUTE))
+            )
+        }
 }
 
 fun Collection<HoursMinutes>.accumulated(): HoursMinutes {
