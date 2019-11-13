@@ -64,12 +64,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun bindUserInterfaceToViewModel() {
-        change(dpDate) {
-            vm.chooseDate(it)
-        }
-        change(tpTime) {
-            vm.chooseTime(it)
-        }
+        change(dpDate, vm::chooseDate)
+        change(tpTime, vm::chooseTime)
+
         click(tvDate) {
             vm.chooseDate()
         }
