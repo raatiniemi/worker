@@ -27,6 +27,7 @@ import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
+import me.raatiniemi.worker.features.shared.model.reconfigure
 import me.raatiniemi.worker.features.shared.view.hourMinute
 import me.raatiniemi.worker.features.shared.view.yearMonthDay
 import java.util.*
@@ -61,8 +62,8 @@ internal class DateTimeViewModel : ViewModel() {
     }
 
     fun chooseDate(yearsMonthsDays: YearsMonthsDays) {
-        _date.value?.let { date ->
-            _date += date(date, yearsMonthsDays)
+        reconfigure(_date) { date ->
+            date(date, yearsMonthsDays)
         }
     }
 
@@ -71,8 +72,8 @@ internal class DateTimeViewModel : ViewModel() {
     }
 
     fun chooseTime(hoursMinutes: HoursMinutes) {
-        _date.value?.let { date ->
-            _date += date(date, hoursMinutes)
+        reconfigure(_date) { date ->
+            date(date, hoursMinutes)
         }
     }
 }

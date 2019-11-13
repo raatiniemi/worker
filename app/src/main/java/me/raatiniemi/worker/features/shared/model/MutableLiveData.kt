@@ -27,3 +27,15 @@ internal operator fun <T> MutableLiveData<T>.plusAssign(value: T) {
 
     postValue(value)
 }
+
+/**
+ * "Reconfigures" a [MutableLiveData] source with a potentially new value.
+ *
+ * @param source Source to reconfigure with value.
+ * @param configure Configurator for new value.
+ */
+internal fun <T> reconfigure(source: MutableLiveData<T>, configure: (T) -> T) {
+    consume(source) { value ->
+        source += configure(value)
+    }
+}
