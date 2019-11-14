@@ -19,10 +19,12 @@ package me.raatiniemi.worker.features.shared.datetime.model
 import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.hide
 import me.raatiniemi.worker.features.shared.view.show
 import timber.log.Timber
+import java.util.*
 
 internal sealed class DateTimeViewActions {
     object ChooseDate : DateTimeViewActions() {
@@ -48,6 +50,14 @@ internal sealed class DateTimeViewActions {
             } catch (e: IllegalArgumentException) {
                 Timber.d(e, "Unable to find view for choose date")
             }
+        }
+    }
+
+    data class Choose(private val date: Date) : DateTimeViewActions() {
+        operator fun invoke(dialogFragment: DialogFragment, choose: (Date) -> Unit) {
+            choose(date)
+
+            dialogFragment.dismiss()
         }
     }
 }

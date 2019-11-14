@@ -73,6 +73,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
         click(tvTime) {
             vm.chooseTime()
         }
+        click(btnOk) {
+            vm.choose()
+        }
         click(btnCancel) {
             dismiss()
         }
@@ -95,6 +98,7 @@ class DateTimePickerDialogFragment : DialogFragment() {
             when (viewAction) {
                 is DateTimeViewActions.ChooseDate -> viewAction(view)
                 is DateTimeViewActions.ChooseTime -> viewAction(view)
+                is DateTimeViewActions.Choose -> viewAction(this, configuration.choose)
             }
         }
     }

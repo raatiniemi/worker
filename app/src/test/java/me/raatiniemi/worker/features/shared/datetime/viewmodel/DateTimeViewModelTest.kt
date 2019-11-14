@@ -19,10 +19,7 @@ package me.raatiniemi.worker.features.shared.datetime.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.date.minus
 import me.raatiniemi.worker.domain.date.plus
-import me.raatiniemi.worker.domain.time.hours
-import me.raatiniemi.worker.domain.time.hoursMinutes
-import me.raatiniemi.worker.domain.time.weeks
-import me.raatiniemi.worker.domain.time.yearsMonthsDays
+import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
@@ -213,6 +210,79 @@ class DateTimeViewModelTest {
 
         vm.time.observeNonNull {
             assertEquals(expected, it)
+        }
+    }
+
+    // Choose
+
+    @Test
+    fun `choose with initial values`() {
+        val now = Date()
+        val configuration = DateTimeConfiguration(
+            date = now
+        )
+        vm.configure(configuration)
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.Choose(now), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen time`() {
+        val now = Date()
+        val hoursMinutes = hoursMinutes(Hours(0), Minutes(0))
+        val configuration = DateTimeConfiguration(
+            date = now
+        )
+        vm.configure(configuration)
+        vm.chooseTime(hoursMinutes)
+        val expected = date(now, hoursMinutes)
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.Choose(expected), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen date`() {
+        val now = Date()
+        val yearsMonthsDays = yearsMonthsDays(Years(2015), Months(0), Days(18))
+        val configuration = DateTimeConfiguration(
+            date = now
+        )
+        vm.configure(configuration)
+        vm.chooseDate(yearsMonthsDays)
+        val expected = date(now, yearsMonthsDays)
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.Choose(expected), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen time and date`() {
+        val now = Date()
+        val hoursMinutes = hoursMinutes(Hours(0), Minutes(0))
+        val yearsMonthsDays = yearsMonthsDays(Years(2015), Months(0), Days(18))
+        val configuration = DateTimeConfiguration(
+            date = now
+        )
+        vm.configure(configuration)
+        vm.chooseTime(hoursMinutes)
+        vm.chooseDate(yearsMonthsDays)
+        val expected = date(date(now, yearsMonthsDays), hoursMinutes)
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.Choose(expected), it)
         }
     }
 }

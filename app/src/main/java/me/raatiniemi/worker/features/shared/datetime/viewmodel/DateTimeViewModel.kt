@@ -26,6 +26,7 @@ import me.raatiniemi.worker.domain.time.date
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.consume
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.model.reconfigure
 import me.raatiniemi.worker.features.shared.view.hourMinute
@@ -74,6 +75,12 @@ internal class DateTimeViewModel : ViewModel() {
     fun chooseTime(hoursMinutes: HoursMinutes) {
         reconfigure(_date) { date ->
             date(date, hoursMinutes)
+        }
+    }
+
+    fun choose() {
+        consume(_date) { date ->
+            viewActions += DateTimeViewActions.Choose(date)
         }
     }
 }
