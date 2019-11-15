@@ -155,7 +155,11 @@ internal class AllProjectsViewModel(
     override fun at(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectAt)
 
-        viewActions += AllProjectsViewActions.ShowChooseTimeForClockActivity(item)
+        viewActions += if (item.isActive) {
+            AllProjectsViewActions.ChooseDateAndTimeForClockOut(item)
+        } else {
+            AllProjectsViewActions.ChooseDateAndTimeForClockIn(item)
+        }
     }
 
     override fun remove(item: ProjectsItem) {

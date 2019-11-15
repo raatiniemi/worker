@@ -137,9 +137,20 @@ class AllProjectsFragment : CoroutineScopedFragment() {
             is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(
                 viewAction
             )
-            is AllProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(
-                viewAction
-            )
+            is AllProjectsViewActions.ChooseDateAndTimeForClockIn -> {
+                viewAction.action(this) { project, date ->
+                    launch {
+                        vm.clockInAt(project, date)
+                    }
+                }
+            }
+            is AllProjectsViewActions.ChooseDateAndTimeForClockOut -> {
+                viewAction.action(this) { project, date ->
+                    launch {
+                        vm.clockOutAt(project, date)
+                    }
+                }
+            }
             is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(
                 viewAction
             )
@@ -156,19 +167,6 @@ class AllProjectsFragment : CoroutineScopedFragment() {
                 vm.clockOutAt(viewAction.item.asProject(), viewAction.date)
             }
         }
-
-    private fun showChooseTimeForClockActivity(viewAction: AllProjectsViewActions.ShowChooseTimeForClockActivity) {
-        viewAction.action(childFragmentManager) { projectsItem, date ->
-            launch {
-                if (projectsItem.isActive) {
-                    vm.clockOutAt(projectsItem.asProject(), date)
-                    return@launch
-                }
-
-                vm.clockInAt(projectsItem.asProject(), date)
-            }
-        }
-    }
 
     private fun showConfirmRemoveProjectMessage(
         viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage

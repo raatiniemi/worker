@@ -249,15 +249,33 @@ class AllProjectsViewModelTest {
         }
     }
 
+    // At
+
     @Test
-    fun at() {
+    fun `at with inactive project`() {
         val item = ProjectsItem(android, emptyList())
 
         vm.at(item)
 
         assertEquals(listOf(Event.TapProjectAt), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
+            assertEquals(AllProjectsViewActions.ChooseDateAndTimeForClockIn(item), it)
+        }
+    }
+
+    @Test
+    fun `at with active project`() {
+        val actual = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = Milliseconds.now
+        }
+        val item = ProjectsItem(android, listOf(actual))
+
+        vm.at(item)
+
+        assertEquals(listOf(Event.TapProjectAt), usageAnalytics.events)
+        vm.viewActions.observeNonNull {
+            assertEquals(AllProjectsViewActions.ChooseDateAndTimeForClockOut(item), it)
         }
     }
 
