@@ -100,6 +100,11 @@ class DateTimePickerDialogFragment : DialogFragment() {
                         update(dpDate, yearsMonthsDays)
                     }
                 }
+                is DateTimeViewActions.TimeOutsideOfAllowedDateTimeInterval -> {
+                    viewAction(requireContext()) { hoursMinutes ->
+                        update(tpTime, hoursMinutes)
+                    }
+                }
                 is DateTimeViewActions.Choose -> viewAction(this, configuration.choose)
             }
         }

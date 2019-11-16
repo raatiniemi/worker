@@ -22,6 +22,12 @@ import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.Minutes
 import me.raatiniemi.worker.domain.time.hoursMinutes
 
+internal fun update(timePicker: TimePicker, hoursMinutes: HoursMinutes) {
+    val (hours, minutes) = hoursMinutes
+    timePicker.hour = hours.toInt()
+    timePicker.minute = minutes.toInt()
+}
+
 internal fun change(timePicker: TimePicker, change: (HoursMinutes) -> Unit) {
     timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
         change(hoursMinutes(Hours(hourOfDay), Minutes(minute)))

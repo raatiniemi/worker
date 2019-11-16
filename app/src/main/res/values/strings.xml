@@ -116,6 +116,12 @@
 
     <string name="date_time_picker_date_is_after_allowed_title">Date is not allowed</string>
     <string name="date_time_picker_date_is_after_allowed_message">The chosen date is after the maximum allowed date.</string>
+
+    <string name="date_time_picker_time_is_before_allowed_title">Time is not allowed</string>
+    <string name="date_time_picker_time_is_before_allowed_message">The chosen time is before the minimum allowed time.</string>
+
+    <string name="date_time_picker_time_is_after_allowed_title">Time is not allowed</string>
+    <string name="date_time_picker_time_is_after_allowed_message">The chosen time is after the maximum allowed time.</string>
     <!--</editor-fold>-->
 
 </resources>

@@ -28,7 +28,6 @@ import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.consume
 import me.raatiniemi.worker.features.shared.model.plusAssign
-import me.raatiniemi.worker.features.shared.model.reconfigure
 import me.raatiniemi.worker.features.shared.view.hourMinute
 import me.raatiniemi.worker.features.shared.view.yearMonthDay
 import java.util.*
@@ -95,8 +94,14 @@ internal class DateTimeViewModel : ViewModel() {
     }
 
     fun chooseTime(hoursMinutes: HoursMinutes) {
-        reconfigure(_date) { date ->
-            date(date, hoursMinutes)
+        consume(_date) { date ->
+            try {
+                _date += validate(date(date, hoursMinutes))
+            } catch (e: DateIsBeforeAllowedDateTimeIntervalException) {
+                viewActions += DateTimeViewActions.TimeIsBeforeAllowedDateTimeInterval(date)
+            } catch (e: DateIsAfterAllowedDateTimeIntervalException) {
+                viewActions += DateTimeViewActions.TimeIsAfterAllowedDateTimeInterval(date)
+            }
         }
     }
 

@@ -23,7 +23,9 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.time.HoursMinutes
 import me.raatiniemi.worker.domain.time.YearsMonthsDays
+import me.raatiniemi.worker.domain.time.hoursMinutes
 import me.raatiniemi.worker.domain.time.yearsMonthsDays
 import me.raatiniemi.worker.features.shared.model.ContextBiViewAction
 import me.raatiniemi.worker.features.shared.view.hide
@@ -89,6 +91,43 @@ internal sealed class DateTimeViewActions {
                 .setPositiveButton(android.R.string.yes) { dialog, _ ->
                     dialog?.dismiss()
                     t(yearsMonthsDays(date))
+                }
+                .create()
+                .show()
+        }
+    }
+
+    abstract class TimeOutsideOfAllowedDateTimeInterval : DateTimeViewActions(),
+        ContextBiViewAction<(HoursMinutes) -> Unit>
+
+    data class TimeIsBeforeAllowedDateTimeInterval(
+        private val date: Date
+    ) : TimeOutsideOfAllowedDateTimeInterval() {
+        override fun accept(context: Context, t: (HoursMinutes) -> Unit) {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.date_time_picker_time_is_before_allowed_title)
+                .setMessage(R.string.date_time_picker_time_is_before_allowed_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    dialog?.dismiss()
+                    t(hoursMinutes(date))
+                }
+                .create()
+                .show()
+        }
+    }
+
+    data class TimeIsAfterAllowedDateTimeInterval(
+        private val date: Date
+    ) : TimeOutsideOfAllowedDateTimeInterval() {
+        override fun accept(context: Context, t: (HoursMinutes) -> Unit) {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.date_time_picker_time_is_after_allowed_title)
+                .setMessage(R.string.date_time_picker_time_is_after_allowed_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    dialog?.dismiss()
+                    t(hoursMinutes(date))
                 }
                 .create()
                 .show()
