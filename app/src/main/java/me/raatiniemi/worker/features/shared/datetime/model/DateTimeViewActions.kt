@@ -16,11 +16,16 @@
 
 package me.raatiniemi.worker.features.shared.datetime.model
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.time.YearsMonthsDays
+import me.raatiniemi.worker.domain.time.yearsMonthsDays
+import me.raatiniemi.worker.features.shared.model.ContextBiViewAction
 import me.raatiniemi.worker.features.shared.view.hide
 import me.raatiniemi.worker.features.shared.view.show
 import timber.log.Timber
@@ -50,6 +55,43 @@ internal sealed class DateTimeViewActions {
             } catch (e: IllegalArgumentException) {
                 Timber.d(e, "Unable to find view for choose date")
             }
+        }
+    }
+
+    abstract class DateOutsideOfAllowedDateTimeInterval : DateTimeViewActions(),
+        ContextBiViewAction<(YearsMonthsDays) -> Unit>
+
+    data class DateIsBeforeAllowedDateTimeInterval(
+        private val date: Date
+    ) : DateOutsideOfAllowedDateTimeInterval() {
+        override fun accept(context: Context, t: (YearsMonthsDays) -> Unit) {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.date_time_picker_date_is_before_allowed_title)
+                .setMessage(R.string.date_time_picker_date_is_before_allowed_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    dialog?.dismiss()
+                    t(yearsMonthsDays(date))
+                }
+                .create()
+                .show()
+        }
+    }
+
+    data class DateIsAfterAllowedDateTimeInterval(
+        private val date: Date
+    ) : DateOutsideOfAllowedDateTimeInterval() {
+        override fun accept(context: Context, t: (YearsMonthsDays) -> Unit) {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.date_time_picker_date_is_after_allowed_title)
+                .setMessage(R.string.date_time_picker_date_is_after_allowed_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    dialog?.dismiss()
+                    t(yearsMonthsDays(date))
+                }
+                .create()
+                .show()
         }
     }
 

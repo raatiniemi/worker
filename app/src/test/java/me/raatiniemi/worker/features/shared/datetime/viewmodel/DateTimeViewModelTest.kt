@@ -159,6 +159,40 @@ class DateTimeViewModelTest {
     }
 
     @Test
+    fun `choose date with date before min date`() {
+        val now = Date()
+        val yesterday = now - 1.days
+        val configuration = DateTimeConfiguration(
+            date = now,
+            minDate = now
+        )
+        vm.configure(configuration)
+
+        vm.chooseDate(yearsMonthsDays(yesterday))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.DateIsBeforeAllowedDateTimeInterval(now), it)
+        }
+    }
+
+    @Test
+    fun `choose date with date after max date`() {
+        val now = Date()
+        val tomorrow = now + 1.days
+        val configuration = DateTimeConfiguration(
+            date = now,
+            maxDate = now
+        )
+        vm.configure(configuration)
+
+        vm.chooseDate(yearsMonthsDays(tomorrow))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.DateIsAfterAllowedDateTimeInterval(now), it)
+        }
+    }
+
+    @Test
     fun `choose date without date`() {
         val now = yearsMonthsDays(Date())
 

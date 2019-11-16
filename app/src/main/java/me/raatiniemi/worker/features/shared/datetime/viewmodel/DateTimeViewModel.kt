@@ -63,9 +63,31 @@ internal class DateTimeViewModel : ViewModel() {
     }
 
     fun chooseDate(yearsMonthsDays: YearsMonthsDays) {
-        reconfigure(_date) { date ->
-            date(date, yearsMonthsDays)
+        consume(_date) { date ->
+            try {
+                _date += validate(date(date, yearsMonthsDays))
+            } catch (e: DateIsBeforeAllowedDateTimeIntervalException) {
+                viewActions += DateTimeViewActions.DateIsBeforeAllowedDateTimeInterval(date)
+            } catch (e: DateIsAfterAllowedDateTimeIntervalException) {
+                viewActions += DateTimeViewActions.DateIsAfterAllowedDateTimeInterval(date)
+            }
         }
+    }
+
+    private fun validate(date: Date): Date {
+        consume(minDate) { milliseconds ->
+            if (date.time < milliseconds) {
+                throw DateIsBeforeAllowedDateTimeIntervalException()
+            }
+        }
+
+        consume(maxDate) { milliseconds ->
+            if (date.time > milliseconds) {
+                throw DateIsAfterAllowedDateTimeIntervalException()
+            }
+        }
+
+        return date
     }
 
     fun chooseTime() {

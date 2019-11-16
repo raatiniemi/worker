@@ -14,18 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.view
+package me.raatiniemi.worker.features.shared.model
 
-import android.widget.DatePicker
-import me.raatiniemi.worker.domain.time.*
+import android.content.Context
 
-internal fun update(datePicker: DatePicker, yearsMonthsDays: YearsMonthsDays) {
-    val (years, months, days) = yearsMonthsDays
-    datePicker.updateDate(years.value, months.value, days.value)
-}
+@FunctionalInterface
+internal interface ContextBiViewAction<T : Any> {
+    fun accept(context: Context, t: T)
 
-internal fun change(datePicker: DatePicker, change: (YearsMonthsDays) -> Unit) {
-    datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-        change(yearsMonthsDays(Years(year), Months(monthOfYear), Days(dayOfMonth)))
+    operator fun invoke(context: Context, t: T) {
+        accept(context, t)
     }
 }

@@ -26,10 +26,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
-import me.raatiniemi.worker.features.shared.view.change
-import me.raatiniemi.worker.features.shared.view.click
-import me.raatiniemi.worker.features.shared.view.observe
-import me.raatiniemi.worker.features.shared.view.observeAndConsume
+import me.raatiniemi.worker.features.shared.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DateTimePickerDialogFragment : DialogFragment() {
@@ -98,6 +95,11 @@ class DateTimePickerDialogFragment : DialogFragment() {
             when (viewAction) {
                 is DateTimeViewActions.ChooseDate -> viewAction(view)
                 is DateTimeViewActions.ChooseTime -> viewAction(view)
+                is DateTimeViewActions.DateOutsideOfAllowedDateTimeInterval -> {
+                    viewAction(requireContext()) { yearsMonthsDays ->
+                        update(dpDate, yearsMonthsDays)
+                    }
+                }
                 is DateTimeViewActions.Choose -> viewAction(this, configuration.choose)
             }
         }
