@@ -27,10 +27,13 @@ import me.raatiniemi.worker.features.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.features.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
 import me.raatiniemi.worker.features.shared.view.*
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DateTimePickerDialogFragment : DialogFragment() {
     private lateinit var configuration: DateTimeConfiguration
+    private val usageAnalytics: UsageAnalytics by inject()
     private val vm: DateTimeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +57,12 @@ class DateTimePickerDialogFragment : DialogFragment() {
         configureUserInterface()
         bindUserInterfaceToViewModel()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        usageAnalytics.setCurrentScreen(this)
     }
 
     private fun configureUserInterface() {
