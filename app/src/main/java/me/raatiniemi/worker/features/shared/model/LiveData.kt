@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 internal fun <T> LiveData<T>.debounce(
     scope: CoroutineScope,
@@ -62,5 +63,22 @@ internal fun <T, R> combineLatest(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<
 
             checkForUpdate()
         }
+    }
+}
+
+/**
+ * Consumes non-null values from a [LiveData] source.
+ *
+ * @param source Source to consume values from.
+ * @param consumer Consumer of values from source.
+ */
+internal fun <T> consume(source: LiveData<T>, consumer: (T) -> Unit) {
+    try {
+        val value = source.value
+        check(value != null)
+
+        consumer(value)
+    } catch (e: IllegalStateException) {
+        Timber.w(e, "No value is available for consumer")
     }
 }

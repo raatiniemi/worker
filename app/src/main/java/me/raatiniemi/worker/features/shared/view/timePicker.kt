@@ -16,24 +16,20 @@
 
 package me.raatiniemi.worker.features.shared.view
 
-import java.text.SimpleDateFormat
-import java.util.*
+import android.widget.TimePicker
+import me.raatiniemi.worker.domain.time.Hours
+import me.raatiniemi.worker.domain.time.HoursMinutes
+import me.raatiniemi.worker.domain.time.Minutes
+import me.raatiniemi.worker.domain.time.hoursMinutes
 
-internal fun yearMonthDay(date: Date): String {
-    return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        .run { format(date) }
+internal fun update(timePicker: TimePicker, hoursMinutes: HoursMinutes) {
+    val (hours, minutes) = hoursMinutes
+    timePicker.hour = hours.toInt()
+    timePicker.minute = minutes.toInt()
 }
 
-internal fun hourMinute(date: Date): String {
-    return SimpleDateFormat("HH:mm", Locale.getDefault())
-        .run { format(date) }
-}
-
-internal fun week(date: Date): String {
-    return SimpleDateFormat("w", Locale.getDefault()).run { format(date) }
-}
-
-fun shortDayMonthDayInMonth(date: Date): String {
-    return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
-        .run { format(date) }
+internal fun change(timePicker: TimePicker, change: (HoursMinutes) -> Unit) {
+    timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+        change(hoursMinutes(Hours(hourOfDay), Minutes(minute)))
+    }
 }

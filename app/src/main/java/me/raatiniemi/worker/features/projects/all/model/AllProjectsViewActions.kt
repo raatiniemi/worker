@@ -20,7 +20,6 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
@@ -29,8 +28,8 @@ import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.features.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsFragmentDirections
-import me.raatiniemi.worker.features.projects.all.view.ClockActivityAtFragment
 import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectDialogFragment
+import me.raatiniemi.worker.features.shared.datetime.view.DateTimePickerDialogFragment
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.FragmentViewAction
@@ -79,15 +78,26 @@ internal sealed class AllProjectsViewActions {
     data class ShowConfirmClockOutMessage(val item: ProjectsItem, val date: Date) :
         AllProjectsViewActions()
 
-    data class ShowChooseTimeForClockActivity(val item: ProjectsItem) : AllProjectsViewActions() {
-        fun action(fragmentManager: FragmentManager, onChooseTime: (ProjectsItem, Date) -> Unit) {
-            val fragment = ClockActivityAtFragment.newInstance(item) {
-                onChooseTime(item, it.time)
+    data class ChooseDateAndTimeForClockIn(val item: ProjectsItem) : AllProjectsViewActions() {
+        fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
+            val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
+                configuration.choose = { date ->
+                    onChooseTime(item.asProject(), date)
+                }
             }
+            fragment.show(dialogFragment)
+        }
+    }
 
-            fragmentManager.beginTransaction()
-                .add(fragment, "clock activity at")
-                .commit()
+    data class ChooseDateAndTimeForClockOut(val item: ProjectsItem) : AllProjectsViewActions() {
+        fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
+            val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
+                configuration.minDate = Date(item.clockedInSinceInMilliseconds)
+                configuration.choose = { date ->
+                    onChooseTime(item.asProject(), date)
+                }
+            }
+            fragment.show(dialogFragment)
         }
     }
 

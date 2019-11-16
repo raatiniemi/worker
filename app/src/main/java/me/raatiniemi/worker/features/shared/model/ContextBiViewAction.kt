@@ -14,26 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.view
+package me.raatiniemi.worker.features.shared.model
 
-import java.text.SimpleDateFormat
-import java.util.*
+import android.content.Context
 
-internal fun yearMonthDay(date: Date): String {
-    return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        .run { format(date) }
-}
+@FunctionalInterface
+internal interface ContextBiViewAction<T : Any> {
+    fun accept(context: Context, t: T)
 
-internal fun hourMinute(date: Date): String {
-    return SimpleDateFormat("HH:mm", Locale.getDefault())
-        .run { format(date) }
-}
-
-internal fun week(date: Date): String {
-    return SimpleDateFormat("w", Locale.getDefault()).run { format(date) }
-}
-
-fun shortDayMonthDayInMonth(date: Date): String {
-    return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
-        .run { format(date) }
+    operator fun invoke(context: Context, t: T) {
+        accept(context, t)
+    }
 }

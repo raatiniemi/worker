@@ -16,24 +16,16 @@
 
 package me.raatiniemi.worker.features.shared.view
 
-import java.text.SimpleDateFormat
-import java.util.*
+import android.widget.DatePicker
+import me.raatiniemi.worker.domain.time.*
 
-internal fun yearMonthDay(date: Date): String {
-    return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        .run { format(date) }
+internal fun update(datePicker: DatePicker, yearsMonthsDays: YearsMonthsDays) {
+    val (years, months, days) = yearsMonthsDays
+    datePicker.updateDate(years.value, months.value, days.value)
 }
 
-internal fun hourMinute(date: Date): String {
-    return SimpleDateFormat("HH:mm", Locale.getDefault())
-        .run { format(date) }
-}
-
-internal fun week(date: Date): String {
-    return SimpleDateFormat("w", Locale.getDefault()).run { format(date) }
-}
-
-fun shortDayMonthDayInMonth(date: Date): String {
-    return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
-        .run { format(date) }
+internal fun change(datePicker: DatePicker, change: (YearsMonthsDays) -> Unit) {
+    datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
+        change(yearsMonthsDays(Years(year), Months(monthOfYear), Days(dayOfMonth)))
+    }
 }

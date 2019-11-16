@@ -41,3 +41,15 @@ fun View.visibleIf(defaultVisibility: Int = View.INVISIBLE, predicate: () -> Boo
         defaultVisibility
     }
 }
+
+internal fun show(view: View) {
+    view.visibility = View.VISIBLE
+}
+
+internal fun hide(view: View, visibility: Int = View.INVISIBLE) {
+    require(!(visibility != View.INVISIBLE && visibility != View.GONE)) {
+        "visibility needs to be either `View.GONE` or `View.INVISIBLE`"
+    }
+
+    view.visibility = visibility
+}

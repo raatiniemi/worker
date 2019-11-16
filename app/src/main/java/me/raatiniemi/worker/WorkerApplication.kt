@@ -44,6 +44,7 @@ open class WorkerApplication : Application() {
                         data,
                         projects,
                         settings,
+                        shared,
                         useCase
                     )
                 )
