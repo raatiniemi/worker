@@ -1,1 +1,2 @@
-resolve crash when viewing project settings
+group time report based on work week
+improve user interface for choosing date and time
