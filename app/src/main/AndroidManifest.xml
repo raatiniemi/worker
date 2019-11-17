@@ -22,7 +22,7 @@
         android:name=".WorkerApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/name"
         android:supportsRtl="true"
         android:theme="@style/Theme"
