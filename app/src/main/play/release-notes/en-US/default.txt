@@ -1,2 +1,3 @@
 group time report based on work week
 improve user interface for choosing date and time
+improved launcher icon
