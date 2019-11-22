@@ -225,7 +225,11 @@ internal class TimeReportViewModel internal constructor(
             .firstOrNull()
     }
 
-    private fun containsActiveDay(week: TimeReportWeek): Boolean {
+    private fun containsActiveDay(week: TimeReportWeek?): Boolean {
+        if (week == null) {
+            return false
+        }
+
         return week.days.firstOrNull { it is TimeReportDay.Active } != null
     }
 }
