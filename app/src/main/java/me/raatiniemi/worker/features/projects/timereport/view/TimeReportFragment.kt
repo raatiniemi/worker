@@ -57,7 +57,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
         TimeReportAdapter(vm, get())
     }
 
-    private var refreshActiveTimeIntervalsTimer: Timer? = null
+    private var refreshActiveTimeTimer: Timer? = null
     private var actionMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,13 +92,13 @@ class TimeReportFragment : CoroutineScopedFragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
-        startRefreshTimer()
+        startRefreshActiveTimeTimer()
     }
 
     override fun onPause() {
         super.onPause()
 
-        cancelRefreshTimer()
+        cancelRefreshActiveTimeTimer()
     }
 
     override fun onDestroy() {
@@ -202,22 +202,32 @@ class TimeReportFragment : CoroutineScopedFragment() {
         timeReportAdapter.notifyDataSetChanged()
     }
 
-    private fun startRefreshTimer() {
-        cancelRefreshTimer()
+    // Refresh active time reports
 
-        refreshActiveTimeIntervalsTimer = Timer()
-        refreshActiveTimeIntervalsTimer?.schedule(Date(), 1.minutes) {
-            val weeks = timeReportAdapter.currentList ?: return@schedule
-            vm.refreshActiveTimeReportWeek(weeks)
+    private fun startRefreshActiveTimeTimer() {
+        cancelRefreshActiveTimeTimer()
+
+        refreshActiveTimeTimer = Timer().also { timer ->
+            Timber.d("Configure refresh timer of active time interval")
+            timer.schedule(Date(), 1.minutes) {
+                val weeks = timeReportAdapter.currentList ?: return@schedule
+                vm.refreshActiveTimeReportWeek(weeks)
+            }
         }
     }
 
-    private fun cancelRefreshTimer() {
-        refreshActiveTimeIntervalsTimer?.run {
-            cancel()
-            purge()
+    private fun cancelRefreshActiveTimeTimer() {
+        refreshActiveTimeTimer = refreshActiveTimeTimer.let { timer ->
+            if (timer == null) {
+                Timber.d("No active refresh timer is available for cancellation")
+                return@let null
+            }
+
+            Timber.d("Cancelling active refresh timer")
+            timer.cancel()
+            timer.purge()
+            null
         }
-        refreshActiveTimeIntervalsTimer = null
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
