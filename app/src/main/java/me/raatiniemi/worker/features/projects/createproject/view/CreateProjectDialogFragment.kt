@@ -51,8 +51,13 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
 
         dialog?.setTitle(R.string.projects_create_title)
 
-        observeViewModel()
         bindUserInterfaceToViewModel()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        observeViewModel()
     }
 
     override fun onResume() {

@@ -68,9 +68,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
             id = ProjectId(arguments.projectId),
             name = projectName(arguments.projectName)
         )
-        observe(projectHolder.observable) {
-            setTitle(it.name.value)
-        }
     }
 
     override fun onCreateView(
@@ -85,6 +82,14 @@ class TimeReportFragment : CoroutineScopedFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         configureView()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        observe(projectHolder.observable) {
+            setTitle(it.name.value)
+        }
         observeViewModel()
     }
 

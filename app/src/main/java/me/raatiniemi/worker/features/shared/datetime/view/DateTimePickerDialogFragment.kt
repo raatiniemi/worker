@@ -56,6 +56,11 @@ class DateTimePickerDialogFragment : DialogFragment() {
 
         configureUserInterface()
         bindUserInterfaceToViewModel()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         observeViewModel()
     }
 

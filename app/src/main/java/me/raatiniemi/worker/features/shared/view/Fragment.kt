@@ -19,8 +19,35 @@ package me.raatiniemi.worker.features.shared.view
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import timber.log.Timber
 import kotlin.reflect.KClass
+
+/**
+ * Observe values emitted from a [LiveData] source.
+ *
+ * @param source [LiveData] source to observe emitted values.
+ * @param consumer Closure for consuming emitted values.
+ */
+internal fun <T> Fragment.observe(source: LiveData<T>, consumer: (T) -> Unit) {
+    source.observe(viewLifecycleOwner, Observer {
+        consumer(it)
+    })
+}
+
+/**
+ * Observe and consume values emitted from a [ConsumableLiveData] source with consuming closure.
+ *
+ * @param source [ConsumableLiveData] source to observe emitted values.
+ * @param consumer Closure for consuming emitted values.
+ */
+internal fun <T> Fragment.observeAndConsume(source: ConsumableLiveData<T>, consumer: (T) -> Unit) {
+    source.observeAndConsume(viewLifecycleOwner, Observer {
+        consumer(it)
+    })
+}
 
 fun Fragment.setTitle(title: String) {
     try {
