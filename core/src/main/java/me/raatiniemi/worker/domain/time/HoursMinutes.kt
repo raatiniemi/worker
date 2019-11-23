@@ -14,18 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@file:JvmName("HoursMinutesUtil")
-
 package me.raatiniemi.worker.domain.time
 
 import java.util.*
 import kotlin.math.abs
 
 data class HoursMinutes(val hours: Long, val minutes: Long) {
-    @get:JvmName("isEmpty")
     val empty = hours == 0L && minutes == 0L
-
-    @get:JvmName("isPositive")
     val positive = hours >= 0L && minutes >= 0L
 
     fun asMilliseconds(): Long {
