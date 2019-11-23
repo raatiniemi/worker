@@ -23,6 +23,7 @@
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/name"
         android:supportsRtl="true"
         android:theme="@style/Theme"

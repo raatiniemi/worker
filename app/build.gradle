@@ -109,6 +109,8 @@ android {
     }
 
     lintOptions {
+        baseline file("lint.xml")
+
         quiet true
         explainIssues true
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="5" by="lint 3.5">
+    <issue id="ObsoleteSdkInt">
+        <ignore path="src/main/res/mipmap-anydpi-v26" />
+    </issue>
+</issues>
