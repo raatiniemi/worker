@@ -24,21 +24,25 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-internal fun <T> LiveData<T>.debounce(
-    scope: CoroutineScope,
-    duration: Long = 250
-) = MediatorLiveData<T>().also { mld ->
+/**
+ * Debounce emitted values from [LiveData] source for duration in milliseconds.
+ *
+ * @param source [LiveData] source from which to debounce emitted values.
+ * @param duration Duration in milliseconds for which to debounce values.
+ */
+internal fun <T> CoroutineScope.debounce(source: LiveData<T>, duration: Long = 250): LiveData<T> {
     var job: Job? = null
-
-    mld.addSource(this) {
+    val mediator = MediatorLiveData<T>()
+    mediator.addSource(source) { value ->
         job?.cancel()
-
-        job = scope.launch {
+        job = launch {
             delay(duration)
 
-            mld.postValue(it)
+            mediator += value
         }
     }
+
+    return mediator
 }
 
 internal fun <T, R> combineLatest(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<Pair<T, R>> {

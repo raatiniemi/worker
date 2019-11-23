@@ -46,7 +46,7 @@ internal class CreateProjectViewModel(
 
     private val isNameValid = name.map { isValid(it) }
 
-    private val isNameAvailable = name.debounce(this)
+    private val isNameAvailable = debounce(name)
         .map(::checkForAvailability)
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
