@@ -22,20 +22,19 @@ import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.NewTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
-import java.util.*
 
 /**
  * Use case for clocking in.
  */
 class ClockIn(private val repository: TimeIntervalRepository) {
-    operator fun invoke(project: Project, date: Date): TimeInterval.Active {
+    operator fun invoke(project: Project, milliseconds: Milliseconds): TimeInterval.Active {
         if (isActive(project.id)) {
             throw ActiveProjectException()
         }
 
         val newTimeInterval = NewTimeInterval(
             projectId = project.id,
-            start = Milliseconds(date.time)
+            start = milliseconds
         )
 
         return repository.add(newTimeInterval)

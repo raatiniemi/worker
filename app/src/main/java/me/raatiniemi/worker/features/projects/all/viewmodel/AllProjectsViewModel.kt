@@ -28,6 +28,7 @@ import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
@@ -170,7 +171,7 @@ internal class AllProjectsViewModel(
 
     suspend fun clockInAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockIn(project, date)
+            clockIn(project, Milliseconds(date.time))
 
             usageAnalytics.log(Event.ProjectClockIn)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
@@ -183,7 +184,7 @@ internal class AllProjectsViewModel(
 
     suspend fun clockOutAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockOut(project, date)
+            clockOut(project, Milliseconds(date.time))
 
             usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)

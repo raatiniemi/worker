@@ -19,13 +19,13 @@ package me.raatiniemi.worker.features.ongoing.service
 import android.content.Intent
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.GetProject
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.InactiveProjectException
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import java.util.*
 
 internal class ClockOutService : OngoingService("ClockOutService") {
     private val usageAnalytics: UsageAnalytics by inject()
@@ -49,7 +49,7 @@ internal class ClockOutService : OngoingService("ClockOutService") {
     }
 
     private fun clockOut(project: Project) {
-        clockOut(project, Date())
+        clockOut(project, Milliseconds.now)
 
         usageAnalytics.log(Event.NotificationClockOut)
     }

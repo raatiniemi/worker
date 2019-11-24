@@ -20,16 +20,15 @@ import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
-import java.util.*
 
 /**
  * Use case for clocking out.
  */
 class ClockOut(private val repository: TimeIntervalRepository) {
-    operator fun invoke(project: Project, date: Date): TimeInterval.Inactive {
+    operator fun invoke(project: Project, milliseconds: Milliseconds): TimeInterval.Inactive {
         val active = findActiveTimeInterval(project)
 
-        return clockOut(active, date)
+        return clockOut(active, milliseconds)
     }
 
     private fun findActiveTimeInterval(project: Project): TimeInterval.Active {
@@ -37,8 +36,11 @@ class ClockOut(private val repository: TimeIntervalRepository) {
             ?: throw InactiveProjectException()
     }
 
-    private fun clockOut(active: TimeInterval.Active, date: Date): TimeInterval.Inactive {
-        val inactive = active.clockOut(stop = Milliseconds(date.time))
+    private fun clockOut(
+        active: TimeInterval.Active,
+        milliseconds: Milliseconds
+    ): TimeInterval.Inactive {
+        val inactive = active.clockOut(stop = milliseconds)
 
         return when (val timeInterval = repository.update(inactive)) {
             is TimeInterval.Inactive -> timeInterval

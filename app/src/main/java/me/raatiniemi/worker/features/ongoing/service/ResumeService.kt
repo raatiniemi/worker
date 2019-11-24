@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.ongoing.service
 import android.content.Intent
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.GetProject
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.usecase.ActiveProjectException
 import me.raatiniemi.worker.domain.timeinterval.usecase.CalculateTimeToday
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
@@ -27,7 +28,6 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import java.util.*
 
 internal class ResumeService : OngoingService("ResumeService") {
     private val usageAnalytics: UsageAnalytics by inject()
@@ -51,7 +51,7 @@ internal class ResumeService : OngoingService("ResumeService") {
 
     private fun clockIn(project: Project) {
         try {
-            clockIn(project, Date())
+            clockIn(project, Milliseconds.now)
 
             usageAnalytics.log(Event.NotificationClockIn)
         } catch (e: ActiveProjectException) {
