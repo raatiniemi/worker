@@ -27,14 +27,28 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.features.shared.view.withView
+import me.raatiniemi.worker.koin.androidTestKoinModules
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class DateTimePickerDialogFragmentTest {
+class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
+    @Before
+    fun setUp() {
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
+    }
+
     @Test
     fun date() {
         val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {

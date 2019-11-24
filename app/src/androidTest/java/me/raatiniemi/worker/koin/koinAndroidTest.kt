@@ -14,17 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.koin.modules
+package me.raatiniemi.worker.koin
 
-import androidx.room.Room
-import me.raatiniemi.worker.data.Database
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+import me.raatiniemi.worker.koin.modules.contextAndroidTest
+import me.raatiniemi.worker.koin.modules.dataAndroidTest
 
-internal val dataAndroidTest = module(override = true) {
-    single {
-        Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
-            .allowMainThreadQueries()
-            .build()
-    }
-}
+private val modules = listOf(
+    contextAndroidTest,
+    dataAndroidTest
+)
+
+internal val androidTestKoinModules = defaultKoinModules + modules

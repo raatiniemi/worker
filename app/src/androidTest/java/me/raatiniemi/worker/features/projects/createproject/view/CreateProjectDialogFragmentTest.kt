@@ -28,13 +28,15 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.features.shared.view.isDisabled
 import me.raatiniemi.worker.features.shared.view.withView
-import me.raatiniemi.worker.koin.modules.dataAndroidTest
+import me.raatiniemi.worker.koin.androidTestKoinModules
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
-import org.koin.test.KoinTest
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
 import java.util.concurrent.atomic.AtomicBoolean
 
 // This needs to be a bit more than the actual delay used in
@@ -43,10 +45,13 @@ private const val debounceDelayInMilliseconds = 300L
 private const val createProjectDelayInMilliseconds = 100L
 
 @RunWith(AndroidJUnit4::class)
-class CreateProjectDialogFragmentTest : KoinTest {
+class CreateProjectDialogFragmentTest : AutoCloseKoinTest() {
     @Before
     fun setUp() {
-        loadKoinModules(dataAndroidTest)
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
     }
 
     @Test

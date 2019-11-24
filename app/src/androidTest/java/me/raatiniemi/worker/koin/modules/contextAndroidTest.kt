@@ -16,15 +16,12 @@
 
 package me.raatiniemi.worker.koin.modules
 
-import androidx.room.Room
-import me.raatiniemi.worker.data.Database
-import org.koin.android.ext.koin.androidContext
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import org.koin.dsl.module
 
-internal val dataAndroidTest = module(override = true) {
+internal val contextAndroidTest = module(override = true) {
     single {
-        Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
-            .allowMainThreadQueries()
-            .build()
+        ApplicationProvider.getApplicationContext<Context>()
     }
 }
