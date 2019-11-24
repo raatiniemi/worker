@@ -16,14 +16,10 @@
 
 package me.raatiniemi.worker.koin
 
-import me.raatiniemi.worker.koin.modules.dataTest
-import me.raatiniemi.worker.koin.modules.monitorTest
-import me.raatiniemi.worker.koin.modules.preferenceTest
+import me.raatiniemi.worker.koin.modules.inMemorySharedTest
 
 private val modules = listOf(
-    dataTest,
-    monitorTest,
-    preferenceTest
+    inMemorySharedTest
 )
 
 internal val testKoinModules = defaultKoinModules + modules

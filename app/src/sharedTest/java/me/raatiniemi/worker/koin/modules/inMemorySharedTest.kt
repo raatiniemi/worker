@@ -16,24 +16,50 @@
 
 package me.raatiniemi.worker.koin.modules
 
+import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
+import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
+import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.dsl.module
 
-internal val dataTest = module {
-    single<ProjectRepository>(override = true) {
+internal val inMemorySharedTest = module(override = true) {
+    // Key value store
+
+    single {
+        InMemoryKeyValueStore()
+    }
+
+    single<KeyValueStore> {
+        get<InMemoryKeyValueStore>()
+    }
+
+    // Repository
+
+    single<ProjectRepository> {
         ProjectInMemoryRepository()
     }
 
-    single<TimeIntervalRepository>(override = true) {
+    single<TimeIntervalRepository> {
         TimeIntervalInMemoryRepository()
     }
 
-    single<TimeReportRepository>(override = true) {
-        TimeReportInMemoryRepository(timeIntervalRepository = get())
+    single<TimeReportRepository> {
+        TimeReportInMemoryRepository(get())
+    }
+
+    // Analytics
+
+    single {
+        InMemoryUsageAnalytics()
+    }
+
+    single<UsageAnalytics> {
+        get<InMemoryUsageAnalytics>()
     }
 }
