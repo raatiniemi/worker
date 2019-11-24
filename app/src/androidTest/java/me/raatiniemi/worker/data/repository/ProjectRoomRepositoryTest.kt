@@ -16,9 +16,6 @@
 
 package me.raatiniemi.worker.data.repository
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.Database
 import me.raatiniemi.worker.domain.model.LoadPosition
@@ -26,25 +23,30 @@ import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.*
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
+import me.raatiniemi.worker.koin.androidTestKoinModules
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class ProjectRoomRepositoryTest {
-    private lateinit var database: Database
-    private lateinit var repository: ProjectRepository
+class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
+    private val database by inject<Database>()
+
+    private val repository by inject<ProjectRepository>()
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
-            .allowMainThreadQueries()
-            .build()
-
-        repository = ProjectRoomRepository(database.projects())
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
     }
 
     @After

@@ -16,52 +16,52 @@
 
 package me.raatiniemi.worker.data.repository
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.Database
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeIntervalEntity
-import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
+import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import me.raatiniemi.worker.koin.androidTestKoinModules
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
+import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class TimeIntervalRoomRepositoryTest {
-    private lateinit var database: Database
-    private lateinit var timeIntervals: TimeIntervalDao
-    private lateinit var repository: TimeIntervalRepository
+class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
+    private val database by inject<Database>()
+    private val timeIntervals: TimeIntervalDao
+        get() = database.timeIntervals()
+
+    private val repository by inject<TimeIntervalRepository>()
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
-            .allowMainThreadQueries()
-            .build()
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
 
-        database.projects()
-            .add(
-                projectEntity {
-                    id = android.id.value
-                    name = android.name.value
-                }
-            )
-        timeIntervals = database.timeIntervals()
-        repository = TimeIntervalRoomRepository(timeIntervals)
+        val projects = get<ProjectRepository>()
+        projects.add(NewProject(android.name))
     }
 
     @After

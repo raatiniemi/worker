@@ -16,19 +16,15 @@
 
 package me.raatiniemi.worker.data.repository
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.Database
-import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.TimeReportDao
-import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
+import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
@@ -39,50 +35,40 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
+import me.raatiniemi.worker.koin.androidTestKoinModules
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
+import org.koin.test.inject
 import java.util.*
 
 private val timeZone = TimeZone.getTimeZone("UTC")
 
 @RunWith(AndroidJUnit4::class)
-class TimeReportRoomRepositoryTest {
-    private lateinit var database: Database
-    private lateinit var timeReport: TimeReportDao
-    private lateinit var timeIntervals: TimeIntervalDao
+class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
+    private val database by inject<Database>()
+    private val clockIn by inject<ClockIn>()
+    private val clockOut by inject<ClockOut>()
+    private val markRegisteredTime by inject<MarkRegisteredTime>()
 
-    private lateinit var clockIn: ClockIn
-    private lateinit var clockOut: ClockOut
-    private lateinit var markRegisteredTime: MarkRegisteredTime
-
-    private lateinit var repository: TimeReportRepository
+    private val repository by inject<TimeReportRepository>()
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
-            .allowMainThreadQueries()
-            .build()
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
 
-        database.projects()
-            .add(
-                projectEntity {
-                    id = android.id.value
-                    name = android.name.value
-                }
-            )
-        timeReport = database.timeReport()
-        timeIntervals = database.timeIntervals()
-
-        val timeIntervalRepository = TimeIntervalRoomRepository(database.timeIntervals())
-        clockIn = ClockIn(timeIntervalRepository)
-        clockOut = ClockOut(timeIntervalRepository)
-        markRegisteredTime = MarkRegisteredTime(timeIntervalRepository)
-
-        repository = TimeReportRoomRepository(timeReport, timeIntervals)
+        val projects = get<ProjectRepository>()
+        projects.add(NewProject(android.name))
     }
 
     @After
