@@ -24,23 +24,22 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportDayTest {
     @Test
     fun `time report day without time intervals`() {
-        val date = Date()
-        val expected = TimeReportDay.Inactive(date, emptyList())
+        val milliseconds = Milliseconds.now
+        val expected = TimeReportDay.Inactive(milliseconds, emptyList())
 
-        val actual = timeReportDay(date, emptyList())
+        val actual = timeReportDay(milliseconds, emptyList())
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `time report day with time interval`() {
-        val date = Date()
+        val milliseconds = Milliseconds.now
         val timeIntervals = listOf(
             timeInterval(android.id) { timeInterval ->
                 timeInterval.id = TimeIntervalId(1)
@@ -48,16 +47,16 @@ class TimeReportDayTest {
                 timeInterval.stop = Milliseconds(10)
             }
         )
-        val expected = TimeReportDay.Inactive(date, timeIntervals)
+        val expected = TimeReportDay.Inactive(milliseconds, timeIntervals)
 
-        val actual = timeReportDay(date, timeIntervals)
+        val actual = timeReportDay(milliseconds, timeIntervals)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `time report day with active time interval`() {
-        val date = Date()
+        val milliseconds = Milliseconds.now
         val timeIntervals = listOf(
             timeInterval(android.id) { timeInterval ->
                 timeInterval.id = TimeIntervalId(1)
@@ -69,9 +68,9 @@ class TimeReportDayTest {
                 timeInterval.start = Milliseconds(100)
             }
         )
-        val expected = TimeReportDay.Active(date, timeIntervals)
+        val expected = TimeReportDay.Active(milliseconds, timeIntervals)
 
-        val actual = timeReportDay(date, timeIntervals)
+        val actual = timeReportDay(milliseconds, timeIntervals)
 
         assertEquals(expected, actual)
     }

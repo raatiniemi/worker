@@ -17,15 +17,15 @@
 package me.raatiniemi.worker.domain.timereport.model
 
 import me.raatiniemi.worker.domain.time.HoursMinutes
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.accumulated
 import me.raatiniemi.worker.domain.time.calculateHoursMinutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timeinterval.model.isActive
-import java.util.*
 
 sealed class TimeReportDay {
-    abstract val date: Date
+    abstract val milliseconds: Milliseconds
     abstract val timeIntervals: List<TimeInterval>
 
     abstract val isRegistered: Boolean
@@ -39,7 +39,7 @@ sealed class TimeReportDay {
     abstract override fun hashCode(): Int
 
     data class Active internal constructor(
-        override val date: Date,
+        override val milliseconds: Milliseconds,
         override val timeIntervals: List<TimeInterval>
     ) : TimeReportDay() {
         override val isRegistered: Boolean by lazy {
@@ -55,7 +55,7 @@ sealed class TimeReportDay {
     }
 
     data class Inactive internal constructor(
-        override val date: Date,
+        override val milliseconds: Milliseconds,
         override val timeIntervals: List<TimeInterval>
     ) : TimeReportDay() {
         override val isRegistered: Boolean by lazy {
@@ -73,11 +73,11 @@ sealed class TimeReportDay {
     }
 }
 
-fun timeReportDay(date: Date, timeIntervals: List<TimeInterval>): TimeReportDay {
+fun timeReportDay(milliseconds: Milliseconds, timeIntervals: List<TimeInterval>): TimeReportDay {
     val isActive = timeIntervals.any(::isActive)
     if (isActive) {
-        return TimeReportDay.Active(date, timeIntervals)
+        return TimeReportDay.Active(milliseconds, timeIntervals)
     }
 
-    return TimeReportDay.Inactive(date, timeIntervals)
+    return TimeReportDay.Inactive(milliseconds, timeIntervals)
 }

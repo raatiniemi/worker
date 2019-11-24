@@ -42,7 +42,8 @@ private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"
 internal fun week(week: TimeReportWeek) = week(Date(week.start.value))
 
 @SuppressLint("DefaultLocale")
-internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(day.date).capitalize()
+internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(Date(day.milliseconds.value))
+    .capitalize()
 
 internal fun firstLetter(text: CharSequence): Char {
     return text.first()

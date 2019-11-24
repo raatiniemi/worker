@@ -320,7 +320,7 @@ class TimeReportRoomRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -351,7 +351,7 @@ class TimeReportRoomRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -388,7 +388,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -398,7 +398,7 @@ class TimeReportRoomRepositoryTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -430,7 +430,7 @@ class TimeReportRoomRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -445,7 +445,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -477,7 +477,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -512,7 +512,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -551,7 +551,7 @@ class TimeReportRoomRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -605,7 +605,7 @@ class TimeReportRoomRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -636,7 +636,7 @@ class TimeReportRoomRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -673,7 +673,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -683,7 +683,7 @@ class TimeReportRoomRepositoryTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -715,7 +715,7 @@ class TimeReportRoomRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -730,7 +730,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -780,7 +780,7 @@ class TimeReportRoomRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -819,7 +819,7 @@ class TimeReportRoomRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)

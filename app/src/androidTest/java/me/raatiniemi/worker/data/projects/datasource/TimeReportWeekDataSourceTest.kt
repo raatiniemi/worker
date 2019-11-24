@@ -44,7 +44,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportWeekDataSourceTest {
@@ -129,7 +128,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -165,7 +164,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -207,7 +206,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -217,7 +216,7 @@ class TimeReportWeekDataSourceTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -254,7 +253,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -269,7 +268,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -306,7 +305,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -346,7 +345,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -361,7 +360,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -408,7 +407,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -423,7 +422,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -500,7 +499,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -537,7 +536,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -580,7 +579,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -590,7 +589,7 @@ class TimeReportWeekDataSourceTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -628,7 +627,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -643,7 +642,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -700,7 +699,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -715,7 +714,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -763,7 +762,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -778,7 +777,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -852,7 +851,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -884,7 +883,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -922,7 +921,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -932,7 +931,7 @@ class TimeReportWeekDataSourceTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -965,7 +964,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -980,7 +979,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -1013,7 +1012,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -1049,7 +1048,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -1064,7 +1063,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -1107,7 +1106,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -1122,7 +1121,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -1195,7 +1194,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -1228,7 +1227,7 @@ class TimeReportWeekDataSourceTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -1267,7 +1266,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -1277,7 +1276,7 @@ class TimeReportWeekDataSourceTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -1311,7 +1310,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -1326,7 +1325,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -1379,7 +1378,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -1394,7 +1393,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -1438,7 +1437,7 @@ class TimeReportWeekDataSourceTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -1453,7 +1452,7 @@ class TimeReportWeekDataSourceTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)

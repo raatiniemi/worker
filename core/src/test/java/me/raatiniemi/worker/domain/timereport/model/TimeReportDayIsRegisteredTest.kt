@@ -26,7 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import java.util.*
 
 @RunWith(Parameterized::class)
 class TimeReportDayIsRegisteredTest(
@@ -35,7 +34,7 @@ class TimeReportDayIsRegisteredTest(
 ) {
     @Test
     fun isRegistered() {
-        val day = timeReportDay(Date(), timeIntervals)
+        val day = timeReportDay(Milliseconds.now, timeIntervals)
 
         assertEquals(expected, day.isRegistered)
     }

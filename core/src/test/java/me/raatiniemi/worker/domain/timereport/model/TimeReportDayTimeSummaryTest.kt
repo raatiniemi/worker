@@ -27,7 +27,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import java.util.*
 
 @RunWith(Parameterized::class)
 class TimeReportDayTimeSummaryTest(
@@ -36,7 +35,7 @@ class TimeReportDayTimeSummaryTest(
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
-        val day = timeReportDay(Date(), timeIntervals)
+        val day = timeReportDay(Milliseconds.now, timeIntervals)
 
         assertEquals(expected, day.timeSummary)
     }

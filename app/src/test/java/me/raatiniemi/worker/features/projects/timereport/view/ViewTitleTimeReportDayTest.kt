@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.timereport.view
 
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import org.junit.Assert.assertEquals
@@ -46,7 +47,7 @@ class ViewTitleTimeReportDayTest(
             get() = listOf(
                 arrayOf(
                     "Sun (Feb 28)",
-                    timeReportDay(DATE, emptyList())
+                    timeReportDay(Milliseconds(DATE.time), emptyList())
                 )
             )
     }

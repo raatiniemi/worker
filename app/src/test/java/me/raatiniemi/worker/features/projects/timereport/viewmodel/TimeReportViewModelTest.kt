@@ -51,7 +51,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest {
@@ -269,7 +268,7 @@ class TimeReportViewModelTest {
                 setToStartOfWeek(now),
                 listOf(
                     timeReportDay(
-                        Date(now.value),
+                        now,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -296,7 +295,7 @@ class TimeReportViewModelTest {
                 setToStartOfWeek(now),
                 listOf(
                     timeReportDay(
-                        Date(now.value),
+                        now,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -326,7 +325,7 @@ class TimeReportViewModelTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextDay.value),
+                        nextDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -335,7 +334,7 @@ class TimeReportViewModelTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -366,7 +365,7 @@ class TimeReportViewModelTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -381,7 +380,7 @@ class TimeReportViewModelTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)

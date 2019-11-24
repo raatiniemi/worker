@@ -37,7 +37,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
@@ -288,7 +287,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -319,7 +318,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -356,7 +355,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -366,7 +365,7 @@ class TimeReportInMemoryRepositoryTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -398,7 +397,7 @@ class TimeReportInMemoryRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -413,7 +412,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -445,7 +444,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -480,7 +479,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -519,7 +518,7 @@ class TimeReportInMemoryRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)
@@ -573,7 +572,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -604,7 +603,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -641,7 +640,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -651,7 +650,7 @@ class TimeReportInMemoryRepositoryTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -683,7 +682,7 @@ class TimeReportInMemoryRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -698,7 +697,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -748,7 +747,7 @@ class TimeReportInMemoryRepositoryTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -787,7 +786,7 @@ class TimeReportInMemoryRepositoryTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(nextWeek.value),
+                        nextWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(3)

@@ -24,7 +24,6 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
-import java.util.*
 
 /**
  * Group time intervals by the week in which they have been registered.
@@ -42,9 +41,9 @@ fun groupByWeek(timeIntervals: List<TimeInterval>): List<TimeReportWeek> {
 private fun week(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportWeek? {
     return { (_, timeIntervals) ->
         val days = groupByDay(timeIntervals)
-        days.minBy { it.date }
+        days.minBy { it.milliseconds }
             ?.let { earliestDay ->
-                timeReportWeek(Milliseconds(earliestDay.date.time), days)
+                timeReportWeek(earliestDay.milliseconds, days)
             }
     }
 }
@@ -59,7 +58,7 @@ private fun week(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportW
 fun groupByDay(timeIntervals: List<TimeInterval>): List<TimeReportDay> {
     return timeIntervals.groupBy { setToStartOfDay(it.start) }
         .mapNotNull(day())
-        .sortedByDescending { it.date }
+        .sortedByDescending { it.milliseconds }
 }
 
 private fun day(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportDay? {
@@ -67,7 +66,7 @@ private fun day(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportDa
         val sortedTimeIntervals = timeIntervals.sortedByDescending { it.start.value }
         sortedTimeIntervals.minBy { it.start.value }
             ?.let { earliestTimeInterval ->
-                timeReportDay(Date(earliestTimeInterval.start.value), sortedTimeIntervals)
+                timeReportDay(earliestTimeInterval.start, sortedTimeIntervals)
             }
     }
 }

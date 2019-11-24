@@ -29,7 +29,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class GroupByKtTest {
@@ -60,7 +59,7 @@ class GroupByKtTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -98,7 +97,7 @@ class GroupByKtTest {
                 startOfDay,
                 listOf(
                     timeReportDay(
-                        Date(startOfDay.value),
+                        startOfDay,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -143,7 +142,7 @@ class GroupByKtTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(endOfWeek.value),
+                        endOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -153,7 +152,7 @@ class GroupByKtTest {
                         )
                     ),
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -193,7 +192,7 @@ class GroupByKtTest {
                 nextWeek,
                 listOf(
                     timeReportDay(
-                        Date(setToStartOfDay(nextWeek).value),
+                        setToStartOfDay(nextWeek),
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(2)
@@ -208,7 +207,7 @@ class GroupByKtTest {
                 startOfWeek,
                 listOf(
                     timeReportDay(
-                        Date(startOfWeek.value),
+                        startOfWeek,
                         listOf(
                             timeInterval(android.id) { builder ->
                                 builder.id = TimeIntervalId(1)
@@ -250,7 +249,7 @@ class GroupByKtTest {
         )
         val expected = listOf(
             timeReportDay(
-                Date(startOfDay.value),
+                startOfDay,
                 listOf(
                     timeInterval(android.id) { builder ->
                         builder.id = TimeIntervalId(1)
@@ -283,7 +282,7 @@ class GroupByKtTest {
         )
         val expected = listOf(
             timeReportDay(
-                Date(startOfDay.value),
+                startOfDay,
                 listOf(
                     timeInterval(android.id) { builder ->
                         builder.id = TimeIntervalId(2)
@@ -323,7 +322,7 @@ class GroupByKtTest {
         )
         val expected = listOf(
             timeReportDay(
-                Date(endOfWeek.value),
+                endOfWeek,
                 listOf(
                     timeInterval(android.id) { builder ->
                         builder.id = TimeIntervalId(2)
@@ -333,7 +332,7 @@ class GroupByKtTest {
                 )
             ),
             timeReportDay(
-                Date(startOfWeek.value),
+                startOfWeek,
                 listOf(
                     timeInterval(android.id) { builder ->
                         builder.id = TimeIntervalId(1)
