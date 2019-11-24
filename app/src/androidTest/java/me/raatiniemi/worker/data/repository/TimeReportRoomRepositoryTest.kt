@@ -105,7 +105,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countWeeks_withoutTimeIntervalForProject() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 0
 
@@ -117,7 +117,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countWeeks_withTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 1
 
@@ -129,9 +129,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countWeeks_withTimeIntervals() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val expected = 1
 
@@ -145,9 +145,9 @@ class TimeReportRoomRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
         val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
         val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val expected = 1
 
@@ -161,9 +161,9 @@ class TimeReportRoomRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
         val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
         val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val expected = 2
 
@@ -176,7 +176,7 @@ class TimeReportRoomRepositoryTest {
     fun countWeeks_withRegisteredTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
         val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -202,7 +202,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegisteredWeeks_withoutTimeIntervalForProject() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 0
 
@@ -214,7 +214,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegisteredWeeks_withTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 1
 
@@ -226,9 +226,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun countNotRegisteredWeeks_withTimeIntervals() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val expected = 1
 
@@ -242,9 +242,9 @@ class TimeReportRoomRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
         val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
         val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val expected = 1
 
@@ -258,9 +258,9 @@ class TimeReportRoomRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
         val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
         val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val expected = 2
 
@@ -273,7 +273,7 @@ class TimeReportRoomRepositoryTest {
     fun countNotRegisteredWeeks_withRegisteredTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
         val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -300,7 +300,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findWeeks_withoutTimeIntervalForProject() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
@@ -313,7 +313,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findWeeks_withTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -342,9 +342,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findWeeks_withTimeIntervals() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -379,9 +379,9 @@ class TimeReportRoomRepositoryTest {
     fun findWeeks_withTimeIntervalsWithinSameWeek() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -421,9 +421,9 @@ class TimeReportRoomRepositoryTest {
     fun findWeeks_withTimeIntervalsInDifferentWeeks() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -467,7 +467,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findWeeks_withRegisteredTimeInterval() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -501,11 +501,11 @@ class TimeReportRoomRepositoryTest {
     fun findWeeks_whenExcludingByLoadPosition() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
         val expected = listOf(
@@ -540,11 +540,11 @@ class TimeReportRoomRepositoryTest {
     fun findWeeks_whenExcludingByLoadSize() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
         val expected = listOf(
@@ -585,7 +585,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegisteredWeeks_withoutTimeIntervalForProject() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
@@ -598,7 +598,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegisteredWeeks_withTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -627,9 +627,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegisteredWeeks_withTimeIntervals() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -664,9 +664,9 @@ class TimeReportRoomRepositoryTest {
     fun findNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -706,9 +706,9 @@ class TimeReportRoomRepositoryTest {
     fun findNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -752,7 +752,7 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegisteredWeeks_withRegisteredTimeInterval() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -769,11 +769,11 @@ class TimeReportRoomRepositoryTest {
     fun findNotRegisteredWeeks_whenExcludingByLoadPosition() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
         val expected = listOf(
@@ -808,11 +808,11 @@ class TimeReportRoomRepositoryTest {
     fun findNotRegisteredWeeks_whenExcludingByLoadSize() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
         val expected = listOf(

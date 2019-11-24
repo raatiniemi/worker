@@ -74,7 +74,7 @@ class CountTimeReportWeeksTest {
     @Test
     fun `count time report weeks without time interval for project`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 0
 
@@ -86,7 +86,7 @@ class CountTimeReportWeeksTest {
     @Test
     fun `count time report weeks with time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 1
 
@@ -98,9 +98,9 @@ class CountTimeReportWeeksTest {
     @Test
     fun `count time report weeks with time intervals`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val expected = 1
 
@@ -114,9 +114,9 @@ class CountTimeReportWeeksTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val expected = 1
 
@@ -130,9 +130,9 @@ class CountTimeReportWeeksTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val expected = 2
 
@@ -145,7 +145,7 @@ class CountTimeReportWeeksTest {
     fun `count time report weeks with registered time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -173,7 +173,7 @@ class CountTimeReportWeeksTest {
     fun `count time report weeks when hiding registered time without time interval for project`() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 0
 
@@ -186,7 +186,7 @@ class CountTimeReportWeeksTest {
     fun `count time report weeks when hiding registered time with time interval`() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 1
 
@@ -199,9 +199,9 @@ class CountTimeReportWeeksTest {
     fun `count time report weeks when hiding registered time with time intervals`() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val expected = 1
 
@@ -216,9 +216,9 @@ class CountTimeReportWeeksTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val expected = 1
 
@@ -233,9 +233,9 @@ class CountTimeReportWeeksTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val expected = 2
 
@@ -249,7 +249,7 @@ class CountTimeReportWeeksTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))

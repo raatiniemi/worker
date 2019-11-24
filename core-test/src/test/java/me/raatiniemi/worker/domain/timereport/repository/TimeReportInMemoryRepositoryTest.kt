@@ -73,7 +73,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count weeks without time interval for project`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 0
 
@@ -85,7 +85,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count weeks with time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 1
 
@@ -97,9 +97,9 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count weeks with time intervals`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val expected = 1
 
@@ -113,9 +113,9 @@ class TimeReportInMemoryRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val expected = 1
 
@@ -129,9 +129,9 @@ class TimeReportInMemoryRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val expected = 2
 
@@ -144,7 +144,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `count weeks with registered time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -170,7 +170,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered weeks without time interval for project`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 0
 
@@ -182,7 +182,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered weeks with time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val expected = 1
 
@@ -194,9 +194,9 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered weeks with time intervals`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val expected = 1
 
@@ -210,9 +210,9 @@ class TimeReportInMemoryRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val expected = 1
 
@@ -226,9 +226,9 @@ class TimeReportInMemoryRepositoryTest {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val expected = 2
 
@@ -241,7 +241,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `count not registered weeks with registered time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -268,7 +268,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find weeks without time interval for project`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
@@ -281,7 +281,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find weeks with time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -310,9 +310,9 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find weeks with time intervals`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -347,9 +347,9 @@ class TimeReportInMemoryRepositoryTest {
     fun `find weeks with time intervals within same week`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -389,9 +389,9 @@ class TimeReportInMemoryRepositoryTest {
     fun `find weeks with time intervals in different weeks`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -435,7 +435,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find weeks with registered time interval`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -469,11 +469,11 @@ class TimeReportInMemoryRepositoryTest {
     fun `find weeks when excluding by load position`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
         val expected = listOf(
@@ -508,11 +508,11 @@ class TimeReportInMemoryRepositoryTest {
     fun `find weeks when excluding by load size`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
         val expected = listOf(
@@ -553,7 +553,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered weeks without time interval for project`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
@@ -566,7 +566,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered weeks with time interval`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -595,9 +595,9 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered weeks with time intervals`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -632,9 +632,9 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered weeks with time intervals within same week`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -674,9 +674,9 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered weeks with time intervals in different weeks`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = listOf(
@@ -720,7 +720,7 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered weeks with registered time interval`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -737,11 +737,11 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered weeks when excluding by load position`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
         val expected = listOf(
@@ -776,11 +776,11 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered weeks when excluding by load size`() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
         val expected = listOf(

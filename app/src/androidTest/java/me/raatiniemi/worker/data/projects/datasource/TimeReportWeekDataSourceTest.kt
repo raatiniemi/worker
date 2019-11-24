@@ -109,7 +109,7 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadInitial_withoutTimeIntervalForProject() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += ios
         val expected = PositionalDataSourceResult.Initial<TimeReportDay>(emptyList(), 0)
@@ -122,7 +122,7 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadInitial_withTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -156,9 +156,9 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervals() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         projectHolder += android
         val data = listOf(
@@ -198,9 +198,9 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_withTimeIntervalsWithinSameWeek() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -245,9 +245,9 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_withTimeIntervalsInDifferentWeeks() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -296,7 +296,7 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadInitial_withRegisteredTimeInterval() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -335,11 +335,11 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_whenExcludingByLoadPosition() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -397,11 +397,11 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_whenExcludingByLoadSize() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -479,7 +479,7 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_whenHidingRegisteredTimeWithoutTimeIntervalForProject() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += ios
         val expected = PositionalDataSourceResult.Initial<TimeReportDay>(emptyList(), 0)
@@ -493,7 +493,7 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_whenHidingRegisteredTimeWithTimeInterval() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -528,9 +528,9 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_whenHidingRegisteredTimeWithTimeIntervals() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         projectHolder += android
         val data = listOf(
@@ -571,9 +571,9 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -619,9 +619,9 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -671,7 +671,7 @@ class TimeReportWeekDataSourceTest {
     fun loadInitial_whenHidingRegisteredTimeWithRegisteredTimeInterval() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -689,11 +689,11 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -752,11 +752,11 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -832,7 +832,7 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadRange_withoutTimeIntervalForProject() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += ios
         val expected = PositionalDataSourceResult.Range<TimeReportDay>(emptyList())
@@ -845,7 +845,7 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadRange_withTimeInterval() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -875,9 +875,9 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadRange_withTimeIntervals() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         projectHolder += android
         val data = listOf(
@@ -913,9 +913,9 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_withTimeIntervalsWithinSameWeek() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -956,9 +956,9 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_withTimeIntervalsInDifferentWeeks() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1003,7 +1003,7 @@ class TimeReportWeekDataSourceTest {
     @Test
     fun loadRange_withRegisteredTimeInterval() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -1038,11 +1038,11 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_whenExcludingByLoadPosition() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1096,11 +1096,11 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_whenExcludingByLoadSize() {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1174,7 +1174,7 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_whenHidingRegisteredTimeWithoutTimeIntervalForProject() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += ios
         val expected = PositionalDataSourceResult.Range<TimeReportDay>(emptyList())
@@ -1188,7 +1188,7 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_whenHidingRegisteredTimeWithTimeInterval() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1219,9 +1219,9 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_whenHidingRegisteredTimeWithTimeIntervals() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, date = Date(startOfDay.value))
+        clockIn(android, startOfDay)
         clockOut(android, date = Date(startOfDay.value) + 10.minutes)
-        clockIn(android, date = Date(startOfDay.value) + 20.minutes)
+        clockIn(android, startOfDay + 20.minutes)
         clockOut(android, date = Date(startOfDay.value) + 30.minutes)
         projectHolder += android
         val data = listOf(
@@ -1258,9 +1258,9 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(endOfWeek.value))
+        clockIn(android, endOfWeek)
         clockOut(android, date = Date(endOfWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1302,9 +1302,9 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1350,7 +1350,7 @@ class TimeReportWeekDataSourceTest {
     fun loadRange_whenHidingRegisteredTimeWithRegisteredTimeInterval() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
             .also { timeInterval ->
                 markRegisteredTime(listOf(timeInterval))
@@ -1368,11 +1368,11 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(
@@ -1427,11 +1427,11 @@ class TimeReportWeekDataSourceTest {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, date = Date(startOfWeek.value))
+        clockIn(android, startOfWeek)
         clockOut(android, date = Date(startOfWeek.value) + 10.minutes)
-        clockIn(android, date = Date(startOfWeek.value) + 20.minutes)
+        clockIn(android, startOfWeek + 20.minutes)
         clockOut(android, date = Date(startOfWeek.value) + 30.minutes)
-        clockIn(android, date = Date(nextWeek.value))
+        clockIn(android, nextWeek)
         clockOut(android, date = Date(nextWeek.value) + 10.minutes)
         projectHolder += android
         val data = listOf(

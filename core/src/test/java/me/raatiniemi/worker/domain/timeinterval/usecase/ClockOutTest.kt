@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
-import me.raatiniemi.worker.domain.date.minus
-import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.hours
@@ -52,7 +50,8 @@ class ClockOutTest {
     @Test(expected = ClockOutBeforeClockInException::class)
     fun `clock out with date before clock in`() {
         val date = Date()
-        clockIn(android, date + 1.hours)
+        val milliseconds = Milliseconds(date.time)
+        clockIn(android, milliseconds + 1.hours)
 
         clockOut(android, date)
     }
@@ -60,7 +59,8 @@ class ClockOutTest {
     @Test
     fun `clock out with active project`() {
         val date = Date()
-        val timeInterval = clockIn(android, date - 1.hours)
+        val milliseconds = Milliseconds(date.time)
+        val timeInterval = clockIn(android, milliseconds - 1.hours)
         val expected = timeInterval(timeInterval) { builder ->
             builder.stop = Milliseconds(date.time)
         }

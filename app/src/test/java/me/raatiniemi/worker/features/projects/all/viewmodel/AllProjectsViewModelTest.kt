@@ -192,7 +192,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock in with active project`() {
-        clockIn(android, Date())
+        clockIn(android, Milliseconds.now)
         val item = ProjectsItem(android, emptyList())
         val date = Date()
 
@@ -219,7 +219,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
-        clockIn(android, Date())
+        clockIn(android, Milliseconds.now)
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
         val item = getProjectsItem(android, true)
         val date = Date()
@@ -293,7 +293,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock in at with already active project`() = runBlocking {
-        clockIn(android, Date())
+        clockIn(android, Milliseconds.now)
 
         vm.clockInAt(android, Date())
 
@@ -323,7 +323,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        clockIn(android, Date())
+        clockIn(android, Milliseconds.now)
 
         vm.clockOutAt(android, Date())
 

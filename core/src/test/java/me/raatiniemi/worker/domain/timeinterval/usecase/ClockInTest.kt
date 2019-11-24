@@ -27,7 +27,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockInTest {
@@ -42,19 +41,19 @@ class ClockInTest {
 
     @Test(expected = ActiveProjectException::class)
     fun `clock in with active project`() {
-        clockIn(android, Date())
-        clockIn(android, Date())
+        clockIn(android, Milliseconds.now)
+        clockIn(android, Milliseconds.now)
     }
 
     @Test
     fun `clock in`() {
-        val date = Date()
+        val now = Milliseconds.now
         val expected = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(date.time)
+            builder.start = now
         }
 
-        val actual = clockIn(android, date)
+        val actual = clockIn(android, now)
 
         val timeIntervals = repository.findAll(android, Milliseconds.empty)
         assertEquals(listOf(expected), timeIntervals)
