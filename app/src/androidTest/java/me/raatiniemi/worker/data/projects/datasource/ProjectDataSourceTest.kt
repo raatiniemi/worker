@@ -18,27 +18,31 @@ package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.project.model.*
-import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
-import me.raatiniemi.worker.domain.project.usecase.countProjects
-import me.raatiniemi.worker.domain.project.usecase.findProjects
+import me.raatiniemi.worker.koin.androidTestKoinModules
+import me.raatiniemi.worker.koin.modules.inMemorySharedTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class ProjectDataSourceTest {
-    private lateinit var repository: ProjectRepository
-    private lateinit var dataSource: ProjectDataSource
+class ProjectDataSourceTest : AutoCloseKoinTest() {
+    private val repository by inject<ProjectRepository>()
+
+    private val dataSource by inject<ProjectDataSource>()
 
     @Before
     fun setUp() {
-        repository = ProjectInMemoryRepository()
-        dataSource = ProjectDataSource(
-            countProjects(repository),
-            findProjects(repository)
-        )
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules + inMemorySharedTest)
+        }
     }
 
     @Test
