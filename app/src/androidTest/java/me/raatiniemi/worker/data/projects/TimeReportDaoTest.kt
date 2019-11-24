@@ -17,24 +17,52 @@
 package me.raatiniemi.worker.data.projects
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import me.raatiniemi.worker.data.Database
+import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.time.*
+import me.raatiniemi.worker.koin.androidTestKoinModules
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
+import org.koin.test.inject
 import java.util.*
 
 private val timeZone = TimeZone.getTimeZone("UTC")
 
 @RunWith(AndroidJUnit4::class)
-class TimeReportDaoTest : BaseDaoTest() {
-    @Before
-    override fun setUp() {
-        super.setUp()
+class TimeReportDaoTest : AutoCloseKoinTest() {
+    private val database by inject<Database>()
+    private val timeIntervals: TimeIntervalDao by lazy {
+        database.timeIntervals()
+    }
 
-        projects.add(projectEntity())
+    private val timeReport: TimeReportDao
+        get() = database.timeReport()
+
+    @Before
+    fun setUp() {
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
+
+        val projects = get<ProjectRepository>()
+        projects.add(NewProject(android.name))
+    }
+
+    @After
+    fun tearDown() {
+        database.close()
     }
 
     // Count weeks
