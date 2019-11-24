@@ -18,7 +18,7 @@ package me.raatiniemi.worker.koin.modules
 
 import androidx.room.Room
 import me.raatiniemi.worker.data.Database
-import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
+import me.raatiniemi.worker.data.projects.datasource.ProjectDataSource
 import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -31,7 +31,7 @@ internal val dataAndroidTest = module(override = true) {
     }
 
     single {
-        val factory = get<ProjectDataSourceFactory>()
+        val factory = get<ProjectDataSource.Factory>()
         factory.create()
     }
 

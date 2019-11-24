@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.data.projects.datasource
 
+import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
@@ -46,5 +47,17 @@ internal class ProjectDataSource(
             LoadSize(params.loadSize)
         )
         callback.onResult(findProjects(loadRange))
+    }
+
+    class Factory(
+        private val countProjects: CountProjects,
+        private val findProjects: FindProjects
+    ) : DataSource.Factory<Int, Project>() {
+        override fun create(): ProjectDataSource {
+            return ProjectDataSource(
+                countProjects,
+                findProjects
+            )
+        }
     }
 }

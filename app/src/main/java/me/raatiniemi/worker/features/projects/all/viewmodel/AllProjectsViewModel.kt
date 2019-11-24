@@ -22,7 +22,7 @@ import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
+import me.raatiniemi.worker.data.projects.datasource.ProjectDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.exception.DomainException
@@ -49,7 +49,7 @@ import java.util.*
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    projectDataSourceFactory: ProjectDataSourceFactory,
+    projectDataSourceFactory: ProjectDataSource.Factory,
     private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
