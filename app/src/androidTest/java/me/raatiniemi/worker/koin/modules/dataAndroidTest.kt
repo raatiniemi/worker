@@ -21,7 +21,7 @@ import me.raatiniemi.worker.data.Database
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-internal val dataTest = module {
+internal val dataAndroidTest = module {
     single(override = true) {
         Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
             .allowMainThreadQueries()

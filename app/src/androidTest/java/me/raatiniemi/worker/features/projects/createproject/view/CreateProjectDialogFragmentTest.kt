@@ -28,7 +28,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.features.shared.view.isDisabled
 import me.raatiniemi.worker.features.shared.view.withView
-import me.raatiniemi.worker.koin.modules.dataTest
+import me.raatiniemi.worker.koin.modules.dataAndroidTest
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +46,7 @@ private const val createProjectDelayInMilliseconds = 100L
 class CreateProjectDialogFragmentTest : KoinTest {
     @Before
     fun setUp() {
-        loadKoinModules(dataTest)
+        loadKoinModules(dataAndroidTest)
     }
 
     @Test
