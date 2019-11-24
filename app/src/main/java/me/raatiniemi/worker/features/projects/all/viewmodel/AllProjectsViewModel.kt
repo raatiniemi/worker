@@ -184,7 +184,7 @@ internal class AllProjectsViewModel(
 
     suspend fun clockOutAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            clockOut(project, date)
+            clockOut(project, Milliseconds(date.time))
 
             usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
