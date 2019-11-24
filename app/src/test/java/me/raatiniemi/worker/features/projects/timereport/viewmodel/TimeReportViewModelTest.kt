@@ -18,31 +18,23 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
-import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
-import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
-import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
-import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
-import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
-import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
-import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import org.junit.Assert.assertEquals
@@ -51,47 +43,27 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(JUnit4::class)
-class TimeReportViewModelTest {
+class TimeReportViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
-    private val usageAnalytics = InMemoryUsageAnalytics()
-    private val projectHolder = ProjectHolder()
+    private val usageAnalytics by inject<InMemoryUsageAnalytics>()
+    private val projectHolder by inject<ProjectHolder>()
+    private val timeIntervalRepository by inject<TimeIntervalRepository>()
 
-    private lateinit var countTimeReportWeeks: CountTimeReportWeeks
-    private lateinit var findTimeReportWeeks: FindTimeReportWeeks
-
-    private lateinit var timeIntervalRepository: TimeIntervalRepository
-
-    private lateinit var dataSourceFactory: TimeReportWeekDataSource.Factory
-
-    private lateinit var vm: TimeReportViewModel
+    private val vm by inject<TimeReportViewModel>()
 
     @Before
     fun setUp() {
-        timeIntervalRepository = TimeIntervalInMemoryRepository()
-        val timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
-
-        countTimeReportWeeks = CountTimeReportWeeks(keyValueStore, timeReportRepository)
-        findTimeReportWeeks = FindTimeReportWeeks(keyValueStore, timeReportRepository)
-
-        dataSourceFactory = TimeReportWeekDataSource.Factory(
-            projectHolder,
-            countTimeReportWeeks,
-            findTimeReportWeeks
-        )
-
-        vm = TimeReportViewModel(
-            keyValueStore,
-            usageAnalytics,
-            dataSourceFactory,
-            MarkRegisteredTime(timeIntervalRepository),
-            RemoveTime(timeIntervalRepository)
-        )
+        startKoin {
+            modules(testKoinModules)
+        }
     }
 
     @Test

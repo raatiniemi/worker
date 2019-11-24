@@ -17,12 +17,39 @@
 package me.raatiniemi.worker.data.projects
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import me.raatiniemi.worker.data.Database
+import me.raatiniemi.worker.koin.androidTestKoinModules
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class ProjectDaoTest : BaseDaoTest() {
+class ProjectDaoTest : AutoCloseKoinTest() {
+    private val database by inject<Database>()
+
+    private val projects: ProjectDao
+        get() = database.projects()
+
+    @Before
+    fun setUp() {
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules)
+        }
+    }
+
+    @After
+    fun tearDown() {
+        database.close()
+    }
+
     @Test
     fun count_withoutProjects() {
         val expected = 0

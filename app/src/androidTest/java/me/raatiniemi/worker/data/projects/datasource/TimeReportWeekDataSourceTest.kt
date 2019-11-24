@@ -19,67 +19,52 @@ package me.raatiniemi.worker.data.projects.datasource
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.configuration.AppKeys
-import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
 import me.raatiniemi.worker.domain.time.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
-import me.raatiniemi.worker.domain.timereport.repository.TimeReportInMemoryRepository
-import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
-import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
-import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
+import me.raatiniemi.worker.koin.androidTestKoinModules
+import me.raatiniemi.worker.koin.modules.inMemorySharedTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class TimeReportWeekDataSourceTest {
+class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private lateinit var keyValueStore: KeyValueStore
-    private lateinit var timeIntervalRepository: TimeIntervalRepository
-    private lateinit var timeReportRepository: TimeReportRepository
+    private val keyValueStore by inject<KeyValueStore>()
+    private val projectHolder by inject<ProjectHolder>()
+    private val clockIn by inject<ClockIn>()
+    private val clockOut by inject<ClockOut>()
+    private val markRegisteredTime by inject<MarkRegisteredTime>()
 
-    private lateinit var clockIn: ClockIn
-    private lateinit var clockOut: ClockOut
-    private lateinit var markRegisteredTime: MarkRegisteredTime
-
-    private lateinit var projectHolder: ProjectHolder
-
-    private lateinit var dataSource: TimeReportWeekDataSource
+    private val dataSource by inject<TimeReportWeekDataSource>()
 
     @Before
     fun setUp() {
-        keyValueStore = InMemoryKeyValueStore()
-        timeIntervalRepository = TimeIntervalInMemoryRepository()
-        timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
-
-        clockIn = ClockIn(timeIntervalRepository)
-        clockOut = ClockOut(timeIntervalRepository)
-        markRegisteredTime = MarkRegisteredTime(timeIntervalRepository)
-
-        projectHolder = ProjectHolder()
-
-        dataSource = TimeReportWeekDataSource(
-            projectHolder,
-            CountTimeReportWeeks(keyValueStore, timeReportRepository),
-            FindTimeReportWeeks(keyValueStore, timeReportRepository)
-        )
+        stopKoin()
+        startKoin {
+            loadKoinModules(androidTestKoinModules + inMemorySharedTest)
+        }
     }
 
     // Load initial

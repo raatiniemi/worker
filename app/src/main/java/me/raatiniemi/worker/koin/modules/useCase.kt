@@ -16,12 +16,8 @@
 
 package me.raatiniemi.worker.koin.modules
 
-import me.raatiniemi.worker.domain.project.usecase.FindActiveProjects
-import me.raatiniemi.worker.domain.project.usecase.GetProject
-import me.raatiniemi.worker.domain.project.usecase.IsProjectActive
-import me.raatiniemi.worker.domain.timeinterval.usecase.CalculateTimeToday
-import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
-import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
+import me.raatiniemi.worker.domain.project.usecase.*
+import me.raatiniemi.worker.domain.timeinterval.usecase.*
 import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import org.koin.dsl.module
@@ -40,6 +36,18 @@ internal val useCase = module {
     }
 
     single {
+        CreateProject(get(), get())
+    }
+
+    single {
+        GetProjectTimeSince(get())
+    }
+
+    single {
+        FindProject(get())
+    }
+
+    single {
         GetProject(get())
     }
 
@@ -49,6 +57,18 @@ internal val useCase = module {
 
     single {
         CalculateTimeToday(get())
+    }
+
+    single {
+        RemoveProject(get())
+    }
+
+    single {
+        MarkRegisteredTime(get())
+    }
+
+    single {
+        RemoveTime(get())
     }
 
     single {

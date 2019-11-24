@@ -18,10 +18,6 @@ package me.raatiniemi.worker.koin.modules
 
 import me.raatiniemi.worker.domain.date.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
-import me.raatiniemi.worker.domain.project.usecase.CreateProject
-import me.raatiniemi.worker.domain.project.usecase.FindProject
-import me.raatiniemi.worker.domain.project.usecase.RemoveProject
-import me.raatiniemi.worker.domain.timeinterval.usecase.*
 import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
@@ -32,27 +28,23 @@ import org.koin.dsl.module
 
 internal val projects = module {
     viewModel {
-        val getProjectTimeSince = GetProjectTimeSince(get())
-        val clockIn = ClockIn(get())
-        val clockOut = ClockOut(get())
-        val removeProject = RemoveProject(get())
-
         AllProjectsViewModel(
             keyValueStore = get(),
             usageAnalytics = get(),
             projectDataSourceFactory = get(),
-            getProjectTimeSince = getProjectTimeSince,
-            clockIn = clockIn,
-            clockOut = clockOut,
-            removeProject = removeProject
+            getProjectTimeSince = get(),
+            clockIn = get(),
+            clockOut = get(),
+            removeProject = get()
         )
     }
 
     viewModel {
-        val findProject = FindProject(get())
-        val createProject = CreateProject(findProject, get())
-
-        CreateProjectViewModel(get(), createProject, findProject)
+        CreateProjectViewModel(
+            usageAnalytics = get(),
+            createProject = get(),
+            findProject = get()
+        )
     }
 
     single {
@@ -72,8 +64,8 @@ internal val projects = module {
             keyValueStore = get(),
             usageAnalytics = get(),
             dataSourceFactory = get(),
-            markRegisteredTime = MarkRegisteredTime(get()),
-            removeTime = RemoveTime(get())
+            markRegisteredTime = get(),
+            removeTime = get()
         )
     }
 }

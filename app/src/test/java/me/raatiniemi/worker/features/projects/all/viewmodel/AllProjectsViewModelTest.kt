@@ -18,26 +18,22 @@ package me.raatiniemi.worker.features.projects.all.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.configuration.AppKeys
-import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
-import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
-import me.raatiniemi.worker.domain.project.usecase.*
+import me.raatiniemi.worker.domain.project.usecase.CreateProject
+import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
-import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
-import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import org.junit.Assert.assertEquals
@@ -47,56 +43,30 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import java.util.*
 
 @RunWith(JUnit4::class)
-class AllProjectsViewModelTest {
+class AllProjectsViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
-    private val usageAnalytics = InMemoryUsageAnalytics()
+    private val keyValueStore by inject<KeyValueStore>()
+    private val usageAnalytics by inject<InMemoryUsageAnalytics>()
+    private val findProject by inject<FindProject>()
+    private val createProject by inject<CreateProject>()
+    private val clockIn by inject<ClockIn>()
 
-    private lateinit var findProject: FindProject
-    private lateinit var createProject: CreateProject
-
-    private lateinit var countProjects: CountProjects
-    private lateinit var findProjects: FindProjects
-
-    private lateinit var projectDataSourceFactory: ProjectDataSourceFactory
-    private lateinit var getProjectTimeSince: GetProjectTimeSince
-    private lateinit var clockIn: ClockIn
-    private lateinit var clockOut: ClockOut
-    private lateinit var removeProject: RemoveProject
-    private lateinit var vm: AllProjectsViewModel
+    private val vm by inject<AllProjectsViewModel>()
 
     @Before
     fun setUp() {
-        val projectRepository = ProjectInMemoryRepository()
-        val timeIntervalRepository = TimeIntervalInMemoryRepository()
-
-        findProject = FindProject(projectRepository)
-        createProject = CreateProject(findProject, projectRepository)
-
-        countProjects = countProjects(projectRepository)
-        findProjects = findProjects(projectRepository)
-
-        projectDataSourceFactory = ProjectDataSourceFactory(countProjects, findProjects)
-        getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
-        clockIn = ClockIn(timeIntervalRepository)
-        clockOut = ClockOut(timeIntervalRepository)
-        removeProject = RemoveProject(projectRepository)
-
-        vm = AllProjectsViewModel(
-            keyValueStore,
-            usageAnalytics,
-            projectDataSourceFactory,
-            getProjectTimeSince,
-            clockIn,
-            clockOut,
-            removeProject
-        )
+        startKoin {
+            modules(testKoinModules)
+        }
     }
 
     private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {

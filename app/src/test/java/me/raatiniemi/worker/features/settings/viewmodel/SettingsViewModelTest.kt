@@ -18,31 +18,36 @@ package me.raatiniemi.worker.features.settings.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.configuration.AppKeys
-import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.model.SettingsViewActions
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.koin.testKoinModules
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(JUnit4::class)
-class SettingsViewModelTest {
+class SettingsViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val keyValueStore: KeyValueStore = InMemoryKeyValueStore()
+    private val keyValueStore by inject<KeyValueStore>()
 
-    private lateinit var vm: SettingsViewModel
+    private val vm by inject<SettingsViewModel>()
 
     @Before
     fun setUp() {
-        vm = SettingsViewModel(keyValueStore)
+        startKoin {
+            modules(testKoinModules)
+        }
     }
 
     // Confirm clock out
