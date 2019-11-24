@@ -19,13 +19,13 @@ package me.raatiniemi.worker.features.projects.createproject.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
-import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.features.shared.model.plusAssign
+import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import org.junit.Assert.*
@@ -34,29 +34,29 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
 @RunWith(JUnit4::class)
-class CreateProjectViewModelTest {
+class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
     private val debounceDurationInMilliseconds: Long = 300
 
-    private val usageAnalytics = InMemoryUsageAnalytics()
+    private val usageAnalytics by inject<InMemoryUsageAnalytics>()
+    private val findProject by inject<FindProject>()
+    private val createProject by inject<CreateProject>()
 
-    private lateinit var findProject: FindProject
-    private lateinit var createProject: CreateProject
-
-    private lateinit var vm: CreateProjectViewModel
+    private val vm by inject<CreateProjectViewModel>()
 
     @Before
     fun setUp() {
-        val repository = ProjectInMemoryRepository()
-        findProject = FindProject(repository)
-        createProject = CreateProject(findProject, repository)
-
-        vm = CreateProjectViewModel(usageAnalytics, createProject, findProject)
+        startKoin {
+            modules(testKoinModules)
+        }
     }
 
     @Test

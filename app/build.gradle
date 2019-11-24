@@ -190,6 +190,7 @@ dependencies {
 
     testImplementation project(':core-test')
     testImplementation 'junit:junit:4.12'
+    testImplementation "org.koin:koin-test:$koinVersion"
     testImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"
 
     androidTestImplementation project(':core-test')

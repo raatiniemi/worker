@@ -26,25 +26,31 @@ import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.features.shared.view.hourMinute
 import me.raatiniemi.worker.features.shared.view.yearMonthDay
+import me.raatiniemi.worker.koin.testKoinModules
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import java.util.*
 
 @RunWith(JUnit4::class)
-class DateTimeViewModelTest {
+class DateTimeViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private lateinit var vm: DateTimeViewModel
+    private val vm by inject<DateTimeViewModel>()
 
     @Before
     fun setUp() {
-        vm = DateTimeViewModel()
+        startKoin {
+            modules(testKoinModules)
+        }
     }
 
     // Min. date
