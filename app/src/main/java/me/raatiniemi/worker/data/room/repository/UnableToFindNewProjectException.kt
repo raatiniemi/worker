@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository
+package me.raatiniemi.worker.data.room.repository
 
 class UnableToFindNewProjectException : IllegalStateException()

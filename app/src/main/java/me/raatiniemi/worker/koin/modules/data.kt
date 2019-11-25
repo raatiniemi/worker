@@ -20,11 +20,11 @@ import androidx.room.Room
 import me.raatiniemi.worker.data.Database
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSource
 import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
-import me.raatiniemi.worker.data.repository.ProjectRoomRepository
-import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
-import me.raatiniemi.worker.data.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.data.room.migrations.Migration1To2
 import me.raatiniemi.worker.data.room.migrations.Migration2To3
+import me.raatiniemi.worker.data.room.repository.ProjectRoomRepository
+import me.raatiniemi.worker.data.room.repository.TimeIntervalRoomRepository
+import me.raatiniemi.worker.data.room.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.project.usecase.countProjects
 import me.raatiniemi.worker.domain.project.usecase.findProjects
