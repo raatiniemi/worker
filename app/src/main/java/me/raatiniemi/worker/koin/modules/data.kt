@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.koin.modules
 
 import androidx.room.Room
-import me.raatiniemi.worker.data.projects.datasource.ProjectDataSource
-import me.raatiniemi.worker.data.projects.datasource.TimeReportWeekDataSource
+import me.raatiniemi.worker.data.datasource.ProjectDataSource
+import me.raatiniemi.worker.data.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.data.room.migrations.Migration1To2
 import me.raatiniemi.worker.data.room.migrations.Migration2To3

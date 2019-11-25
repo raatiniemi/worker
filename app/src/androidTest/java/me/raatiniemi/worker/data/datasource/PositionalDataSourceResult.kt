@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects.datasource
+package me.raatiniemi.worker.data.datasource
 
 internal sealed class PositionalDataSourceResult<T> {
     abstract val data: List<T>
