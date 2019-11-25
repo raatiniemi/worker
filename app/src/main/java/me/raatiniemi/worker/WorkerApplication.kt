@@ -18,8 +18,8 @@ package me.raatiniemi.worker
 
 import android.app.Application
 import io.fabric.sdk.android.Fabric
-import me.raatiniemi.worker.features.shared.view.buildOngoingChannel
-import me.raatiniemi.worker.features.shared.view.createNotificationChannel
+import me.raatiniemi.worker.feature.shared.view.buildOngoingChannel
+import me.raatiniemi.worker.feature.shared.view.createNotificationChannel
 import me.raatiniemi.worker.koin.defaultKoinModules
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import org.koin.android.ext.koin.androidContext

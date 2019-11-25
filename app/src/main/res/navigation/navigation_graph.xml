@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navProjects"
-        android:name="me.raatiniemi.worker.features.projects.all.view.AllProjectsFragment"
+        android:name="me.raatiniemi.worker.feature.projects.all.view.AllProjectsFragment"
         android:label="@string/home_navigation_projects"
         tools:layout="@layout/fragment_all_projects">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navTimeReport"
-        android:name="me.raatiniemi.worker.features.projects.timereport.view.TimeReportFragment"
+        android:name="me.raatiniemi.worker.feature.projects.timereport.view.TimeReportFragment"
         android:label="Project"
         tools:layout="@layout/fragment_project_time_report">
 
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/navSettings"
-        android:name="me.raatiniemi.worker.features.settings.view.SettingsFragment"
+        android:name="me.raatiniemi.worker.feature.settings.view.SettingsFragment"
         android:label="@string/home_navigation_settings" />
 
 </navigation>

@@ -29,7 +29,7 @@
         android:theme="@style/Theme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="me.raatiniemi.worker.features.home.view.HomeActivity">
+        <activity android:name="me.raatiniemi.worker.feature.home.view.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,27 +37,27 @@
         </activity>
 
         <service
-            android:name=".features.ongoing.service.PauseService"
+            android:name=".feature.ongoing.service.PauseService"
             android:exported="false" />
 
         <service
-            android:name=".features.ongoing.service.ClockOutService"
+            android:name=".feature.ongoing.service.ClockOutService"
             android:exported="false" />
 
         <service
-            android:name=".features.ongoing.service.ResumeService"
+            android:name=".feature.ongoing.service.ResumeService"
             android:exported="false" />
 
         <service
-            android:name=".features.ongoing.service.ReloadNotificationService"
+            android:name=".feature.ongoing.service.ReloadNotificationService"
             android:exported="false" />
 
         <service
-            android:name=".features.ongoing.service.DismissOngoingNotificationsService"
+            android:name=".feature.ongoing.service.DismissOngoingNotificationsService"
             android:exported="false" />
 
         <service
-            android:name=".features.ongoing.service.ProjectNotificationService"
+            android:name=".feature.ongoing.service.ProjectNotificationService"
             android:exported="false" />
 
         <meta-data
