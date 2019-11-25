@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data
+package me.raatiniemi.worker.data.room.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase.CONFLICT_ABORT
@@ -22,8 +22,7 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import me.raatiniemi.worker.data.migrations.Migration1To2
-import me.raatiniemi.worker.data.migrations.Migration2To3
+import me.raatiniemi.worker.data.Database
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
