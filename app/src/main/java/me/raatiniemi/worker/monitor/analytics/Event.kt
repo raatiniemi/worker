@@ -16,59 +16,33 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
-sealed class Event(val name: String, val parameters: Map<String, String> = emptyMap()) {
-    object TapProjectOpen : Event(TAP_PROJECT_OPEN_NAME)
-    object TapProjectToggle : Event(TAP_PROJECT_TOGGLE_NAME)
-    object TapProjectAt : Event(TAP_PROJECT_AT_NAME)
-    object TapProjectRemove : Event(TAP_PROJECT_REMOVE_NAME)
+internal sealed class Event(val name: EventName, val parameters: List<EventParameter> = emptyList()) {
+    constructor(name: EventName, parameter: EventParameter) : this(name, listOf(parameter))
 
-    object ProjectCreate : Event(PROJECT_CREATE_NAME)
+    object TapProjectOpen : Event(TapProjectEvent.Open)
+    object TapProjectToggle : Event(TapProjectEvent.Toggle)
+    object TapProjectAt : Event(TapProjectEvent.At)
+    object TapProjectRemove : Event(TapProjectEvent.Remove)
+
+    object ProjectCreate : Event(ProjectEvent.Create)
+
     object ProjectClockIn :
-        Event(PROJECT_CLOCK_IN_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
+        Event(ProjectEvent.ClockIn, EventParameter.Source(ClockInOutSource.Card))
 
     object ProjectClockOut :
-        Event(PROJECT_CLOCK_OUT_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
+        Event(ProjectEvent.ClockOut, EventParameter.Source(ClockInOutSource.Card))
 
-    object ProjectRemove : Event(PROJECT_REMOVE_NAME)
+    object ProjectRemove : Event(ProjectEvent.Remove)
 
-    object NotificationClockIn : Event(
-        PROJECT_CLOCK_IN_NAME,
-        mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
-    )
+    object NotificationClockIn :
+        Event(ProjectEvent.ClockIn, EventParameter.Source(ClockInOutSource.Notification))
 
-    object NotificationClockOut : Event(
-        PROJECT_CLOCK_OUT_NAME,
-        mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
-    )
+    object NotificationClockOut :
+        Event(ProjectEvent.ClockOut, EventParameter.Source(ClockInOutSource.Notification))
 
-    data class TimeReportToggle(private val count: Int) : Event(
-        TIME_REPORT_TOGGLE_NAME,
-        mapOf(PARAMETER_COUNT_NAME to count.toString())
-    )
+    data class TimeReportToggle(private val count: Int) :
+        Event(TimeReportEvent.Toggle, EventParameter.Count(count))
 
-    data class TimeReportRemove(private val count: Int) : Event(
-        TIME_REPORT_REMOVE_NAME,
-        mapOf(PARAMETER_COUNT_NAME to count.toString())
-    )
-
-    companion object {
-        private const val TAP_PROJECT_OPEN_NAME = "tap_project_open"
-        private const val TAP_PROJECT_TOGGLE_NAME = "tap_project_toggle"
-        private const val TAP_PROJECT_AT_NAME = "tap_project_at"
-        private const val TAP_PROJECT_REMOVE_NAME = "tap_project_remove"
-
-        private const val PROJECT_CREATE_NAME = "project_create"
-        private const val PROJECT_CLOCK_IN_NAME = "project_clock_in"
-        private const val PROJECT_CLOCK_OUT_NAME = "project_clock_out"
-        private const val PROJECT_REMOVE_NAME = "project_remove"
-
-        private const val TIME_REPORT_TOGGLE_NAME = "time_report_toggle"
-        private const val TIME_REPORT_REMOVE_NAME = "time_report_remove"
-
-        private const val PARAMETER_SOURCE_NAME = "source"
-        private const val PARAMETER_COUNT_NAME = "count"
-
-        private const val CLOCK_IN_OUT_CARD_SOURCE = "card"
-        private const val CLOCK_IN_OUT_NOTIFICATION_SOURCE = "notification"
-    }
+    data class TimeReportRemove(private val count: Int) :
+        Event(TimeReportEvent.Remove, EventParameter.Count(count))
 }
