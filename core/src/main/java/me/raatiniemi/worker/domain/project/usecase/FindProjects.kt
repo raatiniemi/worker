@@ -20,18 +20,8 @@ import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
-typealias CountProjects = () -> Int
-typealias FindProjects = (LoadRange) -> List<Project>
-typealias FindAllProjects = () -> List<Project>
-
-fun countProjects(repository: ProjectRepository): CountProjects = {
-    repository.count()
-}
-
-fun findProjects(repository: ProjectRepository): FindProjects = {
-    repository.findAll(it)
-}
-
-fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
-    repository.findAll()
+class FindProjects(private val projects: ProjectRepository) {
+    operator fun invoke(loadRange: LoadRange): List<Project> {
+        return projects.findAll(loadRange)
+    }
 }

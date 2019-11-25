@@ -32,59 +32,25 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class ProjectsKtTest {
+class FindProjectsTest {
     private lateinit var repository: ProjectRepository
 
-    private lateinit var countProjects: CountProjects
     private lateinit var findProjects: FindProjects
-    private lateinit var findAllProjects: FindAllProjects
 
     @Before
     fun setUp() {
         repository = ProjectInMemoryRepository()
 
-        countProjects = countProjects(repository)
-        findProjects = findProjects(repository)
-        findAllProjects = findAllProjects(repository)
-    }
-
-    @Test
-    fun `count projects without projects`() {
-        val expected = 0
-
-        val actual = countProjects()
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count projects with project`() {
-        repository.add(NewProject(android.name))
-        val expected = 1
-
-        val actual = countProjects()
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `count projects with projects`() {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
-        val expected = 2
-
-        val actual = countProjects()
-
-        assertEquals(expected, actual)
+        findProjects = FindProjects(repository)
     }
 
     @Test
     fun `find projects without projects`() {
-        val expected = emptyList<Project>()
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
         )
+        val expected = emptyList<Project>()
 
         val actual = findProjects(loadRange)
 
@@ -94,10 +60,12 @@ class ProjectsKtTest {
     @Test
     fun `find projects with project`() {
         repository.add(NewProject(android.name))
-        val expected = listOf(android)
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
+        )
+        val expected = listOf(
+            android
         )
 
         val actual = findProjects(loadRange)
@@ -109,43 +77,16 @@ class ProjectsKtTest {
     fun `find projects with projects`() {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
-        val expected = listOf(android, cli)
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
         )
+        val expected = listOf(
+            android,
+            cli
+        )
 
         val actual = findProjects(loadRange)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `find all projects without projects`() {
-        val expected = emptyList<Project>()
-
-        val actual = findAllProjects()
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `find all projects with project`() {
-        repository.add(NewProject(android.name))
-        val expected = listOf(android)
-
-        val actual = findAllProjects()
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `find all projects with projects`() {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
-        val expected = listOf(android, cli)
-
-        val actual = findAllProjects()
 
         assertEquals(expected, actual)
     }
