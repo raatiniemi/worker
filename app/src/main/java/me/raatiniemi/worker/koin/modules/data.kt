@@ -20,8 +20,8 @@ import androidx.room.Room
 import me.raatiniemi.worker.data.datasource.ProjectDataSource
 import me.raatiniemi.worker.data.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.data.room.Database
-import me.raatiniemi.worker.data.room.migrations.Migration1To2
-import me.raatiniemi.worker.data.room.migrations.Migration2To3
+import me.raatiniemi.worker.data.room.migration.Migration1To2
+import me.raatiniemi.worker.data.room.migration.Migration2To3
 import me.raatiniemi.worker.data.room.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.room.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.room.repository.TimeReportRoomRepository
