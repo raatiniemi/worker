@@ -18,7 +18,6 @@ package me.raatiniemi.worker.data.room.entity.timereport
 
 import androidx.room.Dao
 import androidx.room.Query
-import me.raatiniemi.worker.data.room.entity.timereport.TimeReportQueryGroup
 
 @Dao
 internal interface TimeReportDao {

@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.data.room.entity.project
 
 import androidx.room.*
-import me.raatiniemi.worker.data.room.entity.project.ProjectEntity
 
 @Dao
 internal interface ProjectDao {

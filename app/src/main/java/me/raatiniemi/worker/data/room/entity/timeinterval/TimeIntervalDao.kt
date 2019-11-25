@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.data.room.entity.timeinterval
 
 import androidx.room.*
-import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalEntity
 
 @Dao
 internal interface TimeIntervalDao {
