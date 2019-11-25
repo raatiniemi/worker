@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.koin.modules
+package me.raatiniemi.worker.koin.module
 
 import androidx.room.Room
 import me.raatiniemi.worker.data.datasource.ProjectDataSource

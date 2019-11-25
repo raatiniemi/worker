@@ -14,14 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.koin.modules
+package me.raatiniemi.worker.koin.module
 
-import me.raatiniemi.worker.features.settings.viewmodel.SettingsViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import org.koin.dsl.module
 
-internal val settings = module {
-    viewModel {
-        SettingsViewModel(keyValueStore = get())
+internal val contextAndroidTest = module(override = true) {
+    single {
+        ApplicationProvider.getApplicationContext<Context>()
     }
 }

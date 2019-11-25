@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.koin
 
-import me.raatiniemi.worker.koin.modules.inMemorySharedTest
+import me.raatiniemi.worker.koin.module.inMemorySharedTest
 
 private val modules = listOf(
     inMemorySharedTest

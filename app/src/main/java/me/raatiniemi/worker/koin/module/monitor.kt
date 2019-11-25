@@ -14,14 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.koin.modules
+package me.raatiniemi.worker.koin.module
 
-import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import com.google.firebase.analytics.FirebaseAnalytics
+import me.raatiniemi.worker.monitor.analytics.FirebaseUsageAnalytics
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-internal val shared = module {
-    viewModel {
-        DateTimeViewModel()
+internal val monitor = module {
+    single<UsageAnalytics> {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(androidContext())
+
+        FirebaseUsageAnalytics(firebaseAnalytics)
     }
 }

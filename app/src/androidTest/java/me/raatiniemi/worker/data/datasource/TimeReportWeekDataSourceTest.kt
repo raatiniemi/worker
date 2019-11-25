@@ -33,7 +33,7 @@ import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.koin.androidTestKoinModules
-import me.raatiniemi.worker.koin.modules.inMemorySharedTest
+import me.raatiniemi.worker.koin.module.inMemorySharedTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

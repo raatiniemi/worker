@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.koin.modules
+package me.raatiniemi.worker.koin.module
 
 import me.raatiniemi.worker.domain.project.usecase.*
 import me.raatiniemi.worker.domain.timeinterval.usecase.*

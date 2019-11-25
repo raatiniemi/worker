@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.koin
 
-import me.raatiniemi.worker.koin.modules.contextAndroidTest
-import me.raatiniemi.worker.koin.modules.dataAndroidTest
+import me.raatiniemi.worker.koin.module.contextAndroidTest
+import me.raatiniemi.worker.koin.module.dataAndroidTest
 
 private val modules = listOf(
     contextAndroidTest,

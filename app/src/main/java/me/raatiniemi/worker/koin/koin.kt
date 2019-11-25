@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.koin
 
-import me.raatiniemi.worker.koin.modules.*
+import me.raatiniemi.worker.koin.module.*
 
 internal val defaultKoinModules = listOf(
     monitor,

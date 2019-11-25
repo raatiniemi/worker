@@ -20,7 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.project.model.*
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.koin.androidTestKoinModules
-import me.raatiniemi.worker.koin.modules.inMemorySharedTest
+import me.raatiniemi.worker.koin.module.inMemorySharedTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
