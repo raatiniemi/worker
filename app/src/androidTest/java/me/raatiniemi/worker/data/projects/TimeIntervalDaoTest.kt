@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.data.projects
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import me.raatiniemi.worker.data.Database
+import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
