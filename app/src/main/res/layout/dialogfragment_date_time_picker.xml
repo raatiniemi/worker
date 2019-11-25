@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    tools:context=".features.shared.datetime.view.DateTimePickerDialogFragment">
+    tools:context=".feature.shared.datetime.view.DateTimePickerDialogFragment">
 
     <!--<editor-fold desc="Guidelines">-->
     <androidx.constraintlayout.widget.Guideline

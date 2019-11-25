@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.koin.module
 
-import me.raatiniemi.worker.features.shared.datetime.viewmodel.DateTimeViewModel
+import me.raatiniemi.worker.feature.shared.datetime.viewmodel.DateTimeViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

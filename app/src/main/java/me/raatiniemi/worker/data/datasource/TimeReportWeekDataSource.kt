@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
-import me.raatiniemi.worker.features.projects.model.ProjectProvider
+import me.raatiniemi.worker.feature.projects.model.ProjectProvider
 import timber.log.Timber
 
 internal class TimeReportWeekDataSource(

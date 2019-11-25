@@ -18,11 +18,11 @@ package me.raatiniemi.worker.koin.module
 
 import me.raatiniemi.worker.domain.date.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
-import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
-import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
-import me.raatiniemi.worker.features.projects.model.ProjectHolder
-import me.raatiniemi.worker.features.projects.model.ProjectProvider
-import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportViewModel
+import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
+import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
+import me.raatiniemi.worker.feature.projects.model.ProjectHolder
+import me.raatiniemi.worker.feature.projects.model.ProjectProvider
+import me.raatiniemi.worker.feature.projects.timereport.viewmodel.TimeReportViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

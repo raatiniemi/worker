@@ -31,7 +31,7 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.MarkRegisteredTime
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportDay
 import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
-import me.raatiniemi.worker.features.projects.model.ProjectHolder
+import me.raatiniemi.worker.feature.projects.model.ProjectHolder
 import me.raatiniemi.worker.koin.androidTestKoinModules
 import me.raatiniemi.worker.koin.module.inMemorySharedTest
 import org.junit.Assert.assertEquals

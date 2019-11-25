@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.koin.module
 
-import me.raatiniemi.worker.features.settings.viewmodel.SettingsViewModel
+import me.raatiniemi.worker.feature.settings.viewmodel.SettingsViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
