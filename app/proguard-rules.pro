@@ -32,6 +32,8 @@
 -keepclassmembers class androidx.room.RoomOpenHelper$Delegate { *; }
 
 # Kotlin
+-keepclassmembers class kotlin.LazyKt { *; }
+-keep interface kotlin.Lazy { *; }
 -keep class kotlin.reflect.** { *; }
 -keep class kotlin.jvm.functions.** { *; }
 -keep class kotlin.collections.** { *; }
