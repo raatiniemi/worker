@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects
+package me.raatiniemi.worker.data.room.entity.timeinterval
 
 import androidx.room.*
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalEntity
 
 @Dao
 internal interface TimeIntervalDao {

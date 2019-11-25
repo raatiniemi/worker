@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects
+package me.raatiniemi.worker.data.room.entity.timereport
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

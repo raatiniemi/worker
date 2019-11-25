@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.data.room.repository
 
-import me.raatiniemi.worker.data.projects.ProjectDao
-import me.raatiniemi.worker.data.projects.ProjectEntity
+import me.raatiniemi.worker.data.room.entity.project.ProjectDao
+import me.raatiniemi.worker.data.room.entity.project.ProjectEntity
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project

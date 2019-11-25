@@ -16,10 +16,10 @@
 
 package me.raatiniemi.worker.data.room.repository
 
-import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.TimeReportDao
-import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
-import me.raatiniemi.worker.data.projects.timeInterval
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalDao
+import me.raatiniemi.worker.data.room.entity.timereport.TimeReportDao
+import me.raatiniemi.worker.data.room.entity.timereport.TimeReportQueryGroup
+import me.raatiniemi.worker.data.room.entity.timeinterval.timeInterval
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval

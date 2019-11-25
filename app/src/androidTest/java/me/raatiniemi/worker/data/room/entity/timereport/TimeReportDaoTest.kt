@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects
+package me.raatiniemi.worker.data.room.entity.timereport
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.room.Database
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalDao
+import me.raatiniemi.worker.data.room.entity.timeinterval.timeIntervalEntity
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios

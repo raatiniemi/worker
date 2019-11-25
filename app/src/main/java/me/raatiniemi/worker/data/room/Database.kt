@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,11 @@ package me.raatiniemi.worker.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import me.raatiniemi.worker.data.projects.*
+import me.raatiniemi.worker.data.room.entity.project.ProjectDao
+import me.raatiniemi.worker.data.room.entity.project.ProjectEntity
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalDao
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalEntity
+import me.raatiniemi.worker.data.room.entity.timereport.TimeReportDao
 
 @Database(
     entities = [

@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.data.room.repository
 
-import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.timeInterval
-import me.raatiniemi.worker.data.projects.timeIntervalEntity
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalDao
+import me.raatiniemi.worker.data.room.entity.timeinterval.timeInterval
+import me.raatiniemi.worker.data.room.entity.timeinterval.timeIntervalEntity
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.time.Milliseconds

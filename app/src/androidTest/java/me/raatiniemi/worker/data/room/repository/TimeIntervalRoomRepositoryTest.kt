@@ -18,9 +18,9 @@ package me.raatiniemi.worker.data.room.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.room.Database
-import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.TimeIntervalEntity
-import me.raatiniemi.worker.data.projects.timeIntervalEntity
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalDao
+import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalEntity
+import me.raatiniemi.worker.data.room.entity.timeinterval.timeIntervalEntity
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
