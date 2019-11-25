@@ -65,7 +65,7 @@ internal class FirebaseUsageAnalytics(
     override fun log(event: Event) = runOnMainThread {
         with(event) {
             firebaseAnalytics.logEvent(
-                name.truncate(40),
+                name.value.truncate(40),
                 transformToBundle(parameters)
             )
         }
