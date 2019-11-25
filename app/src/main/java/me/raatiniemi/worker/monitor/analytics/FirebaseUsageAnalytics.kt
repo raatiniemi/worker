@@ -24,7 +24,9 @@ import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
 
-class FirebaseUsageAnalytics(private val firebaseAnalytics: FirebaseAnalytics) : UsageAnalytics {
+internal class FirebaseUsageAnalytics(
+    private val firebaseAnalytics: FirebaseAnalytics
+) : UsageAnalytics {
     private var lastScreenName: String? = null
 
     @MainThread
@@ -69,10 +71,10 @@ class FirebaseUsageAnalytics(private val firebaseAnalytics: FirebaseAnalytics) :
         }
     }
 
-    private fun transformToBundle(parameters: Map<String, String>): Bundle {
+    private fun transformToBundle(parameters: List<EventParameter>): Bundle {
         return Bundle().apply {
-            parameters.forEach { key, value ->
-                putString(key, value)
+            parameters.forEach { parameter ->
+                putString(parameter.key, parameter.value)
             }
         }
     }
