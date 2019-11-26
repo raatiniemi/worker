@@ -19,7 +19,7 @@ package me.raatiniemi.worker.monitor.analytics
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 
-class InMemoryUsageAnalytics : UsageAnalytics {
+internal class InMemoryUsageAnalytics : UsageAnalytics {
     private var _currentScreen: String = ""
 
     @MainThread
