@@ -26,8 +26,8 @@ import me.raatiniemi.worker.data.room.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.room.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.room.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
-import me.raatiniemi.worker.domain.project.usecase.countProjects
-import me.raatiniemi.worker.domain.project.usecase.findProjects
+import me.raatiniemi.worker.domain.project.usecase.CountProjects
+import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import org.koin.android.ext.koin.androidContext
@@ -61,8 +61,8 @@ internal val data = module {
 
     single {
         val repository = get<ProjectRepository>()
-        val countProjects = countProjects(repository)
-        val findProjects = findProjects(repository)
+        val countProjects = CountProjects(repository)
+        val findProjects = FindProjects(repository)
 
         ProjectDataSource.Factory(countProjects, findProjects)
     }

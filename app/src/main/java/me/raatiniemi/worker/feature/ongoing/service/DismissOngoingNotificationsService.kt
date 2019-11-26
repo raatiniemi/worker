@@ -19,13 +19,12 @@ package me.raatiniemi.worker.feature.ongoing.service
 import android.content.Intent
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.project.usecase.FindAllProjects
-import me.raatiniemi.worker.domain.project.usecase.findAllProjects
 import org.koin.android.ext.android.inject
 
 class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotificationsService") {
     private val repository: ProjectRepository by inject()
     private val findAllProjects: FindAllProjects by lazy {
-        findAllProjects(repository)
+        FindAllProjects(repository)
     }
 
     override fun onHandleIntent(intent: Intent?) {
