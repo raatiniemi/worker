@@ -16,9 +16,7 @@
 
 package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
@@ -32,7 +30,6 @@ import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.combineLatest
 import me.raatiniemi.worker.feature.shared.model.debounce
 import me.raatiniemi.worker.feature.shared.model.plusAssign
-import me.raatiniemi.worker.feature.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
@@ -41,12 +38,12 @@ internal class CreateProjectViewModel(
     private val usageAnalytics: UsageAnalytics,
     private val createProject: CreateProject,
     private val findProject: FindProject
-) : CoroutineScopedViewModel() {
+) : ViewModel() {
     val name = MutableLiveData<String>()
 
     private val isNameValid = name.map { isValid(it) }
 
-    private val isNameAvailable = debounce(name)
+    private val isNameAvailable = viewModelScope.debounce(name)
         .map(::checkForAvailability)
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
