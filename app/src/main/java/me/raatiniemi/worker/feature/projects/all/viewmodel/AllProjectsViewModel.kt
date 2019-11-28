@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.feature.projects.all.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +42,6 @@ import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
-import me.raatiniemi.worker.feature.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
@@ -54,7 +55,7 @@ internal class AllProjectsViewModel(
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
     private val removeProject: RemoveProject
-) : CoroutineScopedViewModel(), AllProjectsActionListener {
+) : ViewModel(), AllProjectsActionListener {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -138,7 +139,7 @@ internal class AllProjectsViewModel(
     override fun toggle(item: ProjectsItem, date: Date) {
         usageAnalytics.log(Event.TapProjectToggle)
 
-        launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (!item.isActive) {
                 clockInAt(item.asProject(), date)
                 return@launch
