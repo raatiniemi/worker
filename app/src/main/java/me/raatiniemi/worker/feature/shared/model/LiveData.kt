@@ -18,10 +18,7 @@ package me.raatiniemi.worker.feature.shared.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 /**
@@ -35,7 +32,7 @@ internal fun <T> CoroutineScope.debounce(source: LiveData<T>, duration: Long = 2
     val mediator = MediatorLiveData<T>()
     mediator.addSource(source) { value ->
         job?.cancel()
-        job = launch {
+        job = launch(coroutineContext + Dispatchers.IO) {
             delay(duration)
 
             mediator += value
