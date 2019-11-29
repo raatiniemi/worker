@@ -36,7 +36,7 @@ class ProjectInMemoryRepository : ProjectRepository {
 
     override fun findAll(): List<Project> = projects.sortedBy { it.name.value }
 
-    override fun findByName(projectName: ProjectName): Project? {
+    override suspend fun findByName(projectName: ProjectName): Project? {
         return projects.firstOrNull { it.name.value.equals(projectName.value, true) }
     }
 

@@ -188,7 +188,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by name without project`() {
+    fun `find by name without project`() = runBlocking {
         val actual = repository.findByName(android.name)
 
         assertNull(actual)

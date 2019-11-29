@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
 import com.google.firebase.perf.metrics.AddTrace
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
@@ -39,21 +40,26 @@ import timber.log.Timber
 internal class CreateProjectViewModel(
     private val usageAnalytics: UsageAnalytics,
     private val createProject: CreateProject,
-    private val findProject: FindProject
+    private val findProject: FindProject,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     val name = MutableLiveData<String>()
 
     private val isNameValid = name.map { isValid(it) }
 
     private val isNameAvailable = viewModelScope.debounce(name)
-        .map(::checkForAvailability)
+        .switchMap { name ->
+            liveData(viewModelScope.coroutineContext + dispatcher) {
+                emit(checkForAvailability(name))
+            }
+        }
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
         .map { it.first && it.second }
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
-    private fun checkForAvailability(value: String): Boolean {
+    private suspend fun checkForAvailability(value: String): Boolean {
         return try {
             findProject(projectName(value)) ?: return true
 

@@ -42,7 +42,7 @@ internal class ProjectRoomRepository(val projects: ProjectDao) :
             .toMutableList()
     }
 
-    override fun findByName(projectName: ProjectName): Project? {
+    override suspend fun findByName(projectName: ProjectName): Project? {
         return projects.findByName(projectName.value)
             ?.let(::project)
     }

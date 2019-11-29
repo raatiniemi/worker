@@ -154,10 +154,10 @@ dependencies {
     def recyclerViewVersion = '1.1.0'
     def cardViewVersion = '1.0.0'
     def preferenceVersion = '1.1.0'
-    def lifecycleVersion = '2.1.0'
+    def lifecycleVersion = '2.2.0-rc03'
     def roomVersion = '2.2.3'
     def pagingVersion = '2.1.1'
-    def fragmentVersion = '1.1.0'
+    def fragmentVersion = '1.2.0-rc04'
     def navigationVersion = '2.1.0'
     def materialVersion = '1.0.0'
     def firebaseCoreVersion = '17.2.1'
@@ -219,6 +219,7 @@ dependencies {
 
     testImplementation project(':core-test')
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
     testImplementation "org.koin:koin-test:$koinVersion"
     testImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"
 

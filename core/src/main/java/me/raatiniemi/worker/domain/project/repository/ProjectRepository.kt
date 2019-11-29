@@ -43,7 +43,7 @@ interface ProjectRepository {
      * @param projectName Project name to search for.
      * @return Project with name, or null.
      */
-    fun findByName(projectName: ProjectName): Project?
+    suspend fun findByName(projectName: ProjectName): Project?
 
     /**
      * Get project by id.

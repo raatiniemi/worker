@@ -40,14 +40,14 @@ class FindProjectTest {
     }
 
     @Test
-    fun `invoke without projects`() {
+    fun `find project without projects`() = runBlocking {
         val actual = findProject(android.name)
 
         assertNull(actual)
     }
 
     @Test
-    fun `invoke with projects`() = runBlocking {
+    fun `find project with project`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = findProject(android.name)
@@ -56,7 +56,7 @@ class FindProjectTest {
     }
 
     @Test
-    fun `invoke with lowercase project name`() = runBlocking {
+    fun `find project with lowercase project name`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = findProject(

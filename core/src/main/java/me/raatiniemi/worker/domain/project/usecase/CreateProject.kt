@@ -34,7 +34,7 @@ class CreateProject(private val findProject: FindProject, private val projects: 
         return projects.add(newProject)
     }
 
-    private fun isProjectNameInUse(projectName: ProjectName): Boolean {
+    private suspend fun isProjectNameInUse(projectName: ProjectName): Boolean {
         return null != findProject(projectName)
     }
 }
