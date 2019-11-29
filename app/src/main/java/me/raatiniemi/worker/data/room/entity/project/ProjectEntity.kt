@@ -33,6 +33,11 @@ internal data class ProjectEntity(
     @ColumnInfo(name = "_id")
     val id: Long = 0,
     val name: String
-) {
-    fun toProject() = Project(id = ProjectId(id), name = projectName(name))
+)
+
+internal fun project(entity: ProjectEntity): Project {
+    return Project(
+        id = ProjectId(entity.id),
+        name = projectName(entity.name)
+    )
 }
