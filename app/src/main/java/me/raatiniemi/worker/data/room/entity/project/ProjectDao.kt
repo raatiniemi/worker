@@ -36,7 +36,7 @@ internal interface ProjectDao {
     fun findById(id: Long): ProjectEntity?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun add(project: ProjectEntity): Long
+    suspend fun add(project: ProjectEntity): Long
 
     @Delete
     fun remove(project: ProjectEntity)

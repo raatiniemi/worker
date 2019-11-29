@@ -52,7 +52,7 @@ internal class ProjectRoomRepository(val projects: ProjectDao) :
             ?.let(::project)
     }
 
-    override fun add(newProject: NewProject): Project {
+    override suspend fun add(newProject: NewProject): Project {
         projects.add(ProjectEntity(name = newProject.name.value))
 
         return findByName(newProject.name) ?: throw UnableToFindNewProjectException()

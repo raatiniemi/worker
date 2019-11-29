@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.room.entity.project
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.koin.androidTestKoinModules
 import org.junit.After
@@ -60,7 +61,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun count_withProject() {
+    fun count_withProject() = runBlocking {
         projects.add(projectEntity { name = "Project name #1" })
         val expected = 1
 
@@ -70,7 +71,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun count_withProjects() {
+    fun count_withProjects() = runBlocking {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = 2
@@ -90,7 +91,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_pagingWithProject() {
+    fun findAll_pagingWithProject() = runBlocking {
         projects.add(projectEntity { name = "Project name #1" })
         val expected = listOf(
             projectEntity {
@@ -105,7 +106,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_pagingWithProjects() {
+    fun findAll_pagingWithProjects() = runBlocking {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = listOf(
@@ -125,7 +126,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProjectBeforePage() {
+    fun findAll_withProjectBeforePage() = runBlocking {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = listOf(
@@ -141,7 +142,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProjectAfterPage() {
+    fun findAll_withProjectAfterPage() = runBlocking {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = listOf(
@@ -157,7 +158,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_sortedPage() {
+    fun findAll_sortedPage() = runBlocking {
         projects.add(projectEntity { name = "Project name #2" })
         projects.add(projectEntity { name = "Project name #1" })
         val expected = listOf(
@@ -185,7 +186,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProject() {
+    fun findAll_withProject() = runBlocking {
         projects.add(projectEntity())
         val expected = listOf(projectEntity { id = 1 })
 
@@ -195,7 +196,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProjects() {
+    fun findAll_withProjects() = runBlocking {
         projects.add(projectEntity { name = "Name #3" })
         projects.add(projectEntity { name = "Name #1" })
         projects.add(projectEntity { name = "Name #2" })
@@ -220,14 +221,14 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findByName_withoutProjects() {
+    fun findByName_withoutProjects() = runBlocking {
         val actual = projects.findByName(name = "Name")
 
         assertNull(actual)
     }
 
     @Test
-    fun findByName_withProject() {
+    fun findByName_withProject() = runBlocking {
         projects.add(projectEntity())
         val expected = projectEntity { id = 1 }
 
@@ -237,7 +238,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findByName_withLowercaseProjectName() {
+    fun findByName_withLowercaseProjectName() = runBlocking {
         projects.add(projectEntity())
         val expected = projectEntity { id = 1 }
 
@@ -247,7 +248,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findByName_withLowercaseProjectNameUsingSpecialCharacters() {
+    fun findByName_withLowercaseProjectNameUsingSpecialCharacters() = runBlocking {
         projects.add(projectEntity { name = "ÅÄÖ" })
         val expected = projectEntity {
             id = 1
@@ -260,7 +261,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findByName_withProjects() {
+    fun findByName_withProjects() = runBlocking {
         projects.add(projectEntity { name = "Name #3" })
         projects.add(projectEntity { name = "Name #1" })
         projects.add(projectEntity { name = "Name #2" })
@@ -282,7 +283,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withProject() {
+    fun findById_withProject() = runBlocking {
         projects.add(projectEntity())
         val expected = projectEntity { id = 1 }
 
@@ -292,7 +293,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withProjects() {
+    fun findById_withProjects() = runBlocking {
         projects.add(projectEntity { name = "Name #3" })
         projects.add(projectEntity { name = "Name #1" })
         projects.add(projectEntity { name = "Name #2" })
@@ -314,7 +315,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withProject() {
+    fun remove_withProject() = runBlocking {
         projects.add(projectEntity())
         val entity = projectEntity {
             id = 1
@@ -328,7 +329,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withProjects() {
+    fun remove_withProjects() = runBlocking {
         projects.add(projectEntity { name = "Name #3" })
         projects.add(projectEntity { name = "Name #1" })
         projects.add(projectEntity { name = "Name #2" })

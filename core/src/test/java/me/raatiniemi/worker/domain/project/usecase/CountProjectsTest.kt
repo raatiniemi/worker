@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
@@ -50,7 +51,7 @@ class CountProjectsTest {
     }
 
     @Test
-    fun `count projects with project`() {
+    fun `count projects with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = 1
 
@@ -60,7 +61,7 @@ class CountProjectsTest {
     }
 
     @Test
-    fun `count projects with projects`() {
+    fun `count projects with projects`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = 2

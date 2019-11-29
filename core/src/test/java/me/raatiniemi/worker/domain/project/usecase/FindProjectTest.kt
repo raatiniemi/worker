@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.ProjectName
 import me.raatiniemi.worker.domain.project.model.android
@@ -46,7 +47,7 @@ class FindProjectTest {
     }
 
     @Test
-    fun `invoke with projects`() {
+    fun `invoke with projects`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = findProject(android.name)
@@ -55,7 +56,7 @@ class FindProjectTest {
     }
 
     @Test
-    fun `invoke with lowercase project name`() {
+    fun `invoke with lowercase project name`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = findProject(

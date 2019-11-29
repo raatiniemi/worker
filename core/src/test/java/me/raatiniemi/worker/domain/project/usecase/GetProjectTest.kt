@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
@@ -37,7 +38,7 @@ class GetProjectTest {
     }
 
     @Test
-    fun execute() {
+    fun execute() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = getProject(android.id.value)

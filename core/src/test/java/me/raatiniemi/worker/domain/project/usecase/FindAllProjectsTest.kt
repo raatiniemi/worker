@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
@@ -51,7 +52,7 @@ class FindAllProjectsTest {
     }
 
     @Test
-    fun `find all projects with project`() {
+    fun `find all projects with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = listOf(
             android
@@ -63,7 +64,7 @@ class FindAllProjectsTest {
     }
 
     @Test
-    fun `find all projects with projects`() {
+    fun `find all projects with projects`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(

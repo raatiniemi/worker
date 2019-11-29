@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
@@ -58,7 +59,7 @@ class FindProjectsTest {
     }
 
     @Test
-    fun `find projects with project`() {
+    fun `find projects with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -74,7 +75,7 @@ class FindProjectsTest {
     }
 
     @Test
-    fun `find projects with projects`() {
+    fun `find projects with projects`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val loadRange = LoadRange(

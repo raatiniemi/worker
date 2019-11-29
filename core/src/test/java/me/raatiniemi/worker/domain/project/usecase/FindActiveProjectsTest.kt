@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
@@ -52,7 +53,7 @@ class FindActiveProjectsTest {
     }
 
     @Test
-    fun `invoke without active projects`() {
+    fun `invoke without active projects`() = runBlocking {
         projectRepository.add(NewProject(android.name))
         val expected = emptyList<Project>()
 
@@ -62,7 +63,7 @@ class FindActiveProjectsTest {
     }
 
     @Test
-    fun `invoke with active project`() {
+    fun `invoke with active project`() = runBlocking {
         projectRepository.add(NewProject(android.name))
         projectRepository.add(NewProject(cli.name))
         timeIntervalRepository.add(
@@ -87,7 +88,7 @@ class FindActiveProjectsTest {
     }
 
     @Test
-    fun `invoke with active projects`() {
+    fun `invoke with active projects`() = runBlocking {
         projectRepository.add(NewProject(android.name))
         projectRepository.add(NewProject(cli.name))
         timeIntervalRepository.add(

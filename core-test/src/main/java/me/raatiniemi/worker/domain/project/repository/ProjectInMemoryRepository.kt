@@ -44,7 +44,7 @@ class ProjectInMemoryRepository : ProjectRepository {
         return projects.firstOrNull { it.id == id }
     }
 
-    override fun add(newProject: NewProject): Project {
+    override suspend fun add(newProject: NewProject): Project {
         val project = Project(
             id = ProjectId(incrementedId.incrementAndGet()),
             name = newProject.name

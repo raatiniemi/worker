@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.room.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
@@ -64,7 +65,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun count_withProject() {
+    fun count_withProject() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = 1
 
@@ -74,7 +75,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun count_withProjects() {
+    fun count_withProjects() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = 2
@@ -98,7 +99,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_pagingWithProject() {
+    fun findAll_pagingWithProject() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = listOf(android)
         val loadRange = LoadRange(
@@ -112,7 +113,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_pagingWithProjects() {
+    fun findAll_pagingWithProjects() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(android, cli)
@@ -127,7 +128,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProjectBeforePage() {
+    fun findAll_withProjectBeforePage() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(cli)
@@ -142,7 +143,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProjectAfterPage() {
+    fun findAll_withProjectAfterPage() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(android)
@@ -157,7 +158,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_sortedPage() {
+    fun findAll_sortedPage() = runBlocking {
         repository.add(NewProject(cli.name))
         repository.add(NewProject(android.name))
         val expected = listOf(
@@ -182,7 +183,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProject() {
+    fun findAll_withProject() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = listOf(android)
 
@@ -192,7 +193,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withProjects() {
+    fun findAll_withProjects() = runBlocking {
         repository.add(NewProject(cli.name))
         repository.add(NewProject(android.name))
         val expected = listOf(
@@ -213,7 +214,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findByName_withProject() {
+    fun findByName_withProject() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findByName(android.name)
@@ -229,7 +230,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withProject() {
+    fun findById_withProject() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findById(android.id)
@@ -238,7 +239,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withProjects() {
+    fun findById_withProjects() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
 
@@ -253,7 +254,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withProject() {
+    fun remove_withProject() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = emptyList<Project>()
 
@@ -264,7 +265,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withProjects() {
+    fun remove_withProjects() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(cli)

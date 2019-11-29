@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.*
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.koin.androidTestKoinModules
@@ -46,7 +47,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withoutProjects() {
+    fun loadInitial_withoutProjects() = runBlocking {
         val expected = PositionalDataSourceResult.Initial<Project>(emptyList(), 0)
 
         dataSource.loadInitial(loadInitialParams(), loadInitialCallback {
@@ -55,7 +56,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProject() {
+    fun loadInitial_withProject() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name))
         )
@@ -71,7 +72,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProjects() {
+    fun loadInitial_withProjects() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name)),
             repository.add(NewProject(cli.name)),
@@ -90,7 +91,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProjectsBeyondPageSize() {
+    fun loadInitial_withProjectsBeyondPageSize() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name)),
             repository.add(NewProject(cli.name)),
@@ -112,7 +113,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProjectsAndPosition() {
+    fun loadInitial_withProjectsAndPosition() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name)),
             repository.add(NewProject(cli.name)),
@@ -143,7 +144,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProject() {
+    fun loadRange_withProject() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name))
         )
@@ -155,7 +156,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProjects() {
+    fun loadRange_withProjects() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name)),
             repository.add(NewProject(cli.name)),
@@ -170,7 +171,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProjectsBeforePosition() {
+    fun loadRange_withProjectsBeforePosition() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name)),
             repository.add(NewProject(cli.name)),
@@ -185,7 +186,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProjectsBeyondPageSize() {
+    fun loadRange_withProjectsBeyondPageSize() = runBlocking {
         val projects = listOf(
             repository.add(NewProject(android.name)),
             repository.add(NewProject(cli.name)),

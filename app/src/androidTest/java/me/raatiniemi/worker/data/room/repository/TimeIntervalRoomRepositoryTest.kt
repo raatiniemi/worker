@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.room.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalDao
 import me.raatiniemi.worker.data.room.entity.timeinterval.TimeIntervalEntity
@@ -60,8 +61,10 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
             loadKoinModules(androidTestKoinModules)
         }
 
-        val projects = get<ProjectRepository>()
-        projects.add(NewProject(android.name))
+        runBlocking {
+            val projects = get<ProjectRepository>()
+            projects.add(NewProject(android.name))
+        }
     }
 
     @After

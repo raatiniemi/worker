@@ -59,7 +59,7 @@ interface ProjectRepository {
      * @param newProject Project to add.
      * @return Added project.
      */
-    fun add(newProject: NewProject): Project
+    suspend fun add(newProject: NewProject): Project
 
     /**
      * Remove project.
