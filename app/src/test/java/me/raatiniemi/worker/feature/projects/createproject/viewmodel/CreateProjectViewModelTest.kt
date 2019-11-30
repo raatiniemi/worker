@@ -25,7 +25,6 @@ import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.shared.model.observeNoValue
 import me.raatiniemi.worker.feature.shared.model.observeNonNull
-import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
@@ -75,7 +74,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `is create enabled with empty name`() = runBlocking {
-        vm.name += ""
+        vm.name = ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
@@ -86,7 +85,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @Test
     fun `is create enabled with duplicated name`() = runBlocking {
         createProject(android.name)
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
@@ -98,7 +97,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `is create enabled with valid name`() = runBlocking {
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertTrue(it)
@@ -108,7 +107,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project with empty name`() = runBlocking {
-        vm.name += ""
+        vm.name = ""
 
         vm.createProject()
 
@@ -121,7 +120,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @Test
     fun `create project with duplicated name`() = runBlocking {
         createProject(android.name)
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.createProject()
 
@@ -133,7 +132,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project with valid name`() = runBlocking {
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.createProject()
 

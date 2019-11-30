@@ -44,10 +44,11 @@ internal class CreateProjectViewModel(
     private val findProject: FindProject,
     private val dispatchProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel() {
-    val name = MutableLiveData<String>()
+    private val _name = MutableLiveData<String>()
+    var name: String by MutableLiveDataProperty(_name, "")
 
-    private val isNameValid = name.map(::isValid)
-    private val isNameAvailable = debounceSuspend(viewModelScope, name) { name ->
+    private val isNameValid = _name.map(::isValid)
+    private val isNameAvailable = debounceSuspend(viewModelScope, _name) { name ->
         checkForAvailability(name)
     }
 
@@ -75,7 +76,7 @@ internal class CreateProjectViewModel(
     @AddTrace(name = TracePerformanceEvents.CREATE_PROJECT)
     suspend fun createProject() = withContext(Dispatchers.IO) {
         val viewAction: CreateProjectViewActions = try {
-            createProject(projectName(name.value))
+            createProject(projectName(_name.value))
 
             usageAnalytics.log(Event.ProjectCreate)
             CreateProjectViewActions.CreatedProject
