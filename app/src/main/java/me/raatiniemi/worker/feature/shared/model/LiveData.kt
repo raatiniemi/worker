@@ -48,8 +48,8 @@ internal fun <T, R> combineLatest(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<
 /**
  * Consumes non-null values from a [LiveData] source.
  *
- * @param source Source to consume values from.
- * @param consumer Consumer of values from source.
+ * @param source Source from which to consume values.
+ * @param consumer Consumer which consumes values emitted from source.
  */
 internal fun <T> consume(source: LiveData<T>, consumer: (T) -> Unit) {
     try {
@@ -59,5 +59,22 @@ internal fun <T> consume(source: LiveData<T>, consumer: (T) -> Unit) {
         consumer(value)
     } catch (e: IllegalStateException) {
         Timber.w(e, "No value is available for consumer")
+    }
+}
+
+/**
+ * Consume non-null values from a [LiveData] source with support for suspending calls.
+ *
+ * @param source Source from which to consume values.
+ * @param consumer Consumer which consumes values emitted from source.
+ */
+internal suspend fun <T : Any> consumeSuspending(
+    source: LiveData<T>,
+    consumer: suspend (T) -> Unit
+) {
+    try {
+        consumer(requireNotNull(source.value))
+    } catch (e: IllegalArgumentException) {
+        Timber.w(e, "No value is available for consumption")
     }
 }
