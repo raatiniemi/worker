@@ -224,6 +224,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"
 
     androidTestImplementation project(':core-test')
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
     androidTestImplementation "org.koin:koin-test:$koinVersion"
     androidTestImplementation "androidx.test:core:$testCoreVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"

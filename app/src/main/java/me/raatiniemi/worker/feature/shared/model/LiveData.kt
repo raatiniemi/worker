@@ -18,29 +18,7 @@ package me.raatiniemi.worker.feature.shared.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import kotlinx.coroutines.*
 import timber.log.Timber
-
-/**
- * Debounce emitted values from [LiveData] source for duration in milliseconds.
- *
- * @param source [LiveData] source from which to debounce emitted values.
- * @param duration Duration in milliseconds for which to debounce values.
- */
-internal fun <T> CoroutineScope.debounce(source: LiveData<T>, duration: Long = 250): LiveData<T> {
-    var job: Job? = null
-    val mediator = MediatorLiveData<T>()
-    mediator.addSource(source) { value ->
-        job?.cancel()
-        job = launch(coroutineContext + Dispatchers.IO) {
-            delay(duration)
-
-            mediator += value
-        }
-    }
-
-    return mediator
-}
 
 internal fun <T, R> combineLatest(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<Pair<T, R>> {
     return MediatorLiveData<Pair<T, R>>().apply {

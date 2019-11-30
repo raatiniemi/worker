@@ -18,7 +18,6 @@ package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
 import com.google.firebase.perf.metrics.AddTrace
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
@@ -30,29 +29,27 @@ import me.raatiniemi.worker.domain.project.usecase.ProjectAlreadyExistsException
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.combineLatest
-import me.raatiniemi.worker.feature.shared.model.debounce
+import me.raatiniemi.worker.feature.shared.model.debounceSuspend
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 
 internal class CreateProjectViewModel(
     private val usageAnalytics: UsageAnalytics,
     private val createProject: CreateProject,
     private val findProject: FindProject,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatchProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel() {
     val name = MutableLiveData<String>()
 
-    private val isNameValid = name.map { isValid(it) }
-
-    private val isNameAvailable = viewModelScope.debounce(name)
-        .switchMap { name ->
-            liveData(viewModelScope.coroutineContext + dispatcher) {
-                emit(checkForAvailability(name))
-            }
-        }
+    private val isNameValid = name.map(::isValid)
+    private val isNameAvailable = debounceSuspend(viewModelScope, name) { name ->
+        checkForAvailability(name)
+    }
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
         .map { it.first && it.second }
@@ -60,13 +57,18 @@ internal class CreateProjectViewModel(
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
     private suspend fun checkForAvailability(value: String): Boolean {
-        return try {
-            findProject(projectName(value)) ?: return true
-
-            viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
-            false
-        } catch (e: InvalidProjectNameException) {
-            false
+        return withContext(dispatchProvider.io()) {
+            try {
+                val project = findProject(projectName(value))
+                if (project != null) {
+                    viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+                    false
+                } else {
+                    true
+                }
+            } catch (e: InvalidProjectNameException) {
+                false
+            }
         }
     }
 

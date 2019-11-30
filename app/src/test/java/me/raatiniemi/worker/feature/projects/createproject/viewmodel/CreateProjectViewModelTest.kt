@@ -19,7 +19,6 @@ package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.util.CoroutineTestRule
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.domain.project.usecase.FindProject
@@ -30,6 +29,8 @@ import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.util.CoroutineTestRule
+import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -68,7 +69,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
             usageAnalytics = usageAnalytics,
             createProject = createProject,
             findProject = findProject,
-            dispatcher = coroutineTestRule.testDispatcher
+            dispatchProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
         )
     }
 
