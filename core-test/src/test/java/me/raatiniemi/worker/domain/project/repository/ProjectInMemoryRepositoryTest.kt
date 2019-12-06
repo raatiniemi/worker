@@ -249,7 +249,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove without project`() {
+    fun `remove without project`() = runBlocking {
         repository.remove(android)
     }
 

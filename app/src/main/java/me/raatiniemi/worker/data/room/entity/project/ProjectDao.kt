@@ -33,11 +33,11 @@ internal interface ProjectDao {
     suspend fun findByName(name: String): ProjectEntity?
 
     @Query("SELECT * FROM projects WHERE _id = :id LIMIT 1")
-    fun findById(id: Long): ProjectEntity?
+    suspend fun findById(id: Long): ProjectEntity?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun add(project: ProjectEntity): Long
 
     @Delete
-    fun remove(project: ProjectEntity)
+    suspend fun remove(project: ProjectEntity)
 }

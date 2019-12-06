@@ -56,7 +56,7 @@ class ProjectInMemoryRepository : ProjectRepository {
         return project
     }
 
-    override fun remove(project: Project) {
+    override suspend fun remove(project: Project) {
         projects.removeIf { it.id == project.id }
     }
 }

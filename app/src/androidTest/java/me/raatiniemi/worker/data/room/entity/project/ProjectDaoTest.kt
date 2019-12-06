@@ -276,7 +276,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withoutProjects() {
+    fun findById_withoutProjects() = runBlocking {
         val actual = projects.findById(id = 1)
 
         assertNull(actual)
@@ -308,7 +308,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withoutProjects() {
+    fun remove_withoutProjects() = runBlocking {
         val entity = projectEntity()
 
         projects.remove(entity)

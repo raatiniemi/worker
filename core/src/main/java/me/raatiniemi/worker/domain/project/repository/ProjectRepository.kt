@@ -68,5 +68,5 @@ interface ProjectRepository {
      *
      * @param project Project to remove.
      */
-    fun remove(project: Project)
+    suspend fun remove(project: Project)
 }

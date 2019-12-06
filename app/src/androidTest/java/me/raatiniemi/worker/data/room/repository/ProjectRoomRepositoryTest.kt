@@ -249,7 +249,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withoutProjects() {
+    fun remove_withoutProjects() = runBlocking {
         repository.remove(android)
     }
 

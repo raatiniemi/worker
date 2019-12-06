@@ -22,8 +22,8 @@ import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 /**
  * Use case for removing a project.
  */
-class RemoveProject(private val repository: ProjectRepository) {
-    operator fun invoke(project: Project) {
-        repository.remove(project)
+class RemoveProject(private val projects: ProjectRepository) {
+    suspend operator fun invoke(project: Project) {
+        projects.remove(project)
     }
 }
