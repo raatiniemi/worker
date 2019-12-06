@@ -42,7 +42,7 @@ class ProjectInMemoryRepository : ProjectRepository {
         return projects.firstOrNull { it.name.value.equals(projectName.value, true) }
     }
 
-    override fun findById(id: ProjectId): Project? {
+    override suspend fun findById(id: ProjectId): Project? {
         return projects.firstOrNull { it.id == id }
     }
 

@@ -48,7 +48,7 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
             ?.let(::project)
     }
 
-    override fun findById(id: ProjectId): Project? {
+    override suspend fun findById(id: ProjectId): Project? {
         return projects.findById(id.value)
             ?.let(::project)
     }

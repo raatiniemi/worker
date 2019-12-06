@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.ongoing.service
 
 import android.content.Context
 import android.content.Intent
+import kotlinx.coroutines.*
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.GetProject
 import me.raatiniemi.worker.domain.project.usecase.IsProjectActive
@@ -26,24 +27,33 @@ import me.raatiniemi.worker.feature.ongoing.model.OngoingUriCommunicator
 import me.raatiniemi.worker.feature.ongoing.view.PauseNotification
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
-class ProjectNotificationService : OngoingService("ProjectNotificationService") {
+class ProjectNotificationService : OngoingService("ProjectNotificationService"), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + Job()
+
     private val getProject: GetProject by inject()
     private val isProjectActive: IsProjectActive by inject()
     private val calculateTimeToday: CalculateTimeToday by inject()
 
     override fun onHandleIntent(intent: Intent?) {
-        try {
-            val projectId = getProjectId(intent)
-            val project = getProject(projectId)
+        launch {
+            try {
+                val projectId = getProjectId(intent)
+                val project = getProject(projectId)
 
-            if (isProjectActive(project.id.value)) {
-                sendOrDismissPauseNotification(project)
-                return
+                val isProjectActive = isProjectActive(project.id.value)
+                withContext(Dispatchers.Main) {
+                    if (isProjectActive) {
+                        sendOrDismissPauseNotification(project)
+                        return@withContext
+                    }
+                    dismissNotification(project)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Unable to update notification for project")
             }
-            dismissNotification(project)
-        } catch (e: Exception) {
-            Timber.e(e, "Unable to update notification for project")
         }
     }
 

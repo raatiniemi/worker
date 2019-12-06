@@ -29,17 +29,18 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class GetProjectTest {
-    private val repository: ProjectRepository = ProjectInMemoryRepository()
+    private val projects: ProjectRepository = ProjectInMemoryRepository()
+
     private lateinit var getProject: GetProject
 
     @Before
     fun setUp() {
-        getProject = GetProject(repository)
+        getProject = GetProject(projects)
     }
 
     @Test
     fun execute() = runBlocking {
-        repository.add(NewProject(android.name))
+        projects.add(NewProject(android.name))
 
         val actual = getProject(android.id.value)
 
@@ -47,7 +48,7 @@ class GetProjectTest {
     }
 
     @Test(expected = NoProjectException::class)
-    fun `execute withoutProject`() {
+    fun `execute withoutProject`() = runBlocking<Unit> {
         getProject(android.id.value)
     }
 }

@@ -51,7 +51,7 @@ interface ProjectRepository {
      * @param id Id for the project.
      * @return Project, or null if none was found.
      */
-    fun findById(id: ProjectId): Project?
+    suspend fun findById(id: ProjectId): Project?
 
     /**
      * Add new project to the repository.

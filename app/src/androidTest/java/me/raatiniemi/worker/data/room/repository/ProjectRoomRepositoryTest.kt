@@ -223,7 +223,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withoutProjects() {
+    fun findById_withoutProjects() = runBlocking {
         val actual = repository.findById(android.id)
 
         assertNull(actual)

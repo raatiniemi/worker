@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.feature.ongoing.service
 
 import android.content.Intent
+import kotlinx.coroutines.*
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.GetProject
 import me.raatiniemi.worker.domain.time.Milliseconds
@@ -28,24 +29,32 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
-internal class ResumeService : OngoingService("ResumeService") {
+internal class ResumeService : OngoingService("ResumeService"), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + Job()
+
     private val usageAnalytics: UsageAnalytics by inject()
     private val clockIn: ClockIn by inject()
     private val getProject: GetProject by inject()
     private val calculateTimeToday: CalculateTimeToday by inject()
 
     override fun onHandleIntent(intent: Intent?) {
-        try {
-            val projectId = getProjectId(intent)
-            val project = getProject(projectId)
+        launch {
+            try {
+                val projectId = getProjectId(intent)
+                val project = getProject(projectId)
 
-            clockIn(project)
+                clockIn(project)
 
-            updateUserInterface(project)
-            sendOrDismissPauseNotification(project)
-        } catch (e: Exception) {
-            Timber.e(e, "Unable to resume project")
+                withContext(Dispatchers.Main) {
+                    updateUserInterface(project)
+                    sendOrDismissPauseNotification(project)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Unable to resume project")
+            }
         }
     }
 
