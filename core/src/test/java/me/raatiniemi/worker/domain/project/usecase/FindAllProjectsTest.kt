@@ -43,7 +43,7 @@ class FindAllProjectsTest {
     }
 
     @Test
-    fun `find all projects without projects`() {
+    fun `find all projects without projects`() = runBlocking {
         val expected = emptyList<Project>()
 
         val actual = findAllProjects()

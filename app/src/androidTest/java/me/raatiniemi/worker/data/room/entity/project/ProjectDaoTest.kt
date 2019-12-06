@@ -179,7 +179,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
 
 
     @Test
-    fun findAll_withoutProjects() {
+    fun findAll_withoutProjects() = runBlocking {
         val actual = projects.findAll()
 
         assertTrue(actual.isEmpty())

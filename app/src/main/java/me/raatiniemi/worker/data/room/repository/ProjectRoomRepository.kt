@@ -37,7 +37,7 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
             .map(::project)
     }
 
-    override fun findAll(): List<Project> {
+    override suspend fun findAll(): List<Project> {
         return projects.findAll()
             .map(::project)
             .toMutableList()

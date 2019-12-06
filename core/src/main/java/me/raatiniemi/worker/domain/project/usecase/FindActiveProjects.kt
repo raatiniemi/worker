@@ -21,13 +21,15 @@ import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 class FindActiveProjects(
-    private val projectRepository: ProjectRepository,
-    private val timeIntervalRepository: TimeIntervalRepository
+    private val projects: ProjectRepository,
+    private val timeIntervals: TimeIntervalRepository
 ) {
-    operator fun invoke(): List<Project> = projectRepository.findAll()
-        .filter { isActive(it) }
+    suspend operator fun invoke(): List<Project> {
+        return projects.findAll()
+            .filter { isActive(it) }
+    }
 
     private fun isActive(project: Project): Boolean {
-        return timeIntervalRepository.findActiveByProjectId(project.id) != null
+        return timeIntervals.findActiveByProjectId(project.id) != null
     }
 }

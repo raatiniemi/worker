@@ -35,7 +35,7 @@ interface ProjectRepository {
      *
      * @return Projects.
      */
-    fun findAll(): List<Project>
+    suspend fun findAll(): List<Project>
 
     /**
      * Find project by name.

@@ -27,7 +27,7 @@ internal interface ProjectDao {
     suspend fun findAll(position: Int, pageSize: Int): List<ProjectEntity>
 
     @Query("SELECT * FROM projects ORDER BY name ASC")
-    fun findAll(): List<ProjectEntity>
+    suspend fun findAll(): List<ProjectEntity>
 
     @Query("SELECT * FROM projects WHERE UPPER(name) = UPPER(:name) LIMIT 1")
     suspend fun findByName(name: String): ProjectEntity?

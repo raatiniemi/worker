@@ -158,7 +158,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all without projects`() {
+    fun `find all without projects`() = runBlocking {
         val expected = emptyList<Project>()
 
         val actual = repository.findAll()

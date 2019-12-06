@@ -34,7 +34,9 @@ class ProjectInMemoryRepository : ProjectRepository {
         return paginate(loadRange, projects.sortedBy { it.name.value })
     }
 
-    override fun findAll(): List<Project> = projects.sortedBy { it.name.value }
+    override suspend fun findAll(): List<Project> {
+        return projects.sortedBy { it.name.value }
+    }
 
     override suspend fun findByName(projectName: ProjectName): Project? {
         return projects.firstOrNull { it.name.value.equals(projectName.value, true) }

@@ -176,7 +176,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withoutProjects() {
+    fun findAll_withoutProjects() = runBlocking {
         val actual = repository.findAll()
 
         assertTrue(actual.isEmpty())

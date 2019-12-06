@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
 class FindAllProjects(private val projects: ProjectRepository) {
-    operator fun invoke(): List<Project> {
+    suspend operator fun invoke(): List<Project> {
         return projects.findAll()
     }
 }

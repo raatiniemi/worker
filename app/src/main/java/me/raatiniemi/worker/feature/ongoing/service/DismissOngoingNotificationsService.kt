@@ -17,18 +17,30 @@
 package me.raatiniemi.worker.feature.ongoing.service
 
 import android.content.Intent
+import kotlinx.coroutines.*
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.project.usecase.FindAllProjects
 import org.koin.android.ext.android.inject
+import kotlin.coroutines.CoroutineContext
 
-class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotificationsService") {
+class DismissOngoingNotificationsService :
+    OngoingService("DismissOngoingNotificationsService"), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + Job()
+
     private val repository: ProjectRepository by inject()
     private val findAllProjects: FindAllProjects by lazy {
         FindAllProjects(repository)
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        findAllProjects()
-            .forEach { dismissNotification(it) }
+        launch {
+            val projects = findAllProjects()
+            withContext(Dispatchers.Main) {
+                projects.forEach {
+                    dismissNotification(it)
+                }
+            }
+        }
     }
 }

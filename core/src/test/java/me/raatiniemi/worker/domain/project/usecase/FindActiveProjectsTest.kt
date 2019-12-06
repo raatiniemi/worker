@@ -33,18 +33,18 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class FindActiveProjectsTest {
-    private val projectRepository = ProjectInMemoryRepository()
-    private val timeIntervalRepository = TimeIntervalInMemoryRepository()
+    private val projects = ProjectInMemoryRepository()
+    private val timeIntervals = TimeIntervalInMemoryRepository()
 
     private lateinit var findActiveProjects: FindActiveProjects
 
     @Before
     fun setUp() {
-        findActiveProjects = FindActiveProjects(projectRepository, timeIntervalRepository)
+        findActiveProjects = FindActiveProjects(projects, timeIntervals)
     }
 
     @Test
-    fun `invoke without projects`() {
+    fun `invoke without projects`() = runBlocking {
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -54,7 +54,7 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke without active projects`() = runBlocking {
-        projectRepository.add(NewProject(android.name))
+        projects.add(NewProject(android.name))
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -64,18 +64,18 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active project`() = runBlocking {
-        projectRepository.add(NewProject(android.name))
-        projectRepository.add(NewProject(cli.name))
-        timeIntervalRepository.add(
+        projects.add(NewProject(android.name))
+        projects.add(NewProject(cli.name))
+        timeIntervals.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         ).let {
             it.clockOut(stop = Milliseconds(10))
         }.also {
-            timeIntervalRepository.update(it)
+            timeIntervals.update(it)
         }
-        timeIntervalRepository.add(
+        timeIntervals.add(
             newTimeInterval(cli) {
                 start = Milliseconds(1)
             }
@@ -89,14 +89,14 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active projects`() = runBlocking {
-        projectRepository.add(NewProject(android.name))
-        projectRepository.add(NewProject(cli.name))
-        timeIntervalRepository.add(
+        projects.add(NewProject(android.name))
+        projects.add(NewProject(cli.name))
+        timeIntervals.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
-        timeIntervalRepository.add(
+        timeIntervals.add(
             newTimeInterval(cli) {
                 start = Milliseconds(1)
             }
