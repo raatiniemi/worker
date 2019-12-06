@@ -60,14 +60,6 @@ internal val data = module {
     }
 
     single {
-        val repository = get<ProjectRepository>()
-        val countProjects = CountProjects(repository)
-        val findProjects = FindProjects(repository)
-
-        ProjectDataSource.Factory(countProjects, findProjects)
-    }
-
-    single {
         TimeReportWeekDataSource.Factory(
             projectProvider = get(),
             countTimeReportWeeks = get(),

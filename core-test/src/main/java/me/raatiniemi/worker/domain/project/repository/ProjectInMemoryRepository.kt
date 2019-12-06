@@ -28,9 +28,9 @@ class ProjectInMemoryRepository : ProjectRepository {
     private val incrementedId = AtomicLong()
     private val projects = mutableSetOf<Project>()
 
-    override fun count() = projects.count()
+    override suspend fun count() = projects.count()
 
-    override fun findAll(loadRange: LoadRange): List<Project> {
+    override suspend fun findAll(loadRange: LoadRange): List<Project> {
         return paginate(loadRange, projects.sortedBy { it.name.value })
     }
 

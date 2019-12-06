@@ -18,43 +18,56 @@ package me.raatiniemi.worker.data.datasource
 
 import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.CountProjects
 import me.raatiniemi.worker.domain.project.usecase.FindProjects
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
 
 internal class ProjectDataSource(
+    private val scope: CoroutineScope,
+    private val dispatcherProvider: CoroutineDispatchProvider,
     private val countProjects: CountProjects,
     private val findProjects: FindProjects
 ) : PositionalDataSource<Project>() {
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Project>) {
-        val totalCount = countProjects()
-        val position = computeInitialLoadPosition(params, totalCount)
-        val loadSize = computeInitialLoadSize(params, position, totalCount)
+        scope.launch(dispatcherProvider.io()) {
+            val totalCount = countProjects()
+            val position = computeInitialLoadPosition(params, totalCount)
+            val loadSize = computeInitialLoadSize(params, position, totalCount)
 
-        val loadRange = LoadRange(
-            LoadPosition(position),
-            LoadSize(loadSize)
-        )
-        callback.onResult(findProjects(loadRange), position, totalCount)
+            val loadRange = LoadRange(
+                LoadPosition(position),
+                LoadSize(loadSize)
+            )
+            callback.onResult(findProjects(loadRange), position, totalCount)
+        }
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Project>) {
-        val loadRange = LoadRange(
-            LoadPosition(params.startPosition),
-            LoadSize(params.loadSize)
-        )
-        callback.onResult(findProjects(loadRange))
+        scope.launch {
+            val loadRange = LoadRange(
+                LoadPosition(params.startPosition),
+                LoadSize(params.loadSize)
+            )
+            callback.onResult(findProjects(loadRange))
+        }
     }
 
     class Factory(
+        private val scope: CoroutineScope,
+        private val dispatcherProvider: CoroutineDispatchProvider,
         private val countProjects: CountProjects,
         private val findProjects: FindProjects
     ) : DataSource.Factory<Int, Project>() {
         override fun create(): ProjectDataSource {
             return ProjectDataSource(
+                scope,
+                dispatcherProvider,
                 countProjects,
                 findProjects
             )

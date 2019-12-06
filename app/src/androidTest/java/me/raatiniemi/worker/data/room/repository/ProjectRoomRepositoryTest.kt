@@ -56,7 +56,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun count_withoutProjects() {
+    fun count_withoutProjects() = runBlocking {
         val expected = 0
 
         val actual = repository.count()
@@ -86,7 +86,7 @@ class ProjectRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_pagingWithoutProjects() {
+    fun findAll_pagingWithoutProjects() = runBlocking {
         val expected = emptyList<Project>()
         val loadRange = LoadRange(
             LoadPosition(0),

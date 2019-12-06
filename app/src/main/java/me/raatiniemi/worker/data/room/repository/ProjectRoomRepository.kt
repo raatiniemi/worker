@@ -26,11 +26,12 @@ import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.project.model.ProjectName
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
-internal class ProjectRoomRepository(val projects: ProjectDao) :
-    ProjectRepository {
-    override fun count() = projects.count()
+internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
+    override suspend fun count(): Int {
+        return projects.count()
+    }
 
-    override fun findAll(loadRange: LoadRange): List<Project> {
+    override suspend fun findAll(loadRange: LoadRange): List<Project> {
         val (position, size) = loadRange
         return projects.findAll(position.value, size.value)
             .map(::project)

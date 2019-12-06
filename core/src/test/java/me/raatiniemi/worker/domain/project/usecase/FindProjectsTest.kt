@@ -34,19 +34,19 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class FindProjectsTest {
-    private lateinit var repository: ProjectRepository
+    private lateinit var projects: ProjectRepository
 
     private lateinit var findProjects: FindProjects
 
     @Before
     fun setUp() {
-        repository = ProjectInMemoryRepository()
+        projects = ProjectInMemoryRepository()
 
-        findProjects = FindProjects(repository)
+        findProjects = FindProjects(projects)
     }
 
     @Test
-    fun `find projects without projects`() {
+    fun `find projects without projects`() = runBlocking {
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
@@ -60,7 +60,7 @@ class FindProjectsTest {
 
     @Test
     fun `find projects with project`() = runBlocking {
-        repository.add(NewProject(android.name))
+        projects.add(NewProject(android.name))
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
@@ -76,8 +76,8 @@ class FindProjectsTest {
 
     @Test
     fun `find projects with projects`() = runBlocking {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
+        projects.add(NewProject(android.name))
+        projects.add(NewProject(cli.name))
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)

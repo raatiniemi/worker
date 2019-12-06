@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.koin.module
 
 import androidx.room.Room
-import me.raatiniemi.worker.data.datasource.ProjectDataSource
 import me.raatiniemi.worker.data.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.data.room.Database
 import org.koin.android.ext.koin.androidContext
@@ -28,11 +27,6 @@ internal val dataAndroidTest = module(override = true) {
         Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
             .allowMainThreadQueries()
             .build()
-    }
-
-    single {
-        val factory = get<ProjectDataSource.Factory>()
-        factory.create()
     }
 
     single {

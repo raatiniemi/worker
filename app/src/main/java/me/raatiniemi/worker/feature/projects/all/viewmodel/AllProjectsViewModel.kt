@@ -30,6 +30,8 @@ import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.usecase.CountProjects
+import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -46,17 +48,21 @@ import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 import java.util.*
 
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    projectDataSourceFactory: ProjectDataSource.Factory,
+    countProjects: CountProjects,
+    findProjects: FindProjects,
     private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
-    private val removeProject: RemoveProject
+    private val removeProject: RemoveProject,
+    dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel(), AllProjectsActionListener {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
@@ -81,11 +87,20 @@ internal class AllProjectsViewModel(
     init {
         val config = PagedList.Config.Builder()
             .setPageSize(10)
-            .setEnablePlaceholders(true)
+            .setEnablePlaceholders(false)
             .build()
 
-        val factory = projectDataSourceFactory.map(::buildProjectsItem)
-        projects = LivePagedListBuilder(factory, config).build()
+        val factory = ProjectDataSource.Factory(
+            viewModelScope,
+            dispatcherProvider,
+            countProjects,
+            findProjects
+        )
+        val builder = LivePagedListBuilder(
+            factory.map(::buildProjectsItem),
+            config
+        )
+        projects = builder.build()
     }
 
     private fun buildProjectsItem(project: Project): ProjectsItem {

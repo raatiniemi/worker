@@ -26,9 +26,9 @@ import me.raatiniemi.worker.domain.project.model.ProjectName
  * Represent a unified interface for working with projects using different data sources.
  */
 interface ProjectRepository {
-    fun count(): Int
+    suspend fun count(): Int
 
-    fun findAll(loadRange: LoadRange): List<Project>
+    suspend fun findAll(loadRange: LoadRange): List<Project>
 
     /**
      * Get projects.

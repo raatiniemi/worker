@@ -52,7 +52,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun count_withoutProjects() {
+    fun count_withoutProjects() = runBlocking {
         val expected = 0
 
         val actual = projects.count()
@@ -82,7 +82,7 @@ class ProjectDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_pagingWithoutProjects() {
+    fun findAll_pagingWithoutProjects() = runBlocking {
         val expected = emptyList<ProjectEntity>()
 
         val actual = projects.findAll(0, 10)

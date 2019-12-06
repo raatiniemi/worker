@@ -41,7 +41,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `count without projects`() {
+    fun `count without projects`() = runBlocking {
         val expected = 0
 
         val actual = repository.count()
@@ -71,7 +71,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all paging without projects`() {
+    fun `find all paging without projects`() = runBlocking {
         val expected = emptyList<Project>()
         val loadRange = LoadRange(
             LoadPosition(0),

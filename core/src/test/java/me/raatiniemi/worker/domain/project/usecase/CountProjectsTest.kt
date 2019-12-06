@@ -30,19 +30,19 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class CountProjectsTest {
-    private lateinit var repository: ProjectRepository
+    private lateinit var projects: ProjectRepository
 
     private lateinit var countProjects: CountProjects
 
     @Before
     fun setUp() {
-        repository = ProjectInMemoryRepository()
+        projects = ProjectInMemoryRepository()
 
-        countProjects = CountProjects(repository)
+        countProjects = CountProjects(projects)
     }
 
     @Test
-    fun `count projects without projects`() {
+    fun `count projects without projects`() = runBlocking {
         val expected = 0
 
         val actual = countProjects()
@@ -52,7 +52,7 @@ class CountProjectsTest {
 
     @Test
     fun `count projects with project`() = runBlocking {
-        repository.add(NewProject(android.name))
+        projects.add(NewProject(android.name))
         val expected = 1
 
         val actual = countProjects()
@@ -62,8 +62,8 @@ class CountProjectsTest {
 
     @Test
     fun `count projects with projects`() = runBlocking {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
+        projects.add(NewProject(android.name))
+        projects.add(NewProject(cli.name))
         val expected = 2
 
         val actual = countProjects()

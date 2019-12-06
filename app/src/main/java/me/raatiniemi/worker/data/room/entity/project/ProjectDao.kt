@@ -21,10 +21,10 @@ import androidx.room.*
 @Dao
 internal interface ProjectDao {
     @Query("SELECT COUNT(*) FROM projects")
-    fun count(): Int
+    suspend fun count(): Int
 
     @Query("SELECT * FROM projects ORDER BY name ASC LIMIT :position, :pageSize")
-    fun findAll(position: Int, pageSize: Int): List<ProjectEntity>
+    suspend fun findAll(position: Int, pageSize: Int): List<ProjectEntity>
 
     @Query("SELECT * FROM projects ORDER BY name ASC")
     fun findAll(): List<ProjectEntity>
