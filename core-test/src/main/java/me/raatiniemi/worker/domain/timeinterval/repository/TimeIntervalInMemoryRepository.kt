@@ -31,7 +31,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
 
     override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.filter {
-            it.projectId == project.id && it.start >= milliseconds
+            it.projectId == project.id && (it.start >= milliseconds || it is TimeInterval.Active)
         }
     }
 
