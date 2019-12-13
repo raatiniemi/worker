@@ -19,10 +19,15 @@ package me.raatiniemi.worker.domain.timeinterval.repository
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.hours
+import me.raatiniemi.worker.domain.time.minutes
+import me.raatiniemi.worker.domain.time.setToStartOfDay
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -32,218 +37,261 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class TimeIntervalInMemoryRepositoryTest {
-    private lateinit var repository: TimeIntervalRepository
+    private lateinit var clockIn: ClockIn
+    private lateinit var clockOut: ClockOut
+
+    private lateinit var timeIntervals: TimeIntervalRepository
 
     @Before
     fun setUp() {
-        repository = TimeIntervalInMemoryRepository()
+        timeIntervals = TimeIntervalInMemoryRepository()
+
+        clockIn = ClockIn(timeIntervals)
+        clockOut = ClockOut(timeIntervals)
     }
+
+    // Find all
 
     @Test
     fun `find all without time intervals`() {
         val expected = emptyList<TimeInterval>()
 
-        val actual = repository.findAll(android, Milliseconds.empty)
+        val actual = timeIntervals.findAll(android, Milliseconds.empty)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find all without time interval for project`() {
+        clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
+
+        val actual = timeIntervals.findAll(cli, Milliseconds.empty)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all with time interval`() {
+        val timeInterval = clockIn(android, Milliseconds.now)
+        val expected = listOf(
+            timeInterval
         )
 
-        val actual = repository.findAll(cli, Milliseconds.empty)
+        val actual = timeIntervals.findAll(android, Milliseconds.empty)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all with time interval on starting point`() {
+        val now = Milliseconds.now
+        clockIn(android, now)
+        val timeInterval = clockOut(android, now + 10.minutes)
+        val expected = listOf(
+            timeInterval
+        )
+
+        val actual = timeIntervals.findAll(android, now)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find all with time interval before starting point`() {
+        val now = Milliseconds.now
+        clockIn(android, now)
+        clockOut(android, now + 10.minutes)
         val expected = emptyList<TimeInterval>()
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(10)
-            }
+
+        val actual = timeIntervals.findAll(android, now + 10.minutes)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all with active time interval before starting point`() {
+        val now = Milliseconds.now
+        val timeInterval = clockIn(android, now)
+        val expected = listOf(
+            timeInterval
         )
 
-        val actual = repository.findAll(android, Milliseconds(15))
+        val actual = timeIntervals.findAll(android, now + 10.minutes)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find all with time interval after starting point`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(10)
-            }
-        )
+        val now = Milliseconds.now
+        clockIn(android, now + 10.minutes)
+        val timeInterval = clockOut(android, now + 20.minutes)
         val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(10)
-                builder.stop = null
-            }
+            timeInterval
         )
 
-        val actual = repository.findAll(android, Milliseconds(1))
+        val actual = timeIntervals.findAll(android, now)
 
         assertEquals(expected, actual)
     }
 
+    // Find by id
+
     @Test
     fun `find by id without time interval`() {
-        val actual = repository.findById(TimeIntervalId(1))
+        val actual = timeIntervals.findById(TimeIntervalId(1))
 
         assertNull(actual)
     }
 
     @Test
     fun `find by id with time interval`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val expected = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-            builder.stop = null
-        }
+        val now = Milliseconds.now
+        val expected = clockIn(android, now)
 
-        val actual = repository.findById(TimeIntervalId(1))
+        val actual = timeIntervals.findById(expected.id)
 
         assertEquals(expected, actual)
     }
 
+    // Find active by project id
+
     @Test
     fun `find active by project id without time intervals`() {
-        val actual = repository.findActiveByProjectId(android.id)
+        val actual = timeIntervals.findActiveByProjectId(android.id)
 
         assertNull(actual)
     }
 
     @Test
     fun `find active by project id without active time interval`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        ).also {
-            repository.update(it.clockOut(stop = Milliseconds(10)))
-        }
+        val now = Milliseconds.now
+        clockIn(android, now)
+        clockOut(android, now + 10.minutes)
 
-        val actual = repository.findActiveByProjectId(android.id)
+        val actual = timeIntervals.findActiveByProjectId(android.id)
 
         assertNull(actual)
     }
 
     @Test
-    fun `find active by project id with active time interval`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val expected = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-        }
+    fun `find active by project id with time interval`() {
+        val now = Milliseconds.now
+        val expected = clockIn(android, now)
 
-        val actual = repository.findActiveByProjectId(android.id)
+        val actual = timeIntervals.findActiveByProjectId(android.id)
 
         assertEquals(expected, actual)
     }
 
+    // Add
+
     @Test
-    fun `update without time interval`() {
-        val timeInterval = timeInterval(android.id) { builder ->
+    fun add() {
+        val newTimeInterval = newTimeInterval(android) {
+            start = Milliseconds(1)
+        }
+        val expected = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
             builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(10)
+            builder.stop = null
         }
 
-        val actual = repository.update(timeInterval)
+        val actual = timeIntervals.add(newTimeInterval)
+
+        assertEquals(expected, actual)
+    }
+
+    // Update
+
+    @Test
+    fun `update without time interval`() {
+        val now = Milliseconds.now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = now
+            builder.stop = now + 10.minutes
+        }
+
+        val actual = timeIntervals.update(timeInterval)
 
         assertNull(actual)
     }
 
     @Test
     fun `update with time interval`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val expected = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(5)
+        val now = Milliseconds.now
+        val timeInterval = clockIn(android, now)
+        val expected = timeInterval(timeInterval) { builder ->
+            builder.stop = now + 10.minutes
         }
 
-        val actual = repository.update(expected)
+        val actual = timeIntervals.update(expected)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `update without time intervals`() {
-        val timeIntervals = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(1)
-                builder.stop = Milliseconds(10)
-            }
-        )
+        val now = Milliseconds.now
+        val timeInterval = timeInterval(android.id) { builder ->
+            builder.id = TimeIntervalId(1)
+            builder.start = now
+            builder.stop = now + 10.minutes
+        }
         val expected = emptyList<TimeInterval>()
 
-        val actual = repository.update(timeIntervals)
+        val actual = timeIntervals.update(
+            listOf(
+                timeInterval
+            )
+        )
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `update with time intervals`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, startOfDay)
+        val nightTimeInterval = clockOut(android, startOfDay + 4.hours)
+        clockIn(android, startOfDay + 5.hours)
+        val morningTimeInterval = clockOut(android, startOfDay + 9.hours)
         val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(1)
-                builder.stop = Milliseconds(5)
+            timeInterval(nightTimeInterval) { builder ->
+                builder.isRegistered = true
+            },
+            timeInterval(morningTimeInterval) { builder ->
+                builder.isRegistered = true
             }
         )
 
-        val actual = repository.update(expected)
+        val actual = timeIntervals.update(expected)
 
         assertEquals(expected, actual)
     }
 
+    // Remove
+
     @Test
     fun `remove without time interval`() {
-        repository.remove(TimeIntervalId(1))
+        val expected = emptyList<TimeInterval>()
+
+        timeIntervals.remove(TimeIntervalId(1))
+
+        val actual = timeIntervals.findAll(android, Milliseconds.empty)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with time interval`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
+        val timeInterval = clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 
-        repository.remove(TimeIntervalId(1))
+        timeIntervals.remove(timeInterval.id)
 
-        val actual = repository.findAll(android, Milliseconds.empty)
+        val actual = timeIntervals.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
@@ -252,32 +300,32 @@ class TimeIntervalInMemoryRepositoryTest {
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
             builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(10)
+            builder.stop = Milliseconds(2)
         }
-        val timeIntervals = listOf(timeInterval)
+        val expected = emptyList<TimeInterval>()
 
-        repository.remove(timeIntervals)
+        timeIntervals.remove(
+            listOf(
+                timeInterval
+            )
+        )
+
+        val actual = timeIntervals.findAll(android, Milliseconds.empty)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with time intervals`() {
-        repository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val timeIntervals = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(1)
-                builder.start = Milliseconds(1)
-                builder.stop = null
-            }
-        )
+        val timeInterval = clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 
-        repository.remove(timeIntervals)
+        timeIntervals.remove(
+            listOf(
+                timeInterval
+            )
+        )
 
-        val actual = repository.findAll(android, Milliseconds.empty)
+        val actual = timeIntervals.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 }
