@@ -50,7 +50,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         }
     }
 
-    override fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
+    override suspend fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
         val id = timeIntervals.add(timeIntervalEntity(newTimeInterval))
 
         val timeInterval = findById(TimeIntervalId(id))

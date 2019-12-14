@@ -38,7 +38,7 @@ internal interface TimeIntervalDao {
     fun findActiveTime(projectId: Long): TimeIntervalEntity?
 
     @Insert
-    fun add(entity: TimeIntervalEntity): Long
+    suspend fun add(entity: TimeIntervalEntity): Long
 
     @Update
     fun update(entities: List<TimeIntervalEntity>)

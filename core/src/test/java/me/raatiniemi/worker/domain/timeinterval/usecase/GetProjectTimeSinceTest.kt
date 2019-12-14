@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.time.minutes
@@ -37,12 +38,11 @@ class GetProjectTimeSinceTest {
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        getProjectTimeSince =
-            GetProjectTimeSince(repository)
+        getProjectTimeSince = GetProjectTimeSince(repository)
     }
 
     @Test
-    fun `get project time since day`() {
+    fun `get project time since day`() = runBlocking {
         val expectedStop = after(TimeIntervalStartingPoint.DAY, 2.hours)
         val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.DAY)
@@ -72,7 +72,7 @@ class GetProjectTimeSinceTest {
     }
 
     @Test
-    fun `get project time since week`() {
+    fun `get project time since week`() = runBlocking {
         val expectedStop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
         val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.WEEK)
@@ -109,7 +109,7 @@ class GetProjectTimeSinceTest {
     }
 
     @Test
-    fun `get project time since month`() {
+    fun `get project time since month`() = runBlocking {
         val expectedStop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
         val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.MONTH)

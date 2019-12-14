@@ -58,7 +58,7 @@ interface TimeIntervalRepository {
      * @param newTimeInterval New time interval to add.
      * @return Added time interval.
      */
-    fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active
+    suspend fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active
 
     /**
      * Update time interval.

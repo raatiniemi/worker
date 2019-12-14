@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
@@ -37,12 +38,11 @@ class MarkRegisteredTimeTest {
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        markRegisteredTime =
-            MarkRegisteredTime(repository)
+        markRegisteredTime = MarkRegisteredTime(repository)
     }
 
     @Test
-    fun `mark registered time with multiple unregistered items`() {
+    fun `mark registered time with multiple unregistered items`() = runBlocking {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
@@ -121,7 +121,7 @@ class MarkRegisteredTimeTest {
     }
 
     @Test
-    fun `mark registered time with multiple registered items`() {
+    fun `mark registered time with multiple registered items`() = runBlocking {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
@@ -193,7 +193,7 @@ class MarkRegisteredTimeTest {
     }
 
     @Test
-    fun `mark registered time with multiple items`() {
+    fun `mark registered time with multiple items`() = runBlocking {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)
@@ -287,7 +287,7 @@ class MarkRegisteredTimeTest {
     }
 
     @Test
-    fun `mark registered time with registered active time interval`() {
+    fun `mark registered time with registered active time interval`() = runBlocking {
         val newTimeIntervals = listOf(
             newTimeInterval(android) {
                 start = Milliseconds(1)

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timereport.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
@@ -79,7 +80,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks without time interval for project`() {
+    fun `find time report weeks without time interval for project`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -92,7 +93,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks with time interval`() {
+    fun `find time report weeks with time interval`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -121,7 +122,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks with time intervals`() {
+    fun `find time report weeks with time intervals`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -157,7 +158,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks with time intervals within same week`() {
+    fun `find time report weeks with time intervals within same week`() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
         clockIn(android, startOfWeek)
@@ -199,7 +200,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks with time intervals in different weeks`() {
+    fun `find time report weeks with time intervals in different weeks`() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -246,7 +247,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks with registered time interval`() {
+    fun `find time report weeks with registered time interval`() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
@@ -279,7 +280,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks when excluding by load position`() {
+    fun `find time report weeks when excluding by load position`() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -318,7 +319,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks when excluding by load size`() {
+    fun `find time report weeks when excluding by load size`() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -366,20 +367,22 @@ class FindTimeReportWeeksTest {
 
     @Test
     fun `find time report weeks when hiding registered time without time interval for project`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, startOfDay)
-        clockOut(android, startOfDay + 10.minutes)
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
-        val expected = emptyList<TimeReportWeek>()
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfDay = setToStartOfDay(Milliseconds.now)
+            clockIn(android, startOfDay)
+            clockOut(android, startOfDay + 10.minutes)
+            val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+            val expected = emptyList<TimeReportWeek>()
 
-        val actual = findTimeReportWeeks(ios, loadRange)
+            val actual = findTimeReportWeeks(ios, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
-    fun `find time report weeks when hiding registered time with time interval`() {
+    fun `find time report weeks when hiding registered time with time interval`() = runBlocking {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
@@ -409,7 +412,7 @@ class FindTimeReportWeeksTest {
     }
 
     @Test
-    fun `find time report weeks when hiding registered time with time intervals`() {
+    fun `find time report weeks when hiding registered time with time intervals`() = runBlocking {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
@@ -447,184 +450,194 @@ class FindTimeReportWeeksTest {
 
     @Test
     fun `find time report weeks when hiding registered time with time intervals within same week`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val endOfWeek = setToEndOfWeek(startOfWeek)
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-        clockIn(android, endOfWeek)
-        clockOut(android, endOfWeek + 10.minutes)
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
-        val expected = listOf(
-            timeReportWeek(
-                startOfWeek,
-                listOf(
-                    timeReportDay(
-                        endOfWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(2)
-                                builder.start = endOfWeek
-                                builder.stop = endOfWeek + 10.minutes
-                            }
-                        )
-                    ),
-                    timeReportDay(
-                        startOfWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = startOfWeek
-                                builder.stop = startOfWeek + 10.minutes
-                            }
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfWeek = setToStartOfWeek(Milliseconds.now)
+            val endOfWeek = setToEndOfWeek(startOfWeek)
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+            clockIn(android, endOfWeek)
+            clockOut(android, endOfWeek + 10.minutes)
+            val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+            val expected = listOf(
+                timeReportWeek(
+                    startOfWeek,
+                    listOf(
+                        timeReportDay(
+                            endOfWeek,
+                            listOf(
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(2)
+                                    builder.start = endOfWeek
+                                    builder.stop = endOfWeek + 10.minutes
+                                }
+                            )
+                        ),
+                        timeReportDay(
+                            startOfWeek,
+                            listOf(
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(1)
+                                    builder.start = startOfWeek
+                                    builder.stop = startOfWeek + 10.minutes
+                                }
+                            )
                         )
                     )
                 )
             )
-        )
 
-        val actual = findTimeReportWeeks(android, loadRange)
+            val actual = findTimeReportWeeks(android, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
     fun `find time report weeks when hiding registered time with time intervals in different weeks`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-        clockIn(android, nextWeek)
-        clockOut(android, nextWeek + 10.minutes)
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
-        val expected = listOf(
-            timeReportWeek(
-                nextWeek,
-                listOf(
-                    timeReportDay(
-                        nextWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(2)
-                                builder.start = nextWeek
-                                builder.stop = nextWeek + 10.minutes
-                            }
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfWeek = setToStartOfWeek(Milliseconds.now)
+            val nextWeek = startOfWeek + 1.weeks
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+            clockIn(android, nextWeek)
+            clockOut(android, nextWeek + 10.minutes)
+            val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+            val expected = listOf(
+                timeReportWeek(
+                    nextWeek,
+                    listOf(
+                        timeReportDay(
+                            nextWeek,
+                            listOf(
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(2)
+                                    builder.start = nextWeek
+                                    builder.stop = nextWeek + 10.minutes
+                                }
+                            )
                         )
                     )
-                )
-            ),
-            timeReportWeek(
-                startOfWeek,
-                listOf(
-                    timeReportDay(
-                        startOfWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = startOfWeek
-                                builder.stop = startOfWeek + 10.minutes
-                            }
+                ),
+                timeReportWeek(
+                    startOfWeek,
+                    listOf(
+                        timeReportDay(
+                            startOfWeek,
+                            listOf(
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(1)
+                                    builder.start = startOfWeek
+                                    builder.stop = startOfWeek + 10.minutes
+                                }
+                            )
                         )
                     )
                 )
             )
-        )
 
-        val actual = findTimeReportWeeks(android, loadRange)
+            val actual = findTimeReportWeeks(android, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
     fun `find time report weeks when hiding registered time with registered time interval`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-            .also { timeInterval ->
-                markRegisteredTime(listOf(timeInterval))
-            }
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
-        val expected = emptyList<TimeReportWeek>()
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfWeek = setToStartOfWeek(Milliseconds.now)
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+                .also { timeInterval ->
+                    markRegisteredTime(listOf(timeInterval))
+                }
+            val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+            val expected = emptyList<TimeReportWeek>()
 
-        val actual = findTimeReportWeeks(android, loadRange)
+            val actual = findTimeReportWeeks(android, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
     fun `find time report weeks when hiding registered time when excluding by load position`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-        clockIn(android, startOfWeek + 20.minutes)
-        clockOut(android, startOfWeek + 30.minutes)
-        clockIn(android, nextWeek)
-        clockOut(android, nextWeek + 10.minutes)
-        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
-        val expected = listOf(
-            timeReportWeek(
-                startOfWeek,
-                listOf(
-                    timeReportDay(
-                        startOfWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(2)
-                                builder.start = startOfWeek + 20.minutes
-                                builder.stop = startOfWeek + 30.minutes
-                            },
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = startOfWeek
-                                builder.stop = startOfWeek + 10.minutes
-                            }
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfWeek = setToStartOfWeek(Milliseconds.now)
+            val nextWeek = startOfWeek + 1.weeks
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+            clockIn(android, startOfWeek + 20.minutes)
+            clockOut(android, startOfWeek + 30.minutes)
+            clockIn(android, nextWeek)
+            clockOut(android, nextWeek + 10.minutes)
+            val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
+            val expected = listOf(
+                timeReportWeek(
+                    startOfWeek,
+                    listOf(
+                        timeReportDay(
+                            startOfWeek,
+                            listOf(
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(2)
+                                    builder.start = startOfWeek + 20.minutes
+                                    builder.stop = startOfWeek + 30.minutes
+                                },
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(1)
+                                    builder.start = startOfWeek
+                                    builder.stop = startOfWeek + 10.minutes
+                                }
+                            )
                         )
                     )
                 )
             )
-        )
 
-        val actual = findTimeReportWeeks(android, loadRange)
+            val actual = findTimeReportWeeks(android, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
     fun `find time report weeks when hiding registered time when excluding by load size`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val nextWeek = startOfWeek + 1.weeks
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-        clockIn(android, startOfWeek + 20.minutes)
-        clockOut(android, startOfWeek + 30.minutes)
-        clockIn(android, nextWeek)
-        clockOut(android, nextWeek + 10.minutes)
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
-        val expected = listOf(
-            timeReportWeek(
-                nextWeek,
-                listOf(
-                    timeReportDay(
-                        nextWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(3)
-                                builder.start = nextWeek
-                                builder.stop = nextWeek + 10.minutes
-                            }
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfWeek = setToStartOfWeek(Milliseconds.now)
+            val nextWeek = startOfWeek + 1.weeks
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+            clockIn(android, startOfWeek + 20.minutes)
+            clockOut(android, startOfWeek + 30.minutes)
+            clockIn(android, nextWeek)
+            clockOut(android, nextWeek + 10.minutes)
+            val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
+            val expected = listOf(
+                timeReportWeek(
+                    nextWeek,
+                    listOf(
+                        timeReportDay(
+                            nextWeek,
+                            listOf(
+                                timeInterval(android.id) { builder ->
+                                    builder.id = TimeIntervalId(3)
+                                    builder.start = nextWeek
+                                    builder.stop = nextWeek + 10.minutes
+                                }
+                            )
                         )
                     )
                 )
             )
-        )
 
-        val actual = findTimeReportWeeks(android, loadRange)
+            val actual = findTimeReportWeeks(android, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 }

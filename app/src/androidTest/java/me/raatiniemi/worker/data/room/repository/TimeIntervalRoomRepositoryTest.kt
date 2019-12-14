@@ -87,7 +87,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withoutTimeIntervalForProject() {
+    fun findAll_withoutTimeIntervalForProject() = runBlocking {
         clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 
@@ -97,7 +97,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeInterval() {
+    fun findAll_withTimeInterval() = runBlocking {
         val timeInterval = clockIn(android, Milliseconds.now)
         val expected = listOf(
             timeInterval
@@ -109,7 +109,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalOnStartingPoint() {
+    fun findAll_withTimeIntervalOnStartingPoint() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now)
         val timeInterval = clockOut(android, now + 10.minutes)
@@ -123,7 +123,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalBeforeStartingPoint() {
+    fun findAll_withTimeIntervalBeforeStartingPoint() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now)
         clockOut(android, now + 10.minutes)
@@ -135,7 +135,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withActiveTimeIntervalBeforeStartingPoint() {
+    fun findAll_withActiveTimeIntervalBeforeStartingPoint() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = clockIn(android, now)
         val expected = listOf(
@@ -148,7 +148,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalAfterStartingPoint() {
+    fun findAll_withTimeIntervalAfterStartingPoint() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now + 10.minutes)
         val timeInterval = clockOut(android, now + 20.minutes)
@@ -171,7 +171,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findById_withTimeInterval() {
+    fun findById_withTimeInterval() = runBlocking {
         val now = Milliseconds.now
         val expected = clockIn(android, now)
 
@@ -190,7 +190,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findActiveByProjectId_withoutActiveTimeInterval() {
+    fun findActiveByProjectId_withoutActiveTimeInterval() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now)
         clockOut(android, now + 10.minutes)
@@ -201,7 +201,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findActiveByProjectId_withTimeInterval() {
+    fun findActiveByProjectId_withTimeInterval() = runBlocking {
         val now = Milliseconds.now
         val expected = clockIn(android, now)
 
@@ -213,7 +213,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     // Add
 
     @Test
-    fun add() {
+    fun add() = runBlocking {
         val now = Milliseconds.now
         val newTimeInterval = newTimeInterval(android) {
             start = now
@@ -246,7 +246,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun update_withTimeInterval() {
+    fun update_withTimeInterval() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = clockIn(android, now)
         val expected = timeInterval(timeInterval) { builder ->
@@ -278,7 +278,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun update_withTimeIntervals() {
+    fun update_withTimeIntervals() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         val nightTimeInterval = clockOut(android, startOfDay + 4.hours)
@@ -311,7 +311,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withTimeInterval() {
+    fun remove_withTimeInterval() = runBlocking {
         val timeInterval = clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 
@@ -341,7 +341,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withTimeIntervals() {
+    fun remove_withTimeIntervals() = runBlocking {
         val timeInterval = clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 

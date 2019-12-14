@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.repository
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
 import me.raatiniemi.worker.domain.time.Milliseconds
@@ -62,7 +63,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all without time interval for project`() {
+    fun `find all without time interval for project`() = runBlocking {
         clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 
@@ -72,7 +73,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with time interval`() {
+    fun `find all with time interval`() = runBlocking {
         val timeInterval = clockIn(android, Milliseconds.now)
         val expected = listOf(
             timeInterval
@@ -84,7 +85,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with time interval on starting point`() {
+    fun `find all with time interval on starting point`() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now)
         val timeInterval = clockOut(android, now + 10.minutes)
@@ -98,7 +99,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with time interval before starting point`() {
+    fun `find all with time interval before starting point`() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now)
         clockOut(android, now + 10.minutes)
@@ -110,7 +111,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with active time interval before starting point`() {
+    fun `find all with active time interval before starting point`() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = clockIn(android, now)
         val expected = listOf(
@@ -123,7 +124,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with time interval after starting point`() {
+    fun `find all with time interval after starting point`() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now + 10.minutes)
         val timeInterval = clockOut(android, now + 20.minutes)
@@ -146,7 +147,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by id with time interval`() {
+    fun `find by id with time interval`() = runBlocking {
         val now = Milliseconds.now
         val expected = clockIn(android, now)
 
@@ -165,7 +166,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find active by project id without active time interval`() {
+    fun `find active by project id without active time interval`() = runBlocking {
         val now = Milliseconds.now
         clockIn(android, now)
         clockOut(android, now + 10.minutes)
@@ -176,7 +177,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find active by project id with time interval`() {
+    fun `find active by project id with time interval`() = runBlocking {
         val now = Milliseconds.now
         val expected = clockIn(android, now)
 
@@ -188,7 +189,7 @@ class TimeIntervalInMemoryRepositoryTest {
     // Add
 
     @Test
-    fun add() {
+    fun add() = runBlocking {
         val newTimeInterval = newTimeInterval(android) {
             start = Milliseconds(1)
         }
@@ -220,7 +221,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `update with time interval`() {
+    fun `update with time interval`() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = clockIn(android, now)
         val expected = timeInterval(timeInterval) { builder ->
@@ -252,7 +253,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `update with time intervals`() {
+    fun `update with time intervals`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         val nightTimeInterval = clockOut(android, startOfDay + 4.hours)
@@ -285,7 +286,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove with time interval`() {
+    fun `remove with time interval`() = runBlocking {
         val timeInterval = clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 
@@ -315,7 +316,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove with time intervals`() {
+    fun `remove with time intervals`() = runBlocking {
         val timeInterval = clockIn(android, Milliseconds.now)
         val expected = emptyList<TimeInterval>()
 

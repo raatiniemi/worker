@@ -187,7 +187,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `toggle clock in with active project`() {
+    fun `toggle clock in with active project`() = runBlocking {
         clockIn(android, Milliseconds.now)
         val item = ProjectsItem(android, emptyList())
         val date = Date()

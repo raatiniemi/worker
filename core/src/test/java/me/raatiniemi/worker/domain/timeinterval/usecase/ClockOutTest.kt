@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.hours
@@ -47,7 +48,7 @@ class ClockOutTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException::class)
-    fun `clock out with date before clock in`() {
+    fun `clock out with date before clock in`() = runBlocking<Unit> {
         val milliseconds = Milliseconds.now
         clockIn(android, milliseconds + 1.hours)
 
@@ -55,7 +56,7 @@ class ClockOutTest {
     }
 
     @Test
-    fun `clock out with active project`() {
+    fun `clock out with active project`() = runBlocking {
         val milliseconds = Milliseconds.now
         val timeInterval = clockIn(android, milliseconds - 1.hours)
         val expected = timeInterval(timeInterval) { builder ->

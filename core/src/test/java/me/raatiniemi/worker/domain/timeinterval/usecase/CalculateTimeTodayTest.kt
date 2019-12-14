@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
@@ -36,8 +37,7 @@ class CalculateTimeTodayTest {
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        calculateTimeToday =
-            CalculateTimeToday(repository)
+        calculateTimeToday = CalculateTimeToday(repository)
     }
 
     @Test
@@ -50,7 +50,7 @@ class CalculateTimeTodayTest {
     }
 
     @Test
-    fun `calculate time today with registered time`() {
+    fun `calculate time today with registered time`() = runBlocking {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
             newTimeInterval(android) {
@@ -69,7 +69,7 @@ class CalculateTimeTodayTest {
     }
 
     @Test
-    fun `calculate time today with active time interval`() {
+    fun `calculate time today with active time interval`() = runBlocking {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
             newTimeInterval(android) {
@@ -85,7 +85,7 @@ class CalculateTimeTodayTest {
     }
 
     @Test
-    fun `calculate time today with registered time and active time interval`() {
+    fun `calculate time today with registered time and active time interval`() = runBlocking {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
             newTimeInterval(android) {

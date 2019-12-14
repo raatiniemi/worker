@@ -88,7 +88,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withoutTimeIntervalForProject() {
+    fun countWeeks_withoutTimeIntervalForProject() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -100,7 +100,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withTimeInterval() {
+    fun countWeeks_withTimeInterval() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -112,7 +112,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withTimeIntervals() {
+    fun countWeeks_withTimeIntervals() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -126,7 +126,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withTimeIntervalsWithinSameWeek() {
+    fun countWeeks_withTimeIntervalsWithinSameWeek() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
@@ -142,7 +142,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withTimeIntervalsInDifferentWeeks() {
+    fun countWeeks_withTimeIntervalsInDifferentWeeks() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
@@ -158,7 +158,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withRegisteredTimeInterval() {
+    fun countWeeks_withRegisteredTimeInterval() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         clockIn(android, startOfWeek)
@@ -174,7 +174,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+    fun countWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() = runBlocking {
         val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
         clockIn(android, startOfWeek)
@@ -189,7 +189,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+    fun countWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() = runBlocking {
         val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
         val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
@@ -227,7 +227,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withoutTimeIntervalForProject() {
+    fun countNotRegisteredWeeks_withoutTimeIntervalForProject() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -239,7 +239,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withTimeInterval() {
+    fun countNotRegisteredWeeks_withTimeInterval() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -251,7 +251,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withTimeIntervals() {
+    fun countNotRegisteredWeeks_withTimeIntervals() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -265,7 +265,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() {
+    fun countNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
@@ -281,7 +281,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() {
+    fun countNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
@@ -297,7 +297,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withRegisteredTimeInterval() {
+    fun countNotRegisteredWeeks_withRegisteredTimeInterval() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         clockIn(android, startOfWeek)
@@ -313,7 +313,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+    fun countNotRegisteredWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() = runBlocking {
         val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
         clockIn(android, startOfWeek)
@@ -328,7 +328,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun countNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+    fun countNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() = runBlocking {
         val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
         val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
@@ -367,7 +367,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withoutTimeIntervalForProject() {
+    fun findWeeks_withoutTimeIntervalForProject() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -380,7 +380,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withTimeInterval() {
+    fun findWeeks_withTimeInterval() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -409,7 +409,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withTimeIntervals() {
+    fun findWeeks_withTimeIntervals() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -445,7 +445,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withTimeIntervalsWithinSameWeek() {
+    fun findWeeks_withTimeIntervalsWithinSameWeek() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
         clockIn(android, startOfWeek)
@@ -487,7 +487,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withTimeIntervalsInDifferentWeeks() {
+    fun findWeeks_withTimeIntervalsInDifferentWeeks() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -534,7 +534,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withRegisteredTimeInterval() {
+    fun findWeeks_withRegisteredTimeInterval() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
@@ -567,7 +567,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_whenExcludingByLoadPosition() {
+    fun findWeeks_whenExcludingByLoadPosition() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -606,7 +606,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_whenExcludingByLoadSize() {
+    fun findWeeks_whenExcludingByLoadSize() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -640,7 +640,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+    fun findWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() = runBlocking {
         val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
         clockIn(android, startOfWeek)
@@ -682,7 +682,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+    fun findWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() = runBlocking {
         val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
         val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
@@ -798,7 +798,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withoutTimeIntervalForProject() {
+    fun findNotRegisteredWeeks_withoutTimeIntervalForProject() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -811,7 +811,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withTimeInterval() {
+    fun findNotRegisteredWeeks_withTimeInterval() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -840,7 +840,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withTimeIntervals() {
+    fun findNotRegisteredWeeks_withTimeIntervals() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -876,7 +876,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() {
+    fun findNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val endOfWeek = setToEndOfWeek(startOfWeek)
         clockIn(android, startOfWeek)
@@ -918,7 +918,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() {
+    fun findNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -965,7 +965,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withRegisteredTimeInterval() {
+    fun findNotRegisteredWeeks_withRegisteredTimeInterval() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
@@ -981,7 +981,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_whenExcludingByLoadPosition() {
+    fun findNotRegisteredWeeks_whenExcludingByLoadPosition() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -1020,7 +1020,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_whenExcludingByLoadSize() {
+    fun findNotRegisteredWeeks_whenExcludingByLoadSize() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
         clockIn(android, startOfWeek)
@@ -1054,7 +1054,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+    fun findNotRegisteredWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() = runBlocking {
         val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
         clockIn(android, startOfWeek)
@@ -1096,7 +1096,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+    fun findNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() = runBlocking {
         val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
         val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
         val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19

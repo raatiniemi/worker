@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
@@ -40,13 +41,13 @@ class ClockInTest {
     }
 
     @Test(expected = ActiveProjectException::class)
-    fun `clock in with active project`() {
+    fun `clock in with active project`() = runBlocking<Unit> {
         clockIn(android, Milliseconds.now)
         clockIn(android, Milliseconds.now)
     }
 
     @Test
-    fun `clock in`() {
+    fun `clock in`() = runBlocking {
         val now = Milliseconds.now
         val expected = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)

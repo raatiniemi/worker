@@ -58,7 +58,7 @@ internal class ResumeService : OngoingService("ResumeService"), CoroutineScope {
         }
     }
 
-    private fun clockIn(project: Project) {
+    private suspend fun clockIn(project: Project) {
         try {
             clockIn(project, Milliseconds.now)
 

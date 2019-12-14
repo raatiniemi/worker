@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timereport.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.InMemoryKeyValueStore
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
@@ -70,7 +71,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks without time interval for project`() {
+    fun `count time report weeks without time interval for project`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -82,7 +83,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks with time interval`() {
+    fun `count time report weeks with time interval`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -94,7 +95,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks with time intervals`() {
+    fun `count time report weeks with time intervals`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
@@ -108,7 +109,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks with time intervals within same week`() {
+    fun `count time report weeks with time intervals within same week`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val endOfWeek = setToEndOfWeek(startOfDay)
@@ -124,7 +125,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks with time intervals in different weeks`() {
+    fun `count time report weeks with time intervals in different weeks`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
@@ -140,7 +141,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks with registered time interval`() {
+    fun `count time report weeks with registered time interval`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
         clockIn(android, startOfWeek)
@@ -168,20 +169,21 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks when hiding registered time without time interval for project`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        clockIn(android, startOfDay)
-        clockOut(android, startOfDay + 10.minutes)
-        val expected = 0
+    fun `count time report weeks when hiding registered time without time interval for project`() =
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfDay = setToStartOfDay(Milliseconds.now)
+            clockIn(android, startOfDay)
+            clockOut(android, startOfDay + 10.minutes)
+            val expected = 0
 
-        val actual = countTimeReportWeeks(ios)
+            val actual = countTimeReportWeeks(ios)
 
-        assertEquals(expected, actual)
-    }
+            assertEquals(expected, actual)
+        }
 
     @Test
-    fun `count time report weeks when hiding registered time with time interval`() {
+    fun `count time report weeks when hiding registered time with time interval`() = runBlocking {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
@@ -194,7 +196,7 @@ class CountTimeReportWeeksTest {
     }
 
     @Test
-    fun `count time report weeks when hiding registered time with time intervals`() {
+    fun `count time report weeks when hiding registered time with time intervals`() = runBlocking {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
@@ -210,52 +212,58 @@ class CountTimeReportWeeksTest {
 
     @Test
     fun `count time report weeks when hiding registered time with time intervals within same week`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        val endOfWeek = setToEndOfWeek(startOfDay)
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-        clockIn(android, endOfWeek)
-        clockOut(android, endOfWeek + 10.minutes)
-        val expected = 1
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfDay = setToStartOfDay(Milliseconds.now)
+            val startOfWeek = setToStartOfWeek(startOfDay)
+            val endOfWeek = setToEndOfWeek(startOfDay)
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+            clockIn(android, endOfWeek)
+            clockOut(android, endOfWeek + 10.minutes)
+            val expected = 1
 
-        val actual = countTimeReportWeeks(android)
+            val actual = countTimeReportWeeks(android)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
     fun `count time report weeks when hiding registered time with time intervals in different weeks`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        val nextWeek = startOfWeek + 2.weeks
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-        clockIn(android, nextWeek)
-        clockOut(android, nextWeek + 10.minutes)
-        val expected = 2
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfDay = setToStartOfDay(Milliseconds.now)
+            val startOfWeek = setToStartOfWeek(startOfDay)
+            val nextWeek = startOfWeek + 2.weeks
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+            clockIn(android, nextWeek)
+            clockOut(android, nextWeek + 10.minutes)
+            val expected = 2
 
-        val actual = countTimeReportWeeks(android)
+            val actual = countTimeReportWeeks(android)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test
     fun `count time report weeks when hiding registered time with registered time interval`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val startOfDay = setToStartOfDay(Milliseconds.now)
-        val startOfWeek = setToStartOfWeek(startOfDay)
-        clockIn(android, startOfWeek)
-        clockOut(android, startOfWeek + 10.minutes)
-            .also { timeInterval ->
-                markRegisteredTime(listOf(timeInterval))
-            }
-        val expected = 0
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val startOfDay = setToStartOfDay(Milliseconds.now)
+            val startOfWeek = setToStartOfWeek(startOfDay)
+            clockIn(android, startOfWeek)
+            clockOut(android, startOfWeek + 10.minutes)
+                .also { timeInterval ->
+                    markRegisteredTime(listOf(timeInterval))
+                }
+            val expected = 0
 
-        val actual = countTimeReportWeeks(android)
+            val actual = countTimeReportWeeks(android)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 }
