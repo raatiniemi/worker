@@ -25,7 +25,7 @@ import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
 
 internal class FirebaseUsageAnalytics(
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val analytics: FirebaseAnalytics
 ) : UsageAnalytics {
     private var lastScreenName: ScreenName = ScreenName.Empty
 
@@ -42,7 +42,7 @@ internal class FirebaseUsageAnalytics(
         lastScreenName = screenName
 
         try {
-            firebaseAnalytics.setCurrentScreen(
+            analytics.setCurrentScreen(
                 fragment.requireActivity(),
                 name(screenName),
                 name(screenName)
@@ -57,7 +57,7 @@ internal class FirebaseUsageAnalytics(
 
     override fun log(event: Event) = runOnMainThread {
         with(event) {
-            firebaseAnalytics.logEvent(
+            analytics.logEvent(
                 name.value.truncate(40),
                 transformToBundle(parameters)
             )
