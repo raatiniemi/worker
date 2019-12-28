@@ -27,40 +27,33 @@ import timber.log.Timber
 internal class FirebaseUsageAnalytics(
     private val firebaseAnalytics: FirebaseAnalytics
 ) : UsageAnalytics {
-    private var lastScreenName: String? = null
+    private var lastScreenName: ScreenName = ScreenName.Empty
 
     @MainThread
     override fun setCurrentScreen(fragment: Fragment) {
-        with(fragment) {
-            // We need to check that the current screen is not the same as the previous
-            // screen since that would cause a warning to be sent to the log.
-            screenName.takeUnless { it == lastScreenName }
-                ?.also { newScreenName ->
-                    Timber.v("Set current screen to: $newScreenName")
-                    lastScreenName = newScreenName
+        // We need to check that the current screen is not the same as the previous
+        // screen since that would cause a warning to be sent to the log.
+        val screenName = screenName(fragment)
+        if (equal(screenName, lastScreenName)) {
+            return
+        }
 
-                    try {
-                        firebaseAnalytics.setCurrentScreen(
-                            requireActivity(),
-                            newScreenName,
-                            newScreenName
-                        )
-                    } catch (e: IllegalStateException) {
-                        Timber.w(
-                            e,
-                            "Unable to set current screen to $newScreenName, no activity is available"
-                        )
-                    }
-                }
+        Timber.v("Set current screen to: $screenName")
+        lastScreenName = screenName
+
+        try {
+            firebaseAnalytics.setCurrentScreen(
+                fragment.requireActivity(),
+                name(screenName),
+                name(screenName)
+            )
+        } catch (e: IllegalStateException) {
+            Timber.w(
+                e,
+                "Unable to set current screen to $screenName, no activity is available"
+            )
         }
     }
-
-    private val Fragment.screenName: String
-        get() {
-            // The simple name needs to be between 1 and 36 characters, due to a limitation from
-            // the `FirebaseAnalytics.setCurrentScreen` method.
-            return javaClass.simpleName.truncate(36)
-        }
 
     override fun log(event: Event) = runOnMainThread {
         with(event) {
