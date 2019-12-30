@@ -70,7 +70,13 @@ internal inline fun requireActivity(
     }
 }
 
-fun Fragment.setTitle(title: String) {
+/**
+ * Set an action bar title for a [Fragment].
+ *
+ * @receiver [Fragment] Fragment on which to set the title.
+ * @param title Title to set in the [Fragment] action bar.
+ */
+internal fun Fragment.setTitle(title: String) {
     try {
         val activity = requireActivity()
         if (activity !is AppCompatActivity) {
