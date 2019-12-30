@@ -22,12 +22,12 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class StringTest {
+class TruncateKtTest {
     @Test
     fun `truncate with empty string`() {
         val expected = ""
 
-        val actual = "".truncate(5)
+        val actual = truncate("", 5)
 
         assertEquals(expected, actual)
     }
@@ -36,7 +36,7 @@ class StringTest {
     fun `truncate with string length below max length`() {
         val expected = "1234"
 
-        val actual = "1234".truncate(5)
+        val actual = truncate("1234", 5)
 
         assertEquals(expected, actual)
     }
@@ -45,7 +45,7 @@ class StringTest {
     fun `truncate with string length above max length`() {
         val expected = "12345"
 
-        val actual = "123456789".truncate(5)
+        val actual = truncate("123456789", 5)
 
         assertEquals(expected, actual)
     }
@@ -54,7 +54,7 @@ class StringTest {
     fun `truncate with max length`() {
         val expected = "12345"
 
-        val actual = "12345".truncate(5)
+        val actual = truncate("12345", 5)
 
         assertEquals(expected, actual)
     }

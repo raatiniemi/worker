@@ -48,5 +48,5 @@ internal fun equal(lhs: ScreenName, rhs: ScreenName): Boolean {
  * Builds a [ScreenName] from a [Fragment].
  */
 internal fun screenName(fragment: Fragment): ScreenName {
-    return ScreenName(fragment.javaClass.simpleName.truncate(ALLOWED_MAX_LENGTH_FOR_SCREEN_NAME))
+    return ScreenName(truncate(fragment.javaClass.simpleName, ALLOWED_MAX_LENGTH_FOR_SCREEN_NAME))
 }

@@ -54,7 +54,7 @@ internal class FirebaseUsageAnalytics(
     override fun log(event: Event) = runOnMainThread {
         with(event) {
             analytics.logEvent(
-                name.value.truncate(40),
+                truncate(name.value, 40),
                 parameters.map { it.key to it.value }
                     .toMap()
                     .let(::bundleOf)

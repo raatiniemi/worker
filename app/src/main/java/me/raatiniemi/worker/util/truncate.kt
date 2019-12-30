@@ -16,10 +16,18 @@
 
 package me.raatiniemi.worker.util
 
-internal fun String.truncate(maxLength: Int): String {
-    if (length <= maxLength) {
-        return this
+/**
+ * Truncates [String] to conform to [maxLength].
+ *
+ * @param s String to truncate.
+ * @param maxLength Allowed max length of string before truncating.
+ *
+ * @return Truncated string, or original value if length is less than or equal to [maxLength].
+ */
+internal fun truncate(s: String, maxLength: Int): String {
+    if (s.length <= maxLength) {
+        return s
     }
 
-    return substring(0, maxLength)
+    return s.substring(0, maxLength)
 }
