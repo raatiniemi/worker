@@ -19,6 +19,7 @@ package me.raatiniemi.worker.feature.shared.view
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
@@ -47,6 +48,26 @@ internal fun <T> Fragment.observeAndConsume(source: ConsumableLiveData<T>, consu
     source.observeAndConsume(viewLifecycleOwner, Observer {
         consumer(it)
     })
+}
+
+/**
+ * Attempt to require activity from fragment and pass it to a consuming closure.
+ *
+ * The function is using explicit inlining in an attempt to not distort the call stack for if
+ * the call to [Fragment.requireActivity] throws an exception.
+ *
+ * @param fragment Fragment from which to require the activity.
+ * @param consumer Closure for consuming the activity.
+ */
+internal inline fun requireActivity(
+    fragment: Fragment,
+    crossinline consumer: (FragmentActivity) -> Unit
+) {
+    try {
+        consumer(fragment.requireActivity())
+    } catch (e: IllegalStateException) {
+        Timber.w(e, "Unable to require activity from fragment: ${fragment.javaClass.simpleName}")
+    }
 }
 
 fun Fragment.setTitle(title: String) {

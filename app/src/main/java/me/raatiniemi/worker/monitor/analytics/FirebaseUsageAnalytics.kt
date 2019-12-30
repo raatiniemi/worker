@@ -20,6 +20,7 @@ import android.os.Bundle
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
+import me.raatiniemi.worker.feature.shared.view.requireActivity
 import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
@@ -38,19 +39,14 @@ internal class FirebaseUsageAnalytics(
             return
         }
 
-        Timber.v("Set current screen to: $screenName")
         lastScreenName = screenName
 
-        try {
+        requireActivity(fragment) { activity ->
+            Timber.v("Set current screen to: $screenName")
             analytics.setCurrentScreen(
-                fragment.requireActivity(),
+                activity,
                 name(screenName),
                 name(screenName)
-            )
-        } catch (e: IllegalStateException) {
-            Timber.w(
-                e,
-                "Unable to set current screen to $screenName, no activity is available"
             )
         }
     }
