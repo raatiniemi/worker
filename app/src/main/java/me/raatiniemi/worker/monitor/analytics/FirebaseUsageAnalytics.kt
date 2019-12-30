@@ -16,11 +16,11 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
-import android.os.Bundle
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import me.raatiniemi.worker.feature.shared.view.requireActivity
+import me.raatiniemi.worker.util.bundleOf
 import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
@@ -55,16 +55,10 @@ internal class FirebaseUsageAnalytics(
         with(event) {
             analytics.logEvent(
                 name.value.truncate(40),
-                transformToBundle(parameters)
+                parameters.map { it.key to it.value }
+                    .toMap()
+                    .let(::bundleOf)
             )
-        }
-    }
-
-    private fun transformToBundle(parameters: List<EventParameter>): Bundle {
-        return Bundle().apply {
-            parameters.forEach { parameter ->
-                putString(parameter.key, parameter.value)
-            }
         }
     }
 }
