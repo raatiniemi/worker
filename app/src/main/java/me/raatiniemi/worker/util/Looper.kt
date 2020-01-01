@@ -24,7 +24,13 @@ import android.os.Looper
 // running on the main thread since we should use `InstantTaskExecutorRule`
 // and `runBlocking` to simulate main thread behavior.
 internal val isMainThread: Boolean
-    get() = Looper.getMainLooper()?.isCurrentThread ?: false
+    get() {
+        return try {
+            Looper.getMainLooper()?.isCurrentThread ?: false
+        } catch (e: NoClassDefFoundError) {
+            false
+        }
+    }
 
 internal fun runOnMainThread(closure: () -> Unit) {
     val mainLooper = Looper.getMainLooper()
