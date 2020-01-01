@@ -144,7 +144,7 @@ play {
 }
 
 dependencies {
-    def roomVersion = '2.2.2'
+    def roomVersion = '2.2.3'
     def lifecycleVersion = '2.1.0'
     def fragmentVersion = '1.1.0'
     def navigationVersion = '2.1.0'
