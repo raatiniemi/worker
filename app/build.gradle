@@ -144,6 +144,7 @@ play {
 }
 
 dependencies {
+    def stethoVersion = '1.5.0'
     def annotationVersion = '1.1.0'
     def appcompatVersion = '1.1.0'
     def constraintLayoutVersion = '1.1.3'
@@ -171,6 +172,8 @@ dependencies {
     def archCoreTestingVersion = '2.1.0'
 
     kapt "androidx.room:room-compiler:$roomVersion"
+
+    debugImplementation "com.facebook.stetho:stetho:$stethoVersion"
 
     implementation project(':core')
     implementation "androidx.annotation:annotation:$annotationVersion"
