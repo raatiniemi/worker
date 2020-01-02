@@ -16,10 +16,18 @@
 
 package me.raatiniemi.worker.util
 
-internal fun String.truncate(maxLength: Int): String {
-    if (length <= maxLength) {
-        return this
-    }
+import android.os.Bundle
 
-    return substring(0, maxLength)
+/**
+ * Builds [Bundle] from [Map] where both key and value is [String].
+ *
+ * @param v Key and value pairs to add to the [Bundle].
+ * @return [Bundle] with included strings from argument.
+ */
+internal fun bundleOf(v: Map<String, String>): Bundle {
+    return Bundle().apply {
+        v.forEach { (key, value) ->
+            putString(key, value)
+        }
+    }
 }

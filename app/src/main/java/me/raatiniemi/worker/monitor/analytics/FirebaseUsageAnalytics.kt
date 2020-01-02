@@ -16,66 +16,49 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
-import android.os.Bundle
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
+import me.raatiniemi.worker.feature.shared.view.requireActivity
+import me.raatiniemi.worker.util.bundleOf
 import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
 
 internal class FirebaseUsageAnalytics(
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val analytics: FirebaseAnalytics
 ) : UsageAnalytics {
-    private var lastScreenName: String? = null
+    private var lastScreenName: ScreenName = ScreenName.Empty
 
     @MainThread
     override fun setCurrentScreen(fragment: Fragment) {
-        with(fragment) {
-            // We need to check that the current screen is not the same as the previous
-            // screen since that would cause a warning to be sent to the log.
-            screenName.takeUnless { it == lastScreenName }
-                ?.also { newScreenName ->
-                    Timber.v("Set current screen to: $newScreenName")
-                    lastScreenName = newScreenName
-
-                    try {
-                        firebaseAnalytics.setCurrentScreen(
-                            requireActivity(),
-                            newScreenName,
-                            newScreenName
-                        )
-                    } catch (e: IllegalStateException) {
-                        Timber.w(
-                            e,
-                            "Unable to set current screen to $newScreenName, no activity is available"
-                        )
-                    }
-                }
-        }
-    }
-
-    private val Fragment.screenName: String
-        get() {
-            // The simple name needs to be between 1 and 36 characters, due to a limitation from
-            // the `FirebaseAnalytics.setCurrentScreen` method.
-            return javaClass.simpleName.truncate(36)
+        // We need to check that the current screen is not the same as the previous
+        // screen since that would cause a warning to be sent to the log.
+        val screenName = screenName(fragment)
+        if (equal(screenName, lastScreenName)) {
+            return
         }
 
-    override fun log(event: Event) = runOnMainThread {
-        with(event) {
-            firebaseAnalytics.logEvent(
-                name.value.truncate(40),
-                transformToBundle(parameters)
+        lastScreenName = screenName
+
+        requireActivity(fragment) { activity ->
+            Timber.v("Set current screen to: $screenName")
+            analytics.setCurrentScreen(
+                activity,
+                name(screenName),
+                name(screenName)
             )
         }
     }
 
-    private fun transformToBundle(parameters: List<EventParameter>): Bundle {
-        return Bundle().apply {
-            parameters.forEach { parameter ->
-                putString(parameter.key, parameter.value)
-            }
+    override fun log(event: Event) = runOnMainThread {
+        with(event) {
+            analytics.logEvent(
+                truncate(name.value, 40),
+                parameters.map { it.key to it.value }
+                    .toMap()
+                    .let(::bundleOf)
+            )
         }
     }
 }

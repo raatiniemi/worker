@@ -19,6 +19,7 @@ package me.raatiniemi.worker.feature.shared.view
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
@@ -49,23 +50,48 @@ internal fun <T> Fragment.observeAndConsume(source: ConsumableLiveData<T>, consu
     })
 }
 
-fun Fragment.setTitle(title: String) {
+/**
+ * Attempt to require activity from fragment and pass it to a consuming closure.
+ *
+ * The function is using explicit inlining in an attempt to not distort the call stack for if
+ * the call to [Fragment.requireActivity] throws an exception.
+ *
+ * @param fragment Fragment from which to require the activity.
+ * @param consumer Closure for consuming the activity.
+ */
+internal inline fun requireActivity(
+    fragment: Fragment,
+    crossinline consumer: (FragmentActivity) -> Unit
+) {
     try {
-        val activity = requireActivity()
-        if (activity !is AppCompatActivity) {
-            Timber.w("Unable to set title from fragment, activity is not of type `AppCompatActivity`")
-            return
-        }
-
-        val supportActionBar = activity.supportActionBar
-        if (supportActionBar == null) {
-            Timber.w("Unable to set title from fragment, no support action bar is configured")
-            return
-        }
-
-        supportActionBar.title = title
+        consumer(fragment.requireActivity())
     } catch (e: IllegalStateException) {
-        Timber.w(e, "Unable to set title from fragment without activity")
+        Timber.w(e, "Unable to require activity from fragment: ${fragment.javaClass.simpleName}")
+    }
+}
+
+/**
+ * Set an action bar title for a [Fragment].
+ *
+ * @receiver [Fragment] Fragment on which to set the title.
+ * @param title Title to set in the [Fragment] action bar.
+ */
+internal fun Fragment.setTitle(title: String) {
+    requireActivity(this) { activity ->
+        try {
+            check(activity is AppCompatActivity) {
+                "Unexpected type of activity: ${activity.javaClass.simpleName}"
+            }
+            val supportActionBar = requireNotNull(activity.supportActionBar) {
+                "No action bar is configured"
+            }
+
+            supportActionBar.title = title
+        } catch (e: IllegalStateException) {
+            Timber.w(e, "Unable to set title on fragment")
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e, "Unable to set title on fragment")
+        }
     }
 }
 
