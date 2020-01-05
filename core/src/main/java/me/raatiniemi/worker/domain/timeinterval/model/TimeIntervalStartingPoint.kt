@@ -17,27 +17,26 @@
 package me.raatiniemi.worker.domain.timeinterval.model
 
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.calendar
+import me.raatiniemi.worker.domain.time.setToStartOfDay
 import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import java.util.*
 
 enum class TimeIntervalStartingPoint(val rawValue: Int) {
     DAY(0), WEEK(1), MONTH(2);
 
-    fun calculateMilliseconds() = Calendar.getInstance().run {
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
+    fun calculateMilliseconds(): Milliseconds {
+        val calendar = calendar {
+            it.timeInMillis = setToStartOfDay(Milliseconds.now).value
 
-        when (this@TimeIntervalStartingPoint) {
-            DAY -> Unit
-            WEEK -> {
-                firstDayOfWeek = Calendar.MONDAY
-                set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            when (this) {
+                DAY -> Unit
+                WEEK -> it.set(Calendar.DAY_OF_WEEK, it.firstDayOfWeek)
+                MONTH -> it.set(Calendar.DAY_OF_MONTH, 1)
             }
-            MONTH -> set(Calendar.DAY_OF_MONTH, 1)
         }
-        Milliseconds(timeInMillis)
+
+        return Milliseconds(calendar.timeInMillis)
     }
 
     companion object {

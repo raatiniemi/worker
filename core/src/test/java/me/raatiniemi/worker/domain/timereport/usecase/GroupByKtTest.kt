@@ -171,6 +171,55 @@ class GroupByKtTest {
     }
 
     @Test
+    fun `group by week with time intervals using fixed values within same week`() {
+        val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        val timeIntervals = listOf(
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = startOfWeek
+                builder.stop = startOfWeek + 10.minutes
+            },
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = endOfWeek
+                builder.stop = endOfWeek + 10.minutes
+            }
+        )
+        val expected = listOf(
+            timeReportWeek(
+                startOfWeek,
+                listOf(
+                    timeReportDay(
+                        endOfWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(2)
+                                builder.start = endOfWeek
+                                builder.stop = endOfWeek + 10.minutes
+                            }
+                        )
+                    ),
+                    timeReportDay(
+                        startOfWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(1)
+                                builder.start = startOfWeek
+                                builder.stop = startOfWeek + 10.minutes
+                            }
+                        )
+                    )
+                )
+            )
+        )
+
+        val actual = groupByWeek(timeIntervals)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `group by week with time intervals in different weeks`() {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
@@ -213,6 +262,129 @@ class GroupByKtTest {
                                 builder.id = TimeIntervalId(1)
                                 builder.start = startOfWeek
                                 builder.stop = startOfWeek + 10.minutes
+                            }
+                        )
+                    )
+                )
+            )
+        )
+
+        val actual = groupByWeek(timeIntervals)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `group by week with time intervals during three weeks over new year`() {
+        val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
+        val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
+        val thirdInSecondWeek = Milliseconds(1577985643000) // 2020-01-02 17:20:43
+        val fourthInSecondWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        val startOfThirdWeek = Milliseconds(1578297584000) // 2020-01-06 07:59:44
+        val timeIntervals = listOf(
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(1)
+                builder.start = endOfFirstWeek
+                builder.stop = endOfFirstWeek + 10.minutes
+            },
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(2)
+                builder.start = firstInSecondWeek
+                builder.stop = firstInSecondWeek + 10.minutes
+            },
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(3)
+                builder.start = secondInSecondWeek
+                builder.stop = secondInSecondWeek + 10.minutes
+            },
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(4)
+                builder.start = thirdInSecondWeek
+                builder.stop = thirdInSecondWeek + 10.minutes
+            },
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(5)
+                builder.start = fourthInSecondWeek
+                builder.stop = fourthInSecondWeek + 10.minutes
+            },
+            timeInterval(android.id) { builder ->
+                builder.id = TimeIntervalId(6)
+                builder.start = startOfThirdWeek
+                builder.stop = startOfThirdWeek + 10.minutes
+            }
+        )
+        val expected = listOf(
+            timeReportWeek(
+                startOfThirdWeek,
+                listOf(
+                    timeReportDay(
+                        startOfThirdWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(6)
+                                builder.start = startOfThirdWeek
+                                builder.stop = startOfThirdWeek + 10.minutes
+                            }
+                        )
+                    )
+                )
+            ),
+            timeReportWeek(
+                firstInSecondWeek,
+                listOf(
+                    timeReportDay(
+                        fourthInSecondWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(5)
+                                builder.start = fourthInSecondWeek
+                                builder.stop = fourthInSecondWeek + 10.minutes
+                            }
+                        )
+                    ),
+                    timeReportDay(
+                        thirdInSecondWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(4)
+                                builder.start = thirdInSecondWeek
+                                builder.stop = thirdInSecondWeek + 10.minutes
+                            }
+                        )
+                    ),
+                    timeReportDay(
+                        secondInSecondWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(3)
+                                builder.start = secondInSecondWeek
+                                builder.stop = secondInSecondWeek + 10.minutes
+                            }
+                        )
+                    ),
+                    timeReportDay(
+                        firstInSecondWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(2)
+                                builder.start = firstInSecondWeek
+                                builder.stop = firstInSecondWeek + 10.minutes
+                            }
+                        )
+                    )
+                )
+            ),
+            timeReportWeek(
+                endOfFirstWeek,
+                listOf(
+                    timeReportDay(
+                        endOfFirstWeek,
+                        listOf(
+                            timeInterval(android.id) { builder ->
+                                builder.id = TimeIntervalId(1)
+                                builder.start = endOfFirstWeek
+                                builder.stop = endOfFirstWeek + 10.minutes
                             }
                         )
                     )

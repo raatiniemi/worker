@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.time
 
-import me.raatiniemi.worker.domain.date.plus
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,13 +27,11 @@ class SetToPointInTimeKtTest {
     @Test
     fun `set to start of day`() {
         val now = Milliseconds.now
-        val startOfDay = setToStartOfDay(now).let { milliseconds ->
-            Calendar.getInstance()
-                .apply { time = Date(milliseconds.value) }
+        val startOfDay = calendar {
+            it.timeInMillis = setToStartOfDay(now).value
         }
-        val endOfDay = setToStartOfDay(now).let { milliseconds ->
-            Calendar.getInstance()
-                .apply { time = Date(milliseconds.value) + 23.hours + 59.minutes + 59.seconds }
+        val endOfDay = calendar {
+            it.timeInMillis = setToStartOfDay(now).value + 23.hours + 59.minutes + 59.seconds
         }
 
         val expected = startOfDay.get(Calendar.DAY_OF_WEEK)
@@ -46,13 +43,11 @@ class SetToPointInTimeKtTest {
     @Test
     fun `set to start and end of week`() {
         val now = Milliseconds.now
-        val startOfWeek = setToStartOfWeek(now).let { milliseconds ->
-            Calendar.getInstance()
-                .apply { time = Date(milliseconds.value) }
+        val startOfWeek = calendar {
+            it.timeInMillis = setToStartOfWeek(now).value
         }
-        val endOfWeek = setToEndOfWeek(now).let { milliseconds ->
-            Calendar.getInstance()
-                .apply { time = Date(milliseconds.value) }
+        val endOfWeek = calendar {
+            it.timeInMillis = setToEndOfWeek(now).value
         }
 
         val expected = startOfWeek.get(Calendar.WEEK_OF_YEAR)

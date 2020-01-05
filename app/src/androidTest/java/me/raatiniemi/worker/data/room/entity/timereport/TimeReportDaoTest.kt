@@ -197,6 +197,80 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun countWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+        val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfWeek.value
+                stopInMilliseconds = endOfWeek.value + 10.minutes
+            }
+        )
+        val expected = 1
+
+        val actual = timeReport.countWeeks(android.id.value)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+        val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
+        val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
+        val thirdInSecondWeek = Milliseconds(1577985643000) // 2020-01-02 17:20:43
+        val fourthInSecondWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        val startOfThirdWeek = Milliseconds(1578297584000) // 2020-01-06 07:59:44
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfFirstWeek.value
+                stopInMilliseconds = endOfFirstWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = firstInSecondWeek.value
+                stopInMilliseconds = firstInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = secondInSecondWeek.value
+                stopInMilliseconds = secondInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = thirdInSecondWeek.value
+                stopInMilliseconds = thirdInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = fourthInSecondWeek.value
+                stopInMilliseconds = fourthInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfThirdWeek.value
+                stopInMilliseconds = startOfThirdWeek.value + 10.minutes
+            }
+        )
+        val expected = 3
+
+        val actual = timeReport.countWeeks(android.id.value)
+
+        assertEquals(expected, actual)
+    }
+
     // Count not registered weeks
 
     @Test
@@ -321,6 +395,80 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
             }
         )
         val expected = 0
+
+        val actual = timeReport.countNotRegisteredWeeks(android.id.value)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegisteredWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+        val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfWeek.value
+                stopInMilliseconds = endOfWeek.value + 10.minutes
+            }
+        )
+        val expected = 1
+
+        val actual = timeReport.countNotRegisteredWeeks(android.id.value)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+        val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
+        val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
+        val thirdInSecondWeek = Milliseconds(1577985643000) // 2020-01-02 17:20:43
+        val fourthInSecondWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        val startOfThirdWeek = Milliseconds(1578297584000) // 2020-01-06 07:59:44
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfFirstWeek.value
+                stopInMilliseconds = endOfFirstWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = firstInSecondWeek.value
+                stopInMilliseconds = firstInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = secondInSecondWeek.value
+                stopInMilliseconds = secondInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = thirdInSecondWeek.value
+                stopInMilliseconds = thirdInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = fourthInSecondWeek.value
+                stopInMilliseconds = fourthInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfThirdWeek.value
+                stopInMilliseconds = startOfThirdWeek.value + 10.minutes
+            }
+        )
+        val expected = 3
 
         val actual = timeReport.countNotRegisteredWeeks(android.id.value)
 
@@ -532,6 +680,86 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun findWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+        val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfWeek.value
+                stopInMilliseconds = endOfWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfWeek.value, "1,2")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+        val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
+        val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
+        val thirdInSecondWeek = Milliseconds(1577985643000) // 2020-01-02 17:20:43
+        val fourthInSecondWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        val startOfThirdWeek = Milliseconds(1578297584000) // 2020-01-06 07:59:44
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfFirstWeek.value
+                stopInMilliseconds = endOfFirstWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = firstInSecondWeek.value
+                stopInMilliseconds = firstInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = secondInSecondWeek.value
+                stopInMilliseconds = secondInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = thirdInSecondWeek.value
+                stopInMilliseconds = thirdInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = fourthInSecondWeek.value
+                stopInMilliseconds = fourthInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfThirdWeek.value
+                stopInMilliseconds = startOfThirdWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfThirdWeek.value, "6"),
+            TimeReportQueryGroup(firstInSecondWeek.value, "2,3,4,5"),
+            TimeReportQueryGroup(endOfFirstWeek.value, "1")
+        )
+
+        val actual = timeReport.findWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
     // Find not registered weeks
 
     @Test
@@ -731,6 +959,86 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
         )
 
         val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withTimeIntervalsUsingFixedValuesWithinSameWeek() {
+        val startOfWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val endOfWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfWeek.value
+                stopInMilliseconds = startOfWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfWeek.value
+                stopInMilliseconds = endOfWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfWeek.value, "1,2")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear() {
+        val endOfFirstWeek = Milliseconds(1577606247000) // 2019-12-29 07:57:27
+        val firstInSecondWeek = Milliseconds(1577690413000) // 2019-12-30 07:20:13
+        val secondInSecondWeek = Milliseconds(1577779099000) // 2019-12-31 07:58:19
+        val thirdInSecondWeek = Milliseconds(1577985643000) // 2020-01-02 17:20:43
+        val fourthInSecondWeek = Milliseconds(1578211149000) // 2020-01-05 07:59:09
+        val startOfThirdWeek = Milliseconds(1578297584000) // 2020-01-06 07:59:44
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = endOfFirstWeek.value
+                stopInMilliseconds = endOfFirstWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = firstInSecondWeek.value
+                stopInMilliseconds = firstInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = secondInSecondWeek.value
+                stopInMilliseconds = secondInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = thirdInSecondWeek.value
+                stopInMilliseconds = thirdInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = fourthInSecondWeek.value
+                stopInMilliseconds = fourthInSecondWeek.value + 10.minutes
+            }
+        )
+        timeIntervals.add(
+            timeIntervalEntity {
+                startInMilliseconds = startOfThirdWeek.value
+                stopInMilliseconds = startOfThirdWeek.value + 10.minutes
+            }
+        )
+        val expected = listOf(
+            TimeReportQueryGroup(startOfThirdWeek.value, "6"),
+            TimeReportQueryGroup(firstInSecondWeek.value, "2,3,4,5"),
+            TimeReportQueryGroup(endOfFirstWeek.value, "1")
+        )
+
+        val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)
 
         assertEquals(expected, actual)
     }
