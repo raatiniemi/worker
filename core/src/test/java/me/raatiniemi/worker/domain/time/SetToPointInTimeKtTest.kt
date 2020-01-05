@@ -48,11 +48,17 @@ class SetToPointInTimeKtTest {
         val now = Milliseconds.now
         val startOfWeek = setToStartOfWeek(now).let { milliseconds ->
             Calendar.getInstance()
-                .apply { time = Date(milliseconds.value) }
+                .apply {
+                    firstDayOfWeek = Calendar.MONDAY
+                    time = Date(milliseconds.value)
+                }
         }
         val endOfWeek = setToEndOfWeek(now).let { milliseconds ->
             Calendar.getInstance()
-                .apply { time = Date(milliseconds.value) }
+                .apply {
+                    firstDayOfWeek = Calendar.MONDAY
+                    time = Date(milliseconds.value)
+                }
         }
 
         val expected = startOfWeek.get(Calendar.WEEK_OF_YEAR)

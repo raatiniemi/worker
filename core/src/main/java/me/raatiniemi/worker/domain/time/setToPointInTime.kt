@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.time
 
-import java.time.DayOfWeek
 import java.util.*
 
 /**
@@ -57,16 +56,14 @@ fun setToStartOfWeek(
     milliseconds: Milliseconds,
     timeZone: TimeZone = TimeZone.getDefault()
 ): Milliseconds {
+    val startOfDay = setToStartOfDay(milliseconds, timeZone)
     return Calendar.getInstance()
-        .apply { timeInMillis = milliseconds.value }
+        .apply {
+            timeInMillis = startOfDay.value
+            firstDayOfWeek = Calendar.MONDAY
+        }
         .also { calendar ->
-            calendar.firstDayOfWeek = DayOfWeek.MONDAY.value
-            calendar.set(Calendar.DAY_OF_WEEK, DayOfWeek.MONDAY.value)
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            calendar.timeZone = timeZone
+            calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
         }
         .let { Milliseconds(it.time.time) }
 }
