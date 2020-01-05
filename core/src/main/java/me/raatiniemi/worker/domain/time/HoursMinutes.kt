@@ -85,25 +85,25 @@ fun hoursMinutes(hours: Hours, minutes: Minutes): HoursMinutes {
 }
 
 fun date(date: Date, hoursMinutes: HoursMinutes): Date {
-    return Calendar.getInstance()
-        .also { it.timeInMillis = date.time }
-        .apply {
-            val (hours, minutes) = hoursMinutes
-            set(Calendar.HOUR_OF_DAY, hours.toInt())
-            set(Calendar.MINUTE, minutes.toInt())
-        }
-        .run { time }
+    val calendar = calendar {
+        it.timeInMillis = date.time
+        val (hours, minutes) = hoursMinutes
+        it.set(Calendar.HOUR_OF_DAY, hours.toInt())
+        it.set(Calendar.MINUTE, minutes.toInt())
+    }
+
+    return calendar.time
 }
 
 fun hoursMinutes(date: Date): HoursMinutes {
-    return Calendar.getInstance()
-        .also { it.timeInMillis = date.time }
-        .run {
-            hoursMinutes(
-                hours = Hours(get(Calendar.HOUR_OF_DAY)),
-                minutes = Minutes(get(Calendar.MINUTE))
-            )
-        }
+    val calendar = calendar {
+        it.timeInMillis = date.time
+    }
+
+    return hoursMinutes(
+        hours = Hours(calendar.get(Calendar.HOUR_OF_DAY)),
+        minutes = Minutes(calendar.get(Calendar.MINUTE))
+    )
 }
 
 fun Collection<HoursMinutes>.accumulated(): HoursMinutes {

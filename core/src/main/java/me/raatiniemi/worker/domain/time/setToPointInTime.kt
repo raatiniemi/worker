@@ -31,16 +31,16 @@ fun setToStartOfDay(
     milliseconds: Milliseconds,
     timeZone: TimeZone = TimeZone.getDefault()
 ): Milliseconds {
-    return Calendar.getInstance()
-        .apply { timeInMillis = milliseconds.value }
-        .also { calendar ->
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            calendar.timeZone = timeZone
-        }
-        .let { Milliseconds(it.time.time) }
+    val calendar = calendar {
+        it.timeInMillis = milliseconds.value
+        it.set(Calendar.HOUR_OF_DAY, 0)
+        it.set(Calendar.MINUTE, 0)
+        it.set(Calendar.SECOND, 0)
+        it.set(Calendar.MILLISECOND, 0)
+        it.timeZone = timeZone
+    }
+
+    return Milliseconds(calendar.time.time)
 }
 
 /**
@@ -57,15 +57,12 @@ fun setToStartOfWeek(
     timeZone: TimeZone = TimeZone.getDefault()
 ): Milliseconds {
     val startOfDay = setToStartOfDay(milliseconds, timeZone)
-    return Calendar.getInstance()
-        .apply {
-            timeInMillis = startOfDay.value
-            firstDayOfWeek = Calendar.MONDAY
-        }
-        .also { calendar ->
-            calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
-        }
-        .let { Milliseconds(it.time.time) }
+    val calendar = calendar {
+        it.timeInMillis = startOfDay.value
+        it.set(Calendar.DAY_OF_WEEK, it.firstDayOfWeek)
+    }
+
+    return Milliseconds(calendar.time.time)
 }
 
 /**

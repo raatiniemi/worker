@@ -33,25 +33,25 @@ fun yearsMonthsDays(years: Years, months: Months, days: Days): YearsMonthsDays {
 }
 
 fun date(date: Date, yearsMonthsDays: YearsMonthsDays): Date {
-    return Calendar.getInstance()
-        .also { it.timeInMillis = date.time }
-        .apply {
-            val (years, months, days) = yearsMonthsDays
-            set(Calendar.YEAR, years.value)
-            set(Calendar.MONTH, months.value)
-            set(Calendar.DAY_OF_MONTH, days.value)
-        }
-        .run { time }
+    val calendar = calendar {
+        it.timeInMillis = date.time
+        val (years, months, days) = yearsMonthsDays
+        it.set(Calendar.YEAR, years.value)
+        it.set(Calendar.MONTH, months.value)
+        it.set(Calendar.DAY_OF_MONTH, days.value)
+    }
+
+    return calendar.time
 }
 
 fun yearsMonthsDays(date: Date): YearsMonthsDays {
-    return Calendar.getInstance()
-        .also { it.timeInMillis = date.time }
-        .run {
-            YearsMonthsDays(
-                years = Years(get(Calendar.YEAR)),
-                months = Months(get(Calendar.MONTH)),
-                days = Days(get(Calendar.DAY_OF_MONTH))
-            )
-        }
+    val calendar = calendar {
+        it.timeInMillis = date.time
+    }
+
+    return YearsMonthsDays(
+        years = Years(calendar.get(Calendar.YEAR)),
+        months = Months(calendar.get(Calendar.MONTH)),
+        days = Days(calendar.get(Calendar.DAY_OF_MONTH))
+    )
 }
