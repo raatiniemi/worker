@@ -16,13 +16,44 @@
 
 package me.raatiniemi.worker
 
-import com.facebook.stetho.Stetho
+import com.facebook.flipper.android.AndroidFlipperClient
+import com.facebook.flipper.android.utils.FlipperUtils
+import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin
+import com.facebook.flipper.plugins.inspector.DescriptorMapping
+import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
+import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
+import com.facebook.soloader.SoLoader
+
 
 @Suppress("unused")
 class WorkerApplicationDebug : WorkerApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        Stetho.initializeWithDefaults(this)
+        configureFlipper()
+    }
+
+    private fun configureFlipper() {
+        SoLoader.init(this, false)
+
+        if (FlipperUtils.shouldEnableFlipper(this)) {
+            val client = AndroidFlipperClient.getInstance(this)
+            client.addPlugin(configureLayoutInspectorPlugin())
+            client.addPlugin(configureDatabasePlugin())
+            client.addPlugin(configureSharedPreferencesPlugin())
+            client.start()
+        }
+    }
+
+    private fun configureLayoutInspectorPlugin(): InspectorFlipperPlugin {
+        return InspectorFlipperPlugin(this, DescriptorMapping.withDefaults())
+    }
+
+    private fun configureDatabasePlugin(): DatabasesFlipperPlugin {
+        return DatabasesFlipperPlugin(this)
+    }
+
+    private fun configureSharedPreferencesPlugin(): SharedPreferencesFlipperPlugin {
+        return SharedPreferencesFlipperPlugin(this)
     }
 }
