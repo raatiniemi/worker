@@ -24,7 +24,6 @@ import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
 
-
 @Suppress("unused")
 class WorkerApplicationDebug : WorkerApplication() {
     override fun onCreate() {

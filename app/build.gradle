@@ -75,6 +75,7 @@ android {
     }
     buildTypes {
         debug {
+            applicationIdSuffix = '.debug'
             manifestPlaceholders = [enableCrashReporting: "false"]
         }
         release {
