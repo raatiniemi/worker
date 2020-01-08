@@ -26,7 +26,7 @@ internal interface TimeReportDao {
             FROM (SELECT _id
                 FROM time_intervals
                 WHERE project_id = :projectId
-                GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch'), '-6 days', 'weekday 1'))"""
+                GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime'))"""
     )
     fun countWeeks(projectId: Long): Int
 
@@ -36,7 +36,7 @@ internal interface TimeReportDao {
                 FROM time_intervals
                 WHERE project_id = :projectId
                     AND registered = 0
-                GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch'), '-6 days', 'weekday 1'))"""
+                GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime'))"""
     )
     fun countNotRegisteredWeeks(projectId: Long): Int
 
@@ -46,7 +46,7 @@ internal interface TimeReportDao {
             GROUP_CONCAT(_id) as ids
             FROM time_intervals
             WHERE project_id = :projectId
-            GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch'), '-6 days', 'weekday 1')
+            GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime')
             ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
             LIMIT :position, :pageSize"""
     )
@@ -59,7 +59,7 @@ internal interface TimeReportDao {
             FROM time_intervals
             WHERE project_id = :projectId
                 AND registered = 0
-            GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch'), '-6 days', 'weekday 1')
+            GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime')
             ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
             LIMIT :position, :pageSize"""
     )

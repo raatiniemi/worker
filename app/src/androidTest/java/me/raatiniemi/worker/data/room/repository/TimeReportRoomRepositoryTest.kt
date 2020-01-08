@@ -47,9 +47,6 @@ import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
 import org.koin.test.inject
-import java.util.*
-
-private val timeZone = TimeZone.getTimeZone("UTC")
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
@@ -89,7 +86,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withoutTimeIntervalForProject() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
         val expected = 0
@@ -101,7 +98,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
         val expected = 1
@@ -113,7 +110,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeIntervals() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
         clockIn(android, startOfDay + 20.minutes)
@@ -127,9 +124,9 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeIntervalsWithinSameWeek() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
@@ -143,8 +140,8 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeIntervalsInDifferentWeeks() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
@@ -159,8 +156,8 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withRegisteredTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
             .also { timeInterval ->
@@ -228,7 +225,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withoutTimeIntervalForProject() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
         val expected = 0
@@ -240,7 +237,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
         val expected = 1
@@ -252,7 +249,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeIntervals() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         clockIn(android, startOfDay)
         clockOut(android, startOfDay + 10.minutes)
         clockIn(android, startOfDay + 20.minutes)
@@ -266,9 +263,9 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
@@ -282,8 +279,8 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 2.weeks
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
@@ -298,8 +295,8 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withRegisteredTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
             .also { timeInterval ->

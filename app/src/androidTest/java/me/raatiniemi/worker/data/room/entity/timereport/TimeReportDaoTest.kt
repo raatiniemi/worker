@@ -39,8 +39,6 @@ import org.koin.test.get
 import org.koin.test.inject
 import java.util.*
 
-private val timeZone = TimeZone.getTimeZone("UTC")
-
 @RunWith(AndroidJUnit4::class)
 class TimeReportDaoTest : AutoCloseKoinTest() {
     private val database by inject<Database>()
@@ -80,7 +78,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withoutTimeIntervalForProject() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -96,7 +94,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -112,7 +110,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeIntervals() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -134,9 +132,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeIntervalsWithinSameWeek() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -158,9 +156,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withTimeIntervalsInDifferentWeeks() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -182,7 +180,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countWeeks_withRegisteredTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -284,7 +282,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withoutTimeIntervalForProject() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -300,7 +298,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -316,7 +314,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeIntervals() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -338,9 +336,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeIntervalsWithinSameWeek() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -362,9 +360,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withTimeIntervalsInDifferentWeeks() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -386,7 +384,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun countNotRegisteredWeeks_withRegisteredTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -488,7 +486,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_withoutTimeIntervalForProject() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -504,7 +502,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_withTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -522,7 +520,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_withTimeIntervals() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -546,9 +544,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_withTimeIntervalWithinSameWeek() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -572,8 +570,8 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_withTimeIntervalInDifferentWeeks() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
         val nextWeek = startOfWeek + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
@@ -599,7 +597,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_withRegisteredTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -618,9 +616,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_whenExcludingByLoadPosition() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -650,9 +648,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findWeeks_whenExcludingByLoadSize() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -773,7 +771,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_withoutTimeIntervalForProject() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -789,7 +787,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_withTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -807,7 +805,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_withTimeIntervals() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -831,9 +829,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_withTimeIntervalWithinSameWeek() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val endOfWeek = setToEndOfWeek(startOfDay, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -857,9 +855,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_withTimeIntervalInDifferentWeeks() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -884,7 +882,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_withRegisteredTimeInterval() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
+        val startOfDay = setToStartOfDay(Milliseconds.now)
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfDay.value
@@ -901,9 +899,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_whenExcludingByLoadPosition() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value
@@ -933,9 +931,9 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
 
     @Test
     fun findNotRegisteredWeeks_whenExcludingByLoadSize() {
-        val startOfDay = setToStartOfDay(Milliseconds.now, timeZone)
-        val startOfWeek = setToStartOfWeek(startOfDay, timeZone)
-        val nextWeek = setToEndOfWeek(startOfDay, timeZone) + 1.weeks
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val startOfWeek = setToStartOfWeek(startOfDay)
+        val nextWeek = setToEndOfWeek(startOfDay) + 1.weeks
         timeIntervals.add(
             timeIntervalEntity {
                 startInMilliseconds = startOfWeek.value

@@ -23,21 +23,16 @@ import java.util.*
  * the hour, minute, second and millisecond.
  *
  * @param milliseconds Milliseconds timestamp to rewind.
- * @param timeZone Time zone used when rewinding.
  *
  * @return Rewound milliseconds timestamp.
  */
-fun setToStartOfDay(
-    milliseconds: Milliseconds,
-    timeZone: TimeZone = TimeZone.getDefault()
-): Milliseconds {
+fun setToStartOfDay(milliseconds: Milliseconds): Milliseconds {
     val calendar = calendar {
         it.timeInMillis = milliseconds.value
         it.set(Calendar.HOUR_OF_DAY, 0)
         it.set(Calendar.MINUTE, 0)
         it.set(Calendar.SECOND, 0)
         it.set(Calendar.MILLISECOND, 0)
-        it.timeZone = timeZone
     }
 
     return Milliseconds(calendar.time.time)
@@ -48,15 +43,11 @@ fun setToStartOfDay(
  * the hour, minute, second and millisecond.
  *
  * @param milliseconds Milliseconds timestamp to rewind.
- * @param timeZone Time zone used when rewinding.
  *
  * @return Rewound milliseconds timestamp.
  */
-fun setToStartOfWeek(
-    milliseconds: Milliseconds,
-    timeZone: TimeZone = TimeZone.getDefault()
-): Milliseconds {
-    val startOfDay = setToStartOfDay(milliseconds, timeZone)
+fun setToStartOfWeek(milliseconds: Milliseconds): Milliseconds {
+    val startOfDay = setToStartOfDay(milliseconds)
     val calendar = calendar {
         it.timeInMillis = startOfDay.value
         it.set(Calendar.DAY_OF_WEEK, it.firstDayOfWeek)
@@ -70,13 +61,9 @@ fun setToStartOfWeek(
  * the hour, minute, second and millisecond.
  *
  * @param milliseconds Milliseconds timestamp to forward.
- * @param timeZone Time zone used when forwarding.
  *
  * @return Forwarded milliseconds timestamp.
  */
-fun setToEndOfWeek(
-    milliseconds: Milliseconds,
-    timeZone: TimeZone = TimeZone.getDefault()
-): Milliseconds {
-    return (setToStartOfWeek(milliseconds, timeZone) + 1.weeks) - 1.seconds
+fun setToEndOfWeek(milliseconds: Milliseconds): Milliseconds {
+    return (setToStartOfWeek(milliseconds) + 1.weeks) - 1.seconds
 }
