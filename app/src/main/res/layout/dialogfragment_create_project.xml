@@ -61,24 +61,22 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDismiss"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/btnCreate"
         android:text="@string/projects_create_dismiss"
-        android:textColor="@drawable/button_foreground"
         app:layout_constraintEnd_toStartOf="@id/btnCreate"
         app:layout_constraintTop_toTopOf="@id/btnCreate" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCreate"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="@string/projects_create_submit"
-        android:textColor="@drawable/button_foreground"
         android:enabled="false"
         app:layout_constraintEnd_toEndOf="@id/tilProjectName"
         app:layout_constraintTop_toBottomOf="@id/tilProjectName" />
