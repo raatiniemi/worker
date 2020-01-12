@@ -44,6 +44,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
 import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
@@ -58,7 +59,7 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     private val clockOut by inject<ClockOut>()
     private val markRegisteredTime by inject<MarkRegisteredTime>()
 
-    private val dataSource by inject<TimeReportWeekDataSource>()
+    private lateinit var dataSource: TimeReportWeekDataSource
 
     @Before
     fun setUp() {
@@ -66,6 +67,13 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
         startKoin {
             loadKoinModules(androidTestKoinModules + inMemorySharedTest)
         }
+
+        val factory = TimeReportWeekDataSource.Factory(
+            projectProvider = get(),
+            countTimeReportWeeks = get(),
+            findTimeReportWeeks = get()
+        )
+        dataSource = factory.create()
     }
 
     // Load initial

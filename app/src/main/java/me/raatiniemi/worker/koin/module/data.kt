@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.koin.module
 
 import androidx.room.Room
-import me.raatiniemi.worker.data.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.data.room.migration.Migration1To2
 import me.raatiniemi.worker.data.room.migration.Migration2To3
@@ -54,13 +53,5 @@ internal val data = module {
         val database: Database = get()
 
         TimeReportRoomRepository(database.timeReport(), database.timeIntervals())
-    }
-
-    single {
-        TimeReportWeekDataSource.Factory(
-            projectProvider = get(),
-            countTimeReportWeeks = get(),
-            findTimeReportWeeks = get()
-        )
     }
 }

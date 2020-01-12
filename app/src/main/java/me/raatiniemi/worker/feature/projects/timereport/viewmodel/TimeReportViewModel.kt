@@ -35,6 +35,9 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
+import me.raatiniemi.worker.feature.projects.model.ProjectProvider
 import me.raatiniemi.worker.feature.projects.timereport.model.*
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
@@ -46,7 +49,9 @@ import timber.log.Timber
 internal class TimeReportViewModel internal constructor(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    dataSourceFactory: TimeReportWeekDataSource.Factory,
+    projectProvider: ProjectProvider,
+    countTimeReportWeeks: CountTimeReportWeeks,
+    findTimeReportWeeks: FindTimeReportWeeks,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
@@ -75,7 +80,13 @@ internal class TimeReportViewModel internal constructor(
             .setEnablePlaceholders(true)
             .build()
 
-        weeks = LivePagedListBuilder(dataSourceFactory, config).build()
+        val factory = TimeReportWeekDataSource.Factory(
+            projectProvider = projectProvider,
+            countTimeReportWeeks = countTimeReportWeeks,
+            findTimeReportWeeks = findTimeReportWeeks
+        )
+
+        weeks = LivePagedListBuilder(factory, config).build()
     }
 
     fun reloadTimeReport() {

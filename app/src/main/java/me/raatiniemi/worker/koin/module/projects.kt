@@ -64,7 +64,9 @@ internal val projects = module {
         TimeReportViewModel(
             keyValueStore = get(),
             usageAnalytics = get(),
-            dataSourceFactory = get(),
+            projectProvider = get(),
+            countTimeReportWeeks = get(),
+            findTimeReportWeeks = get(),
             markRegisteredTime = get(),
             removeTime = get()
         )
