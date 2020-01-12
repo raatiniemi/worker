@@ -70,7 +70,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
     // Count weeks
 
     @Test
-    fun countWeeks_withoutTimeIntervals() {
+    fun countWeeks_withoutTimeIntervals() = runBlocking {
         val expected = 0
 
         val actual = timeReport.countWeeks(android.id.value)
@@ -274,7 +274,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
     // Count not registered weeks
 
     @Test
-    fun countNotRegisteredWeeks_withoutTimeIntervals() {
+    fun countNotRegisteredWeeks_withoutTimeIntervals() = runBlocking {
         val expected = 0
 
         val actual = timeReport.countNotRegisteredWeeks(android.id.value)

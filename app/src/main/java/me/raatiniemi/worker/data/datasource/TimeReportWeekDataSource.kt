@@ -50,7 +50,7 @@ internal class TimeReportWeekDataSource(
             }
         }
 
-    private fun countTotal(): Int {
+    private suspend fun countTotal(): Int {
         return project?.let { countTimeReportWeeks(it) } ?: 0
     }
 

@@ -62,7 +62,7 @@ class CountTimeReportWeeksTest {
     // When not hiding registered time
 
     @Test
-    fun `count time report weeks without time intervals`() {
+    fun `count time report weeks without time intervals`() = runBlocking {
         val expected = 0
 
         val actual = countTimeReportWeeks(android)
@@ -160,12 +160,14 @@ class CountTimeReportWeeksTest {
 
     @Test
     fun `count time report weeks when hiding registered time without time intervals`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val expected = 0
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val expected = 0
 
-        val actual = countTimeReportWeeks(android)
+            val actual = countTimeReportWeeks(android)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test

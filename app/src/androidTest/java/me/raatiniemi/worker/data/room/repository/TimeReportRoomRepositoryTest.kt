@@ -79,7 +79,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     // Count weeks
 
     @Test
-    fun countWeeks_withoutTimeIntervals() {
+    fun countWeeks_withoutTimeIntervals() = runBlocking {
         val expected = 0
 
         val actual = repository.countWeeks(android)
@@ -218,7 +218,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     // Count not registered weeks
 
     @Test
-    fun countNotRegisteredWeeks_withoutTimeIntervals() {
+    fun countNotRegisteredWeeks_withoutTimeIntervals() = runBlocking {
         val expected = 0
 
         val actual = repository.countNotRegisteredWeeks(android)

@@ -29,13 +29,13 @@ import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
 class TimeReportInMemoryRepository(
     private val timeIntervalRepository: TimeIntervalRepository
 ) : TimeReportRepository {
-    override fun countWeeks(project: Project): Int {
+    override suspend fun countWeeks(project: Project): Int {
         return timeIntervalRepository.findAll(project, Milliseconds(0))
             .groupBy { setToStartOfWeek(it.start) }
             .count()
     }
 
-    override fun countNotRegisteredWeeks(project: Project): Int {
+    override suspend fun countNotRegisteredWeeks(project: Project): Int {
         return timeIntervalRepository.findAll(project, Milliseconds(0))
             .filter { it !is TimeInterval.Registered }
             .groupBy { setToStartOfWeek(it.start) }

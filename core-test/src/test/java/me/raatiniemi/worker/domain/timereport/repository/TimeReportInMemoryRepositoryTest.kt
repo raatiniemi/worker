@@ -61,7 +61,7 @@ class TimeReportInMemoryRepositoryTest {
     // Count weeks
 
     @Test
-    fun `count weeks without time intervals`() {
+    fun `count weeks without time intervals`() = runBlocking {
         val expected = 0
 
         val actual = repository.countWeeks(android)
@@ -200,7 +200,7 @@ class TimeReportInMemoryRepositoryTest {
     // Count not registered weeks
 
     @Test
-    fun `count not registered weeks without time intervals`() {
+    fun `count not registered weeks without time intervals`() = runBlocking {
         val expected = 0
 
         val actual = repository.countNotRegisteredWeeks(android)

@@ -25,7 +25,7 @@ class CountTimeReportWeeks(
     private val keyValueStore: KeyValueStore,
     private val repository: TimeReportRepository
 ) {
-    operator fun invoke(project: Project): Int {
+    suspend operator fun invoke(project: Project): Int {
         val shouldHideRegisteredTime = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
         return if (shouldHideRegisteredTime) {
             repository.countNotRegisteredWeeks(project)
