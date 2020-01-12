@@ -49,7 +49,7 @@ internal class ProjectDataSource(
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Project>) {
-        scope.launch {
+        scope.launch(dispatcherProvider.io()) {
             val loadRange = LoadRange(
                 LoadPosition(params.startPosition),
                 LoadSize(params.loadSize)
