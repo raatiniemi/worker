@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
@@ -35,6 +36,8 @@ import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
 import me.raatiniemi.worker.feature.projects.model.ProjectHolder
 import me.raatiniemi.worker.koin.androidTestKoinModules
 import me.raatiniemi.worker.koin.module.inMemorySharedTest
+import me.raatiniemi.worker.util.CoroutineTestRule
+import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -47,11 +50,15 @@ import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
 import org.koin.test.inject
 
+@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
     private val keyValueStore by inject<KeyValueStore>()
     private val projectHolder by inject<ProjectHolder>()
@@ -69,6 +76,8 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
         }
 
         val factory = TimeReportWeekDataSource.Factory(
+            scope = coroutineTestRule.testScope,
+            dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher),
             projectProvider = get(),
             countTimeReportWeeks = get(),
             findTimeReportWeeks = get()

@@ -17,10 +17,7 @@
 package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.google.firebase.perf.metrics.AddTrace
@@ -44,6 +41,8 @@ import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 
 internal class TimeReportViewModel internal constructor(
@@ -53,7 +52,8 @@ internal class TimeReportViewModel internal constructor(
     countTimeReportWeeks: CountTimeReportWeeks,
     findTimeReportWeeks: FindTimeReportWeeks,
     private val markRegisteredTime: MarkRegisteredTime,
-    private val removeTime: RemoveTime
+    private val removeTime: RemoveTime,
+    dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel(), TimeReportStateManager {
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<TimeReportDay>()
@@ -81,6 +81,8 @@ internal class TimeReportViewModel internal constructor(
             .build()
 
         val factory = TimeReportWeekDataSource.Factory(
+            viewModelScope,
+            dispatcherProvider,
             projectProvider = projectProvider,
             countTimeReportWeeks = countTimeReportWeeks,
             findTimeReportWeeks = findTimeReportWeeks

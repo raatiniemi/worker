@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
@@ -38,6 +39,8 @@ import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.util.CoroutineTestRule
+import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -46,13 +49,18 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
 import org.koin.test.inject
 
+@ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
     private val usageAnalytics by inject<InMemoryUsageAnalytics>()
     private val projectHolder by inject<ProjectHolder>()
@@ -61,13 +69,24 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
     private val clockOut by inject<ClockOut>()
     private val findTimeReportWeeks by inject<FindTimeReportWeeks>()
 
-    private val vm by inject<TimeReportViewModel>()
+    private lateinit var vm: TimeReportViewModel
 
     @Before
     fun setUp() {
         startKoin {
             modules(testKoinModules)
         }
+
+        vm = TimeReportViewModel(
+            keyValueStore = get(),
+            usageAnalytics = usageAnalytics,
+            projectProvider = projectHolder,
+            countTimeReportWeeks = get(),
+            findTimeReportWeeks = findTimeReportWeeks,
+            markRegisteredTime = get(),
+            removeTime = get(),
+            dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
+        )
     }
 
     // Toggle registered state
