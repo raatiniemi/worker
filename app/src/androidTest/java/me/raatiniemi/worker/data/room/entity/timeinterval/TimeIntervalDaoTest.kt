@@ -173,7 +173,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun update_withoutExistingTimeInterval() {
+    fun update_withoutExistingTimeInterval() = runBlocking {
         timeIntervals.update(
             listOf(
                 timeIntervalEntity { id = 1 }

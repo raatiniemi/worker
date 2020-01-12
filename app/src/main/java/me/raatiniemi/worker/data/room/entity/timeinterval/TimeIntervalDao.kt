@@ -41,7 +41,7 @@ internal interface TimeIntervalDao {
     suspend fun add(entity: TimeIntervalEntity): Long
 
     @Update
-    fun update(entities: List<TimeIntervalEntity>)
+    suspend fun update(entities: List<TimeIntervalEntity>)
 
     @Delete
     fun remove(entities: List<TimeIntervalEntity>)

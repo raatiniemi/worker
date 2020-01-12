@@ -61,13 +61,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         throw UnableToFindNewTimeIntervalException()
     }
 
-    override fun update(timeInterval: TimeInterval): TimeInterval? {
+    override suspend fun update(timeInterval: TimeInterval): TimeInterval? {
         return timeIntervalEntity(timeInterval)
             .also { timeIntervals.update(listOf(it)) }
             .run { findById(TimeIntervalId(id)) }
     }
 
-    override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
+    override suspend fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
         val entities = timeIntervals.map(::timeIntervalEntity).toList()
         this.timeIntervals.update(entities)
 

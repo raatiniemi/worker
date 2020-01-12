@@ -207,7 +207,7 @@ class TimeIntervalInMemoryRepositoryTest {
     // Update
 
     @Test
-    fun `update without time interval`() {
+    fun `update without time interval`() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
@@ -234,7 +234,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `update without time intervals`() {
+    fun `update without time intervals`() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)

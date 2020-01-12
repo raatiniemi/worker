@@ -43,7 +43,7 @@ class ClockOutTest {
     }
 
     @Test(expected = InactiveProjectException::class)
-    fun `clock out with inactive project`() {
+    fun `clock out with inactive project`() = runBlocking<Unit> {
         clockOut(android, Milliseconds.now)
     }
 

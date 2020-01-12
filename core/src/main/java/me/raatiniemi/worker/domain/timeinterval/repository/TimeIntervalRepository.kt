@@ -66,7 +66,7 @@ interface TimeIntervalRepository {
      * @param timeInterval Time interval to update.
      * @return Updated time interval.
      */
-    fun update(timeInterval: TimeInterval): TimeInterval?
+    suspend fun update(timeInterval: TimeInterval): TimeInterval?
 
     /**
      * Update time interval items.
@@ -74,7 +74,7 @@ interface TimeIntervalRepository {
      * @param timeIntervals Time interval item to update.
      * @return Updated time interval items.
      */
-    fun update(timeIntervals: List<TimeInterval>): List<TimeInterval>
+    suspend fun update(timeIntervals: List<TimeInterval>): List<TimeInterval>
 
     /**
      * Remove time by id.

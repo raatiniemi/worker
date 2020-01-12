@@ -53,6 +53,7 @@ class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
         }
     }
 
-    operator fun invoke(timeIntervals: List<TimeInterval>) =
-        repository.update(collectTimeToUpdate(timeIntervals))
+    suspend operator fun invoke(timeIntervals: List<TimeInterval>): List<TimeInterval> {
+        return repository.update(collectTimeToUpdate(timeIntervals))
+    }
 }

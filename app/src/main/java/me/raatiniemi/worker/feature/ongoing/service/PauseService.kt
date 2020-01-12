@@ -60,7 +60,7 @@ internal class PauseService : OngoingService("PauseService"), CoroutineScope {
         }
     }
 
-    private fun clockOut(project: Project) {
+    private suspend fun clockOut(project: Project) {
         clockOut(project, Milliseconds.now)
 
         usageAnalytics.log(Event.NotificationClockOut)

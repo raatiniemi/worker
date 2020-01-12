@@ -232,7 +232,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     // Update
 
     @Test
-    fun update_withoutTimeInterval() {
+    fun update_withoutTimeInterval() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
@@ -259,7 +259,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun update_withoutTimeIntervals() {
+    fun update_withoutTimeIntervals() = runBlocking {
         val now = Milliseconds.now
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)

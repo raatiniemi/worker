@@ -58,16 +58,18 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         throw InvalidActiveTimeIntervalException()
     }
 
-    override fun update(timeInterval: TimeInterval) =
-        findById(timeInterval.id)?.let {
+    override suspend fun update(timeInterval: TimeInterval): TimeInterval? {
+        return findById(timeInterval.id)?.let {
             val index = timeIntervals.indexOf(it)
             timeIntervals[index] = timeInterval
 
             timeInterval
         }
+    }
 
-    override fun update(timeIntervals: List<TimeInterval>) =
-        timeIntervals.mapNotNull { update(it) }
+    override suspend fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
+        return timeIntervals.mapNotNull { update(it) }
+    }
 
     override fun remove(id: TimeIntervalId) {
         timeIntervals.removeIf { it.id == id }

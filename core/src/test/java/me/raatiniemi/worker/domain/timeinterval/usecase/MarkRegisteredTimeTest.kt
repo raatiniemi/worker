@@ -275,7 +275,7 @@ class MarkRegisteredTimeTest {
     }
 
     @Test(expected = UnableToMarkActiveTimeIntervalAsRegisteredException::class)
-    fun `mark registered time with active time interval`() {
+    fun `mark registered time with active time interval`() = runBlocking<Unit> {
         val timeIntervals = listOf(
             timeInterval(android.id) { builder ->
                 builder.id = TimeIntervalId(1)

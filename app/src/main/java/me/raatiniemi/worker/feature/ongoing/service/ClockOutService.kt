@@ -57,7 +57,7 @@ internal class ClockOutService : OngoingService("ClockOutService"), CoroutineSco
         }
     }
 
-    private fun clockOut(project: Project) {
+    private suspend fun clockOut(project: Project) {
         clockOut(project, Milliseconds.now)
 
         usageAnalytics.log(Event.NotificationClockOut)
