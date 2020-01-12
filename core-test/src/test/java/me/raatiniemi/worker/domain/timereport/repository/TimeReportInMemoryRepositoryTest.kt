@@ -342,7 +342,7 @@ class TimeReportInMemoryRepositoryTest {
     // Find weeks
 
     @Test
-    fun `find weeks without time intervals`() {
+    fun `find weeks without time intervals`() = runBlocking {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
@@ -773,7 +773,7 @@ class TimeReportInMemoryRepositoryTest {
     // Find not registered weeks
 
     @Test
-    fun `find not registered weeks without time intervals`() {
+    fun `find not registered weeks without time intervals`() = runBlocking {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 

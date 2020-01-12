@@ -478,7 +478,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
     // Find weeks
 
     @Test
-    fun findWeeks_withoutTimeIntervals() {
+    fun findWeeks_withoutTimeIntervals() = runBlocking {
         val expected = emptyList<TimeReportQueryGroup>()
 
         val actual = timeReport.findWeeks(android.id.value, 0, 10)
@@ -763,7 +763,7 @@ class TimeReportDaoTest : AutoCloseKoinTest() {
     // Find not registered weeks
 
     @Test
-    fun findNotRegisteredWeeks_withoutTimeIntervals() {
+    fun findNotRegisteredWeeks_withoutTimeIntervals() = runBlocking {
         val expected = emptyList<TimeReportQueryGroup>()
 
         val actual = timeReport.findNotRegisteredWeeks(android.id.value, 0, 10)

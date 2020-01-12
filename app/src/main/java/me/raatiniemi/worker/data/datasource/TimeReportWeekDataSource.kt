@@ -71,7 +71,7 @@ internal class TimeReportWeekDataSource(
         }
     }
 
-    private fun loadData(loadRange: LoadRange): List<TimeReportWeek> {
+    private suspend fun loadData(loadRange: LoadRange): List<TimeReportWeek> {
         return when (val project = this.project) {
             is Project -> findTimeReportWeeks(project, loadRange)
             else -> emptyList()

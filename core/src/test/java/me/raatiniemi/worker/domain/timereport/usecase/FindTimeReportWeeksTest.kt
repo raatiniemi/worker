@@ -70,7 +70,7 @@ class FindTimeReportWeeksTest {
     // When not hiding registered time
 
     @Test
-    fun `find time report weeks without time intervals`() {
+    fun `find time report weeks without time intervals`() = runBlocking {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
@@ -356,13 +356,15 @@ class FindTimeReportWeeksTest {
 
     @Test
     fun `find time report weeks when hiding registered time without time intervals`() {
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
-        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
-        val expected = emptyList<TimeReportWeek>()
+        runBlocking {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+            val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+            val expected = emptyList<TimeReportWeek>()
 
-        val actual = findTimeReportWeeks(android, loadRange)
+            val actual = findTimeReportWeeks(android, loadRange)
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
+        }
     }
 
     @Test

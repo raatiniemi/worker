@@ -357,7 +357,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     // Find weeks
 
     @Test
-    fun findWeeks_withoutTimeIntervals() {
+    fun findWeeks_withoutTimeIntervals() = runBlocking {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 
@@ -788,7 +788,7 @@ class TimeReportRoomRepositoryTest : AutoCloseKoinTest() {
     // Find not registered weeks
 
     @Test
-    fun findNotRegisteredWeeks_withoutTimeIntervals() {
+    fun findNotRegisteredWeeks_withoutTimeIntervals() = runBlocking {
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
         val expected = emptyList<TimeReportWeek>()
 

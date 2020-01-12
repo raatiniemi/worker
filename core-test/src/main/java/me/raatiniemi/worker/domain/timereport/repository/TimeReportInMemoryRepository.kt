@@ -42,13 +42,13 @@ class TimeReportInMemoryRepository(
             .count()
     }
 
-    override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
+    override suspend fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
         val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds.empty)
 
         return paginate(loadRange, groupByWeek(timeIntervals))
     }
 
-    override fun findNotRegisteredWeeks(
+    override suspend fun findNotRegisteredWeeks(
         project: Project,
         loadRange: LoadRange
     ): List<TimeReportWeek> {

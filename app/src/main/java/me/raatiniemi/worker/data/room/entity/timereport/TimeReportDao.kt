@@ -50,7 +50,7 @@ internal interface TimeReportDao {
             ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
             LIMIT :position, :pageSize"""
     )
-    fun findWeeks(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
+    suspend fun findWeeks(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
 
     @Query(
         """SELECT
@@ -63,7 +63,7 @@ internal interface TimeReportDao {
             ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
             LIMIT :position, :pageSize"""
     )
-    fun findNotRegisteredWeeks(
+    suspend fun findNotRegisteredWeeks(
         projectId: Long,
         position: Int,
         pageSize: Int

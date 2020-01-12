@@ -25,7 +25,7 @@ interface TimeReportRepository {
 
     suspend fun countNotRegisteredWeeks(project: Project): Int
 
-    fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
+    suspend fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
 
-    fun findNotRegisteredWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
+    suspend fun findNotRegisteredWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek>
 }

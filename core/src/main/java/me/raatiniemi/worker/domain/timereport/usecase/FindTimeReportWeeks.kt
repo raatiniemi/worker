@@ -27,7 +27,7 @@ class FindTimeReportWeeks(
     private val keyValueStore: KeyValueStore,
     private val repository: TimeReportRepository
 ) {
-    operator fun invoke(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
+    suspend operator fun invoke(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
         val shouldHideRegisteredTime = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
         return if (shouldHideRegisteredTime) {
             repository.findNotRegisteredWeeks(project, loadRange)
