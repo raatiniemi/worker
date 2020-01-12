@@ -42,7 +42,7 @@ interface TimeIntervalRepository {
      * @param id Id for the time interval.
      * @return Time interval, or null if none was found.
      */
-    fun findById(id: TimeIntervalId): TimeInterval?
+    suspend fun findById(id: TimeIntervalId): TimeInterval?
 
     /**
      * Get active time interval for project.

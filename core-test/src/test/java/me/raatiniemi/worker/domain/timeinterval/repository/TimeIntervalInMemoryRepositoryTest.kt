@@ -140,7 +140,7 @@ class TimeIntervalInMemoryRepositoryTest {
     // Find by id
 
     @Test
-    fun `find by id without time interval`() {
+    fun `find by id without time interval`() = runBlocking {
         val actual = timeIntervals.findById(TimeIntervalId(1))
 
         assertNull(actual)

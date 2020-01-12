@@ -164,7 +164,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     // Find by id
 
     @Test
-    fun findById_withoutTimeInterval() {
+    fun findById_withoutTimeInterval() = runBlocking {
         val actual = timeIntervals.findById(TimeIntervalId(1))
 
         assertNull(actual)

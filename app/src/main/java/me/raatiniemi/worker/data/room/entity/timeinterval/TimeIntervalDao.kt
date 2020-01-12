@@ -29,7 +29,7 @@ internal interface TimeIntervalDao {
     fun findAll(projectId: Long, startInMilliseconds: Long): List<TimeIntervalEntity>
 
     @Query("SELECT * FROM time_intervals WHERE _id = :id LIMIT 1")
-    fun find(id: Long): TimeIntervalEntity?
+    suspend fun find(id: Long): TimeIntervalEntity?
 
     @Query(
         """SELECT * FROM time_intervals

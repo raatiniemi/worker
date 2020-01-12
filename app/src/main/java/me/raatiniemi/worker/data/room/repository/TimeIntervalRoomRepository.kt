@@ -36,7 +36,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             .toList()
     }
 
-    override fun findById(id: TimeIntervalId): TimeInterval? {
+    override suspend fun findById(id: TimeIntervalId): TimeInterval? {
         return timeIntervals.find(id.value)
             ?.let(::timeInterval)
     }

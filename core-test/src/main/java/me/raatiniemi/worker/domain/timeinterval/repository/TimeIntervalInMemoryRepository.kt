@@ -35,8 +35,9 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         }
     }
 
-    override fun findById(id: TimeIntervalId): TimeInterval? =
-        timeIntervals.firstOrNull { it.id == id }
+    override suspend fun findById(id: TimeIntervalId): TimeInterval? {
+        return timeIntervals.firstOrNull { it.id == id }
+    }
 
     override suspend fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
         return timeIntervals.filter { it.projectId == projectId }

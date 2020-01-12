@@ -127,7 +127,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun find_withoutTimeInterval() {
+    fun find_withoutTimeInterval() = runBlocking {
         val actual = timeIntervals.find(1)
 
         assertNull(actual)
