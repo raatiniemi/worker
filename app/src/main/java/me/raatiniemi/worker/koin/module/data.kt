@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.koin.module
 
 import androidx.room.Room
-import me.raatiniemi.worker.data.datasource.ProjectDataSource
 import me.raatiniemi.worker.data.datasource.TimeReportWeekDataSource
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.data.room.migration.Migration1To2
@@ -26,8 +25,6 @@ import me.raatiniemi.worker.data.room.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.room.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.room.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
-import me.raatiniemi.worker.domain.project.usecase.CountProjects
-import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timereport.repository.TimeReportRepository
 import org.koin.android.ext.koin.androidContext
