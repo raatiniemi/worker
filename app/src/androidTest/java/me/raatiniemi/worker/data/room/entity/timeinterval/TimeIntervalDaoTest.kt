@@ -215,7 +215,9 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withoutExistingTimeInterval() {
+    fun remove_withoutExistingTimeInterval() = runBlocking {
+        val expected = emptyList<TimeIntervalEntity>()
+
         timeIntervals.remove(
             listOf(
                 timeIntervalEntity { id = 1 }
@@ -223,7 +225,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
         )
 
         val actual = timeIntervals.findAll(1, 0)
-        assertEquals(emptyList<TimeIntervalEntity>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test

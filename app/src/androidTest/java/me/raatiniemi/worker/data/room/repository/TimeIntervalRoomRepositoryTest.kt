@@ -301,7 +301,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     // Remove
 
     @Test
-    fun remove_withoutTimeInterval() {
+    fun remove_withoutTimeInterval() = runBlocking {
         val expected = emptyList<TimeInterval>()
 
         timeIntervals.remove(TimeIntervalId(1))
@@ -322,7 +322,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withoutTimeIntervals() {
+    fun remove_withoutTimeIntervals() = runBlocking {
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
             builder.start = Milliseconds(1)

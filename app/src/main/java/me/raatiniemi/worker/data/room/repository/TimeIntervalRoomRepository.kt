@@ -77,13 +77,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             .toList()
     }
 
-    override fun remove(id: TimeIntervalId) {
+    override suspend fun remove(id: TimeIntervalId) {
         val entity = timeIntervals.find(id.value) ?: return
 
         timeIntervals.remove(listOf(entity))
     }
 
-    override fun remove(timeIntervals: List<TimeInterval>) {
+    override suspend fun remove(timeIntervals: List<TimeInterval>) {
         val entities = timeIntervals.map(::timeIntervalEntity).toList()
 
         this.timeIntervals.remove(entities)

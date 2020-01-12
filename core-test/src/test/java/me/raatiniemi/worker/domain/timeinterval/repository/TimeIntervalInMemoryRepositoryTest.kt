@@ -276,7 +276,7 @@ class TimeIntervalInMemoryRepositoryTest {
     // Remove
 
     @Test
-    fun `remove without time interval`() {
+    fun `remove without time interval`() = runBlocking {
         val expected = emptyList<TimeInterval>()
 
         timeIntervals.remove(TimeIntervalId(1))
@@ -297,7 +297,7 @@ class TimeIntervalInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove without time intervals`() {
+    fun `remove without time intervals`() = runBlocking {
         val timeInterval = timeInterval(android.id) { builder ->
             builder.id = TimeIntervalId(1)
             builder.start = Milliseconds(1)

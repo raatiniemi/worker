@@ -81,12 +81,12 @@ interface TimeIntervalRepository {
      *
      * @param id Id of the time to remove.
      */
-    fun remove(id: TimeIntervalId)
+    suspend fun remove(id: TimeIntervalId)
 
     /**
      * Remove multiple items.
      *
      * @param timeIntervals Items to remove.
      */
-    fun remove(timeIntervals: List<TimeInterval>)
+    suspend fun remove(timeIntervals: List<TimeInterval>)
 }

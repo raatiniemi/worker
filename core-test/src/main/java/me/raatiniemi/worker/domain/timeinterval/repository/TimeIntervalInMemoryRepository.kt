@@ -72,11 +72,11 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         return timeIntervals.mapNotNull { update(it) }
     }
 
-    override fun remove(id: TimeIntervalId) {
+    override suspend fun remove(id: TimeIntervalId) {
         timeIntervals.removeIf { it.id == id }
     }
 
-    override fun remove(timeIntervals: List<TimeInterval>) {
+    override suspend fun remove(timeIntervals: List<TimeInterval>) {
         timeIntervals.map { it.id }
             .forEach { remove(it) }
     }
