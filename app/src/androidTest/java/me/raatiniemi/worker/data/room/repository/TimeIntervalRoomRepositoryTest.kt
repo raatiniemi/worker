@@ -183,7 +183,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     // Find active by project id
 
     @Test
-    fun findActiveByProjectId_withoutTimeIntervals() {
+    fun findActiveByProjectId_withoutTimeIntervals() = runBlocking {
         val actual = timeIntervals.findActiveByProjectId(android.id)
 
         assertNull(actual)

@@ -31,7 +31,7 @@ class ClockOut(private val repository: TimeIntervalRepository) {
         return clockOut(active, milliseconds)
     }
 
-    private fun findActiveTimeInterval(project: Project): TimeInterval.Active {
+    private suspend fun findActiveTimeInterval(project: Project): TimeInterval.Active {
         return repository.findActiveByProjectId(project.id)
             ?: throw InactiveProjectException()
     }

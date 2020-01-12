@@ -41,7 +41,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             ?.let(::timeInterval)
     }
 
-    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
+    override suspend fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
         val entity = timeIntervals.findActiveTime(projectId.value) ?: return null
 
         return when (val timeInterval = timeInterval(entity)) {

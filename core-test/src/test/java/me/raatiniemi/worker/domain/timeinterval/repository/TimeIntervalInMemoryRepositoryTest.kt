@@ -159,7 +159,7 @@ class TimeIntervalInMemoryRepositoryTest {
     // Find active by project id
 
     @Test
-    fun `find active by project id without time intervals`() {
+    fun `find active by project id without time intervals`() = runBlocking {
         val actual = timeIntervals.findActiveByProjectId(android.id)
 
         assertNull(actual)

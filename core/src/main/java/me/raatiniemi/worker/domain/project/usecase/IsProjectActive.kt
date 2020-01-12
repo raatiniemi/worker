@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 class IsProjectActive(private val repository: TimeIntervalRepository) {
-    operator fun invoke(projectId: Long): Boolean {
+    suspend operator fun invoke(projectId: Long): Boolean {
         return repository.findActiveByProjectId(ProjectId(projectId)) != null
     }
 }

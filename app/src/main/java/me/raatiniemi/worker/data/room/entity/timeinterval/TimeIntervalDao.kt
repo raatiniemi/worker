@@ -35,7 +35,7 @@ internal interface TimeIntervalDao {
         """SELECT * FROM time_intervals
         WHERE project_id = :projectId AND stop_in_milliseconds = 0"""
     )
-    fun findActiveTime(projectId: Long): TimeIntervalEntity?
+    suspend fun findActiveTime(projectId: Long): TimeIntervalEntity?
 
     @Insert
     suspend fun add(entity: TimeIntervalEntity): Long

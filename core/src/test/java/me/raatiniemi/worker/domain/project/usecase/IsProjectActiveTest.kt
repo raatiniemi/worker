@@ -41,7 +41,7 @@ class IsProjectActiveTest {
     }
 
     @Test
-    fun `is project active without time interval`() {
+    fun `is project active without time interval`() = runBlocking {
         val actual = isProjectActive(1)
 
         assertFalse(actual)

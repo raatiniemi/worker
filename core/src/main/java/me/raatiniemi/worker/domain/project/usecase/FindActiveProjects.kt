@@ -29,7 +29,7 @@ class FindActiveProjects(
             .filter { isActive(it) }
     }
 
-    private fun isActive(project: Project): Boolean {
+    private suspend fun isActive(project: Project): Boolean {
         return timeIntervals.findActiveByProjectId(project.id) != null
     }
 }

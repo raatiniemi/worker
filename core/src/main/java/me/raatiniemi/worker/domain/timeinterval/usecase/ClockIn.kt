@@ -40,7 +40,7 @@ class ClockIn(private val timeIntervals: TimeIntervalRepository) {
         return timeIntervals.add(newTimeInterval)
     }
 
-    private fun isActive(projectId: ProjectId): Boolean {
+    private suspend fun isActive(projectId: ProjectId): Boolean {
         val timeInterval = timeIntervals.findActiveByProjectId(projectId)
 
         return timeInterval != null
