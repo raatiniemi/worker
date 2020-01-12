@@ -40,13 +40,14 @@ internal class TimeReportWeekDataSource(
 ) : PositionalDataSource<TimeReportWeek>() {
     private val project: Project?
         get() {
-            val project = projectProvider.value
-            if (project == null) {
-                Timber.w("No project is available from `ProjectHolder`")
-                return null
+            return try {
+                requireNotNull(projectProvider.value) {
+                    "No project is available from `ProjectHolder`"
+                }
+            } catch (e: IllegalArgumentException) {
+                Timber.w(e, "Unable to load time report without project")
+                null
             }
-
-            return project
         }
 
     private fun countTotal(): Int {
