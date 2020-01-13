@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.timeinterval.model
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.calendar
 import me.raatiniemi.worker.domain.time.setToStartOfDay
-import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import java.util.*
 
 enum class TimeIntervalStartingPoint(val rawValue: Int) {
@@ -37,19 +36,5 @@ enum class TimeIntervalStartingPoint(val rawValue: Int) {
         }
 
         return Milliseconds(calendar.timeInMillis)
-    }
-
-    companion object {
-        @JvmStatic
-        fun from(startingPoint: Int): TimeIntervalStartingPoint {
-            return when (startingPoint) {
-                DAY.rawValue -> DAY
-                WEEK.rawValue -> WEEK
-                MONTH.rawValue -> MONTH
-                else -> throw InvalidStartingPointException(
-                    "Starting point '$startingPoint' is not valid"
-                )
-            }
-        }
     }
 }

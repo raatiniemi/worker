@@ -35,11 +35,10 @@ import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.timeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
-import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
@@ -64,22 +63,6 @@ internal class AllProjectsViewModel(
     private val removeProject: RemoveProject,
     dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel(), AllProjectsActionListener {
-    private val startingPoint: TimeIntervalStartingPoint
-        get() {
-            val defaultValue = TimeIntervalStartingPoint.MONTH
-            val startingPoint = keyValueStore.int(
-                AppKeys.TIME_SUMMARY,
-                defaultValue.rawValue
-            )
-
-            return try {
-                TimeIntervalStartingPoint.from(startingPoint)
-            } catch (e: InvalidStartingPointException) {
-                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
-                defaultValue
-            }
-        }
-
     val projects: LiveData<PagedList<ProjectsItem>>
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
@@ -111,7 +94,7 @@ internal class AllProjectsViewModel(
 
     private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
         return try {
-            getProjectTimeSince(project, startingPoint)
+            getProjectTimeSince(project, timeIntervalStartingPoint(keyValueStore))
         } catch (e: DomainException) {
             Timber.w(e, "Unable to get registered time for project")
             emptyList()
