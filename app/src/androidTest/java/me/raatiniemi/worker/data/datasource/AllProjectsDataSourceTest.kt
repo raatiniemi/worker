@@ -39,13 +39,13 @@ import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ProjectDataSourceTest : AutoCloseKoinTest() {
+class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
 
     private val projects by inject<ProjectRepository>()
 
-    private lateinit var dataSource: ProjectDataSource
+    private lateinit var dataSource: AllProjectsDataSource
 
     @Before
     fun setUp() {
@@ -54,7 +54,7 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
             loadKoinModules(androidTestKoinModules + inMemorySharedTest)
         }
 
-        val factory = ProjectDataSource.Factory(
+        val factory = AllProjectsDataSource.Factory(
             scope = coroutineTestRule.testScope,
             dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher),
             countProjects = get(),

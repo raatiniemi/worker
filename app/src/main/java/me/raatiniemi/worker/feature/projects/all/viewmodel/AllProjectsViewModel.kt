@@ -25,7 +25,7 @@ import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.datasource.ProjectDataSource
+import me.raatiniemi.worker.data.datasource.AllProjectsDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.exception.DomainException
@@ -73,7 +73,7 @@ internal class AllProjectsViewModel(
             .setEnablePlaceholders(false)
             .build()
 
-        val factory = ProjectDataSource.Factory(
+        val factory = AllProjectsDataSource.Factory(
             viewModelScope,
             dispatcherProvider,
             countProjects,

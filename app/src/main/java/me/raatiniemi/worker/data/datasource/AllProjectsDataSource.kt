@@ -28,7 +28,7 @@ import me.raatiniemi.worker.domain.project.usecase.CountProjects
 import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.util.CoroutineDispatchProvider
 
-internal class ProjectDataSource(
+internal class AllProjectsDataSource(
     private val scope: CoroutineScope,
     private val dispatcherProvider: CoroutineDispatchProvider,
     private val countProjects: CountProjects,
@@ -64,8 +64,8 @@ internal class ProjectDataSource(
         private val countProjects: CountProjects,
         private val findProjects: FindProjects
     ) : DataSource.Factory<Int, Project>() {
-        override fun create(): ProjectDataSource {
-            return ProjectDataSource(
+        override fun create(): AllProjectsDataSource {
+            return AllProjectsDataSource(
                 scope,
                 dispatcherProvider,
                 countProjects,
