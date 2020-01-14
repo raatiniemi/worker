@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.timeinterval.model
 
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.hours
-import java.lang.Math.abs
+import kotlin.math.abs
 
 fun before(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
     return startingPoint.calculateMilliseconds() - abs(offset)
