@@ -20,8 +20,9 @@ import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.time.minutes
-import me.raatiniemi.worker.domain.timeinterval.model.*
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.after
+import me.raatiniemi.worker.domain.timeinterval.model.before
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -32,115 +33,68 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class GetProjectTimeSinceTest {
-    private lateinit var repository: TimeIntervalRepository
+    private lateinit var timeIntervals: TimeIntervalRepository
+    private lateinit var clockIn: ClockIn
+    private lateinit var clockOut: ClockOut
+
     private lateinit var getProjectTimeSince: GetProjectTimeSince
 
     @Before
     fun setUp() {
-        repository = TimeIntervalInMemoryRepository()
-        getProjectTimeSince = GetProjectTimeSince(repository)
+        timeIntervals = TimeIntervalInMemoryRepository()
+        clockIn = ClockIn(timeIntervals)
+        clockOut = ClockOut(timeIntervals)
+
+        getProjectTimeSince = GetProjectTimeSince(timeIntervals)
     }
 
     @Test
     fun `get project time since day`() = runBlocking {
-        val expectedStop = after(TimeIntervalStartingPoint.DAY, 2.hours)
-        val newTimeInterval = newTimeInterval(android) {
-            start = after(TimeIntervalStartingPoint.DAY)
-        }
-        repository.add(
-            newTimeInterval(android) {
-                start = before(TimeIntervalStartingPoint.DAY)
-            }
-        ).also {
-            repository.update(it.clockOut(stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)))
-        }
-        repository.add(newTimeInterval)
-            .also {
-                repository.update(it.clockOut(stop = expectedStop))
-            }
+        val startingPoint = TimeIntervalStartingPoint.DAY
+        val yesterday = before(startingPoint)
+        clockIn(android, yesterday)
+        clockOut(android, before(startingPoint, 30.minutes))
+        clockIn(android, after(startingPoint))
+        val timeInterval = clockOut(android, after(startingPoint, 2.hours))
         val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(2)
-                builder.start = newTimeInterval.start
-                builder.stop = expectedStop
-            }
+            timeInterval
         )
 
-        val actual = getProjectTimeSince(android, TimeIntervalStartingPoint.DAY)
+        val actual = getProjectTimeSince(android, startingPoint)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `get project time since week`() = runBlocking {
-        val expectedStop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
-        val newTimeInterval = newTimeInterval(android) {
-            start = after(TimeIntervalStartingPoint.WEEK)
-        }
-        repository.add(
-            newTimeInterval(android) {
-                start = before(TimeIntervalStartingPoint.WEEK)
-            }
-        ).also {
-            repository.update(
-                it.clockOut(
-                    stop = before(
-                        TimeIntervalStartingPoint.WEEK,
-                        30.minutes
-                    )
-                )
-            )
-        }
-        repository.add(newTimeInterval)
-            .also {
-                repository.update(it.clockOut(stop = expectedStop))
-            }
+        val startingPoint = TimeIntervalStartingPoint.WEEK
+        val yesterday = before(startingPoint)
+        clockIn(android, yesterday)
+        clockOut(android, before(startingPoint, 30.minutes))
+        clockIn(android, after(startingPoint))
+        val timeInterval = clockOut(android, after(startingPoint, 2.hours))
         val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(2)
-                builder.start = newTimeInterval.start
-                builder.stop = expectedStop
-            }
+            timeInterval
         )
 
-        val actual = getProjectTimeSince(android, TimeIntervalStartingPoint.WEEK)
+        val actual = getProjectTimeSince(android, startingPoint)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `get project time since month`() = runBlocking {
-        val expectedStop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
-        val newTimeInterval = newTimeInterval(android) {
-            start = after(TimeIntervalStartingPoint.MONTH)
-        }
-        repository.add(
-            newTimeInterval(android) {
-                start = before(TimeIntervalStartingPoint.MONTH)
-            }
-        ).also {
-            repository.update(
-                it.clockOut(
-                    stop = before(
-                        TimeIntervalStartingPoint.MONTH,
-                        30.minutes
-                    )
-                )
-            )
-        }
-        repository.add(newTimeInterval)
-            .also {
-                repository.update(it.clockOut(stop = expectedStop))
-            }
+        val startingPoint = TimeIntervalStartingPoint.MONTH
+        val yesterday = before(startingPoint)
+        clockIn(android, yesterday)
+        clockOut(android, before(startingPoint, 30.minutes))
+        clockIn(android, after(startingPoint))
+        val timeInterval = clockOut(android, after(startingPoint, 2.hours))
         val expected = listOf(
-            timeInterval(android.id) { builder ->
-                builder.id = TimeIntervalId(2)
-                builder.start = newTimeInterval.start
-                builder.stop = expectedStop
-            }
+            timeInterval
         )
 
-        val actual = getProjectTimeSince(android, TimeIntervalStartingPoint.MONTH)
+        val actual = getProjectTimeSince(android, startingPoint)
 
         assertEquals(expected, actual)
     }
