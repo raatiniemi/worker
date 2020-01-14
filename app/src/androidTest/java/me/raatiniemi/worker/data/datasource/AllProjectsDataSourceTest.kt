@@ -20,7 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.*
-import me.raatiniemi.worker.domain.project.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.koin.androidTestKoinModules
 import me.raatiniemi.worker.koin.module.inMemorySharedTest
 import me.raatiniemi.worker.util.CoroutineTestRule
@@ -43,7 +43,7 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
 
-    private val projects by inject<ProjectRepository>()
+    private val createProject by inject<CreateProject>()
 
     private lateinit var dataSource: AllProjectsDataSource
 
@@ -75,7 +75,7 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadInitial_withProject() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name))
+            createProject(android.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects,
@@ -91,10 +91,10 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadInitial_withProjects() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name)),
-            projects.add(NewProject(cli.name)),
-            projects.add(NewProject(ios.name)),
-            projects.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects,
@@ -110,10 +110,10 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadInitial_withProjectsBeyondPageSize() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name)),
-            projects.add(NewProject(cli.name)),
-            projects.add(NewProject(ios.name)),
-            projects.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects.take(2),
@@ -132,10 +132,10 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadInitial_withProjectsAndPosition() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name)),
-            projects.add(NewProject(cli.name)),
-            projects.add(NewProject(ios.name)),
-            projects.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects.drop(2),
@@ -163,7 +163,7 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadRange_withProject() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name))
+            createProject(android.name)
         )
         val expected = PositionalDataSourceResult.Range(projects)
 
@@ -175,10 +175,10 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadRange_withProjects() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name)),
-            projects.add(NewProject(cli.name)),
-            projects.add(NewProject(ios.name)),
-            projects.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Range(projects)
 
@@ -190,10 +190,10 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadRange_withProjectsBeforePosition() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name)),
-            projects.add(NewProject(cli.name)),
-            projects.add(NewProject(ios.name)),
-            projects.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Range(projects.drop(2))
 
@@ -205,10 +205,10 @@ class AllProjectsDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadRange_withProjectsBeyondPageSize() = runBlocking {
         val projects = listOf(
-            projects.add(NewProject(android.name)),
-            projects.add(NewProject(cli.name)),
-            projects.add(NewProject(ios.name)),
-            projects.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Range(
             projects.take(2)
