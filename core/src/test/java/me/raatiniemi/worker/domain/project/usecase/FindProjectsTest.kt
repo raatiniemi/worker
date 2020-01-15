@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
@@ -33,19 +34,19 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class FindProjectsTest {
-    private lateinit var repository: ProjectRepository
+    private lateinit var projects: ProjectRepository
 
     private lateinit var findProjects: FindProjects
 
     @Before
     fun setUp() {
-        repository = ProjectInMemoryRepository()
+        projects = ProjectInMemoryRepository()
 
-        findProjects = FindProjects(repository)
+        findProjects = FindProjects(projects)
     }
 
     @Test
-    fun `find projects without projects`() {
+    fun `find projects without projects`() = runBlocking {
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
@@ -58,8 +59,8 @@ class FindProjectsTest {
     }
 
     @Test
-    fun `find projects with project`() {
-        repository.add(NewProject(android.name))
+    fun `find projects with project`() = runBlocking {
+        projects.add(NewProject(android.name))
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
@@ -74,9 +75,9 @@ class FindProjectsTest {
     }
 
     @Test
-    fun `find projects with projects`() {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
+    fun `find projects with projects`() = runBlocking {
+        projects.add(NewProject(android.name))
+        projects.add(NewProject(cli.name))
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)

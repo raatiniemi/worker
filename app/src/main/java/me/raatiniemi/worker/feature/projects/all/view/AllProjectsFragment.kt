@@ -29,7 +29,10 @@ import me.raatiniemi.worker.feature.settings.model.TimeSummaryStartingPointChang
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.feature.shared.view.*
+import me.raatiniemi.worker.feature.shared.view.ConfirmAction
+import me.raatiniemi.worker.feature.shared.view.CoroutineScopedFragment
+import me.raatiniemi.worker.feature.shared.view.observe
+import me.raatiniemi.worker.feature.shared.view.observeAndConsume
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -122,8 +125,6 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     private fun observeViewModel() {
         observe(vm.projects) {
             allProjectsAdapter.submitList(it)
-
-            tvEmptyProjects.visibleIf { it.isEmpty() }
         }
 
         observeAndConsume(vm.viewActions) {

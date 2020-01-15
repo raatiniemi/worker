@@ -16,14 +16,16 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
-import me.raatiniemi.worker.domain.project.model.NewProject
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
+import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -32,18 +34,27 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class FindActiveProjectsTest {
-    private val projectRepository = ProjectInMemoryRepository()
-    private val timeIntervalRepository = TimeIntervalInMemoryRepository()
+    private lateinit var createProject: CreateProject
+    private lateinit var clockIn: ClockIn
+    private lateinit var clockOut: ClockOut
 
     private lateinit var findActiveProjects: FindActiveProjects
 
     @Before
     fun setUp() {
-        findActiveProjects = FindActiveProjects(projectRepository, timeIntervalRepository)
+        val projects = ProjectInMemoryRepository()
+        val timeIntervals = TimeIntervalInMemoryRepository()
+        val findProject = FindProject(projects)
+
+        createProject = CreateProject(findProject, projects)
+        clockIn = ClockIn(timeIntervals)
+        clockOut = ClockOut(timeIntervals)
+
+        findActiveProjects = FindActiveProjects(projects, timeIntervals)
     }
 
     @Test
-    fun `invoke without projects`() {
+    fun `find active projects without projects`() = runBlocking {
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -52,8 +63,8 @@ class FindActiveProjectsTest {
     }
 
     @Test
-    fun `invoke without active projects`() {
-        projectRepository.add(NewProject(android.name))
+    fun `find active projects without active projects`() = runBlocking {
+        createProject(android.name)
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -62,24 +73,16 @@ class FindActiveProjectsTest {
     }
 
     @Test
-    fun `invoke with active project`() {
-        projectRepository.add(NewProject(android.name))
-        projectRepository.add(NewProject(cli.name))
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        ).let {
-            it.clockOut(stop = Milliseconds(10))
-        }.also {
-            timeIntervalRepository.update(it)
-        }
-        timeIntervalRepository.add(
-            newTimeInterval(cli) {
-                start = Milliseconds(1)
-            }
+    fun `find active projects with active project`() = runBlocking {
+        val now = Milliseconds.now
+        createProject(android.name)
+        createProject(cli.name)
+        clockIn(android, now)
+        clockOut(android, now + 4.hours)
+        clockIn(cli, now + 5.hours)
+        val expected = listOf(
+            cli
         )
-        val expected = listOf(cli)
 
         val actual = findActiveProjects()
 
@@ -87,20 +90,16 @@ class FindActiveProjectsTest {
     }
 
     @Test
-    fun `invoke with active projects`() {
-        projectRepository.add(NewProject(android.name))
-        projectRepository.add(NewProject(cli.name))
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
+    fun `find active projects with active projects`() = runBlocking {
+        val now = Milliseconds.now
+        createProject(android.name)
+        createProject(cli.name)
+        clockIn(android, now)
+        clockIn(cli, now + 5.hours)
+        val expected = listOf(
+            android,
+            cli
         )
-        timeIntervalRepository.add(
-            newTimeInterval(cli) {
-                start = Milliseconds(1)
-            }
-        )
-        val expected = listOf(android, cli)
 
         val actual = findActiveProjects()
 

@@ -34,7 +34,7 @@ interface TimeIntervalRepository {
      * @param milliseconds Starting point in milliseconds.
      * @return Time intervals, or active time interval, for project since starting point.
      */
-    fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval>
+    suspend fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval>
 
     /**
      * Get time interval by id.
@@ -42,7 +42,7 @@ interface TimeIntervalRepository {
      * @param id Id for the time interval.
      * @return Time interval, or null if none was found.
      */
-    fun findById(id: TimeIntervalId): TimeInterval?
+    suspend fun findById(id: TimeIntervalId): TimeInterval?
 
     /**
      * Get active time interval for project.
@@ -50,7 +50,7 @@ interface TimeIntervalRepository {
      * @param projectId Id for project.
      * @return Active time interval for project, or null if project is inactive.
      */
-    fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active?
+    suspend fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active?
 
     /**
      * Add new time interval to the repository.
@@ -58,7 +58,7 @@ interface TimeIntervalRepository {
      * @param newTimeInterval New time interval to add.
      * @return Added time interval.
      */
-    fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active
+    suspend fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active
 
     /**
      * Update time interval.
@@ -66,7 +66,7 @@ interface TimeIntervalRepository {
      * @param timeInterval Time interval to update.
      * @return Updated time interval.
      */
-    fun update(timeInterval: TimeInterval): TimeInterval?
+    suspend fun update(timeInterval: TimeInterval): TimeInterval?
 
     /**
      * Update time interval items.
@@ -74,19 +74,19 @@ interface TimeIntervalRepository {
      * @param timeIntervals Time interval item to update.
      * @return Updated time interval items.
      */
-    fun update(timeIntervals: List<TimeInterval>): List<TimeInterval>
+    suspend fun update(timeIntervals: List<TimeInterval>): List<TimeInterval>
 
     /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.
      */
-    fun remove(id: TimeIntervalId)
+    suspend fun remove(id: TimeIntervalId)
 
     /**
      * Remove multiple items.
      *
      * @param timeIntervals Items to remove.
      */
-    fun remove(timeIntervals: List<TimeInterval>)
+    suspend fun remove(timeIntervals: List<TimeInterval>)
 }

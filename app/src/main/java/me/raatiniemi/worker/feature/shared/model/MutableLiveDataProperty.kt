@@ -14,22 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.project.usecase
+package me.raatiniemi.worker.feature.shared.model
 
-import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.project.repository.ProjectRepository
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import androidx.lifecycle.MutableLiveData
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
-class FindActiveProjects(
-    private val projects: ProjectRepository,
-    private val timeIntervals: TimeIntervalRepository
-) {
-    suspend operator fun invoke(): List<Project> {
-        return projects.findAll()
-            .filter { isActive(it) }
+/**
+ * Hide [MutableLiveData] behind raw value property.
+ */
+internal class MutableLiveDataProperty<T>(
+    private val source: MutableLiveData<T>,
+    private val defaultValue: T
+) : ReadWriteProperty<Any, T> {
+    override fun getValue(thisRef: Any, property: KProperty<*>): T {
+        return source.value ?: defaultValue
     }
 
-    private suspend fun isActive(project: Project): Boolean {
-        return timeIntervals.findActiveByProjectId(project.id) != null
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        source += value
     }
 }

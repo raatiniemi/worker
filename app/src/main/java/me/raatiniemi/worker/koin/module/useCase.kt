@@ -24,6 +24,14 @@ import org.koin.dsl.module
 
 internal val useCase = module {
     single {
+        CountProjects(get())
+    }
+
+    single {
+        FindProjects(get())
+    }
+
+    single {
         ClockIn(get())
     }
 

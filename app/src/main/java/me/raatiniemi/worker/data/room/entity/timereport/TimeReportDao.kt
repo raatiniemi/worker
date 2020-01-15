@@ -28,7 +28,7 @@ internal interface TimeReportDao {
                 WHERE project_id = :projectId
                 GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime'))"""
     )
-    fun countWeeks(projectId: Long): Int
+    suspend fun countWeeks(projectId: Long): Int
 
     @Query(
         """SELECT COUNT(*)
@@ -38,7 +38,7 @@ internal interface TimeReportDao {
                     AND registered = 0
                 GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime'))"""
     )
-    fun countNotRegisteredWeeks(projectId: Long): Int
+    suspend fun countNotRegisteredWeeks(projectId: Long): Int
 
     @Query(
         """SELECT
@@ -50,7 +50,7 @@ internal interface TimeReportDao {
             ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
             LIMIT :position, :pageSize"""
     )
-    fun findWeeks(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
+    suspend fun findWeeks(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
 
     @Query(
         """SELECT
@@ -63,7 +63,7 @@ internal interface TimeReportDao {
             ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
             LIMIT :position, :pageSize"""
     )
-    fun findNotRegisteredWeeks(
+    suspend fun findNotRegisteredWeeks(
         projectId: Long,
         position: Int,
         pageSize: Int

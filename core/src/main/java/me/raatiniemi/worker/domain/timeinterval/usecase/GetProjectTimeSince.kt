@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
-    operator fun invoke(
+    suspend operator fun invoke(
         project: Project,
         startingPoint: TimeIntervalStartingPoint
     ): List<TimeInterval> {

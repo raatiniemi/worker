@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
@@ -24,10 +25,11 @@ import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.shared.model.observeNoValue
 import me.raatiniemi.worker.feature.shared.model.observeNonNull
-import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.util.CoroutineTestRule
+import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -38,11 +40,15 @@ import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 
+@ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
-    val rule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
     private val debounceDurationInMilliseconds: Long = 300
 
@@ -50,18 +56,25 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     private val findProject by inject<FindProject>()
     private val createProject by inject<CreateProject>()
 
-    private val vm by inject<CreateProjectViewModel>()
+    private lateinit var vm: CreateProjectViewModel
 
     @Before
     fun setUp() {
         startKoin {
             modules(testKoinModules)
         }
+
+        vm = CreateProjectViewModel(
+            usageAnalytics = usageAnalytics,
+            createProject = createProject,
+            findProject = findProject,
+            dispatchProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
+        )
     }
 
     @Test
     fun `is create enabled with empty name`() = runBlocking {
-        vm.name += ""
+        vm.name = ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
@@ -72,7 +85,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @Test
     fun `is create enabled with duplicated name`() = runBlocking {
         createProject(android.name)
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
@@ -84,7 +97,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `is create enabled with valid name`() = runBlocking {
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertTrue(it)
@@ -94,7 +107,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project with empty name`() = runBlocking {
-        vm.name += ""
+        vm.name = ""
 
         vm.createProject()
 
@@ -107,7 +120,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @Test
     fun `create project with duplicated name`() = runBlocking {
         createProject(android.name)
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.createProject()
 
@@ -119,7 +132,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project with valid name`() = runBlocking {
-        vm.name += android.name.value
+        vm.name = android.name.value
 
         vm.createProject()
 

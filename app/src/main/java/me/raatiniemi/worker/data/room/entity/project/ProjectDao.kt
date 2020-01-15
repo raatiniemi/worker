@@ -21,23 +21,23 @@ import androidx.room.*
 @Dao
 internal interface ProjectDao {
     @Query("SELECT COUNT(*) FROM projects")
-    fun count(): Int
+    suspend fun count(): Int
 
     @Query("SELECT * FROM projects ORDER BY name ASC LIMIT :position, :pageSize")
-    fun findAll(position: Int, pageSize: Int): List<ProjectEntity>
+    suspend fun findAll(position: Int, pageSize: Int): List<ProjectEntity>
 
     @Query("SELECT * FROM projects ORDER BY name ASC")
-    fun findAll(): List<ProjectEntity>
+    suspend fun findAll(): List<ProjectEntity>
 
     @Query("SELECT * FROM projects WHERE UPPER(name) = UPPER(:name) LIMIT 1")
-    fun findByName(name: String): ProjectEntity?
+    suspend fun findByName(name: String): ProjectEntity?
 
     @Query("SELECT * FROM projects WHERE _id = :id LIMIT 1")
-    fun findById(id: Long): ProjectEntity?
+    suspend fun findById(id: Long): ProjectEntity?
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun add(project: ProjectEntity): Long
+    suspend fun add(project: ProjectEntity): Long
 
     @Delete
-    fun remove(project: ProjectEntity)
+    suspend fun remove(project: ProjectEntity)
 }

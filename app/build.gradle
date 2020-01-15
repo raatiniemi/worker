@@ -154,16 +154,16 @@ dependencies {
     def recyclerViewVersion = '1.1.0'
     def cardViewVersion = '1.0.0'
     def preferenceVersion = '1.1.0'
-    def lifecycleVersion = '2.1.0'
+    def lifecycleVersion = '2.2.0-rc03'
     def roomVersion = '2.2.3'
     def pagingVersion = '2.1.1'
-    def fragmentVersion = '1.1.0'
+    def fragmentVersion = '1.2.0-rc05'
     def navigationVersion = '2.1.0'
     def materialVersion = '1.0.0'
     def firebaseCoreVersion = '17.2.1'
     def crashlyticsVersion = '2.10.1'
     def firebasePerformanceVersion = '19.0.4'
-    def coroutineVersion = '1.1.1'
+    def coroutineVersion = '1.3.3'
     def koinVersion = '2.0.1'
     def timberVersion = '4.7.1'
     def eventBusVersion = '3.0.0'
@@ -189,6 +189,7 @@ dependencies {
     implementation "androidx.preference:preference-ktx:$preferenceVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.paging:paging-runtime:$pagingVersion"
     implementation "androidx.fragment:fragment:$fragmentVersion"
@@ -218,10 +219,12 @@ dependencies {
 
     testImplementation project(':core-test')
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
     testImplementation "org.koin:koin-test:$koinVersion"
     testImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"
 
     androidTestImplementation project(':core-test')
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
     androidTestImplementation "org.koin:koin-test:$koinVersion"
     androidTestImplementation "androidx.test:core:$testCoreVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"

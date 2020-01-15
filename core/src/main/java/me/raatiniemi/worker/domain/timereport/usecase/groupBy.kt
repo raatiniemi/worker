@@ -49,6 +49,23 @@ private fun week(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportW
 }
 
 /**
+ * Group time interval by the week in which it have been registered.
+ *
+ * @param timeInterval Time interval to group.
+ *
+ * @return Weeks of time interval.
+ *
+ * @see [groupByWeek]
+ */
+fun groupByWeek(timeInterval: TimeInterval): List<TimeReportWeek> {
+    return groupByWeek(
+        listOf(
+            timeInterval
+        )
+    )
+}
+
+/**
  * Group time intervals by the day in which they have been registered.
  *
  * @param timeIntervals Time intervals to group.

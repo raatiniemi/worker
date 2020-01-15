@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.cli
@@ -29,19 +30,19 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class CountProjectsTest {
-    private lateinit var repository: ProjectRepository
+    private lateinit var projects: ProjectRepository
 
     private lateinit var countProjects: CountProjects
 
     @Before
     fun setUp() {
-        repository = ProjectInMemoryRepository()
+        projects = ProjectInMemoryRepository()
 
-        countProjects = CountProjects(repository)
+        countProjects = CountProjects(projects)
     }
 
     @Test
-    fun `count projects without projects`() {
+    fun `count projects without projects`() = runBlocking {
         val expected = 0
 
         val actual = countProjects()
@@ -50,8 +51,8 @@ class CountProjectsTest {
     }
 
     @Test
-    fun `count projects with project`() {
-        repository.add(NewProject(android.name))
+    fun `count projects with project`() = runBlocking {
+        projects.add(NewProject(android.name))
         val expected = 1
 
         val actual = countProjects()
@@ -60,9 +61,9 @@ class CountProjectsTest {
     }
 
     @Test
-    fun `count projects with projects`() {
-        repository.add(NewProject(android.name))
-        repository.add(NewProject(cli.name))
+    fun `count projects with projects`() = runBlocking {
+        projects.add(NewProject(android.name))
+        projects.add(NewProject(cli.name))
         val expected = 2
 
         val actual = countProjects()

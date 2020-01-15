@@ -14,22 +14,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.project.usecase
+package me.raatiniemi.worker.util
 
-import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.project.repository.ProjectRepository
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 
-class FindActiveProjects(
-    private val projects: ProjectRepository,
-    private val timeIntervals: TimeIntervalRepository
-) {
-    suspend operator fun invoke(): List<Project> {
-        return projects.findAll()
-            .filter { isActive(it) }
+@ExperimentalCoroutinesApi
+internal class TestCoroutineDispatchProvider(
+    private val dispatcher: TestCoroutineDispatcher
+) : CoroutineDispatchProvider {
+    override fun main(): CoroutineDispatcher {
+        return dispatcher
     }
 
-    private suspend fun isActive(project: Project): Boolean {
-        return timeIntervals.findActiveByProjectId(project.id) != null
+    override fun default(): CoroutineDispatcher {
+        return dispatcher
+    }
+
+    override fun io(): CoroutineDispatcher {
+        return dispatcher
+    }
+
+    override fun unconfined(): CoroutineDispatcher {
+        return dispatcher
     }
 }

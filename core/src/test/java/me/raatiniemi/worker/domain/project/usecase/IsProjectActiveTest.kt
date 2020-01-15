@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
@@ -40,14 +41,14 @@ class IsProjectActiveTest {
     }
 
     @Test
-    fun `is project active without time interval`() {
+    fun `is project active without time interval`() = runBlocking {
         val actual = isProjectActive(1)
 
         assertFalse(actual)
     }
 
     @Test
-    fun `is project active with active time interval`() {
+    fun `is project active with active time interval`() = runBlocking {
         val newTimeInterval = newTimeInterval(android) {
             start = Milliseconds(1)
         }

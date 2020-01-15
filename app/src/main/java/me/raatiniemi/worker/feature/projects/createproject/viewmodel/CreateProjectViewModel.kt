@@ -18,7 +18,6 @@ package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
 import com.google.firebase.perf.metrics.AddTrace
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
 import me.raatiniemi.worker.domain.project.model.projectName
@@ -27,60 +26,67 @@ import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.domain.project.usecase.InvalidProjectNameException
 import me.raatiniemi.worker.domain.project.usecase.ProjectAlreadyExistsException
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
-import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
-import me.raatiniemi.worker.feature.shared.model.combineLatest
-import me.raatiniemi.worker.feature.shared.model.debounce
-import me.raatiniemi.worker.feature.shared.model.plusAssign
+import me.raatiniemi.worker.feature.shared.model.*
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 
 internal class CreateProjectViewModel(
     private val usageAnalytics: UsageAnalytics,
     private val createProject: CreateProject,
-    private val findProject: FindProject
+    private val findProject: FindProject,
+    private val dispatchProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel() {
-    val name = MutableLiveData<String>()
+    private val _name = MutableLiveData<String>()
+    var name: String by MutableLiveDataProperty(_name, "")
 
-    private val isNameValid = name.map { isValid(it) }
-
-    private val isNameAvailable = viewModelScope.debounce(name)
-        .map(::checkForAvailability)
+    private val isNameValid = _name.map(::isValid)
+    private val isNameAvailable = debounceSuspend(viewModelScope, _name) { name ->
+        checkForAvailability(name)
+    }
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
         .map { it.first && it.second }
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
-    private fun checkForAvailability(value: String): Boolean {
-        return try {
-            findProject(projectName(value)) ?: return true
-
-            viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
-            false
-        } catch (e: InvalidProjectNameException) {
-            false
+    private suspend fun checkForAvailability(value: String): Boolean {
+        return withContext(dispatchProvider.io()) {
+            try {
+                val project = findProject(projectName(value))
+                if (project != null) {
+                    viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+                    false
+                } else {
+                    true
+                }
+            } catch (e: InvalidProjectNameException) {
+                false
+            }
         }
     }
 
     @AddTrace(name = TracePerformanceEvents.CREATE_PROJECT)
-    suspend fun createProject() = withContext(Dispatchers.IO) {
-        val viewAction: CreateProjectViewActions = try {
-            createProject(projectName(name.value))
+    suspend fun createProject() = withContext(dispatchProvider.io()) {
+        consumeSuspending(_name) { name ->
+            try {
+                createProject(projectName(name))
 
-            usageAnalytics.log(Event.ProjectCreate)
-            CreateProjectViewActions.CreatedProject
-        } catch (e: Exception) {
-            when (e) {
-                is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
-                is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
-                else -> {
-                    Timber.w(e, "Unable to create project")
-                    CreateProjectViewActions.UnknownErrorMessage
-                }
+                usageAnalytics.log(Event.ProjectCreate)
+                viewActions += CreateProjectViewActions.CreatedProject
+            } catch (e: ProjectAlreadyExistsException) {
+                Timber.d("Project with name \"$name\" already exists")
+                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+            } catch (e: InvalidProjectNameException) {
+                Timber.w("Project name \"$name\" is not valid")
+                viewActions += CreateProjectViewActions.InvalidProjectNameErrorMessage
+            } catch (e: Exception) {
+                Timber.w(e, "Unable to create project")
+                viewActions += CreateProjectViewActions.UnknownErrorMessage
             }
         }
-        viewActions += viewAction
     }
 }

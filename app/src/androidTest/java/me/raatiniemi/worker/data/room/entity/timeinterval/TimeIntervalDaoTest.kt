@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.room.entity.timeinterval
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.data.room.Database
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
@@ -50,8 +51,10 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
             loadKoinModules(androidTestKoinModules)
         }
 
-        val projects = get<ProjectRepository>()
-        projects.add(NewProject(android.name))
+        runBlocking {
+            val projects = get<ProjectRepository>()
+            projects.add(NewProject(android.name))
+        }
     }
 
     @After
@@ -60,14 +63,16 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withoutTimeIntervals() {
+    fun findAll_withoutTimeIntervals() = runBlocking {
+        val expected = emptyList<TimeInterval>()
+
         val actual = timeIntervals.findAll(1, 0)
 
-        assertEquals(emptyList<TimeInterval>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun findAll_withoutTimeIntervalsForProject() {
+    fun findAll_withoutTimeIntervalsForProject() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
 
         val actual = timeIntervals.findAll(2, 0)
@@ -76,7 +81,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervals() {
+    fun findAll_withTimeIntervals() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
             timeIntervalEntity { id = 1 }
@@ -88,7 +93,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalsOnStart() {
+    fun findAll_withTimeIntervalsOnStart() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
             timeIntervalEntity { id = 1 }
@@ -100,7 +105,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalsBeforeStart() {
+    fun findAll_withTimeIntervalsBeforeStart() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
 
         val actual = timeIntervals.findAll(1, 2)
@@ -109,7 +114,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withActiveTimeIntervalsBeforeStart() {
+    fun findAll_withActiveTimeIntervalsBeforeStart() = runBlocking {
         timeIntervals.add(timeIntervalEntity { stopInMilliseconds = 0 })
         val expected = listOf(
             timeIntervalEntity {
@@ -124,14 +129,14 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun find_withoutTimeInterval() {
+    fun find_withoutTimeInterval() = runBlocking {
         val actual = timeIntervals.find(1)
 
         assertNull(actual)
     }
 
     @Test
-    fun find_withTimeInterval() {
+    fun find_withTimeInterval() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
         val expected = timeIntervalEntity { id = 1 }
 
@@ -141,14 +146,14 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findActiveTime_withoutTimeInterval() {
+    fun findActiveTime_withoutTimeInterval() = runBlocking {
         val actual = timeIntervals.findActiveTime(1)
 
         assertNull(actual)
     }
 
     @Test
-    fun findActiveTime_withoutActiveTimeInterval() {
+    fun findActiveTime_withoutActiveTimeInterval() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
 
         val actual = timeIntervals.findActiveTime(1)
@@ -157,7 +162,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findActiveTime_withActiveTimeInterval() {
+    fun findActiveTime_withActiveTimeInterval() = runBlocking {
         timeIntervals.add(timeIntervalEntity { stopInMilliseconds = 0 })
         val expected = timeIntervalEntity {
             id = 1
@@ -170,7 +175,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun update_withoutExistingTimeInterval() {
+    fun update_withoutExistingTimeInterval() = runBlocking {
         timeIntervals.update(
             listOf(
                 timeIntervalEntity { id = 1 }
@@ -182,7 +187,7 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun update_withTimeIntervals() {
+    fun update_withTimeIntervals() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 4
@@ -212,7 +217,9 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun remove_withoutExistingTimeInterval() {
+    fun remove_withoutExistingTimeInterval() = runBlocking {
+        val expected = emptyList<TimeIntervalEntity>()
+
         timeIntervals.remove(
             listOf(
                 timeIntervalEntity { id = 1 }
@@ -220,11 +227,11 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
         )
 
         val actual = timeIntervals.findAll(1, 0)
-        assertEquals(emptyList<TimeIntervalEntity>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun remove_withTimeIntervals() {
+    fun remove_withTimeIntervals() = runBlocking {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(

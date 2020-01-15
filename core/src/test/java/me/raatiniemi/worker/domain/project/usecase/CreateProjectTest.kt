@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
@@ -28,31 +29,33 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class CreateProjectTest {
-    private val repository: ProjectRepository = ProjectInMemoryRepository()
+    private lateinit var projects: ProjectRepository
 
     private lateinit var findProject: FindProject
     private lateinit var createProject: CreateProject
 
     @Before
     fun setUp() {
-        findProject = FindProject(repository)
-        createProject = CreateProject(findProject, repository)
+        projects = ProjectInMemoryRepository()
+
+        findProject = FindProject(projects)
+        createProject = CreateProject(findProject, projects)
     }
 
     @Test(expected = ProjectAlreadyExistsException::class)
-    fun `invoke with existing project`() {
-        repository.add(NewProject(android.name))
+    fun `create project with existing project`() = runBlocking<Unit> {
+        projects.add(NewProject(android.name))
 
         createProject(android.name)
     }
 
     @Test
-    fun execute() {
+    fun `create project`() = runBlocking {
         val expected = listOf(android)
 
         createProject(android.name)
 
-        val actual = repository.findAll()
+        val actual = projects.findAll()
         assertEquals(expected, actual)
     }
 }

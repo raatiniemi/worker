@@ -23,8 +23,8 @@ import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 /**
  * Use case for getting a project.
  */
-class GetProject(private val repository: ProjectRepository) {
-    operator fun invoke(projectId: Long): Project {
-        return repository.findById(ProjectId(projectId)) ?: throw NoProjectException()
+class GetProject(private val projects: ProjectRepository) {
+    suspend operator fun invoke(projectId: Long): Project {
+        return projects.findById(ProjectId(projectId)) ?: throw NoProjectException()
     }
 }

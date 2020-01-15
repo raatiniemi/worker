@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.feature.ongoing.service
 
 import android.content.Intent
+import kotlinx.coroutines.*
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.FindActiveProjects
@@ -24,8 +25,12 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.CalculateTimeToday
 import me.raatiniemi.worker.feature.ongoing.view.PauseNotification
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
-class ReloadNotificationService : OngoingService("ReloadNotificationService") {
+class ReloadNotificationService : OngoingService("ReloadNotificationService"), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + Job()
+
     private val findActiveProjects: FindActiveProjects by inject()
     private val calculateTimeToday: CalculateTimeToday by inject()
 
@@ -37,21 +42,27 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
             return
         }
 
-        try {
-            findActiveProjects().forEach {
-                sendOrDismissPauseNotification(it)
+        launch {
+            try {
+                val projects = findActiveProjects()
+                projects.forEach { project ->
+                    val calculatedTimeToday = calculateTimeToday(project)
+                    withContext(Dispatchers.Main) {
+                        sendOrDismissPauseNotification(project, calculatedTimeToday)
+                    }
+                }
+            } catch (e: DomainException) {
+                Timber.e(e, "Unable to reload notifications")
             }
-        } catch (e: DomainException) {
-            Timber.e(e, "Unable to reload notifications")
         }
     }
 
-    private fun sendOrDismissPauseNotification(project: Project) {
+    private fun sendOrDismissPauseNotification(project: Project, calculatedTimeToday: Long) {
         sendOrDismissOngoingNotification(project) {
             PauseNotification.build(
                 this,
                 project,
-                calculateTimeToday(project),
+                calculatedTimeToday,
                 isOngoingNotificationChronometerEnabled
             )
         }

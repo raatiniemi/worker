@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
 class FindProjects(private val projects: ProjectRepository) {
-    operator fun invoke(loadRange: LoadRange): List<Project> {
+    suspend operator fun invoke(loadRange: LoadRange): List<Project> {
         return projects.findAll(loadRange)
     }
 }

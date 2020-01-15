@@ -17,17 +17,19 @@
 package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.*
-import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
-import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
-import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
+import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
-import me.raatiniemi.worker.domain.timereport.model.timeReportDay
-import me.raatiniemi.worker.domain.timereport.model.timeReportWeek
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
+import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
 import me.raatiniemi.worker.feature.projects.model.ProjectHolder
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportTapAction
@@ -37,6 +39,8 @@ import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.util.CoroutineTestRule
+import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -45,84 +49,83 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
 import org.koin.test.inject
 
+@ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
+
     private val usageAnalytics by inject<InMemoryUsageAnalytics>()
     private val projectHolder by inject<ProjectHolder>()
-    private val timeIntervalRepository by inject<TimeIntervalRepository>()
 
-    private val vm by inject<TimeReportViewModel>()
+    private val clockIn by inject<ClockIn>()
+    private val clockOut by inject<ClockOut>()
+    private val findTimeReportWeeks by inject<FindTimeReportWeeks>()
+
+    private lateinit var vm: TimeReportViewModel
 
     @Before
     fun setUp() {
         startKoin {
             modules(testKoinModules)
         }
+
+        vm = TimeReportViewModel(
+            keyValueStore = get(),
+            usageAnalytics = usageAnalytics,
+            projectProvider = projectHolder,
+            countTimeReportWeeks = get(),
+            findTimeReportWeeks = findTimeReportWeeks,
+            markRegisteredTime = get(),
+            removeTime = get(),
+            dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
+        )
     }
+
+    // Toggle registered state
 
     @Test
     fun `toggle registered state with selected item`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, startOfDay)
+        val timeInterval = clockOut(android, startOfDay + 1.hours)
         projectHolder += android
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        ).also {
-            timeIntervalRepository.update(it.clockOut(stop = Milliseconds(2)))
-        }
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(2)
-        }
-        val expected = listOf(
+        val expected = groupByWeek(
             timeInterval(timeInterval) { builder ->
                 builder.isRegistered = true
             }
+        )
+        val expectedEvents = listOf(
+            Event.TimeReportToggle(1)
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
         vm.toggleRegisteredStateForSelectedItems()
 
-        assertEquals(listOf(Event.TimeReportToggle(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
+        val actual = findTimeReportWeeks(
+            android,
+            LoadRange(LoadPosition(0), LoadSize(10))
+        )
+        assertEquals(expectedEvents, usageAnalytics.events)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `toggle registered state for selected items`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, startOfDay)
+        val firstTimeInterval = clockOut(android, startOfDay + 1.hours)
+        clockIn(android, startOfDay + 2.hours)
+        val secondTimeInterval = clockOut(android, startOfDay + 3.hours)
         projectHolder += android
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        ).also {
-            timeIntervalRepository.update(it.clockOut(stop = Milliseconds(2)))
-        }
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        ).also {
-            timeIntervalRepository.update(it.clockOut(stop = Milliseconds(2)))
-        }
-        val firstTimeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(2)
-        }
-        val secondTimeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(2)
-            builder.start = Milliseconds(1)
-            builder.stop = Milliseconds(2)
-        }
-        val expected = listOf(
+        val expected = groupByWeek(listOf(
             timeInterval(firstTimeInterval) { builder ->
                 builder.isRegistered = true
             },
@@ -130,28 +133,26 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
                 builder.isRegistered = true
             }
         )
+        )
+        val expectedEvents = listOf(Event.TimeReportToggle(2))
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeInterval))
         vm.consume(TimeReportTapAction.TapItem(secondTimeInterval))
         vm.toggleRegisteredStateForSelectedItems()
 
-        assertEquals(listOf(Event.TimeReportToggle(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
+        val actual = findTimeReportWeeks(
+            android,
+            LoadRange(LoadPosition(0), LoadSize(10))
+        )
+        assertEquals(expectedEvents, usageAnalytics.events)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `toggle registered state for active time interval`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val timeInterval = clockIn(android, startOfDay)
         projectHolder += android
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-        }
         vm.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
 
         vm.toggleRegisteredStateForSelectedItems()
@@ -164,58 +165,73 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
         }
     }
 
+    // Remove
+
     @Test
-    fun `remove with single item`() = runBlocking {
+    fun `remove with active item`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val timeInterval = clockIn(android, startOfDay)
         projectHolder += android
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
+        val expected = emptyList<TimeReportWeek>()
+        val expectedEvents = listOf(
+            Event.TimeReportRemove(1)
         )
-        val timeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-        }
-        val expected = emptyList<TimeInterval>()
 
         vm.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
         vm.removeSelectedItems()
 
-        assertEquals(listOf(Event.TimeReportRemove(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
+        val actual = findTimeReportWeeks(
+            android,
+            LoadRange(LoadPosition(0), LoadSize(10))
+        )
+        assertEquals(expectedEvents, usageAnalytics.events)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `remove with inactive item`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, startOfDay)
+        val timeInterval = clockOut(android, startOfDay + 1.hours)
+        projectHolder += android
+        val expected = emptyList<TimeReportWeek>()
+        val expectedEvents = listOf(
+            Event.TimeReportRemove(1)
+        )
+
+        vm.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+        vm.removeSelectedItems()
+
+        val actual = findTimeReportWeeks(
+            android,
+            LoadRange(LoadPosition(0), LoadSize(10))
+        )
+        assertEquals(expectedEvents, usageAnalytics.events)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with multiple items`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, startOfDay)
+        val firstTimeInterval = clockOut(android, startOfDay + 1.hours)
+        clockIn(android, startOfDay + 2.hours)
+        val secondTimeInterval = clockOut(android, startOfDay + 3.hours)
         projectHolder += android
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
+        val expected = emptyList<TimeReportWeek>()
+        val expectedEvents = listOf(
+            Event.TimeReportRemove(2)
         )
-        timeIntervalRepository.add(
-            newTimeInterval(android) {
-                start = Milliseconds(1)
-            }
-        )
-        val firstTimeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(1)
-            builder.start = Milliseconds(1)
-        }
-
-        val secondTimeInterval = timeInterval(android.id) { builder ->
-            builder.id = TimeIntervalId(2)
-            builder.start = Milliseconds(1)
-        }
-        val expected = emptyList<TimeInterval>()
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeInterval))
         vm.consume(TimeReportTapAction.TapItem(secondTimeInterval))
         vm.removeSelectedItems()
 
-        assertEquals(listOf(Event.TimeReportRemove(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
+        val actual = findTimeReportWeeks(
+            android,
+            LoadRange(LoadPosition(0), LoadSize(10))
+        )
+        assertEquals(expectedEvents, usageAnalytics.events)
         assertEquals(expected, actual)
     }
 
@@ -223,8 +239,8 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `refresh active time report week without weeks`() = runBlocking {
-        projectHolder += android
         val weeks = emptyList<TimeReportWeek>()
+        projectHolder += android
 
         vm.refreshActiveTimeReportWeek(weeks)
 
@@ -233,25 +249,11 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `refresh active time report week without active week`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        clockIn(android, startOfDay)
+        val timeInterval = clockOut(android, startOfDay + 1.hours)
+        val weeks = groupByWeek(timeInterval)
         projectHolder += android
-        val now = Milliseconds.now
-        val weeks = listOf(
-            timeReportWeek(
-                setToStartOfWeek(now),
-                listOf(
-                    timeReportDay(
-                        now,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = now
-                                builder.stop = now + 20.minutes
-                            }
-                        )
-                    )
-                )
-            )
-        )
 
         vm.refreshActiveTimeReportWeek(weeks)
 
@@ -260,24 +262,10 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `refresh active time report week with week`() = runBlocking {
+        val startOfDay = setToStartOfDay(Milliseconds.now)
+        val timeInterval = clockIn(android, startOfDay)
+        val weeks = groupByWeek(timeInterval)
         projectHolder += android
-        val now = Milliseconds.now
-        val weeks = listOf(
-            timeReportWeek(
-                setToStartOfWeek(now),
-                listOf(
-                    timeReportDay(
-                        now,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = now
-                            }
-                        )
-                    )
-                )
-            )
-        )
 
         vm.refreshActiveTimeReportWeek(weeks)
 
@@ -288,36 +276,18 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `refresh active time report week with days`() = runBlocking {
-        projectHolder += android
-        val now = Milliseconds.now
-        val startOfWeek = setToStartOfWeek(now)
+        val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextDay = startOfWeek + 1.days
-        val weeks = listOf(
-            timeReportWeek(
-                startOfWeek,
-                listOf(
-                    timeReportDay(
-                        nextDay,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(2)
-                                builder.start = nextDay
-                            }
-                        )
-                    ),
-                    timeReportDay(
-                        startOfWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = startOfWeek
-                                builder.stop = startOfWeek + 2.hours
-                            }
-                        )
-                    )
-                )
+        clockIn(android, startOfWeek)
+        val firstTimeInterval = clockOut(android, startOfWeek + 1.hours)
+        val secondTimeInterval = clockIn(android, nextDay)
+        val weeks = groupByWeek(
+            listOf(
+                firstTimeInterval,
+                secondTimeInterval
             )
         )
+        projectHolder += android
 
         vm.refreshActiveTimeReportWeek(weeks)
 
@@ -328,41 +298,18 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `refresh active time report week with weeks`() = runBlocking {
-        projectHolder += android
-        val now = Milliseconds.now
-        val startOfWeek = setToStartOfWeek(now)
+        val startOfWeek = setToStartOfWeek(Milliseconds.now)
         val nextWeek = startOfWeek + 1.weeks
-        val weeks = listOf(
-            timeReportWeek(
-                nextWeek,
-                listOf(
-                    timeReportDay(
-                        nextWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(2)
-                                builder.start = nextWeek
-                                builder.stop = nextWeek + 2.hours
-                            }
-                        )
-                    )
-                )
-            ),
-            timeReportWeek(
-                startOfWeek,
-                listOf(
-                    timeReportDay(
-                        startOfWeek,
-                        listOf(
-                            timeInterval(android.id) { builder ->
-                                builder.id = TimeIntervalId(1)
-                                builder.start = startOfWeek
-                            }
-                        )
-                    )
-                )
+        clockIn(android, nextWeek)
+        val secondTimeInterval = clockOut(android, nextWeek + 1.hours)
+        val firstTimeInterval = clockIn(android, startOfWeek)
+        val weeks = groupByWeek(
+            listOf(
+                firstTimeInterval,
+                secondTimeInterval
             )
         )
+        projectHolder += android
 
         vm.refreshActiveTimeReportWeek(weeks)
 

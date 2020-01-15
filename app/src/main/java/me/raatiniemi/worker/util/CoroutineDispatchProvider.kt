@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,14 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.project.usecase
+package me.raatiniemi.worker.util
 
-import me.raatiniemi.worker.domain.project.model.Project
-import me.raatiniemi.worker.domain.project.model.ProjectName
-import me.raatiniemi.worker.domain.project.repository.ProjectRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-class FindProject(private val projects: ProjectRepository) {
-    suspend operator fun invoke(projectName: ProjectName): Project? {
-        return projects.findByName(projectName)
+internal interface CoroutineDispatchProvider {
+    fun main(): CoroutineDispatcher {
+        return Dispatchers.Main
+    }
+
+    fun default(): CoroutineDispatcher {
+        return Dispatchers.Default
+    }
+
+    fun io(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
+
+    fun unconfined(): CoroutineDispatcher {
+        return Dispatchers.Unconfined
     }
 }
+
+internal class DefaultCoroutineDispatchProvider : CoroutineDispatchProvider

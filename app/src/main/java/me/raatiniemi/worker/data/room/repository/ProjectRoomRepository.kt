@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.room.repository
 
 import me.raatiniemi.worker.data.room.entity.project.ProjectDao
 import me.raatiniemi.worker.data.room.entity.project.ProjectEntity
+import me.raatiniemi.worker.data.room.entity.project.project
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.Project
@@ -25,39 +26,40 @@ import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.project.model.ProjectName
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
-internal class ProjectRoomRepository(val projects: ProjectDao) :
-    ProjectRepository {
-    override fun count() = projects.count()
-
-    override fun findAll(loadRange: LoadRange): List<Project> {
-        val (position, size) = loadRange
-        return projects.findAll(position.value, size.value)
-            .map { it.toProject() }
+internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
+    override suspend fun count(): Int {
+        return projects.count()
     }
 
-    override fun findAll(): List<Project> {
+    override suspend fun findAll(loadRange: LoadRange): List<Project> {
+        val (position, size) = loadRange
+        return projects.findAll(position.value, size.value)
+            .map(::project)
+    }
+
+    override suspend fun findAll(): List<Project> {
         return projects.findAll()
-            .map { it.toProject() }
+            .map(::project)
             .toMutableList()
     }
 
-    override fun findByName(projectName: ProjectName): Project? {
+    override suspend fun findByName(projectName: ProjectName): Project? {
         return projects.findByName(projectName.value)
-            ?.run { toProject() }
+            ?.let(::project)
     }
 
-    override fun findById(id: ProjectId): Project? {
+    override suspend fun findById(id: ProjectId): Project? {
         return projects.findById(id.value)
-            ?.run { toProject() }
+            ?.let(::project)
     }
 
-    override fun add(newProject: NewProject): Project {
+    override suspend fun add(newProject: NewProject): Project {
         projects.add(ProjectEntity(name = newProject.name.value))
 
         return findByName(newProject.name) ?: throw UnableToFindNewProjectException()
     }
 
-    override fun remove(project: Project) {
+    override suspend fun remove(project: Project) {
         val entity = projects.findById(project.id.value) ?: return
 
         projects.remove(entity)

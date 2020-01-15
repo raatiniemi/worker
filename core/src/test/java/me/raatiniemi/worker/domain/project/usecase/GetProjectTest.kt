@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.NewProject
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.repository.ProjectInMemoryRepository
@@ -28,17 +29,18 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class GetProjectTest {
-    private val repository: ProjectRepository = ProjectInMemoryRepository()
+    private val projects: ProjectRepository = ProjectInMemoryRepository()
+
     private lateinit var getProject: GetProject
 
     @Before
     fun setUp() {
-        getProject = GetProject(repository)
+        getProject = GetProject(projects)
     }
 
     @Test
-    fun execute() {
-        repository.add(NewProject(android.name))
+    fun execute() = runBlocking {
+        projects.add(NewProject(android.name))
 
         val actual = getProject(android.id.value)
 
@@ -46,7 +48,7 @@ class GetProjectTest {
     }
 
     @Test(expected = NoProjectException::class)
-    fun `execute withoutProject`() {
+    fun `execute withoutProject`() = runBlocking<Unit> {
         getProject(android.id.value)
     }
 }

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.project.usecase
 import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 
 class CountProjects(private val projects: ProjectRepository) {
-    operator fun invoke(): Int {
+    suspend operator fun invoke(): Int {
         return projects.count()
     }
 }

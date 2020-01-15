@@ -17,25 +17,35 @@
 package me.raatiniemi.worker.data.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.*
-import me.raatiniemi.worker.domain.project.repository.ProjectRepository
+import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.koin.androidTestKoinModules
 import me.raatiniemi.worker.koin.module.inMemorySharedTest
+import me.raatiniemi.worker.util.CoroutineTestRule
+import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.get
 import org.koin.test.inject
 
+@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ProjectDataSourceTest : AutoCloseKoinTest() {
-    private val repository by inject<ProjectRepository>()
+class AllProjectsDataSourceTest : AutoCloseKoinTest() {
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
-    private val dataSource by inject<ProjectDataSource>()
+    private val createProject by inject<CreateProject>()
+
+    private lateinit var dataSource: AllProjectsDataSource
 
     @Before
     fun setUp() {
@@ -43,10 +53,18 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
         startKoin {
             loadKoinModules(androidTestKoinModules + inMemorySharedTest)
         }
+
+        val factory = AllProjectsDataSource.Factory(
+            scope = coroutineTestRule.testScope,
+            dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher),
+            countProjects = get(),
+            findProjects = get()
+        )
+        dataSource = factory.create()
     }
 
     @Test
-    fun loadInitial_withoutProjects() {
+    fun loadInitial_withoutProjects() = runBlocking {
         val expected = PositionalDataSourceResult.Initial<Project>(emptyList(), 0)
 
         dataSource.loadInitial(loadInitialParams(), loadInitialCallback {
@@ -55,9 +73,9 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProject() {
+    fun loadInitial_withProject() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name))
+            createProject(android.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects,
@@ -71,12 +89,12 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProjects() {
+    fun loadInitial_withProjects() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name)),
-            repository.add(NewProject(cli.name)),
-            repository.add(NewProject(ios.name)),
-            repository.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects,
@@ -90,12 +108,12 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProjectsBeyondPageSize() {
+    fun loadInitial_withProjectsBeyondPageSize() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name)),
-            repository.add(NewProject(cli.name)),
-            repository.add(NewProject(ios.name)),
-            repository.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects.take(2),
@@ -112,12 +130,12 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadInitial_withProjectsAndPosition() {
+    fun loadInitial_withProjectsAndPosition() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name)),
-            repository.add(NewProject(cli.name)),
-            repository.add(NewProject(ios.name)),
-            repository.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects.drop(2),
@@ -143,9 +161,9 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProject() {
+    fun loadRange_withProject() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name))
+            createProject(android.name)
         )
         val expected = PositionalDataSourceResult.Range(projects)
 
@@ -155,12 +173,12 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProjects() {
+    fun loadRange_withProjects() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name)),
-            repository.add(NewProject(cli.name)),
-            repository.add(NewProject(ios.name)),
-            repository.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Range(projects)
 
@@ -170,12 +188,12 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProjectsBeforePosition() {
+    fun loadRange_withProjectsBeforePosition() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name)),
-            repository.add(NewProject(cli.name)),
-            repository.add(NewProject(ios.name)),
-            repository.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Range(projects.drop(2))
 
@@ -185,12 +203,12 @@ class ProjectDataSourceTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun loadRange_withProjectsBeyondPageSize() {
+    fun loadRange_withProjectsBeyondPageSize() = runBlocking {
         val projects = listOf(
-            repository.add(NewProject(android.name)),
-            repository.add(NewProject(cli.name)),
-            repository.add(NewProject(ios.name)),
-            repository.add(NewProject(web.name))
+            createProject(android.name),
+            createProject(cli.name),
+            createProject(ios.name),
+            createProject(web.name)
         )
         val expected = PositionalDataSourceResult.Range(
             projects.take(2)

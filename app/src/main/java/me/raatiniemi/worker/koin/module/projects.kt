@@ -31,7 +31,8 @@ internal val projects = module {
         AllProjectsViewModel(
             keyValueStore = get(),
             usageAnalytics = get(),
-            projectDataSourceFactory = get(),
+            countProjects = get(),
+            findProjects = get(),
             getProjectTimeSince = get(),
             clockIn = get(),
             clockOut = get(),
@@ -63,7 +64,9 @@ internal val projects = module {
         TimeReportViewModel(
             keyValueStore = get(),
             usageAnalytics = get(),
-            dataSourceFactory = get(),
+            projectProvider = get(),
+            countTimeReportWeeks = get(),
+            findTimeReportWeeks = get(),
             markRegisteredTime = get(),
             removeTime = get()
         )

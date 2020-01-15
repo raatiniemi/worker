@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.project.repository
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.model.LoadPosition
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.LoadSize
@@ -40,7 +41,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `count without projects`() {
+    fun `count without projects`() = runBlocking {
         val expected = 0
 
         val actual = repository.count()
@@ -49,7 +50,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `count with project`() {
+    fun `count with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = 1
 
@@ -59,7 +60,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `count with projects`() {
+    fun `count with projects`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = 2
@@ -70,7 +71,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all paging without projects`() {
+    fun `find all paging without projects`() = runBlocking {
         val expected = emptyList<Project>()
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -83,7 +84,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all paging with project`() {
+    fun `find all paging with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = listOf(android)
         val loadRange = LoadRange(
@@ -97,7 +98,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all paging with projects`() {
+    fun `find all paging with projects`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(android, cli)
@@ -112,7 +113,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with project before page`() {
+    fun `find all with project before page`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(cli)
@@ -127,7 +128,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with project after page`() {
+    fun `find all with project after page`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(android)
@@ -142,7 +143,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all sorted page`() {
+    fun `find all sorted page`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(android, cli)
@@ -157,7 +158,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all without projects`() {
+    fun `find all without projects`() = runBlocking {
         val expected = emptyList<Project>()
 
         val actual = repository.findAll()
@@ -166,7 +167,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with project`() {
+    fun `find all with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = listOf(android)
 
@@ -176,7 +177,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find all with projects`() {
+    fun `find all with projects`() = runBlocking {
         repository.add(NewProject(android.name))
         repository.add(NewProject(cli.name))
         val expected = listOf(android, cli)
@@ -187,14 +188,14 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by name without project`() {
+    fun `find by name without project`() = runBlocking {
         val actual = repository.findByName(android.name)
 
         assertNull(actual)
     }
 
     @Test
-    fun `find by name without matching project`() {
+    fun `find by name without matching project`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findByName(cli.name)
@@ -203,7 +204,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by name with project`() {
+    fun `find by name with project`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findByName(android.name)
@@ -212,7 +213,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by name with lowercase project name`() {
+    fun `find by name with lowercase project name`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findByName(
@@ -223,14 +224,14 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by id without project`() {
+    fun `find by id without project`() = runBlocking {
         val actual = repository.findById(android.id)
 
         assertNull(actual)
     }
 
     @Test
-    fun `find by id without matching project`() {
+    fun `find by id without matching project`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findById(cli.id)
@@ -239,7 +240,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `find by id with project`() {
+    fun `find by id with project`() = runBlocking {
         repository.add(NewProject(android.name))
 
         val actual = repository.findById(android.id)
@@ -248,12 +249,12 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove without project`() {
+    fun `remove without project`() = runBlocking {
         repository.remove(android)
     }
 
     @Test
-    fun `remove without matching project`() {
+    fun `remove without matching project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = listOf(android)
 
@@ -264,7 +265,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove with project`() {
+    fun `remove with project`() = runBlocking {
         repository.add(NewProject(android.name))
         val expected = emptyList<Project>()
 

@@ -30,18 +30,18 @@ import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepositor
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
     TimeIntervalRepository {
-    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
+    override suspend fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.findAll(project.id.value, milliseconds.value)
             .map(::timeInterval)
             .toList()
     }
 
-    override fun findById(id: TimeIntervalId): TimeInterval? {
+    override suspend fun findById(id: TimeIntervalId): TimeInterval? {
         return timeIntervals.find(id.value)
             ?.let(::timeInterval)
     }
 
-    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
+    override suspend fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
         val entity = timeIntervals.findActiveTime(projectId.value) ?: return null
 
         return when (val timeInterval = timeInterval(entity)) {
@@ -50,7 +50,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         }
     }
 
-    override fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
+    override suspend fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
         val id = timeIntervals.add(timeIntervalEntity(newTimeInterval))
 
         val timeInterval = findById(TimeIntervalId(id))
@@ -61,13 +61,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         throw UnableToFindNewTimeIntervalException()
     }
 
-    override fun update(timeInterval: TimeInterval): TimeInterval? {
+    override suspend fun update(timeInterval: TimeInterval): TimeInterval? {
         return timeIntervalEntity(timeInterval)
             .also { timeIntervals.update(listOf(it)) }
             .run { findById(TimeIntervalId(id)) }
     }
 
-    override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
+    override suspend fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
         val entities = timeIntervals.map(::timeIntervalEntity).toList()
         this.timeIntervals.update(entities)
 
@@ -77,13 +77,13 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
             .toList()
     }
 
-    override fun remove(id: TimeIntervalId) {
+    override suspend fun remove(id: TimeIntervalId) {
         val entity = timeIntervals.find(id.value) ?: return
 
         timeIntervals.remove(listOf(entity))
     }
 
-    override fun remove(timeIntervals: List<TimeInterval>) {
+    override suspend fun remove(timeIntervals: List<TimeInterval>) {
         val entities = timeIntervals.map(::timeIntervalEntity).toList()
 
         this.timeIntervals.remove(entities)

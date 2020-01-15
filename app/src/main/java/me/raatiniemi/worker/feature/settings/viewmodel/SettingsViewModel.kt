@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.timeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import me.raatiniemi.worker.feature.settings.model.SettingsViewActions
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
@@ -73,7 +74,7 @@ internal class SettingsViewModel(private val keyValueStore: KeyValueStore) : Vie
         }
 
         try {
-            val viewAction = when (TimeIntervalStartingPoint.from(newStartingPoint)) {
+            val viewAction = when (timeIntervalStartingPoint(newStartingPoint)) {
                 TimeIntervalStartingPoint.WEEK -> {
                     Timber.d("Changing time summary starting point to week")
 

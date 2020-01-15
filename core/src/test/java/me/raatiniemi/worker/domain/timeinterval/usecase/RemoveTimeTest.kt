@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.timeinterval.usecase
 
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -42,7 +43,7 @@ class RemoveTimeTest {
     }
 
     @Test
-    fun `remove with time interval`() {
+    fun `remove with time interval`() = runBlocking {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)
@@ -62,7 +63,7 @@ class RemoveTimeTest {
     }
 
     @Test
-    fun `remove with time intervals`() {
+    fun `remove with time intervals`() = runBlocking {
         repository.add(
             newTimeInterval(android) {
                 start = Milliseconds(1)

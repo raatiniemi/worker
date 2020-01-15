@@ -17,10 +17,7 @@
 package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.google.firebase.perf.metrics.AddTrace
@@ -35,20 +32,28 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.RemoveTime
 import me.raatiniemi.worker.domain.timeinterval.usecase.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
+import me.raatiniemi.worker.domain.timereport.usecase.CountTimeReportWeeks
+import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
+import me.raatiniemi.worker.feature.projects.model.ProjectProvider
 import me.raatiniemi.worker.feature.projects.timereport.model.*
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 
 internal class TimeReportViewModel internal constructor(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    dataSourceFactory: TimeReportWeekDataSource.Factory,
+    projectProvider: ProjectProvider,
+    countTimeReportWeeks: CountTimeReportWeeks,
+    findTimeReportWeeks: FindTimeReportWeeks,
     private val markRegisteredTime: MarkRegisteredTime,
-    private val removeTime: RemoveTime
+    private val removeTime: RemoveTime,
+    dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel(), TimeReportStateManager {
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<TimeReportDay>()
@@ -75,7 +80,15 @@ internal class TimeReportViewModel internal constructor(
             .setEnablePlaceholders(true)
             .build()
 
-        weeks = LivePagedListBuilder(dataSourceFactory, config).build()
+        val factory = TimeReportWeekDataSource.Factory(
+            viewModelScope,
+            dispatcherProvider,
+            projectProvider = projectProvider,
+            countTimeReportWeeks = countTimeReportWeeks,
+            findTimeReportWeeks = findTimeReportWeeks
+        )
+
+        weeks = LivePagedListBuilder(factory, config).build()
     }
 
     fun reloadTimeReport() {

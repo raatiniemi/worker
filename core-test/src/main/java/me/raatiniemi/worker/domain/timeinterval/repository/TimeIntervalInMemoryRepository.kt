@@ -29,21 +29,23 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     private val incrementedId = AtomicLong()
     private val timeIntervals = mutableListOf<TimeInterval>()
 
-    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
+    override suspend fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.filter {
-            it.projectId == project.id && it.start >= milliseconds
+            it.projectId == project.id && (it.start >= milliseconds || it is TimeInterval.Active)
         }
     }
 
-    override fun findById(id: TimeIntervalId): TimeInterval? =
-        timeIntervals.firstOrNull { it.id == id }
+    override suspend fun findById(id: TimeIntervalId): TimeInterval? {
+        return timeIntervals.firstOrNull { it.id == id }
+    }
 
-    override fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? =
-        timeIntervals.filter { it.projectId == projectId }
+    override suspend fun findActiveByProjectId(projectId: ProjectId): TimeInterval.Active? {
+        return timeIntervals.filter { it.projectId == projectId }
             .filterIsInstance<TimeInterval.Active>()
             .firstOrNull()
+    }
 
-    override fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
+    override suspend fun add(newTimeInterval: NewTimeInterval): TimeInterval.Active {
         val timeInterval = timeInterval(newTimeInterval.projectId) { builder ->
             builder.id = TimeIntervalId(incrementedId.incrementAndGet())
             builder.start = newTimeInterval.start
@@ -58,22 +60,24 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         throw InvalidActiveTimeIntervalException()
     }
 
-    override fun update(timeInterval: TimeInterval) =
-        findById(timeInterval.id)?.let {
+    override suspend fun update(timeInterval: TimeInterval): TimeInterval? {
+        return findById(timeInterval.id)?.let {
             val index = timeIntervals.indexOf(it)
             timeIntervals[index] = timeInterval
 
             timeInterval
         }
+    }
 
-    override fun update(timeIntervals: List<TimeInterval>) =
-        timeIntervals.mapNotNull { update(it) }
+    override suspend fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
+        return timeIntervals.mapNotNull { update(it) }
+    }
 
-    override fun remove(id: TimeIntervalId) {
+    override suspend fun remove(id: TimeIntervalId) {
         timeIntervals.removeIf { it.id == id }
     }
 
-    override fun remove(timeIntervals: List<TimeInterval>) {
+    override suspend fun remove(timeIntervals: List<TimeInterval>) {
         timeIntervals.map { it.id }
             .forEach { remove(it) }
     }

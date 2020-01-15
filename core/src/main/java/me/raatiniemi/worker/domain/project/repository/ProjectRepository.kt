@@ -26,16 +26,16 @@ import me.raatiniemi.worker.domain.project.model.ProjectName
  * Represent a unified interface for working with projects using different data sources.
  */
 interface ProjectRepository {
-    fun count(): Int
+    suspend fun count(): Int
 
-    fun findAll(loadRange: LoadRange): List<Project>
+    suspend fun findAll(loadRange: LoadRange): List<Project>
 
     /**
      * Get projects.
      *
      * @return Projects.
      */
-    fun findAll(): List<Project>
+    suspend fun findAll(): List<Project>
 
     /**
      * Find project by name.
@@ -43,7 +43,7 @@ interface ProjectRepository {
      * @param projectName Project name to search for.
      * @return Project with name, or null.
      */
-    fun findByName(projectName: ProjectName): Project?
+    suspend fun findByName(projectName: ProjectName): Project?
 
     /**
      * Get project by id.
@@ -51,7 +51,7 @@ interface ProjectRepository {
      * @param id Id for the project.
      * @return Project, or null if none was found.
      */
-    fun findById(id: ProjectId): Project?
+    suspend fun findById(id: ProjectId): Project?
 
     /**
      * Add new project to the repository.
@@ -59,7 +59,7 @@ interface ProjectRepository {
      * @param newProject Project to add.
      * @return Added project.
      */
-    fun add(newProject: NewProject): Project
+    suspend fun add(newProject: NewProject): Project
 
     /**
      * Remove project.
@@ -68,5 +68,5 @@ interface ProjectRepository {
      *
      * @param project Project to remove.
      */
-    fun remove(project: Project)
+    suspend fun remove(project: Project)
 }

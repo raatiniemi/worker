@@ -24,20 +24,22 @@ import androidx.paging.PagedList
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.datasource.ProjectDataSource
+import me.raatiniemi.worker.data.datasource.AllProjectsDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.usecase.CountProjects
+import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.timeinterval.model.timeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
-import me.raatiniemi.worker.domain.timeinterval.usecase.InvalidStartingPointException
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
@@ -46,34 +48,22 @@ import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 import java.util.*
 
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    projectDataSourceFactory: ProjectDataSource.Factory,
+    countProjects: CountProjects,
+    findProjects: FindProjects,
     private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
-    private val removeProject: RemoveProject
+    private val removeProject: RemoveProject,
+    dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
 ) : ViewModel(), AllProjectsActionListener {
-    private val startingPoint: TimeIntervalStartingPoint
-        get() {
-            val defaultValue = TimeIntervalStartingPoint.MONTH
-            val startingPoint = keyValueStore.int(
-                AppKeys.TIME_SUMMARY,
-                defaultValue.rawValue
-            )
-
-            return try {
-                TimeIntervalStartingPoint.from(startingPoint)
-            } catch (e: InvalidStartingPointException) {
-                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
-                defaultValue
-            }
-        }
-
     val projects: LiveData<PagedList<ProjectsItem>>
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
@@ -81,11 +71,20 @@ internal class AllProjectsViewModel(
     init {
         val config = PagedList.Config.Builder()
             .setPageSize(10)
-            .setEnablePlaceholders(true)
+            .setEnablePlaceholders(false)
             .build()
 
-        val factory = projectDataSourceFactory.map(::buildProjectsItem)
-        projects = LivePagedListBuilder(factory, config).build()
+        val factory = AllProjectsDataSource.Factory(
+            viewModelScope,
+            dispatcherProvider,
+            countProjects,
+            findProjects
+        )
+        val builder = LivePagedListBuilder(
+            factory.map(::buildProjectsItem),
+            config
+        )
+        projects = builder.build()
     }
 
     private fun buildProjectsItem(project: Project): ProjectsItem {
@@ -96,7 +95,9 @@ internal class AllProjectsViewModel(
 
     private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
         return try {
-            getProjectTimeSince(project, startingPoint)
+            runBlocking {
+                getProjectTimeSince(project, timeIntervalStartingPoint(keyValueStore))
+            }
         } catch (e: DomainException) {
             Timber.w(e, "Unable to get registered time for project")
             emptyList()

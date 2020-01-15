@@ -28,23 +28,25 @@ class ProjectInMemoryRepository : ProjectRepository {
     private val incrementedId = AtomicLong()
     private val projects = mutableSetOf<Project>()
 
-    override fun count() = projects.count()
+    override suspend fun count() = projects.count()
 
-    override fun findAll(loadRange: LoadRange): List<Project> {
+    override suspend fun findAll(loadRange: LoadRange): List<Project> {
         return paginate(loadRange, projects.sortedBy { it.name.value })
     }
 
-    override fun findAll(): List<Project> = projects.sortedBy { it.name.value }
+    override suspend fun findAll(): List<Project> {
+        return projects.sortedBy { it.name.value }
+    }
 
-    override fun findByName(projectName: ProjectName): Project? {
+    override suspend fun findByName(projectName: ProjectName): Project? {
         return projects.firstOrNull { it.name.value.equals(projectName.value, true) }
     }
 
-    override fun findById(id: ProjectId): Project? {
+    override suspend fun findById(id: ProjectId): Project? {
         return projects.firstOrNull { it.id == id }
     }
 
-    override fun add(newProject: NewProject): Project {
+    override suspend fun add(newProject: NewProject): Project {
         val project = Project(
             id = ProjectId(incrementedId.incrementAndGet()),
             name = newProject.name
@@ -54,7 +56,7 @@ class ProjectInMemoryRepository : ProjectRepository {
         return project
     }
 
-    override fun remove(project: Project) {
+    override suspend fun remove(project: Project) {
         projects.removeIf { it.id == project.id }
     }
 }

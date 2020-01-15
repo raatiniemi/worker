@@ -31,15 +31,15 @@ internal class TimeReportRoomRepository(
     private val timeReport: TimeReportDao,
     private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
-    override fun countWeeks(project: Project): Int {
+    override suspend fun countWeeks(project: Project): Int {
         return timeReport.countWeeks(project.id.value)
     }
 
-    override fun countNotRegisteredWeeks(project: Project): Int {
+    override suspend fun countNotRegisteredWeeks(project: Project): Int {
         return timeReport.countNotRegisteredWeeks(project.id.value)
     }
 
-    override fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
+    override suspend fun findWeeks(project: Project, loadRange: LoadRange): List<TimeReportWeek> {
         val (position, size) = loadRange
 
         val groups = timeReport.findWeeks(project.id.value, position.value, size.value)
@@ -47,7 +47,7 @@ internal class TimeReportRoomRepository(
         return groupByWeek(timeIntervals)
     }
 
-    override fun findNotRegisteredWeeks(
+    override suspend fun findNotRegisteredWeeks(
         project: Project,
         loadRange: LoadRange
     ): List<TimeReportWeek> {
@@ -58,7 +58,7 @@ internal class TimeReportRoomRepository(
         return groupByWeek(timeIntervals)
     }
 
-    private fun timeIntervals(entities: List<TimeReportQueryGroup>): List<TimeInterval> {
+    private suspend fun timeIntervals(entities: List<TimeReportQueryGroup>): List<TimeInterval> {
         return entities.flatMap { group ->
             group.mapNotNull { timeIntervals.find(it) }
                 .map(::timeInterval)
