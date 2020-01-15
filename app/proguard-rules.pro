@@ -21,6 +21,7 @@
 # Application
 -keep @androidx.room.Dao class me.raatiniemi.worker.** { *; }
 -keep interface me.raatiniemi.worker.** { *; }
+-keep class me.raatiniemi.worker.domain.time.Milliseconds { *; }
 
 # AndroidX
 -keepclassmembers class androidx.core.graphics.TypefaceCompatApi28Impl { *; }
