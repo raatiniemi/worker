@@ -41,7 +41,7 @@ class CalculateTimeTodayTest {
     }
 
     @Test
-    fun `calculate time today without registered time`() {
+    fun `calculate time today without registered time`() = runBlocking {
         val expected = 0L
 
         val actual = calculateTimeToday(android)

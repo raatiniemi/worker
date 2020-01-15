@@ -58,7 +58,7 @@ internal class TimeReportRoomRepository(
         return groupByWeek(timeIntervals)
     }
 
-    private fun timeIntervals(entities: List<TimeReportQueryGroup>): List<TimeInterval> {
+    private suspend fun timeIntervals(entities: List<TimeReportQueryGroup>): List<TimeInterval> {
         return entities.flatMap { group ->
             group.mapNotNull { timeIntervals.find(it) }
                 .map(::timeInterval)

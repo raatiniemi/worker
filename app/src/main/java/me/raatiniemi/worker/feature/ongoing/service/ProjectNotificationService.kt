@@ -44,9 +44,10 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService"),
                 val project = getProject(projectId)
 
                 val isProjectActive = isProjectActive(project.id.value)
+                val calculatedTimeToday = calculateTimeToday(project)
                 withContext(Dispatchers.Main) {
                     if (isProjectActive) {
-                        sendOrDismissPauseNotification(project)
+                        sendOrDismissPauseNotification(project, calculatedTimeToday)
                         return@withContext
                     }
                     dismissNotification(project)
@@ -57,12 +58,12 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService"),
         }
     }
 
-    private fun sendOrDismissPauseNotification(project: Project) {
+    private fun sendOrDismissPauseNotification(project: Project, calculatedTimeToday: Long) {
         sendOrDismissOngoingNotification(project) {
             PauseNotification.build(
                 this,
                 project,
-                calculateTimeToday(project),
+                calculatedTimeToday,
                 isOngoingNotificationChronometerEnabled
             )
         }

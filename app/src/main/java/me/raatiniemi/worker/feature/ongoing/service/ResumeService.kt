@@ -48,9 +48,10 @@ internal class ResumeService : OngoingService("ResumeService"), CoroutineScope {
 
                 clockIn(project)
 
+                val calculatedTimeToday = calculateTimeToday(project)
                 withContext(Dispatchers.Main) {
                     updateUserInterface(project)
-                    sendOrDismissPauseNotification(project)
+                    sendOrDismissPauseNotification(project, calculatedTimeToday)
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Unable to resume project")
@@ -68,12 +69,12 @@ internal class ResumeService : OngoingService("ResumeService"), CoroutineScope {
         }
     }
 
-    private fun sendOrDismissPauseNotification(project: Project) {
+    private fun sendOrDismissPauseNotification(project: Project, calculatedTimeToday: Long) {
         sendOrDismissOngoingNotification(project) {
             PauseNotification.build(
                 this,
                 project,
-                calculateTimeToday(project),
+                calculatedTimeToday,
                 isOngoingNotificationChronometerEnabled
             )
         }

@@ -54,7 +54,7 @@ class TimeIntervalInMemoryRepositoryTest {
     // Find all
 
     @Test
-    fun `find all without time intervals`() {
+    fun `find all without time intervals`() = runBlocking {
         val expected = emptyList<TimeInterval>()
 
         val actual = timeIntervals.findAll(android, Milliseconds.empty)

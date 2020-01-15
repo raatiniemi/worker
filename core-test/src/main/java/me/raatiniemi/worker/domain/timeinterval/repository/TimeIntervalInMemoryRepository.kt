@@ -29,7 +29,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     private val incrementedId = AtomicLong()
     private val timeIntervals = mutableListOf<TimeInterval>()
 
-    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
+    override suspend fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.filter {
             it.projectId == project.id && (it.start >= milliseconds || it is TimeInterval.Active)
         }

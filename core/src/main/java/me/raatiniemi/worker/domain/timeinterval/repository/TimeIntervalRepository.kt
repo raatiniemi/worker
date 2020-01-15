@@ -34,7 +34,7 @@ interface TimeIntervalRepository {
      * @param milliseconds Starting point in milliseconds.
      * @return Time intervals, or active time interval, for project since starting point.
      */
-    fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval>
+    suspend fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval>
 
     /**
      * Get time interval by id.

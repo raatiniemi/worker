@@ -45,9 +45,10 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService"), C
         launch {
             try {
                 val projects = findActiveProjects()
-                withContext(Dispatchers.Main) {
-                    projects.forEach {
-                        sendOrDismissPauseNotification(it)
+                projects.forEach { project ->
+                    val calculatedTimeToday = calculateTimeToday(project)
+                    withContext(Dispatchers.Main) {
+                        sendOrDismissPauseNotification(project, calculatedTimeToday)
                     }
                 }
             } catch (e: DomainException) {
@@ -56,12 +57,12 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService"), C
         }
     }
 
-    private fun sendOrDismissPauseNotification(project: Project) {
+    private fun sendOrDismissPauseNotification(project: Project, calculatedTimeToday: Long) {
         sendOrDismissOngoingNotification(project) {
             PauseNotification.build(
                 this,
                 project,
-                calculateTimeToday(project),
+                calculatedTimeToday,
                 isOngoingNotificationChronometerEnabled
             )
         }

@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepositor
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
     TimeIntervalRepository {
-    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
+    override suspend fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.findAll(project.id.value, milliseconds.value)
             .map(::timeInterval)
             .toList()

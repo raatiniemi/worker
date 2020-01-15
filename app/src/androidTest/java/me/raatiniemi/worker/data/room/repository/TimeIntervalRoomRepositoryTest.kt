@@ -78,7 +78,7 @@ class TimeIntervalRoomRepositoryTest : AutoCloseKoinTest() {
     // Find all
 
     @Test
-    fun findAll_withoutTimeIntervals() {
+    fun findAll_withoutTimeIntervals() = runBlocking {
         val expected = emptyList<TimeInterval>()
 
         val actual = timeIntervals.findAll(android, Milliseconds.empty)

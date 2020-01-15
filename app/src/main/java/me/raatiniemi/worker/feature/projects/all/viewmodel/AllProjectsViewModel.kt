@@ -24,6 +24,7 @@ import androidx.paging.PagedList
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.datasource.AllProjectsDataSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
@@ -94,7 +95,9 @@ internal class AllProjectsViewModel(
 
     private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
         return try {
-            getProjectTimeSince(project, timeIntervalStartingPoint(keyValueStore))
+            runBlocking {
+                getProjectTimeSince(project, timeIntervalStartingPoint(keyValueStore))
+            }
         } catch (e: DomainException) {
             Timber.w(e, "Unable to get registered time for project")
             emptyList()

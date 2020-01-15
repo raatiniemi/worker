@@ -26,7 +26,7 @@ internal interface TimeIntervalDao {
             (start_in_milliseconds >= :startInMilliseconds OR stop_in_milliseconds = 0)
         ORDER BY stop_in_milliseconds ASC, start_in_milliseconds ASC"""
     )
-    fun findAll(projectId: Long, startInMilliseconds: Long): List<TimeIntervalEntity>
+    suspend fun findAll(projectId: Long, startInMilliseconds: Long): List<TimeIntervalEntity>
 
     @Query("SELECT * FROM time_intervals WHERE _id = :id LIMIT 1")
     suspend fun find(id: Long): TimeIntervalEntity?

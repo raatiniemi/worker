@@ -63,10 +63,12 @@ class TimeIntervalDaoTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun findAll_withoutTimeIntervals() {
+    fun findAll_withoutTimeIntervals() = runBlocking {
+        val expected = emptyList<TimeInterval>()
+
         val actual = timeIntervals.findAll(1, 0)
 
-        assertEquals(emptyList<TimeInterval>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
