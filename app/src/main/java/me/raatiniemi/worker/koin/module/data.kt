@@ -32,7 +32,6 @@ import org.koin.dsl.module
 internal val data = module {
     single {
         Room.databaseBuilder(androidContext(), Database::class.java, "worker")
-            .allowMainThreadQueries()
             .addMigrations(Migration1To2(), Migration2To3())
             .build()
     }
