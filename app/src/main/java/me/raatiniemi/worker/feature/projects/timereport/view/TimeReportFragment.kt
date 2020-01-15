@@ -152,8 +152,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         observe(vm.weeks) {
             timeReportAdapter.submitList(it)
-
-            tvEmptyTimeReport.visibleIf { it.isEmpty() }
         }
 
         observeAndConsume(vm.viewActions) {
