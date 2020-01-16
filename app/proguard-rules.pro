@@ -31,6 +31,7 @@
 -keepclassmembers class androidx.sqlite.db.SupportSQLiteOpenHelper { *; }
 -keep class androidx.sqlite.db.SupportSQLiteDatabase { *; }
 -keepclassmembers class androidx.room.RoomOpenHelper$Delegate { *; }
+-keep class androidx.navigation.fragment.NavHostFragment { *; }
 
 # Kotlin
 -keepclassmembers class kotlin.LazyKt { *; }
