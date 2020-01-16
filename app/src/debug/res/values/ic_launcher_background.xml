@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2020 Tobias Raatiniemi
   ~
   ~ This program is free software: you can redistribute it and/or modify
@@ -15,9 +14,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<issues format="5" by="lint 3.5">
-    <issue id="ObsoleteSdkInt">
-        <ignore path="src/debug/res/mipmap-anydpi-v26" />
-        <ignore path="src/main/res/mipmap-anydpi-v26" />
-    </issue>
-</issues>
+<resources>
+    <color name="ic_launcher_background">#03A9F4</color>
+</resources>
