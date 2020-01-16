@@ -39,7 +39,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="@string/home_navigation_projects" />
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainer"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
