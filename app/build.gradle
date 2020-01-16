@@ -212,8 +212,6 @@ dependencies {
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
 
-    releaseImplementation "com.facebook.flipper:flipper-noop:$flipperVersion"
-
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "org.greenrobot:eventbus:$eventBusVersion"
 
