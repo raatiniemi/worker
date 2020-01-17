@@ -49,7 +49,6 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.CoroutineDispatchProvider
-import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 import java.util.*
 
@@ -62,7 +61,7 @@ internal class AllProjectsViewModel(
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
     private val removeProject: RemoveProject,
-    dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
+    dispatchProvider: CoroutineDispatchProvider
 ) : ViewModel(), AllProjectsActionListener {
     val projects: LiveData<PagedList<ProjectsItem>>
 
@@ -76,7 +75,7 @@ internal class AllProjectsViewModel(
 
         val factory = AllProjectsDataSource.Factory(
             viewModelScope,
-            dispatcherProvider,
+            dispatchProvider,
             countProjects,
             findProjects
         )

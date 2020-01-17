@@ -17,10 +17,16 @@
 package me.raatiniemi.worker.koin.module
 
 import me.raatiniemi.worker.feature.shared.datetime.viewmodel.DateTimeViewModel
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
+import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val shared = module {
+    single<CoroutineDispatchProvider> {
+        DefaultCoroutineDispatchProvider()
+    }
+
     viewModel {
         DateTimeViewModel()
     }

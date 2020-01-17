@@ -31,14 +31,13 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.CoroutineDispatchProvider
-import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 
 internal class CreateProjectViewModel(
     private val usageAnalytics: UsageAnalytics,
     private val createProject: CreateProject,
     private val findProject: FindProject,
-    private val dispatchProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
+    private val dispatchProvider: CoroutineDispatchProvider
 ) : ViewModel() {
     private val _name = MutableLiveData<String>()
     var name: String by MutableLiveDataProperty(_name, "")

@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
+import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.feature.projects.model.ProjectHolder
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportTapAction
@@ -39,6 +40,7 @@ import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import me.raatiniemi.worker.util.CoroutineTestRule
 import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.assertEquals
@@ -48,8 +50,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.koin.core.context.startKoin
+import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
-import org.koin.test.get
 import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
@@ -61,6 +63,11 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
+    private val dispatchProviderModule = module(override = true) {
+        single<CoroutineDispatchProvider> {
+            TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
+        }
+    }
 
     private val usageAnalytics by inject<InMemoryUsageAnalytics>()
     private val projectHolder by inject<ProjectHolder>()
@@ -69,24 +76,13 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
     private val clockOut by inject<ClockOut>()
     private val findTimeReportWeeks by inject<FindTimeReportWeeks>()
 
-    private lateinit var vm: TimeReportViewModel
+    private val vm by inject<TimeReportViewModel>()
 
     @Before
     fun setUp() {
         startKoin {
-            modules(testKoinModules)
+            modules(testKoinModules + dispatchProviderModule)
         }
-
-        vm = TimeReportViewModel(
-            keyValueStore = get(),
-            usageAnalytics = usageAnalytics,
-            projectProvider = projectHolder,
-            countTimeReportWeeks = get(),
-            findTimeReportWeeks = findTimeReportWeeks,
-            markRegisteredTime = get(),
-            removeTime = get(),
-            dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
-        )
     }
 
     // Toggle registered state

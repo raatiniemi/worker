@@ -42,7 +42,6 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.CoroutineDispatchProvider
-import me.raatiniemi.worker.util.DefaultCoroutineDispatchProvider
 import timber.log.Timber
 
 internal class TimeReportViewModel internal constructor(
@@ -53,7 +52,7 @@ internal class TimeReportViewModel internal constructor(
     findTimeReportWeeks: FindTimeReportWeeks,
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime,
-    dispatcherProvider: CoroutineDispatchProvider = DefaultCoroutineDispatchProvider()
+    dispatchProvider: CoroutineDispatchProvider
 ) : ViewModel(), TimeReportStateManager {
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<TimeReportDay>()
@@ -82,7 +81,7 @@ internal class TimeReportViewModel internal constructor(
 
         val factory = TimeReportWeekDataSource.Factory(
             viewModelScope,
-            dispatcherProvider,
+            dispatchProvider,
             projectProvider = projectProvider,
             countTimeReportWeeks = countTimeReportWeeks,
             findTimeReportWeeks = findTimeReportWeeks

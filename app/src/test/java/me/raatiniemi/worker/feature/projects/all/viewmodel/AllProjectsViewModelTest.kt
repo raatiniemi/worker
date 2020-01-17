@@ -24,13 +24,12 @@ import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.model.ios
-import me.raatiniemi.worker.domain.project.usecase.*
+import me.raatiniemi.worker.domain.project.usecase.CreateProject
+import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
-import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
-import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.shared.model.observeNoValue
@@ -38,6 +37,7 @@ import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
+import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import me.raatiniemi.worker.util.CoroutineTestRule
 import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.assertEquals
@@ -48,6 +48,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.koin.core.context.startKoin
+import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import java.util.*
@@ -61,38 +62,26 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
+    private val dispatchProviderModule = module(override = true) {
+        single<CoroutineDispatchProvider> {
+            TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
+        }
+    }
 
     private val createProject by inject<CreateProject>()
     private val findProject by inject<FindProject>()
 
     private val keyValueStore by inject<KeyValueStore>()
     private val usageAnalytics by inject<InMemoryUsageAnalytics>()
-    private val countProjects by inject<CountProjects>()
-    private val findProjects by inject<FindProjects>()
-    private val getProjectTimeSince by inject<GetProjectTimeSince>()
     private val clockIn by inject<ClockIn>()
-    private val clockOut by inject<ClockOut>()
-    private val removeProject by inject<RemoveProject>()
 
-    private lateinit var vm: AllProjectsViewModel
+    private val vm by inject<AllProjectsViewModel>()
 
     @Before
     fun setUp() {
         startKoin {
-            modules(testKoinModules)
+            modules(testKoinModules + dispatchProviderModule)
         }
-
-        vm = AllProjectsViewModel(
-            keyValueStore = keyValueStore,
-            usageAnalytics = usageAnalytics,
-            countProjects = countProjects,
-            findProjects = findProjects,
-            getProjectTimeSince = getProjectTimeSince,
-            clockIn = clockIn,
-            clockOut = clockOut,
-            removeProject = removeProject,
-            dispatcherProvider = TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
-        )
     }
 
     private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {
