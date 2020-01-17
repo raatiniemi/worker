@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 // This needs to be a bit more than the actual delay used in
 // the code, otherwise the test will be flakey.
-private const val debounceDelayInMilliseconds = 300L
+private const val debounceDelayInMilliseconds = 450L
 private const val createProjectDelayInMilliseconds = 100L
 
 @RunWith(AndroidJUnit4::class)
