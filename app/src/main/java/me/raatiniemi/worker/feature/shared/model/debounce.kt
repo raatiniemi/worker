@@ -36,16 +36,10 @@ import me.raatiniemi.worker.domain.time.Milliseconds
 internal fun <T, R> debounceSuspend(
     scope: CoroutineScope,
     source: LiveData<T>,
-    duration: Milliseconds = Milliseconds(
-        250
-    ),
+    duration: Milliseconds = Milliseconds(250),
     function: suspend (T) -> R
 ): LiveData<R> {
-    return debounce(
-        scope,
-        source,
-        duration.value
-    )
+    return debounce(scope, source, duration.value)
         .switchMap(
             emitLiveDataValue(
                 scope,
