@@ -18,8 +18,10 @@ package me.raatiniemi.worker.domain.timeinterval.usecase
 
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import kotlin.math.abs
 
 /**
  * Use case for clocking out.
@@ -27,6 +29,9 @@ import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepositor
 class ClockOut(private val timeIntervals: TimeIntervalRepository) {
     suspend operator fun invoke(project: Project, milliseconds: Milliseconds): TimeInterval.Inactive {
         val active = findActiveTimeInterval(project)
+        if (isElapsedPastAllowed(milliseconds, active.start)) {
+            throw ElapsedTimePastAllowedException()
+        }
 
         return clockOut(active, milliseconds)
     }
@@ -34,6 +39,13 @@ class ClockOut(private val timeIntervals: TimeIntervalRepository) {
     private suspend fun findActiveTimeInterval(project: Project): TimeInterval.Active {
         return timeIntervals.findActiveByProjectId(project.id)
             ?: throw InactiveProjectException()
+    }
+
+    private fun isElapsedPastAllowed(milliseconds: Milliseconds, active: Milliseconds): Boolean {
+        val elapsedTime = milliseconds - active
+        val elapsedTimeInMilliseconds = abs(elapsedTime.value)
+
+        return elapsedTimeInMilliseconds >= 1.days
     }
 
     private suspend fun clockOut(

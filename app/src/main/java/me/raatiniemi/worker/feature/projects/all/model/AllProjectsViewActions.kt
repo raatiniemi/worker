@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.feature.projects.all.model
 
+import android.app.AlertDialog
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
@@ -109,6 +110,20 @@ internal sealed class AllProjectsViewActions {
                 Snackbar.LENGTH_SHORT
             )
             snackBar.show()
+        }
+    }
+
+    object ShowElapsedTimePastAllowedErrorMessage : AllProjectsViewActions(), ContextViewAction {
+        override fun action(context: Context) {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.projects_all_elapsed_time_past_allowed_title)
+                .setMessage(R.string.projects_all_elapsed_time_past_allowed_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    dialog?.dismiss()
+                }
+                .create()
+                .show()
         }
     }
 

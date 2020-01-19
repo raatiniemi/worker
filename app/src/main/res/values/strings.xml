@@ -42,6 +42,9 @@
 
     <string name="projects_all_unable_to_clock_out_message">Failed to clock out project.</string>
 
+    <string name="projects_all_elapsed_time_past_allowed_title">Unable to clock out</string>
+    <string name="projects_all_elapsed_time_past_allowed_message">The elapsed time is past the maximum allowed time of 24 hours.</string>
+
     <string name="projects_all_delete">Delete %s</string>
 
     <string name="projects_all_confirm_delete_project_title">Delete project</string>

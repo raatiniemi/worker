@@ -39,6 +39,7 @@ import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.timeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
+import me.raatiniemi.worker.domain.timeinterval.usecase.ElapsedTimePastAllowedException
 import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
@@ -196,6 +197,8 @@ internal class AllProjectsViewModel(
             usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
+        } catch (e: ElapsedTimePastAllowedException) {
+            viewActions += AllProjectsViewActions.ShowElapsedTimePastAllowedErrorMessage
         } catch (e: Exception) {
             Timber.w(e, "Unable to clock out project")
             viewActions += AllProjectsViewActions.ShowUnableToClockOutErrorMessage
