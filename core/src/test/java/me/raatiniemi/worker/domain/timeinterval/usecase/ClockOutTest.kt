@@ -31,15 +31,17 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class ClockOutTest {
-    private lateinit var repository: TimeIntervalRepository
+    private lateinit var timeIntervals: TimeIntervalRepository
     private lateinit var clockIn: ClockIn
+
     private lateinit var clockOut: ClockOut
 
     @Before
     fun setUp() {
-        repository = TimeIntervalInMemoryRepository()
-        clockIn = ClockIn(repository)
-        clockOut = ClockOut(repository)
+        timeIntervals = TimeIntervalInMemoryRepository()
+        clockIn = ClockIn(timeIntervals)
+
+        clockOut = ClockOut(timeIntervals)
     }
 
     @Test(expected = InactiveProjectException::class)
@@ -65,7 +67,7 @@ class ClockOutTest {
 
         val actual = clockOut(android, milliseconds)
 
-        val timeIntervals = repository.findAll(android, Milliseconds(0))
+        val timeIntervals = timeIntervals.findAll(android, Milliseconds(0))
         assertEquals(listOf(expected), timeIntervals)
         assertEquals(expected, actual)
     }

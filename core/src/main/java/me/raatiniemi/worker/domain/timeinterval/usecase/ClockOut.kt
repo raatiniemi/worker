@@ -24,7 +24,7 @@ import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepositor
 /**
  * Use case for clocking out.
  */
-class ClockOut(private val repository: TimeIntervalRepository) {
+class ClockOut(private val timeIntervals: TimeIntervalRepository) {
     suspend operator fun invoke(project: Project, milliseconds: Milliseconds): TimeInterval.Inactive {
         val active = findActiveTimeInterval(project)
 
@@ -32,7 +32,7 @@ class ClockOut(private val repository: TimeIntervalRepository) {
     }
 
     private suspend fun findActiveTimeInterval(project: Project): TimeInterval.Active {
-        return repository.findActiveByProjectId(project.id)
+        return timeIntervals.findActiveByProjectId(project.id)
             ?: throw InactiveProjectException()
     }
 
@@ -42,7 +42,7 @@ class ClockOut(private val repository: TimeIntervalRepository) {
     ): TimeInterval.Inactive {
         val inactive = active.clockOut(stop = milliseconds)
 
-        return when (val timeInterval = repository.update(inactive)) {
+        return when (val timeInterval = timeIntervals.update(inactive)) {
             is TimeInterval.Inactive -> timeInterval
             else -> throw InvalidStateForTimeIntervalException()
         }
