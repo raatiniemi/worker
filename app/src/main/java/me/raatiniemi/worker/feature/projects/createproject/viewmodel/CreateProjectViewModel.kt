@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
 import com.google.firebase.perf.metrics.AddTrace
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
 import me.raatiniemi.worker.domain.project.model.projectName
@@ -69,22 +70,22 @@ internal class CreateProjectViewModel(
     }
 
     @AddTrace(name = TracePerformanceEvents.CREATE_PROJECT)
-    suspend fun createProject() = withContext(dispatchProvider.io()) {
+    fun createProject() = viewModelScope.launch(dispatchProvider.io()) {
         consumeSuspending(_name) { name ->
-            try {
+            viewActions += try {
                 createProject(projectName(name))
 
                 usageAnalytics.log(Event.ProjectCreate)
-                viewActions += CreateProjectViewActions.CreatedProject
+                CreateProjectViewActions.CreatedProject
             } catch (e: ProjectAlreadyExistsException) {
                 Timber.d("Project with name \"$name\" already exists")
-                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+                CreateProjectViewActions.DuplicateNameErrorMessage
             } catch (e: InvalidProjectNameException) {
                 Timber.w("Project name \"$name\" is not valid")
-                viewActions += CreateProjectViewActions.InvalidProjectNameErrorMessage
+                CreateProjectViewActions.InvalidProjectNameErrorMessage
             } catch (e: Exception) {
                 Timber.w(e, "Unable to create project")
-                viewActions += CreateProjectViewActions.UnknownErrorMessage
+                CreateProjectViewActions.UnknownErrorMessage
             }
         }
     }

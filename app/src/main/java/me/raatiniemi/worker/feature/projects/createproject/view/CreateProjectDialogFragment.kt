@@ -89,9 +89,7 @@ class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
         }
 
         click(btnCreate) {
-            launch {
-                vm.createProject()
-            }
+            vm.createProject()
         }
         click(btnDismiss) {
             dismiss()
