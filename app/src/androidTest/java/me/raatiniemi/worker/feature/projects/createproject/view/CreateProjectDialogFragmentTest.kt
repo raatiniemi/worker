@@ -33,7 +33,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.AutoCloseKoinTest
@@ -50,7 +49,7 @@ class CreateProjectDialogFragmentTest : AutoCloseKoinTest() {
     fun setUp() {
         stopKoin()
         startKoin {
-            loadKoinModules(androidTestKoinModules)
+            modules(androidTestKoinModules)
         }
     }
 
