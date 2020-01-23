@@ -49,6 +49,8 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
         }
     }
 
+    // Date
+
     @Test
     fun date() {
         val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
@@ -61,6 +63,8 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
         }
     }
 
+    // Time
+
     @Test
     fun time() {
         val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
@@ -72,6 +76,8 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
             it.check(matches(not(withText(""))))
         }
     }
+
+    // Choose time
 
     @Test
     fun chooseTimeIsVisibleByDefault() {
@@ -106,6 +112,8 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
             it.check(matches(isDisplayed()))
         }
     }
+
+    // Choose date
 
     @Test
     fun chooseDate() {

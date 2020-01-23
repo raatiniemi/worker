@@ -27,6 +27,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.constrainedMilliseconds
 import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.feature.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
@@ -98,6 +99,9 @@ internal sealed class AllProjectsViewActions {
                 val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
                 val maxDate = minDate + 1.days
 
+                val now = Milliseconds.now
+                val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
+                configuration.date = Date(milliseconds.value)
                 configuration.minDate = Date(minDate.value)
                 configuration.maxDate = Date(maxDate.value)
                 configuration.choose = { date ->
