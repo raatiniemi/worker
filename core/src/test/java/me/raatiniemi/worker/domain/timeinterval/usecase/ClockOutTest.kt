@@ -21,6 +21,7 @@ import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.domain.time.hours
+import me.raatiniemi.worker.domain.time.minutes
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
@@ -59,11 +60,26 @@ class ClockOutTest {
     }
 
     @Test(expected = ElapsedTimePastAllowedException::class)
-    fun `clock out when clocked in one day ago`() = runBlocking<Unit> {
+    fun `clock out when clocked in over one day ago`() = runBlocking<Unit> {
         val milliseconds = Milliseconds.now
-        clockIn(android, milliseconds - 1.days)
+        clockIn(android, milliseconds - 1.days - 3.minutes)
 
         clockOut(android, milliseconds)
+    }
+
+    @Test
+    fun `clock out when clocked in one day ago`() = runBlocking {
+        val milliseconds = Milliseconds.now
+        val timeInterval = clockIn(android, milliseconds - 1.days)
+        val expected = timeInterval(timeInterval) { builder ->
+            builder.stop = milliseconds
+        }
+
+        val actual = clockOut(android, milliseconds)
+
+        val timeIntervals = timeIntervals.findAll(android, Milliseconds.empty)
+        assertEquals(listOf(expected), timeIntervals)
+        assertEquals(expected, actual)
     }
 
     @Test

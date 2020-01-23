@@ -28,6 +28,7 @@ import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.days
+import me.raatiniemi.worker.domain.time.minutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
@@ -245,7 +246,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
     fun `toggle clock out project when elapsed time is past allowed`() = runBlocking {
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
         val now = Milliseconds.now
-        val timeInterval = clockIn(android, now - 1.days)
+        val timeInterval = clockIn(android, now - 1.days - 3.minutes)
         val item = ProjectsItem(
             android,
             listOf(
@@ -342,7 +343,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
     @Test
     fun `clock out project when elapsed time is past allowed`() = runBlocking {
         val now = Milliseconds.now
-        clockIn(android, now - 1.days)
+        clockIn(android, now - 1.days - 3.minutes)
 
         vm.clockOutAt(android, Date(now.value))
 

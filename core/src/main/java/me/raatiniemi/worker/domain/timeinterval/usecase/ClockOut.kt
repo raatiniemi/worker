@@ -45,7 +45,7 @@ class ClockOut(private val timeIntervals: TimeIntervalRepository) {
         val elapsedTime = milliseconds - active
         val elapsedTimeInMilliseconds = abs(elapsedTime.value)
 
-        return elapsedTimeInMilliseconds >= 1.days
+        return elapsedTimeInMilliseconds > 1.days
     }
 
     private suspend fun clockOut(
