@@ -169,7 +169,7 @@ dependencies {
     def timberVersion = '4.7.1'
     def eventBusVersion = '3.0.0'
 
-    def junitVersion = '4.12'
+    def junitVersion = '4.13'
     def testCoreVersion = '1.2.0'
     def testRunnerVersion = '1.2.0'
     def testExtJunitVersion = '1.1.1'
