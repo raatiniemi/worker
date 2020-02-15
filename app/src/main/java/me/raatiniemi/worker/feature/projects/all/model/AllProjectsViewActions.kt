@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.feature.projects.all.model
 
+import android.app.AlertDialog
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
@@ -25,6 +26,9 @@ import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.constrainedMilliseconds
+import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.feature.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.feature.projects.all.view.AllProjectsFragmentDirections
@@ -92,7 +96,14 @@ internal sealed class AllProjectsViewActions {
     data class ChooseDateAndTimeForClockOut(val item: ProjectsItem) : AllProjectsViewActions() {
         fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
             val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
-                configuration.minDate = Date(item.clockedInSinceInMilliseconds)
+                val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
+                val maxDate = minDate + 1.days
+
+                val now = Milliseconds.now
+                val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
+                configuration.date = Date(milliseconds.value)
+                configuration.minDate = Date(minDate.value)
+                configuration.maxDate = Date(maxDate.value)
                 configuration.choose = { date ->
                     onChooseTime(item.asProject(), date)
                 }
@@ -109,6 +120,20 @@ internal sealed class AllProjectsViewActions {
                 Snackbar.LENGTH_SHORT
             )
             snackBar.show()
+        }
+    }
+
+    object ShowElapsedTimePastAllowedErrorMessage : AllProjectsViewActions(), ContextViewAction {
+        override fun action(context: Context) {
+            AlertDialog.Builder(context)
+                .setTitle(R.string.projects_all_elapsed_time_past_allowed_title)
+                .setMessage(R.string.projects_all_elapsed_time_past_allowed_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    dialog?.dismiss()
+                }
+                .create()
+                .show()
         }
     }
 

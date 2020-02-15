@@ -18,22 +18,34 @@ package me.raatiniemi.worker.domain.timeinterval.usecase
 
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import kotlin.math.abs
 
 /**
  * Use case for clocking out.
  */
-class ClockOut(private val repository: TimeIntervalRepository) {
+class ClockOut(private val timeIntervals: TimeIntervalRepository) {
     suspend operator fun invoke(project: Project, milliseconds: Milliseconds): TimeInterval.Inactive {
         val active = findActiveTimeInterval(project)
+        if (isElapsedPastAllowed(milliseconds, active.start)) {
+            throw ElapsedTimePastAllowedException()
+        }
 
         return clockOut(active, milliseconds)
     }
 
     private suspend fun findActiveTimeInterval(project: Project): TimeInterval.Active {
-        return repository.findActiveByProjectId(project.id)
+        return timeIntervals.findActiveByProjectId(project.id)
             ?: throw InactiveProjectException()
+    }
+
+    private fun isElapsedPastAllowed(milliseconds: Milliseconds, active: Milliseconds): Boolean {
+        val elapsedTime = milliseconds - active
+        val elapsedTimeInMilliseconds = abs(elapsedTime.value)
+
+        return elapsedTimeInMilliseconds > 1.days
     }
 
     private suspend fun clockOut(
@@ -42,7 +54,7 @@ class ClockOut(private val repository: TimeIntervalRepository) {
     ): TimeInterval.Inactive {
         val inactive = active.clockOut(stop = milliseconds)
 
-        return when (val timeInterval = repository.update(inactive)) {
+        return when (val timeInterval = timeIntervals.update(inactive)) {
             is TimeInterval.Inactive -> timeInterval
             else -> throw InvalidStateForTimeIntervalException()
         }

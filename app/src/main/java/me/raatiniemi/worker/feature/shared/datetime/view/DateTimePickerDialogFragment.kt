@@ -23,6 +23,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialogfragment_date_time_picker.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.time.hoursMinutes
+import me.raatiniemi.worker.domain.time.yearsMonthsDays
 import me.raatiniemi.worker.feature.shared.datetime.model.DateTimeConfiguration
 import me.raatiniemi.worker.feature.shared.datetime.model.DateTimeViewActions
 import me.raatiniemi.worker.feature.shared.datetime.viewmodel.DateTimeViewModel
@@ -71,6 +73,9 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun configureUserInterface() {
+        update(dpDate, yearsMonthsDays(configuration.date))
+        update(tpTime, hoursMinutes(configuration.date))
+
         tpTime.setIs24HourView(true)
     }
 

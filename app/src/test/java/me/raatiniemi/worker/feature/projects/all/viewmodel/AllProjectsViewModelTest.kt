@@ -27,6 +27,8 @@ import me.raatiniemi.worker.domain.project.model.ios
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.time.days
+import me.raatiniemi.worker.domain.time.minutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
@@ -117,6 +119,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         }
     }
 
+    // Refresh active projects
+
     @Test
     fun `refresh active projects without projects`() = runBlocking {
         vm.refreshActiveProjects(emptyList())
@@ -147,6 +151,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         }
     }
 
+    // Open
+
     @Test
     fun `open project`() {
         val projectsItem = ProjectsItem(android, emptyList())
@@ -158,6 +164,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             assertEquals(AllProjectsViewActions.OpenProject(android), it)
         }
     }
+
+    // Toggle
 
     @Test
     fun `toggle clock in with inactive project`() {
@@ -234,6 +242,26 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         }
     }
 
+    @Test
+    fun `toggle clock out project when elapsed time is past allowed`() = runBlocking {
+        keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
+        val now = Milliseconds.now
+        val timeInterval = clockIn(android, now - 1.days - 3.minutes)
+        val item = ProjectsItem(
+            android,
+            listOf(
+                timeInterval
+            )
+        )
+
+        vm.toggle(item, Date(now.value))
+
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
+        vm.viewActions.observeNonNull {
+            assertEquals(AllProjectsViewActions.ShowElapsedTimePastAllowedErrorMessage, it)
+        }
+    }
+
     // At
 
     @Test
@@ -264,6 +292,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         }
     }
 
+    // Remove
+
     @Test
     fun `remove project`() {
         val item = ProjectsItem(android, emptyList())
@@ -275,6 +305,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             assertEquals(AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
         }
     }
+
+    // Clock in
 
     @Test
     fun `clock in at with already active project`() = runBlocking {
@@ -297,12 +329,27 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         }
     }
 
+    // Clock out
+
     @Test
     fun `clock out without active project`() = runBlocking {
         vm.clockOutAt(android, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
+        }
+    }
+
+    @Test
+    fun `clock out project when elapsed time is past allowed`() = runBlocking {
+        val now = Milliseconds.now
+        clockIn(android, now - 1.days - 3.minutes)
+
+        vm.clockOutAt(android, Date(now.value))
+
+        assertEquals(emptyList<Event>(), usageAnalytics.events)
+        vm.viewActions.observeNonNull {
+            assertEquals(AllProjectsViewActions.ShowElapsedTimePastAllowedErrorMessage, it)
         }
     }
 
@@ -317,6 +364,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
         }
     }
+
+    // Remove
 
     @Test
     fun `remove project without project`() = runBlocking {
