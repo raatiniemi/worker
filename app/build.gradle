@@ -160,7 +160,7 @@ dependencies {
     def pagingVersion = '2.1.1'
     def fragmentVersion = '1.2.1'
     def navigationVersion = '2.2.1'
-    def materialVersion = '1.0.0'
+    def materialVersion = '1.1.0'
     def firebaseCoreVersion = '17.2.2'
     def crashlyticsVersion = '2.10.1'
     def firebasePerformanceVersion = '19.0.5'
