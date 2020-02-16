@@ -23,7 +23,7 @@
 
         <stroke
             android:width="1dp"
-            android:color="@color/itemDivider" />
+            android:color="@color/color_on_surface_divider" />
 
     </shape>
 

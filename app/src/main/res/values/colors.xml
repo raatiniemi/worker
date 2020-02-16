@@ -16,23 +16,28 @@
 
 <resources>
 
-    <color name="primaryDark">#0288D1</color>
-    <color name="primary">#03A9F4</color>
-    <color name="primaryLight">#B3E5FC</color>
+    <color name="color_primary">#03a8f4</color>
+    <color name="color_primary_variant">#0487d1</color>
+    <color name="color_primary_light_variant">#B3E5FC</color>
 
-    <color name="greenBackground">#C8E6C9</color>
+    <color name="color_secondary">#ff4081</color>
 
-    <color name="accent">#FF4081</color>
+    <color name="color_background">@android:color/white</color>
+    <color name="color_surface">@android:color/white</color>
 
-    <color name="text">#757575</color>
-    <color name="textDisabled">#9E9E9E</color>
-    <color name="textSecondary">#9E9E9E</color>
+    <color name="color_on_primary">@android:color/white</color>
+    <color name="color_on_secondary">@android:color/white</color>
+    <color name="color_on_background">#757575</color>
+    <color name="color_on_background_secondary">#9e9e9e</color>
+    <color name="color_on_surface">#757575</color>
+    <color name="color_on_surface_secondary">#9e9e9e</color>
 
-    <color name="actionIconTint">#BDBDBD</color>
-    <color name="actionIconTintActive">@android:color/white</color>
+    <color name="color_surface_background_time_report_selected">#C8E6C9</color>
+    <color name="color_on_surface_time_report">#aa505050</color>
 
-    <color name="itemDivider">#20000000</color>
+    <color name="color_on_surface_action_tint">#BDBDBD</color>
+    <color name="color_on_surface_action_tint_active">@android:color/white</color>
 
-    <color name="timeReportGroupText">#aa505050</color>
+    <color name="color_on_surface_divider">#20000000</color>
 
 </resources>

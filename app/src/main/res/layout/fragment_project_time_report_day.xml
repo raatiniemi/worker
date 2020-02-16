@@ -43,14 +43,14 @@
                 android:contentDescription="@string/projects_time_report_group_selection_content_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:background="@color/text" />
+                tools:background="@color/color_on_surface" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:textColor="@color/timeReportGroupText"
+                android:textColor="@color/color_on_surface_time_report"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/ivLetter"
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:textColor="@color/timeReportGroupText"
+                android:textColor="@color/color_on_surface_time_report"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"

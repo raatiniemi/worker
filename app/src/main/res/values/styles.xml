@@ -21,16 +21,16 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primaryDark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_variant</item>
+        <item name="colorAccent">@color/color_secondary</item>
 
-        <item name="colorButtonNormal">@color/accent</item>
+        <item name="colorButtonNormal">@color/color_secondary</item>
 
         <item name="android:textColor">@drawable/text_foreground</item>
-        <item name="android:textColorSecondary">@color/textSecondary</item>
+        <item name="android:textColorSecondary">@color/color_on_surface_secondary</item>
 
-        <item name="android:actionModeBackground">@color/primary</item>
+        <item name="android:actionModeBackground">@color/color_primary</item>
 
         <item name="android:dialogTheme">@style/Theme.Dialog</item>
         <item name="android:alertDialogTheme">@style/Theme.Dialog</item>
@@ -38,30 +38,30 @@
     </style>
 
     <style name="ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:colorBackground">@color/primary</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="colorAccent">@android:color/white</item>
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="colorControlActivated">@color/primaryDark</item>
-        <item name="colorControlHighlight">@android:color/white</item>
+        <item name="android:colorBackground">@color/color_primary</item>
+        <item name="android:textColorPrimary">@color/color_on_primary</item>
+        <item name="actionMenuTextColor">@color/color_on_primary</item>
+        <item name="colorAccent">@color/color_on_primary</item>
+        <item name="colorControlNormal">@color/color_on_primary</item>
+        <item name="colorControlActivated">@color/color_primary_variant</item>
+        <item name="colorControlHighlight">@color/color_on_primary</item>
     </style>
 
     <style name="NavigationView">
-        <item name="android:textColorPrimary">@color/textSecondary</item>
-        <item name="colorPrimary">@color/primary</item>
+        <item name="android:textColorPrimary">@color/color_on_surface_secondary</item>
+        <item name="colorPrimary">@color/color_primary</item>
         <item name="colorControlHighlight">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
 
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/color_secondary</item>
     </style>
 
     <style name="EmptyTitle" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textColor">@color/color_on_background</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button.Borderless">

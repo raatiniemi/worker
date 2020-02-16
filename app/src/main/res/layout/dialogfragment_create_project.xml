@@ -46,7 +46,7 @@
             android:id="@+id/etProjectName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/accent"
+            android:backgroundTint="@color/color_secondary"
             android:hint="@string/projects_create_name_hint"
             android:imeOptions="actionDone"
             android:importantForAutofill="no"

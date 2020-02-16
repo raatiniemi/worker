@@ -18,13 +18,13 @@
 
     <item android:state_activated="true">
 
-        <color android:color="@color/greenBackground" />
+        <color android:color="@color/color_surface_background_time_report_selected" />
 
     </item>
 
     <item android:state_selected="true">
 
-        <color android:color="@color/primaryLight" />
+        <color android:color="@color/color_primary_light_variant" />
 
     </item>
 

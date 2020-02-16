@@ -21,6 +21,6 @@
 
     <size android:height="1dp" />
 
-    <solid android:color="@color/itemDivider" />
+    <solid android:color="@color/color_on_surface_divider" />
 
 </shape>
