@@ -147,7 +147,7 @@ play {
 
 dependencies {
     def flipperVersion = '0.30.1'
-    def soloaderVersion = '0.8.0'
+    def soloaderVersion = '0.8.2'
 
     def annotationVersion = '1.1.0'
     def appcompatVersion = '1.1.0'
