@@ -88,7 +88,8 @@
             android:background="@drawable/projects_item_action_background"
             android:contentDescription="@string/projects_all_clock_in_at"
             android:padding="8dp"
-            android:src="@drawable/ic_projects_item_action_clock_activity_at"
+            android:src="@drawable/ic_event_24px"
+            android:tint="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@id/ibClockActivityToggle"
             app:layout_constraintStart_toEndOf="@id/ibClockActivityToggle"
             app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle" />
