@@ -16,6 +16,8 @@
 
 <resources>
 
-    <style name="Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
+    <style name="Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+    </style>
 
 </resources>
