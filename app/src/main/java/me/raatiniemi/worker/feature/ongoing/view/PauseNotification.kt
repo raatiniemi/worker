@@ -43,7 +43,7 @@ internal class PauseNotification private constructor(
     }
 
     @DrawableRes
-    override val smallIcon: Int = R.drawable.ic_pause_notification
+    override val smallIcon: Int = R.drawable.ic_timer_24px
 
     override val shouldUseChronometer = useChronometer
 

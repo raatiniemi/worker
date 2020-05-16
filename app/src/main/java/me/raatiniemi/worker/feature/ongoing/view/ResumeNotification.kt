@@ -38,7 +38,7 @@ internal class ResumeNotification private constructor(
     }
 
     @DrawableRes
-    override val smallIcon: Int = R.drawable.ic_resume_notification
+    override val smallIcon: Int = R.drawable.ic_timer_off_24px
 
     override val whenForChronometer: Long = Date().time
 
