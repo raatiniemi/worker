@@ -37,7 +37,6 @@
         android:drawablePadding="14dp"
         android:gravity="center_horizontal"
         android:text="@string/projects_all_empty_text"
-        android:textAppearance="@style/EmptyTitle"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
