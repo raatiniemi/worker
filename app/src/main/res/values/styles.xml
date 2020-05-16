@@ -16,6 +16,6 @@
 
 <resources>
 
-    <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 
 </resources>
