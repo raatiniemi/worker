@@ -47,9 +47,6 @@
     <color name="color_surface_background_time_report_selected">#C8E6C9</color>
     <color name="color_on_surface_time_report">#aa505050</color>
 
-    <color name="color_on_surface_action_tint">#BDBDBD</color>
-    <color name="color_on_surface_action_tint_active">@android:color/white</color>
-
     <color name="color_on_surface_divider">#20000000</color>
 
 </resources>

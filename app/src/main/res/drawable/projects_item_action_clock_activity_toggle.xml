@@ -15,9 +15,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:state_activated="true" android:drawable="@drawable/ic_projects_item_action_clock_in" />
-
+    <item android:drawable="@drawable/ic_projects_item_action_clock_in" android:state_activated="true" />
     <item android:drawable="@drawable/ic_projects_item_action_clock_out" />
-
 </selector>

@@ -71,8 +71,7 @@
             android:layout_marginStart="6dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="6dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/projects_item_action_ripple_background"
+            android:background="@drawable/projects_item_action_background"
             android:contentDescription="@string/projects_all_clock_in"
             android:padding="8dp"
             android:src="@drawable/projects_item_action_clock_activity_toggle"
@@ -80,17 +79,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivDivider" />
 
-
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ibClockActivityAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:background="?android:selectableItemBackgroundBorderless"
+            android:background="@drawable/projects_item_action_background"
             android:contentDescription="@string/projects_all_clock_in_at"
             android:padding="8dp"
-            android:src="@drawable/projects_item_action_clock_activity_at"
+            android:src="@drawable/ic_projects_item_action_clock_activity_at"
             app:layout_constraintBottom_toBottomOf="@id/ibClockActivityToggle"
             app:layout_constraintStart_toEndOf="@id/ibClockActivityToggle"
             app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle" />
@@ -101,10 +99,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="6dp"
-            android:background="?android:selectableItemBackgroundBorderless"
+            android:background="@drawable/projects_item_action_background"
             android:contentDescription="@string/projects_all_delete"
             android:padding="8dp"
-            android:src="@drawable/projects_item_action_delete"
+            android:src="@drawable/ic_projects_item_action_delete"
             app:layout_constraintBottom_toBottomOf="@id/ibClockActivityToggle"
             app:layout_constraintStart_toEndOf="@id/ibClockActivityAt"
             app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle" />
