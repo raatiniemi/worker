@@ -19,11 +19,13 @@
     <item
         android:id="@+id/actions_project_time_report_register"
         android:icon="@drawable/ic_time_report_mark_registered"
+        android:iconTint="?attr/colorOnPrimary"
         android:title="@string/projects_time_report_menu_register" />
 
     <item
         android:id="@+id/actions_project_time_report_delete"
         android:icon="@drawable/ic_time_report_delete"
+        android:iconTint="?attr/colorOnPrimary"
         android:title="@string/projects_time_report_menu_delete" />
 
 </menu>
