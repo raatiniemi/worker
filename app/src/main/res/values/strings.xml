@@ -56,7 +56,7 @@
 
     <string name="projects_create_title">Create project</string>
     <string name="projects_create_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="projects_create_name_hint">Project name&#8230;</string>
+    <string name="projects_create_name_hint">What\'s the name of your project?</string>
 
     <string name="projects_create_submit">Create</string>
     <string name="projects_create_dismiss">Cancel</string>
