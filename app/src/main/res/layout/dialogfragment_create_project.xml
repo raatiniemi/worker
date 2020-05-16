@@ -16,6 +16,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="@dimen/fragment_dialog_padding_horizontal"
@@ -50,7 +51,8 @@
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:textSize="@dimen/fragment_dialog_text_size">
+            android:textSize="@dimen/fragment_dialog_text_size"
+            tools:text="Project name #1">
 
             <requestFocus />
 
