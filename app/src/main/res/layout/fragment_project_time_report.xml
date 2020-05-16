@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/fragment_project_time_report_day" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvEmptyTimeReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

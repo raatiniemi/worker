@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.textview.MaterialTextView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.time.calculateHoursMinutes
@@ -36,8 +36,8 @@ internal class ItemViewHolder(
     view: View
 ) {
     private val itemView: ConstraintLayout = view.findViewById(R.id.clItem)
-    private val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
-    private val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+    private val timeInterval: MaterialTextView = view.findViewById(R.id.tvTimeInterval)
+    private val timeSummary: MaterialTextView = view.findViewById(R.id.tvTimeSummary)
 
     fun bind(timeInterval: TimeInterval) {
         this.timeInterval.text = title(timeInterval)

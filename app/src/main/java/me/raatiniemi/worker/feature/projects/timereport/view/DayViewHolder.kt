@@ -19,9 +19,9 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.textview.MaterialTextView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -41,8 +41,8 @@ internal class DayViewHolder(
 ) {
     private val header: ConstraintLayout = itemView.findViewById(R.id.clHeader)
     private val letter: AppCompatImageView = itemView.findViewById(R.id.ivLetter)
-    private val title: AppCompatTextView = itemView.findViewById(R.id.tvTitle)
-    private val timeSummary: AppCompatTextView = itemView.findViewById(R.id.tvTimeSummary)
+    private val title: MaterialTextView = itemView.findViewById(R.id.tvTitle)
+    private val timeSummary: MaterialTextView = itemView.findViewById(R.id.tvTimeSummary)
     private val items: LinearLayoutCompat = itemView.findViewById(R.id.llItems)
 
     fun bind(day: TimeReportDay?) {

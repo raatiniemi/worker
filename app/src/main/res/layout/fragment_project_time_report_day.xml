@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:background="@color/color_on_surface" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="@id/ivLetter"
                 tools:text="Monday (March 9th)" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvTimeSummary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

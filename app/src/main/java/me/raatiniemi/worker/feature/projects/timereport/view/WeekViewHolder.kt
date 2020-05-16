@@ -18,9 +18,9 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textview.MaterialTextView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
@@ -33,8 +33,8 @@ internal class WeekViewHolder(
     private val formatter: HoursMinutesFormat,
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
-    private val title: AppCompatTextView = itemView.findViewById(R.id.tvTitle)
-    private val summary: AppCompatTextView = itemView.findViewById(R.id.tvSummary)
+    private val title: MaterialTextView = itemView.findViewById(R.id.tvTitle)
+    private val summary: MaterialTextView = itemView.findViewById(R.id.tvSummary)
     private val days: LinearLayoutCompat = itemView.findViewById(R.id.llDays)
 
     fun bind(week: TimeReportWeek?) {

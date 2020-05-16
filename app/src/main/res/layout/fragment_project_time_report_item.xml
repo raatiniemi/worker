@@ -22,7 +22,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/list_item_background">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvTimeInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="07:45 - 11:45" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvTimeSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -18,21 +18,21 @@ package me.raatiniemi.worker.feature.projects.all.view
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textview.MaterialTextView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.shared.view.visibleIf
 
 internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val name: AppCompatTextView = view.findViewById(R.id.tvName)
-    private val time: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+    private val name: MaterialTextView = view.findViewById(R.id.tvName)
+    private val time: MaterialTextView = view.findViewById(R.id.tvTimeSummary)
 
     val clockActivityToggle: AppCompatImageButton = view.findViewById(R.id.ibClockActivityToggle)
     val clockActivityAt: AppCompatImageButton = view.findViewById(R.id.ibClockActivityAt)
     val delete: AppCompatImageButton = view.findViewById(R.id.ibDelete)
 
-    private val clockedInSince: AppCompatTextView = view.findViewById(R.id.tvClockedInSince)
+    private val clockedInSince: MaterialTextView = view.findViewById(R.id.tvClockedInSince)
 
     fun bind(projectsItem: ProjectsItem) {
         val resources = itemView.resources

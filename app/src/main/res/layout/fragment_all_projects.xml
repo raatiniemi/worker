@@ -28,7 +28,7 @@
         android:paddingBottom="10dp"
         tools:listitem="@layout/fragment_all_projects_item" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvEmptyProjects"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
