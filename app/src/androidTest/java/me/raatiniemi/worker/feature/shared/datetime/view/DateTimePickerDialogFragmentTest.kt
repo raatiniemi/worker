@@ -53,7 +53,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun date() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -67,7 +67,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun time() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -81,7 +81,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun chooseTimeIsVisibleByDefault() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -96,7 +96,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun chooseTime() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -117,7 +117,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun chooseDate() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -140,7 +140,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
     fun choose_withInitialValues() {
         val now = Date()
         var actual: Date? = null
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance {
                 it.date = now
                 it.choose = { date ->
@@ -161,7 +161,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
     fun choose_withChosenTime() {
         val now = Date()
         var actual: Date? = null
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance {
                 it.date = now
                 it.choose = { date ->
@@ -188,7 +188,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
     fun choose_withChosenDate() {
         val now = Date()
         var actual: Date? = null
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance {
                 it.date = now
                 it.choose = { date ->
@@ -221,7 +221,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
     fun choose_withChosenTimeAndDate() {
         val now = Date()
         var actual: Date? = null
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance {
                 it.date = now
                 it.choose = { date ->
@@ -254,7 +254,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test(expected = RuntimeException::class)
     fun choose_withDismiss() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -272,7 +272,7 @@ class DateTimePickerDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test(expected = RuntimeException::class)
     fun dismiss() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             DateTimePickerDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)

@@ -55,7 +55,7 @@ class CreateProjectDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun createProjectIsNotEnabledByDefault() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             CreateProjectDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -67,7 +67,7 @@ class CreateProjectDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun createProjectIsEnabledWithProjectName() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             CreateProjectDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -85,7 +85,7 @@ class CreateProjectDialogFragmentTest : AutoCloseKoinTest() {
     @Test
     fun createProject() {
         val isProjectCreated = AtomicBoolean()
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             CreateProjectDialogFragment.newInstance {
                 isProjectCreated.compareAndSet(false, true)
             }
@@ -107,7 +107,7 @@ class CreateProjectDialogFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun dismiss() {
-        val scenario = launchFragmentInContainer(themeResId = R.style.Theme) {
+        val scenario = launchFragmentInContainer(themeResId = R.style.Theme_Worker) {
             CreateProjectDialogFragment.newInstance { }
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
