@@ -35,7 +35,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="@string/home_navigation_projects" />
 
         <androidx.fragment.app.FragmentContainerView
