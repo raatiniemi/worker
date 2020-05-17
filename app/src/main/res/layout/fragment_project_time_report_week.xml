@@ -20,39 +20,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/vStartSeparator"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:background="?attr/colorOnBackground"
-        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
-        app:layout_constraintEnd_toStartOf="@id/tvTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvTitle" />
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="22dp"
         android:layout_marginBottom="5dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         android:textColor="?attr/colorOnBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Week 13" />
 
     <View
-        android:id="@+id/vEndSeparator"
+        android:id="@+id/vDivider"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:alpha="0.25"
         android:background="?attr/colorOnBackground"
         app:layout_constraintBottom_toBottomOf="@id/tvTitle"
         app:layout_constraintEnd_toStartOf="@id/tvSummary"
@@ -63,13 +51,13 @@
         android:id="@+id/tvSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="22dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         android:textColor="?attr/colorOnBackground"
         app:layout_constraintBottom_toBottomOf="@id/tvTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/vEndSeparator"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/vDivider"
         app:layout_constraintTop_toTopOf="@id/tvTitle"
         tools:text="8:35" />
 
