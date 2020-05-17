@@ -31,6 +31,9 @@
         <item name="android:colorBackground">@color/color_background</item>
         <item name="colorOnBackground">@color/color_on_background</item>
 
+        <item name="android:textColorPrimary">?attr/colorOnBackground</item>
+        <item name="android:textColorSecondary">?attr/colorOnBackground</item>
+
         <item name="windowActionModeOverlay">true</item>
 
         <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
