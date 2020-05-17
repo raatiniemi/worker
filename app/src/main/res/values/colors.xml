@@ -31,7 +31,7 @@
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Background">-->
-    <color name="color_background">@android:color/white</color>
+    <color name="color_background">#fafafa</color>
 
     <color name="color_on_background">#757575</color>
     <color name="color_on_background_secondary">#9e9e9e</color>
