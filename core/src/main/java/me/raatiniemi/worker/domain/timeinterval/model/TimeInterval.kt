@@ -32,14 +32,7 @@ sealed class TimeInterval {
         override val id: TimeIntervalId,
         override val projectId: ProjectId,
         override val start: Milliseconds
-    ) : TimeInterval() {
-        fun clockOut(stop: Milliseconds): TimeInterval = Inactive(
-            id = id,
-            projectId = projectId,
-            start = start,
-            stop = stop
-        )
-    }
+    ) : TimeInterval()
 
     data class Inactive internal constructor(
         override val id: TimeIntervalId,

@@ -101,36 +101,6 @@ class TimeIntervalTest {
         assertEquals(expected, actual)
     }
 
-    @Test(expected = ClockOutBeforeClockInException::class)
-    fun `clock out with stop before start`() {
-        val timeInterval = TimeInterval.Active(
-            id = TimeIntervalId(1),
-            projectId = android.id,
-            start = Milliseconds(10)
-        )
-
-        timeInterval.clockOut(stop = Milliseconds(1))
-    }
-
-    @Test
-    fun `clock out with start before stop`() {
-        val expected = TimeInterval.Inactive(
-            id = TimeIntervalId(1),
-            projectId = android.id,
-            start = Milliseconds(1),
-            stop = Milliseconds(10)
-        )
-        val timeInterval = TimeInterval.Active(
-            id = TimeIntervalId(1),
-            projectId = android.id,
-            start = Milliseconds(1)
-        )
-
-        val actual = timeInterval.clockOut(stop = Milliseconds(10))
-
-        assertEquals(expected, actual)
-    }
-
     @Test
     fun `is active for active`() {
         val expected = true

@@ -52,11 +52,14 @@ class ClockOut(private val timeIntervals: TimeIntervalRepository) {
         active: TimeInterval.Active,
         milliseconds: Milliseconds
     ): TimeInterval.Inactive {
-        val inactive = active.clockOut(stop = milliseconds)
-
-        return when (val timeInterval = timeIntervals.update(inactive)) {
-            is TimeInterval.Inactive -> timeInterval
-            else -> throw InvalidStateForTimeIntervalException()
+        val inactive = TimeInterval.Inactive(
+            id = active.id,
+            projectId = active.projectId,
+            start = active.start,
+            stop = milliseconds
+        )
+        return inactive.also {
+            timeIntervals.update(it)
         }
     }
 }
