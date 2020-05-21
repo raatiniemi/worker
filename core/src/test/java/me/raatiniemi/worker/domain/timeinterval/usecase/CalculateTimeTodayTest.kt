@@ -20,7 +20,6 @@ import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.timeinterval.model.newTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -31,13 +30,21 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class CalculateTimeTodayTest {
-    private lateinit var repository: TimeIntervalRepository
+    private lateinit var clockIn: ClockIn
+    private lateinit var clockOut: ClockOut
+
+    private lateinit var timeIntervals: TimeIntervalRepository
+
     private lateinit var calculateTimeToday: CalculateTimeToday
 
     @Before
     fun setUp() {
-        repository = TimeIntervalInMemoryRepository()
-        calculateTimeToday = CalculateTimeToday(repository)
+        timeIntervals = TimeIntervalInMemoryRepository()
+
+        clockIn = ClockIn(timeIntervals)
+        clockOut = ClockOut(timeIntervals)
+
+        calculateTimeToday = CalculateTimeToday(timeIntervals)
     }
 
     @Test
@@ -52,15 +59,8 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with registered time`() = runBlocking {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(
-            newTimeInterval(android) {
-                start = startingPoint
-            }
-        ).let {
-            it.clockOut(stop = startingPoint + 1.hours)
-        }.also {
-            repository.update(it)
-        }
+        clockIn(android, startingPoint)
+        clockOut(android, startingPoint + 1.hours)
         val expected = 1.hours
 
         val actual = calculateTimeToday(android)
@@ -71,15 +71,10 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with active time interval`() = runBlocking {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(
-            newTimeInterval(android) {
-                start = startingPoint
-            }
-        )
-        val stopForActive = startingPoint + 1.hours
+        clockIn(android, startingPoint)
         val expected = 1.hours
 
-        val actual = calculateTimeToday(android, stopForActive)
+        val actual = calculateTimeToday(android, startingPoint + 1.hours)
 
         assertEquals(expected, actual)
     }
@@ -87,24 +82,12 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with registered time and active time interval`() = runBlocking {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(
-            newTimeInterval(android) {
-                start = startingPoint
-            }
-        ).let {
-            it.clockOut(stop = startingPoint + 1.hours)
-        }.also {
-            repository.update(it)
-        }
-        repository.add(
-            newTimeInterval(android) {
-                start = startingPoint
-            }
-        )
-        val stopForActive = startingPoint + 1.hours
+        clockIn(android, startingPoint)
+        clockOut(android, startingPoint + 1.hours)
+        clockIn(android, startingPoint + 2.hours)
         val expected = 2.hours
 
-        val actual = calculateTimeToday(android, stopForActive)
+        val actual = calculateTimeToday(android, startingPoint + 3.hours)
 
         assertEquals(expected, actual)
     }
