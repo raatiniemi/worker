@@ -19,8 +19,14 @@ package me.raatiniemi.worker.domain.timeinterval.usecase
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.days
+import me.raatiniemi.worker.domain.time.milliseconds
+import me.raatiniemi.worker.domain.timeinterval.model.NewTimeInterval
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import kotlin.math.abs
 
 /**
@@ -50,6 +56,33 @@ class ClockOut(private val timeIntervals: TimeIntervalRepository) {
 
     private suspend fun clockOut(
         active: TimeInterval.Active,
+        stop: Milliseconds
+    ): TimeInterval.Inactive {
+        if (isOnSameDay(active.start, stop)) {
+            return save(active, stop)
+        }
+
+        val startOfNextDay = calculateStartOfNextDay(active)
+        save(active, startOfNextDay - 1.milliseconds)
+
+        val timeInterval = timeIntervals.add(
+            NewTimeInterval(active.projectId, startOfNextDay)
+        )
+        return clockOut(timeInterval, stop)
+    }
+
+    private fun isOnSameDay(start: Milliseconds, stop: Milliseconds): Boolean {
+        return ChronoUnit.DAYS.between(localDate(start), localDate(stop)) == 0L
+    }
+
+    private fun localDate(milliseconds: Milliseconds): LocalDate? {
+        return Instant.ofEpochMilli(milliseconds.value)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+    }
+
+    private suspend fun save(
+        active: TimeInterval.Active,
         milliseconds: Milliseconds
     ): TimeInterval.Inactive {
         val inactive = TimeInterval.Inactive(
@@ -61,5 +94,13 @@ class ClockOut(private val timeIntervals: TimeIntervalRepository) {
         return inactive.also {
             timeIntervals.update(it)
         }
+    }
+
+    private fun calculateStartOfNextDay(active: TimeInterval.Active): Milliseconds {
+        return Instant.ofEpochMilli(active.start.value)
+            .atZone(ZoneId.systemDefault())
+            .truncatedTo(ChronoUnit.DAYS)
+            .toInstant()
+            .let { Milliseconds(it.toEpochMilli()) + 1.days }
     }
 }

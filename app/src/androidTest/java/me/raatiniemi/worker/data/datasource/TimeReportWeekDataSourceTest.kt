@@ -198,7 +198,7 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadInitial_withTimeIntervalsWithinSameWeek() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val endOfWeek = setToEndOfWeek(startOfWeek)
+        val endOfWeek = setToEndOfWeek(startOfWeek) - 30.minutes
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
@@ -571,7 +571,7 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     fun loadInitial_whenHidingRegisteredTimeWithTimeIntervalsWithinSameWeek() = runBlocking {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val endOfWeek = setToEndOfWeek(startOfWeek)
+        val endOfWeek = setToEndOfWeek(startOfWeek) - 30.minutes
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
@@ -913,7 +913,7 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     @Test
     fun loadRange_withTimeIntervalsWithinSameWeek() = runBlocking {
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val endOfWeek = setToEndOfWeek(startOfWeek)
+        val endOfWeek = setToEndOfWeek(startOfWeek) - 30.minutes
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
@@ -1258,7 +1258,7 @@ class TimeReportWeekDataSourceTest : AutoCloseKoinTest() {
     fun loadRange_whenHidingRegisteredTimeWithTimeIntervalsWithinSameWeek() = runBlocking {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val startOfWeek = setToStartOfWeek(Milliseconds.now)
-        val endOfWeek = setToEndOfWeek(startOfWeek)
+        val endOfWeek = setToEndOfWeek(startOfWeek) - 30.minutes
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
