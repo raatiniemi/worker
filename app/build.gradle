@@ -157,7 +157,7 @@ dependencies {
     def preferenceVersion = '1.1.1'
     def lifecycleVersion = '2.2.0'
     def roomVersion = '2.2.5'
-    def pagingVersion = '2.1.1'
+    def pagingVersion = '2.1.2'
     def fragmentVersion = '1.2.1'
     def navigationVersion = '2.2.2'
     def materialVersion = '1.1.0'
