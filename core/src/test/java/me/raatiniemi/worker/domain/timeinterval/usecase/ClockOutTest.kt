@@ -22,6 +22,8 @@ import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.domain.time.hours
 import me.raatiniemi.worker.domain.time.minutes
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalId
+import me.raatiniemi.worker.domain.timeinterval.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
@@ -30,11 +32,13 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockOutTest {
     private lateinit var timeIntervals: TimeIntervalRepository
     private lateinit var clockIn: ClockIn
+    private lateinit var getProjectTimeSince: GetProjectTimeSince
 
     private lateinit var clockOut: ClockOut
 
@@ -42,58 +46,87 @@ class ClockOutTest {
     fun setUp() {
         timeIntervals = TimeIntervalInMemoryRepository()
         clockIn = ClockIn(timeIntervals)
+        getProjectTimeSince = GetProjectTimeSince(timeIntervals)
 
         clockOut = ClockOut(timeIntervals)
     }
 
     @Test(expected = InactiveProjectException::class)
-    fun `clock out with inactive project`() = runBlocking<Unit> {
-        clockOut(android, Milliseconds.now)
+    fun `clock out without active project`() {
+        val startingPoint = TimeIntervalStartingPoint.DAY
+        val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
+
+        runBlocking {
+            clockOut(android, startingPointInMilliseconds)
+        }
     }
 
     @Test(expected = ClockOutBeforeClockInException::class)
-    fun `clock out with date before clock in`() = runBlocking<Unit> {
-        val milliseconds = Milliseconds.now
-        clockIn(android, milliseconds + 1.hours)
+    fun `clock out with date before clock in`() {
+        val startingPoint = TimeIntervalStartingPoint.DAY
+        val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
 
-        clockOut(android, milliseconds)
+        runBlocking {
+            clockIn(android, startingPointInMilliseconds)
+
+            clockOut(android, startingPointInMilliseconds - 1.hours)
+        }
     }
 
     @Test(expected = ElapsedTimePastAllowedException::class)
-    fun `clock out when clocked in over one day ago`() = runBlocking<Unit> {
-        val milliseconds = Milliseconds.now
-        clockIn(android, milliseconds - 1.days - 3.minutes)
+    fun `clock out when clocked in over one day ago`() {
+        val startingPoint = TimeIntervalStartingPoint.DAY
+        val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
 
-        clockOut(android, milliseconds)
+        runBlocking {
+            clockIn(android, startingPointInMilliseconds)
+
+            clockOut(android, startingPointInMilliseconds + 1.days + 3.minutes)
+        }
     }
 
     @Test
-    fun `clock out when clocked in one day ago`() = runBlocking {
-        val milliseconds = Milliseconds.now
-        val timeInterval = clockIn(android, milliseconds - 1.days)
-        val expected = timeInterval(timeInterval) { builder ->
-            builder.stop = milliseconds
+    fun `clock out with active project`() {
+        val startingPoint = TimeIntervalStartingPoint.DAY
+        val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
+
+        runBlocking {
+            val timeInterval = clockIn(android, startingPointInMilliseconds)
+            val expected = listOf(
+                timeInterval(timeInterval) { builder ->
+                    builder.stop = startingPointInMilliseconds + 1.hours
+                }
+            )
+
+            clockOut(android, startingPointInMilliseconds + 1.hours)
+
+            val actual = getProjectTimeSince(android, startingPoint)
+            assertEquals(expected, actual)
         }
-
-        val actual = clockOut(android, milliseconds)
-
-        val timeIntervals = timeIntervals.findAll(android, Milliseconds.empty)
-        assertEquals(listOf(expected), timeIntervals)
-        assertEquals(expected, actual)
     }
 
     @Test
-    fun `clock out with active project`() = runBlocking {
-        val milliseconds = Milliseconds.now
-        val timeInterval = clockIn(android, milliseconds - 1.hours)
-        val expected = timeInterval(timeInterval) { builder ->
-            builder.stop = milliseconds
+    fun `clock out when start and stop is on different days`() {
+        val defaultTimeZone = TimeZone.getDefault()
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Stockholm"))
+        runBlocking {
+            val timeInterval = clockIn(android, Milliseconds(1589319000000))
+            val expected = listOf(
+                timeInterval(timeInterval) { builder ->
+                    builder.stop = Milliseconds(1589320799999)
+                },
+                timeInterval(android.id) { builder ->
+                    builder.id = TimeIntervalId(2)
+                    builder.start = Milliseconds(1589320800000)
+                    builder.stop = Milliseconds(1589322600000)
+                }
+            )
+
+            clockOut(android, Milliseconds(1589322600000))
+
+            val actual = timeIntervals.findAll(android, timeInterval.start)
+            assertEquals(expected, actual)
         }
-
-        val actual = clockOut(android, milliseconds)
-
-        val timeIntervals = timeIntervals.findAll(android, Milliseconds(0))
-        assertEquals(listOf(expected), timeIntervals)
-        assertEquals(expected, actual)
+        TimeZone.setDefault(defaultTimeZone)
     }
 }

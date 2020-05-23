@@ -112,7 +112,7 @@ class CountTimeReportWeeksTest {
     fun `count time report weeks with time intervals within same week`() = runBlocking {
         val startOfDay = setToStartOfDay(Milliseconds.now)
         val startOfWeek = setToStartOfWeek(startOfDay)
-        val endOfWeek = setToEndOfWeek(startOfDay)
+        val endOfWeek = setToEndOfWeek(startOfDay) - 30.minutes
         clockIn(android, startOfWeek)
         clockOut(android, startOfWeek + 10.minutes)
         clockIn(android, endOfWeek)
@@ -218,7 +218,7 @@ class CountTimeReportWeeksTest {
             keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
             val startOfDay = setToStartOfDay(Milliseconds.now)
             val startOfWeek = setToStartOfWeek(startOfDay)
-            val endOfWeek = setToEndOfWeek(startOfDay)
+            val endOfWeek = setToEndOfWeek(startOfDay) - 30.minutes
             clockIn(android, startOfWeek)
             clockOut(android, startOfWeek + 10.minutes)
             clockIn(android, endOfWeek)
