@@ -156,7 +156,7 @@ dependencies {
     def cardViewVersion = '1.0.0'
     def preferenceVersion = '1.1.1'
     def lifecycleVersion = '2.2.0'
-    def roomVersion = '2.2.3'
+    def roomVersion = '2.2.5'
     def pagingVersion = '2.1.1'
     def fragmentVersion = '1.2.1'
     def navigationVersion = '2.2.2'
