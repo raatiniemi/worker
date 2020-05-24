@@ -31,7 +31,7 @@ core:build:
     paths:
       - core/build/libs/
       - core-test/build/libs/
-    expire_in: 1 day
+    expire_in: 4 hours
 
 # stage: build-app
 
@@ -46,7 +46,7 @@ app:build:
   artifacts:
     paths:
       - app/build/outputs/
-    expire_in: 1 day
+    expire_in: 4 hours
 
 app:build for instrumented test:
   stage: build-app
@@ -59,7 +59,7 @@ app:build for instrumented test:
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest/
-    expire_in: 1 day
+    expire_in: 4 hours
   only:
     - master
 
@@ -79,7 +79,7 @@ core:test:
       - core-test/build/reports/jacoco/test/
       - core/build/test-results/test/
       - core-test/build/test-results/test/
-    expire_in: 1 day
+    expire_in: 4 hours
 
 app:lint:
   stage: test
@@ -104,7 +104,7 @@ app:test:
     paths:
       - app/build/reports/jacoco/jacocoTestReport/
       - app/build/test-results/testReleaseUnitTest/
-    expire_in: 1 day
+    expire_in: 4 hours
 
 app:integration test:
   stage: test
