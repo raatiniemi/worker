@@ -3,21 +3,23 @@ stages:
   - test
   - deploy
 
-variables:
-  ANDROID_HOME: "/opt/android-sdk"
-
-before_script:
-  - bin/configure-signing-environment
-
 .in-docker:
   image: raatiniemi/android-environment:android-29-latest
   tags:
    - docker
 
+.in-android-environment:
+  extends:
+    - .in-docker
+  before_script:
+    - bin/configure-signing-environment
+  variables:
+    ANDROID_HOME: "/opt/android-sdk"
+
 build:
   stage: build
   extends:
-    - .in-docker
+    - .in-android-environment
   script:
     - ./gradlew core:assemble core-test:assemble app:assembleRelease
   artifacts:
@@ -30,7 +32,7 @@ build:
 build for android test:
   stage: build
   extends:
-    - .in-docker
+    - .in-android-environment
   script:
     - ./gradlew app:assembleAndroidTest
   artifacts:
@@ -43,7 +45,7 @@ build for android test:
 lint:
   stage: test
   extends:
-    - .in-docker
+    - .in-android-environment
   script:
     - ./gradlew app:lintRelease
   dependencies:
@@ -52,7 +54,7 @@ lint:
 test:
   stage: test
   extends:
-    - .in-docker
+    - .in-android-environment
   script:
     - ./gradlew core:test core-test:test app:testReleaseUnitTest
   dependencies:
@@ -63,7 +65,7 @@ test:
 sonar:
   stage: test
   extends:
-    - .in-docker
+    - .in-android-environment
   script:
     - ./gradlew core:test core-test:test app:testReleaseUnitTest jacocoTestReport sonarqube
   dependencies:
@@ -89,7 +91,7 @@ integration test:
 deploy:
   stage: deploy
   extends:
-    - .in-docker
+    - .in-android-environment
   before_script:
     - bin/configure-signing-environment
     - bin/configure-deploy-environment
