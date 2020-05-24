@@ -5,8 +5,13 @@ stages:
   - sonar
   - deploy
 
+.configure-timezone: &configure-timezone
+  - echo "Europe/Stockholm" > /etc/timezone
+
 .in-docker:
   image: gradle:5.6.4-jdk8
+  before_script:
+    - *configure-timezone
   tags:
    - docker
 
@@ -15,6 +20,7 @@ stages:
     - .in-docker
   image: raatiniemi/android-environment:android-29-latest
   before_script:
+    - *configure-timezone
     - bin/configure-signing-environment
   variables:
     ANDROID_HOME: "/opt/android-sdk"
@@ -111,9 +117,8 @@ app:instrumented test:
   extends:
     - .in-docker
   image: google/cloud-sdk:latest
-  before_script:
-    - bin/configure-gcloud-environment
   script:
+    - bin/configure-gcloud-environment
     - bin/run-instrumented-test
   dependencies:
     - app:build
