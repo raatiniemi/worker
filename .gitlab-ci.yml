@@ -81,7 +81,7 @@ core:test:
       - core-test/build/test-results/test/
     expire_in: 1 day
 
-lint:
+app:lint:
   stage: test
   extends:
     - .in-android-environment
@@ -91,7 +91,7 @@ lint:
     - core:build
     - app:build
 
-test:
+app:test:
   stage: test
   extends:
     - .in-android-environment
@@ -106,7 +106,7 @@ test:
       - app/build/test-results/testReleaseUnitTest/
     expire_in: 1 day
 
-integration test:
+app:integration test:
   stage: test
   extends:
     - .in-docker
@@ -131,13 +131,13 @@ sonar:analyze:
     - gradle sonarqube
   dependencies:
     - core:test
-    - test
+    - app:test
   only:
     - master
 
 # stage: deploy
 
-deploy:
+app:deploy:
   stage: deploy
   extends:
     - .in-android-environment
