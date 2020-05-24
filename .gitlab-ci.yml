@@ -142,6 +142,7 @@ sonar:analyze:
   dependencies:
     - core:test
     - app:test
+    - app:instrumented test
   only:
     - master
 
