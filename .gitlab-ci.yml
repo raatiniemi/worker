@@ -97,10 +97,15 @@ test:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:testReleaseUnitTest
+    - ./gradlew app:testReleaseUnitTest app:jacocoTestReport
   dependencies:
     - core:build
     - app:build
+  artifacts:
+    paths:
+      - app/build/reports/jacoco/jacocoTestReport/
+      - app/build/test-results/testReleaseUnitTest/
+    expire_in: 1 day
   except:
     - master
 
