@@ -69,9 +69,16 @@ core:test:
   extends:
     - .in-docker
   script:
-    - gradle core:test core-test:test
+    - gradle core:test core:jacocoTestReport core-test:test core-test:jacocoTestReport
   dependencies:
     - core:build
+  artifacts:
+    paths:
+      - core/build/reports/jacoco/test/
+      - core-test/build/reports/jacoco/test/
+      - core/build/test-results/test/
+      - core-test/build/test-results/test/
+    expire_in: 1 day
   except:
     - master
 
