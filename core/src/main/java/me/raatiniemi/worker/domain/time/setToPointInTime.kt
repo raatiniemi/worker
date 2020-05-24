@@ -16,7 +16,10 @@
 
 package me.raatiniemi.worker.domain.time
 
-import java.util.*
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 /**
  * Rewind the milliseconds timestamp to the start of the day, including changing
@@ -27,15 +30,11 @@ import java.util.*
  * @return Rewound milliseconds timestamp.
  */
 fun setToStartOfDay(milliseconds: Milliseconds): Milliseconds {
-    val calendar = calendar {
-        it.timeInMillis = milliseconds.value
-        it.set(Calendar.HOUR_OF_DAY, 0)
-        it.set(Calendar.MINUTE, 0)
-        it.set(Calendar.SECOND, 0)
-        it.set(Calendar.MILLISECOND, 0)
-    }
-
-    return Milliseconds(calendar.time.time)
+    return Instant.ofEpochMilli(milliseconds.value)
+        .atZone(ZoneId.systemDefault())
+        .truncatedTo(ChronoUnit.DAYS)
+        .toInstant()
+        .let { Milliseconds(it.toEpochMilli()) }
 }
 
 /**
@@ -47,13 +46,12 @@ fun setToStartOfDay(milliseconds: Milliseconds): Milliseconds {
  * @return Rewound milliseconds timestamp.
  */
 fun setToStartOfWeek(milliseconds: Milliseconds): Milliseconds {
-    val startOfDay = setToStartOfDay(milliseconds)
-    val calendar = calendar {
-        it.timeInMillis = startOfDay.value
-        it.set(Calendar.DAY_OF_WEEK, it.firstDayOfWeek)
-    }
-
-    return Milliseconds(calendar.time.time)
+    return Instant.ofEpochMilli(milliseconds.value)
+        .atZone(ZoneId.systemDefault())
+        .truncatedTo(ChronoUnit.DAYS)
+        .with(DayOfWeek.MONDAY)
+        .toInstant()
+        .let { Milliseconds(it.toEpochMilli()) }
 }
 
 /**
@@ -65,5 +63,5 @@ fun setToStartOfWeek(milliseconds: Milliseconds): Milliseconds {
  * @return Forwarded milliseconds timestamp.
  */
 fun setToEndOfWeek(milliseconds: Milliseconds): Milliseconds {
-    return (setToStartOfWeek(milliseconds) + 1.weeks) - 1.seconds
+    return (setToStartOfWeek(milliseconds) + 1.weeks) - 1.milliseconds
 }
