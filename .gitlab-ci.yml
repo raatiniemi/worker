@@ -106,7 +106,7 @@ app:test:
       - app/build/test-results/testReleaseUnitTest/
     expire_in: 4 hours
 
-app:integration test:
+app:instrumented test:
   stage: test
   extends:
     - .in-docker
@@ -114,7 +114,7 @@ app:integration test:
   before_script:
     - bin/configure-gcloud-environment
   script:
-    - bin/run-integration-test
+    - bin/run-instrumented-test
   dependencies:
     - app:build
     - app:build for instrumented test
