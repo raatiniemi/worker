@@ -141,10 +141,8 @@ app:deploy:
   stage: deploy
   extends:
     - .in-android-environment
-  before_script:
-    - bin/configure-signing-environment
-    - bin/configure-deploy-environment
   script:
+    - bin/configure-deploy-environment
     - ./gradlew app:publishReleaseApk
   dependencies:
     - app:build
