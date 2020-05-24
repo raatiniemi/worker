@@ -2,6 +2,7 @@ stages:
   - build-core
   - build-app
   - test
+  - sonar
   - deploy
 
 .in-docker:
@@ -79,8 +80,6 @@ core:test:
       - core/build/test-results/test/
       - core-test/build/test-results/test/
     expire_in: 1 day
-  except:
-    - master
 
 lint:
   stage: test
@@ -106,20 +105,6 @@ test:
       - app/build/reports/jacoco/jacocoTestReport/
       - app/build/test-results/testReleaseUnitTest/
     expire_in: 1 day
-  except:
-    - master
-
-sonar:
-  stage: test
-  extends:
-    - .in-android-environment
-  script:
-    - ./gradlew core:test core-test:test app:testReleaseUnitTest jacocoTestReport sonarqube
-  dependencies:
-    - core:build
-    - app:build
-  only:
-    - master
 
 integration test:
   stage: test
@@ -133,6 +118,20 @@ integration test:
   dependencies:
     - app:build
     - app:build for instrumented test
+  only:
+    - master
+
+# stage: sonar
+
+sonar:analyze:
+  stage: sonar
+  extends:
+    - .in-docker
+  script:
+    - gradle sonarqube
+  dependencies:
+    - core:test
+    - test
   only:
     - master
 
