@@ -76,14 +76,14 @@ core:test:
   extends:
     - .in-docker
   script:
-    - gradle core:test core:jacocoTestReport core-test:test core-test:jacocoTestReport
+    - gradle core:test core-test:test
   dependencies:
     - core:build
   artifacts:
     paths:
-      - core/build/reports/jacoco/test/
-      - core-test/build/reports/jacoco/test/
+      - core/build/jacoco/
       - core/build/test-results/test/
+      - core-test/build/jacoco/
       - core-test/build/test-results/test/
     expire_in: 4 hours
 
@@ -102,13 +102,13 @@ app:test:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:testReleaseUnitTest app:jacocoTestReport
+    - ./gradlew app:testReleaseUnitTest
   dependencies:
     - core:build
     - app:build
   artifacts:
     paths:
-      - app/build/reports/jacoco/jacocoTestReport/
+      - app/build/jacoco/
       - app/build/test-results/testReleaseUnitTest/
     expire_in: 4 hours
 
@@ -133,7 +133,7 @@ sonar:analyze:
   extends:
     - .in-docker
   script:
-    - gradle sonarqube
+    - gradle jacocoTestReport sonarqube
   dependencies:
     - core:test
     - app:test
