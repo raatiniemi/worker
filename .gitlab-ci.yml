@@ -123,6 +123,11 @@ app:instrumented test:
   dependencies:
     - app:build
     - app:build for instrumented test
+  artifacts:
+    paths:
+      - app/build/outputs/androidTest-results/connected/
+      - app/build/outputs/code_coverage/
+    expire_in: 4 hours
   only:
     - master
 
