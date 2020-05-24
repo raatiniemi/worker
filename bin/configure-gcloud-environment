@@ -1,5 +1,5 @@
 #!/bin/bash
-GCLOUD=$(which gcloud);
+GCLOUD=$(command -v gcloud);
 if [ -z "${GCLOUD}" ]; then
   echo "Unable to find binary for gcloud.";
   exit 1;
@@ -15,7 +15,7 @@ if [ -z "${GCLOUD_SERVICE_ACCOUNT}" ]; then
   exit 1;
 fi;
 
-$GCLOUD config set project $GCLOUD_PROJECT_ID;
+$GCLOUD config set project "${GCLOUD_PROJECT_ID}";
 
-echo $GCLOUD_SERVICE_ACCOUNT > service-account.json;
+echo "${GCLOUD_SERVICE_ACCOUNT}" > service-account.json;
 $GCLOUD auth activate-service-account --key-file service-account.json;

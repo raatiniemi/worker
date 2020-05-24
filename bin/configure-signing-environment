@@ -1,5 +1,5 @@
 #!/bin/bash
-BASE64=$(which base64);
+BASE64=$(command -v base64);
 if [ -z "${BASE64}" ]; then
   echo "Unable to find binary for base64.";
   exit 1;
@@ -15,4 +15,4 @@ if [ -z "${KEYSTORE_NAME}" ]; then
   exit 1;
 fi;
 
-echo $KEYSTORE_BASE64 | $BASE64 -d > app/$KEYSTORE_NAME
+echo "${KEYSTORE_BASE64}" | $BASE64 -d > "app/${KEYSTORE_NAME}"

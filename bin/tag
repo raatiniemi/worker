@@ -6,8 +6,7 @@ if [ -z "${TAG}" ]; then
   exit 1;
 fi;
 
-git tag -a -m "Release v${TAG}" $TAG;
-if [ $? -ne 0 ]; then
+if ! git tag -a -m "Release v${TAG}" "${TAG}"; then
   echo "Unable to create tag: ${TAG}";
   exit 1;
 fi;

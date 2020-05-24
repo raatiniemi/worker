@@ -1,10 +1,10 @@
 #!/bin/bash
-PROJECT_DIRECTORY="$(dirname $0)/..";
+PROJECT_DIRECTORY="$(dirname "${0}")/..";
 APK_DIRECTORY="${PROJECT_DIRECTORY}/app/build/outputs/apk";
 RELEASE_APK="${APK_DIRECTORY}/release/app-release.apk";
 RELEASE_TEST_APK="${APK_DIRECTORY}/androidTest/release/app-release-androidTest.apk";
 
-GCLOUD=$(which gcloud);
+GCLOUD=$(command -v gcloud);
 if [ -z "${GCLOUD}" ]; then
   echo "Unable to find binary for gcloud.";
   exit 1;
@@ -12,8 +12,8 @@ fi;
 
 $GCLOUD firebase test android run \
   --type instrumentation \
-  --app $RELEASE_APK \
-  --test $RELEASE_TEST_APK \
+  --app "${RELEASE_APK}" \
+  --test "${RELEASE_TEST_APK}" \
   --device model=Pixel2,version=28,locale=en,orientation=portrait \
   --timeout 90s;
 exit $?;
