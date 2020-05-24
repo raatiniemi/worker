@@ -113,7 +113,7 @@
     <string name="settings_about_title">About</string>
 
     <string name="settings_version_title">Version</string>
-    <string name="settings_version_summary" formatted="false">%s (%d)</string>
+    <string name="settings_version_summary">%s (%d)</string>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Ongoing notification">-->
