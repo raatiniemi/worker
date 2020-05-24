@@ -1,32 +1,46 @@
 stages:
+  - build-core
   - build
   - test
   - deploy
 
 .in-docker:
-  image: raatiniemi/android-environment:android-29-latest
+  image: gradle:5.6.4-jdk8
   tags:
    - docker
 
 .in-android-environment:
   extends:
     - .in-docker
+  image: raatiniemi/android-environment:android-29-latest
   before_script:
     - bin/configure-signing-environment
   variables:
     ANDROID_HOME: "/opt/android-sdk"
+
+core:build:
+  stage: build-core
+  extends:
+    - .in-docker
+  script:
+    - gradle core:assemble core-test:assemble
+  artifacts:
+    paths:
+      - core/build/libs/
+      - core-test/build/libs/
+    expire_in: 1 day
 
 app:build:
   stage: build
   extends:
     - .in-android-environment
   script:
-    - ./gradlew core:assemble core-test:assemble app:assembleRelease
+    - ./gradlew app:assembleRelease
+  dependencies:
+    - core:build
   artifacts:
     paths:
       - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
     expire_in: 1 day
 
 app:build for instrumented test:
@@ -35,11 +49,24 @@ app:build for instrumented test:
     - .in-android-environment
   script:
     - ./gradlew app:assembleAndroidTest
+  dependencies:
+    - core:build
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest/
     expire_in: 1 day
   only:
+    - master
+
+core:test:
+  stage: test
+  extends:
+    - .in-docker
+  script:
+    - gradle core:test core-test:test
+  dependencies:
+    - core:build
+  except:
     - master
 
 lint:
@@ -49,6 +76,7 @@ lint:
   script:
     - ./gradlew app:lintRelease
   dependencies:
+    - core:build
     - app:build
 
 test:
@@ -56,8 +84,9 @@ test:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew core:test core-test:test app:testReleaseUnitTest
+    - ./gradlew app:testReleaseUnitTest
   dependencies:
+    - core:build
     - app:build
   except:
     - master
@@ -69,6 +98,7 @@ sonar:
   script:
     - ./gradlew core:test core-test:test app:testReleaseUnitTest jacocoTestReport sonarqube
   dependencies:
+    - core:build
     - app:build
   only:
     - master
