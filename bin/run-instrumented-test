@@ -14,8 +14,10 @@ GCLOUD_LOG_FILE="${PROJECT_DIRECTORY}/instrumentation.log"
 
 BUCKET_DEVICE_FOLDER="${DEVICE_MODEL}-${API_VERSION}-${LOCALE}-${ORIENTATION}"
 BUCKET_COVERAGE_PATH="${BUCKET_DEVICE_FOLDER}/artifacts/coverage.ec"
+BUCKET_REPORT_PATH="${BUCKET_DEVICE_FOLDER}/*.xml"
 
 COVERAGE_OUTPUT_DIRECTORY="app/build/outputs/code_coverage/"
+REPORT_OUTPUT_DIRECTORY="app/build/outputs/androidTest-results/connected/"
 
 GCLOUD=$(command -v gcloud)
 if [ -z "${GCLOUD}" ]; then
@@ -43,4 +45,7 @@ BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/${GCLOUD_RESULT_DIRECTORY})" "${GC
 
 mkdir -p "${COVERAGE_OUTPUT_DIRECTORY}"
 $GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_COVERAGE_PATH}" "${COVERAGE_OUTPUT_DIRECTORY}"
+
+mkdir -p "${REPORT_OUTPUT_DIRECTORY}"
+$GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_REPORT_PATH}" "${REPORT_OUTPUT_DIRECTORY}"
 exit $?
