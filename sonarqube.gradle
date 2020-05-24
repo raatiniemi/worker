@@ -45,7 +45,10 @@ project(':app') {
     sonarqube {
         properties {
             properties['sonar.java.binaries'] = "${project.buildDir}/tmp/kotlin-classes/release"
-            properties['sonar.java.test.binaries'] = "${project.buildDir}/tmp/kotlin-classes/releaseUnitTest"
+            properties['sonar.java.test.binaries'] = [
+                    "${project.buildDir}/tmp/kotlin-classes/releaseUnitTest",
+                    "${project.buildDir}/tmp/kotlin-classes/releaseAndroidTest"
+            ].join(",")
 
             properties['sonar.junit.reportPaths'] = [
                     "${project.buildDir}/test-results/testReleaseUnitTest",
