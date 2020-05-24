@@ -18,6 +18,8 @@ stages:
   variables:
     ANDROID_HOME: "/opt/android-sdk"
 
+# stage: build-core
+
 core:build:
   stage: build-core
   extends:
@@ -29,6 +31,8 @@ core:build:
       - core/build/libs/
       - core-test/build/libs/
     expire_in: 1 day
+
+# stage: build
 
 app:build:
   stage: build
@@ -57,6 +61,8 @@ app:build for instrumented test:
     expire_in: 1 day
   only:
     - master
+
+# stage: test
 
 core:test:
   stage: test
@@ -117,6 +123,8 @@ integration test:
     - app:build for instrumented test
   only:
     - master
+
+# stage: deploy
 
 deploy:
   stage: deploy
