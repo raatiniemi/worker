@@ -1,6 +1,6 @@
 stages:
   - build-core
-  - build
+  - build-app
   - test
   - deploy
 
@@ -32,10 +32,10 @@ core:build:
       - core-test/build/libs/
     expire_in: 1 day
 
-# stage: build
+# stage: build-app
 
 app:build:
-  stage: build
+  stage: build-app
   extends:
     - .in-android-environment
   script:
@@ -48,7 +48,7 @@ app:build:
     expire_in: 1 day
 
 app:build for instrumented test:
-  stage: build
+  stage: build-app
   extends:
     - .in-android-environment
   script:
