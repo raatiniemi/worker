@@ -47,7 +47,10 @@ project(':app') {
             properties['sonar.java.binaries'] = "${project.buildDir}/tmp/kotlin-classes/release"
             properties['sonar.java.test.binaries'] = "${project.buildDir}/tmp/kotlin-classes/releaseUnitTest"
 
-            properties['sonar.junit.reportPaths'] = "${project.buildDir}/test-results/testReleaseUnitTest"
+            properties['sonar.junit.reportPaths'] = [
+                    "${project.buildDir}/test-results/testReleaseUnitTest",
+                    "${project.buildDir}/outputs/androidTest-results/connected"
+            ].join(",")
         }
     }
 }

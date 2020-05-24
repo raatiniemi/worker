@@ -18,6 +18,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="me.raatiniemi.worker">
 
+    <!--
+    External storage should never be used as the purpose of the permission is
+    to allow writing of the coverage report, which we'll later pull down to
+    the CI/CD pipeline for analysis.
+    -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".WorkerApplication"
         android:allowBackup="true"

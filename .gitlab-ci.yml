@@ -1,98 +1,171 @@
-image: raatiniemi/android-environment:android-29-latest
-
 stages:
-  - build
+  - build-core
+  - build-app
   - test
+  - sonar
   - deploy
 
-variables:
-  ANDROID_HOME: "/opt/android-sdk"
+.configure-timezone: &configure-timezone
+  - echo "Europe/Stockholm" > /etc/timezone
 
-before_script:
-  - bin/configure-signing-environment
+.in-docker:
+  image: gradle:5.6.4-jdk8
+  before_script:
+    - *configure-timezone
+  tags:
+   - docker
 
-build:
-  stage: build
+.in-android-environment:
+  extends:
+    - .in-docker
+  image: raatiniemi/android-environment:android-29-latest
+  before_script:
+    - *configure-timezone
+    - bin/configure-signing-environment
+  variables:
+    ANDROID_HOME: "/opt/android-sdk"
+
+# stage: build-core
+
+core:build:
+  stage: build-core
+  extends:
+    - .in-docker
   script:
-    - ./gradlew core:assemble core-test:assemble app:assembleRelease
+    - gradle core:assemble core-test:assemble
+  artifacts:
+    paths:
+      - core/build/libs/
+      - core/build/classes/kotlin/main/
+      - core-test/build/libs/
+      - core-test/build/classes/kotlin/main/
+    expire_in: 4 hours
+
+# stage: build-app
+
+app:build:
+  stage: build-app
+  extends:
+    - .in-android-environment
+  script:
+    - ./gradlew app:assembleRelease
+  dependencies:
+    - core:build
   artifacts:
     paths:
       - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
-    expire_in: 1 day
-  tags:
-   - docker
+      - app/tmp/kotlin-classes/release/
+    expire_in: 4 hours
 
-build for android test:
- stage: build
- script:
-   - ./gradlew app:assembleAndroidTest
- artifacts:
-   paths:
-     - app/build/outputs/apk/androidTest/
-   expire_in: 1 day
- only:
-   - master
- tags:
-   - docker
+app:build for instrumented test:
+  stage: build-app
+  extends:
+    - .in-android-environment
+  script:
+    - ./gradlew app:assembleAndroidTest
+  dependencies:
+    - core:build
+  artifacts:
+    paths:
+      - app/build/outputs/apk/androidTest/
+      - app/tmp/kotlin-classes/releaseAndroidTest/
+    expire_in: 4 hours
+  only:
+    - master
 
-lint:
+# stage: test
+
+core:test:
   stage: test
+  extends:
+    - .in-docker
+  script:
+    - gradle core:test core-test:test
+  dependencies:
+    - core:build
+  artifacts:
+    paths:
+      - core/build/jacoco/
+      - core/build/test-results/test/
+      - core/build/classes/kotlin/test/
+      - core-test/build/jacoco/
+      - core-test/build/test-results/test/
+      - core-test/build/classes/kotlin/test/
+    expire_in: 4 hours
+
+app:lint:
+  stage: test
+  extends:
+    - .in-android-environment
   script:
     - ./gradlew app:lintRelease
   dependencies:
-    - build
-  tags:
-    - docker
+    - core:build
+    - app:build
 
-test:
+app:test:
   stage: test
+  extends:
+    - .in-android-environment
   script:
-    - ./gradlew core:test core-test:test app:testReleaseUnitTest
+    - ./gradlew app:testReleaseUnitTest
   dependencies:
-    - build
-  except:
-    - master
-  tags:
-    - docker
+    - core:build
+    - app:build
+  artifacts:
+    paths:
+      - app/build/jacoco/
+      - app/build/test-results/testReleaseUnitTest/
+      - app/tmp/kotlin-classes/releaseUnitTest/
+    expire_in: 4 hours
 
-sonar:
+app:instrumented test:
   stage: test
-  script:
-    - ./gradlew core:test core-test:test app:testReleaseUnitTest jacocoTestReport sonarqube
-  dependencies:
-    - build
-  only:
-    - master
-  tags:
-    - docker
-
-integration test:
+  extends:
+    - .in-docker
   image: google/cloud-sdk:latest
-  stage: test
-  before_script:
-    - bin/configure-gcloud-environment
   script:
-    - bin/run-integration-test
+    - bin/configure-gcloud-environment
+    - bin/run-instrumented-test
   dependencies:
-    - build
-    - build for android test
+    - app:build
+    - app:build for instrumented test
+  artifacts:
+    paths:
+      - app/build/outputs/androidTest-results/connected/
+      - app/build/outputs/code_coverage/
+    expire_in: 4 hours
   only:
     - master
-  tags:
-    - docker
 
-deploy:
-  stage: deploy
-  before_script:
-    - bin/configure-signing-environment
-    - bin/configure-deploy-environment
+# stage: sonar
+
+sonar:analyze:
+  stage: sonar
+  extends:
+    - .in-docker
   script:
+    - gradle jacocoTestReport sonarqube
+  dependencies:
+    - core:build
+    - app:build
+    - app:build for instrumented test
+    - core:test
+    - app:test
+    - app:instrumented test
+  only:
+    - master
+
+# stage: deploy
+
+app:deploy:
+  stage: deploy
+  extends:
+    - .in-android-environment
+  script:
+    - bin/configure-deploy-environment
     - ./gradlew app:publishReleaseApk
   dependencies:
-    - build
+    - app:build
   only:
     - tags
-  tags:
-    - docker

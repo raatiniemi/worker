@@ -1,0 +1,51 @@
+#!/bin/bash
+PROJECT_DIRECTORY="$(dirname "${0}")/.."
+APK_DIRECTORY="${PROJECT_DIRECTORY}/app/build/outputs/apk"
+RELEASE_APK="${APK_DIRECTORY}/release/app-release.apk"
+RELEASE_TEST_APK="${APK_DIRECTORY}/androidTest/release/app-release-androidTest.apk"
+
+DEVICE_MODEL="Pixel2"
+API_VERSION="28"
+LOCALE="en"
+ORIENTATION="portrait"
+
+GCLOUD_RESULT_DIRECTORY="build-${CI_COMMIT_SHA}"
+GCLOUD_LOG_FILE="${PROJECT_DIRECTORY}/instrumentation.log"
+
+BUCKET_DEVICE_FOLDER="${DEVICE_MODEL}-${API_VERSION}-${LOCALE}-${ORIENTATION}"
+BUCKET_COVERAGE_PATH="${BUCKET_DEVICE_FOLDER}/artifacts/coverage.ec"
+BUCKET_REPORT_PATH="${BUCKET_DEVICE_FOLDER}/*.xml"
+
+COVERAGE_OUTPUT_DIRECTORY="app/build/outputs/code_coverage/"
+REPORT_OUTPUT_DIRECTORY="app/build/outputs/androidTest-results/connected/"
+
+GCLOUD=$(command -v gcloud)
+if [ -z "${GCLOUD}" ]; then
+  echo "Unable to find binary for gcloud."
+  exit 1
+fi
+
+GSUTIL=$(command -v gsutil)
+if [ -z "${GSUTIL}" ]; then
+  echo "Unable to find binary for gsutil."
+  exit 1
+fi
+
+$GCLOUD firebase test android run \
+  --type instrumentation \
+  --app "${RELEASE_APK}" \
+  --test "${RELEASE_TEST_APK}" \
+  --device "model=${DEVICE_MODEL},version=${API_VERSION},locale=${LOCALE},orientation=${ORIENTATION}" \
+  --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
+  --directories-to-pull /sdcard \
+  --results-dir "${GCLOUD_RESULT_DIRECTORY}" \
+  --timeout 90s 1> "${GCLOUD_LOG_FILE}" 2>&1
+
+BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/${GCLOUD_RESULT_DIRECTORY})" "${GCLOUD_LOG_FILE}")
+
+mkdir -p "${COVERAGE_OUTPUT_DIRECTORY}"
+$GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_COVERAGE_PATH}" "${COVERAGE_OUTPUT_DIRECTORY}"
+
+mkdir -p "${REPORT_OUTPUT_DIRECTORY}"
+$GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_REPORT_PATH}" "${REPORT_OUTPUT_DIRECTORY}"
+exit $?

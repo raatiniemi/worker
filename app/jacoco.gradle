@@ -36,10 +36,11 @@ task jacocoTestReport(type: JacocoReport) {
     classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion).matching {
         include "tmp/kotlin-classes/release/${classPattern}"
         include "tmp/kotlin-classes/releaseUnitTest/${classPattern}"
+        include "tmp/kotlin-classes/releaseAndroidTest/${classPattern}"
     }
     sourceDirectories = files(
             "${project.projectDir}/src/main/java/$packageDirectory",
             "${project.projectDir}/src/test/java/$packageDirectory"
     )
-    executionData = fileTree(dir: project.buildDir, includes: ["**/*.exec"])
+    executionData = fileTree(dir: project.buildDir, includes: ["**/*.exec", "**/*.ec"])
 }
