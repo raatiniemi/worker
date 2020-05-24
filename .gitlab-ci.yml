@@ -135,6 +135,7 @@ app:instrumented test:
       - app/build/outputs/androidTest-results/connected/
       - app/build/outputs/code_coverage/
     expire_in: 4 hours
+  allow_failure: true
   only:
     - master
 
