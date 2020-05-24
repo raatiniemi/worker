@@ -54,7 +54,7 @@ app:build:
   artifacts:
     paths:
       - app/build/outputs/
-      - app/tmp/kotlin-classes/release/
+      - app/build/tmp/kotlin-classes/release/
     expire_in: 4 hours
 
 app:build for instrumented test:
@@ -68,7 +68,7 @@ app:build for instrumented test:
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest/
-      - app/tmp/kotlin-classes/releaseAndroidTest/
+      - app/build/tmp/kotlin-classes/releaseAndroidTest/
     expire_in: 4 hours
   only:
     - master
@@ -116,7 +116,7 @@ app:test:
     paths:
       - app/build/jacoco/
       - app/build/test-results/testReleaseUnitTest/
-      - app/tmp/kotlin-classes/releaseUnitTest/
+      - app/build/tmp/kotlin-classes/releaseUnitTest/
     expire_in: 4 hours
 
 app:instrumented test:
