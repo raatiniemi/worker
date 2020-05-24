@@ -16,7 +16,7 @@ stages:
   variables:
     ANDROID_HOME: "/opt/android-sdk"
 
-build:
+app:build:
   stage: build
   extends:
     - .in-android-environment
@@ -29,7 +29,7 @@ build:
       - core-test/build/libs/
     expire_in: 1 day
 
-build for android test:
+app:build for instrumented test:
   stage: build
   extends:
     - .in-android-environment
@@ -49,7 +49,7 @@ lint:
   script:
     - ./gradlew app:lintRelease
   dependencies:
-    - build
+    - app:build
 
 test:
   stage: test
@@ -58,7 +58,7 @@ test:
   script:
     - ./gradlew core:test core-test:test app:testReleaseUnitTest
   dependencies:
-    - build
+    - app:build
   except:
     - master
 
@@ -69,7 +69,7 @@ sonar:
   script:
     - ./gradlew core:test core-test:test app:testReleaseUnitTest jacocoTestReport sonarqube
   dependencies:
-    - build
+    - app:build
   only:
     - master
 
@@ -83,8 +83,8 @@ integration test:
   script:
     - bin/run-integration-test
   dependencies:
-    - build
-    - build for android test
+    - app:build
+    - app:build for instrumented test
   only:
     - master
 
@@ -98,6 +98,6 @@ deploy:
   script:
     - ./gradlew app:publishReleaseApk
   dependencies:
-    - build
+    - app:build
   only:
     - tags
