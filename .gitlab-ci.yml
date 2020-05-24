@@ -25,17 +25,17 @@ build:
    - docker
 
 build for android test:
- stage: build
- script:
-   - ./gradlew app:assembleAndroidTest
- artifacts:
-   paths:
-     - app/build/outputs/apk/androidTest/
-   expire_in: 1 day
- only:
-   - master
- tags:
-   - docker
+  stage: build
+  script:
+    - ./gradlew app:assembleAndroidTest
+  artifacts:
+    paths:
+      - app/build/outputs/apk/androidTest/
+    expire_in: 1 day
+  only:
+    - master
+  tags:
+    - docker
 
 lint:
   stage: test
