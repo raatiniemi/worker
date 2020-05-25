@@ -1,8 +1,6 @@
 #!/bin/bash
 PROJECT_DIRECTORY="$(dirname "${0}")/.."
 APK_DIRECTORY="${PROJECT_DIRECTORY}/app/build/outputs/apk"
-RELEASE_APK="${APK_DIRECTORY}/release/app-release.apk"
-RELEASE_TEST_APK="${APK_DIRECTORY}/androidTest/release/app-release-androidTest.apk"
 
 DEVICE_MODEL="Pixel2"
 API_VERSION="28"
@@ -33,13 +31,13 @@ fi
 
 $GCLOUD firebase test android run \
   --type instrumentation \
-  --app "${RELEASE_APK}" \
-  --test "${RELEASE_TEST_APK}" \
+  --app "${APK_DIRECTORY}/debug/app-debug.apk" \
+  --test "${APK_DIRECTORY}/androidTest/debug/app-debug-androidTest.apk" \
   --device "model=${DEVICE_MODEL},version=${API_VERSION},locale=${LOCALE},orientation=${ORIENTATION}" \
   --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
   --directories-to-pull /sdcard \
   --results-dir "${GCLOUD_RESULT_DIRECTORY}" \
-  --timeout 90s 1> "${GCLOUD_LOG_FILE}" 2>&1
+  --timeout 90s 1>"${GCLOUD_LOG_FILE}" 2>&1
 
 BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/${GCLOUD_RESULT_DIRECTORY})" "${GCLOUD_LOG_FILE}")
 

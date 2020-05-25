@@ -34,9 +34,9 @@ task jacocoTestReport(type: JacocoReport) {
     }
 
     classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion).matching {
-        include "tmp/kotlin-classes/release/${classPattern}"
-        include "tmp/kotlin-classes/releaseUnitTest/${classPattern}"
-        include "tmp/kotlin-classes/releaseAndroidTest/${classPattern}"
+        include "tmp/kotlin-classes/debug/${classPattern}"
+        include "tmp/kotlin-classes/debugUnitTest/${classPattern}"
+        include "tmp/kotlin-classes/debugAndroidTest/${classPattern}"
     }
     sourceDirectories = files(
             "${project.projectDir}/src/main/java/$packageDirectory",

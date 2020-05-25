@@ -50,9 +50,6 @@ android {
         versionName projectVersion
         versionCode projectVersionCode
 
-        if (System.getenv("CI")) {
-            testBuildType 'release'
-        }
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resConfigs "en"
@@ -77,6 +74,15 @@ android {
         debug {
             applicationIdSuffix = '.debug'
             manifestPlaceholders = [enableCrashReporting: "false"]
+
+            if (System.getenv("CI")) {
+                signingConfig signingConfigs.release
+                testCoverageEnabled true
+                shrinkResources true
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                testProguardFile 'proguard-test-rules.pro'
+            }
         }
         release {
             manifestPlaceholders = [enableCrashReporting: "true"]
@@ -85,7 +91,6 @@ android {
                 signingConfig signingConfigs.release
             }
 
-            testCoverageEnabled true
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -196,8 +201,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$pagingVersion"
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
-    //noinspection FragmentGradleConfiguration
-    implementation("androidx.fragment:fragment-testing:$fragmentVersion") {
+    debugImplementation("androidx.fragment:fragment-testing:$fragmentVersion") {
         exclude group: 'androidx.test', module: 'core'
     }
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
