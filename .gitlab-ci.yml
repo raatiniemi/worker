@@ -12,6 +12,7 @@ stages:
   image: gradle:5.6.4-jdk8
   before_script:
     - *configure-timezone
+  interruptible: true
   tags:
    - docker
 
@@ -132,6 +133,7 @@ sonar:analyze:
     - .in-android-environment
   script:
     - ./gradlew jacocoTestReport sonarqube
+  interruptible: false
   dependencies:
     - core:build
     - app:build
@@ -150,6 +152,7 @@ app:deploy:
   script:
     - bin/configure-deploy-environment
     - ./gradlew app:publishReleaseApk
+  interruptible: false
   dependencies:
     - app:build
   only:
