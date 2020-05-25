@@ -48,30 +48,16 @@ app:build:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:assembleRelease
+    - ./gradlew app:assembleRelease app:assembleAndroidTest
   dependencies:
     - core:build
   artifacts:
     paths:
       - app/build/outputs/
-      - app/build/tmp/kotlin-classes/release/
-    expire_in: 4 hours
-
-app:build for instrumented test:
-  stage: build-app
-  extends:
-    - .in-android-environment
-  script:
-    - ./gradlew app:assembleAndroidTest
-  dependencies:
-    - core:build
-  artifacts:
-    paths:
       - app/build/outputs/apk/androidTest/
+      - app/build/tmp/kotlin-classes/release/
       - app/build/tmp/kotlin-classes/releaseAndroidTest/
     expire_in: 4 hours
-  only:
-    - master
 
 # stage: test
 
