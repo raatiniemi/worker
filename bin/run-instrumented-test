@@ -31,8 +31,8 @@ fi
 
 if ! $GCLOUD firebase test android run \
   --type instrumentation \
-  --app "${APK_DIRECTORY}/debug/app-debug.apk" \
-  --test "${APK_DIRECTORY}/androidTest/debug/app-debug-androidTest.apk" \
+  --app "${APK_DIRECTORY}/instrumented/app-instrumented.apk" \
+  --test "${APK_DIRECTORY}/androidTest/instrumented/app-instrumented-androidTest.apk" \
   --device "model=${DEVICE_MODEL},version=${API_VERSION},locale=${LOCALE},orientation=${ORIENTATION}" \
   --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
   --directories-to-pull /sdcard \

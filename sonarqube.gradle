@@ -44,14 +44,14 @@ sonarqube {
 project(':app') {
     sonarqube {
         properties {
-            properties['sonar.java.binaries'] = "${project.buildDir}/tmp/kotlin-classes/debug"
+            properties['sonar.java.binaries'] = "${project.buildDir}/tmp/kotlin-classes/instrumented"
             properties['sonar.java.test.binaries'] = [
-                    "${project.buildDir}/tmp/kotlin-classes/debugUnitTest",
-                    "${project.buildDir}/tmp/kotlin-classes/debugAndroidTest"
+                    "${project.buildDir}/tmp/kotlin-classes/instrumentedUnitTest",
+                    "${project.buildDir}/tmp/kotlin-classes/instrumentedAndroidTest"
             ].join(",")
 
             properties['sonar.junit.reportPaths'] = [
-                    "${project.buildDir}/test-results/debugReleaseUnitTest",
+                    "${project.buildDir}/test-results/testInstrumentedUnitTest",
                     "${project.buildDir}/outputs/androidTest-results/connected"
             ].join(",")
         }

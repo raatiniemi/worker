@@ -49,16 +49,16 @@ app:build:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:assemble app:assembleAndroidTest
+    - ./gradlew app:assembleRelease app:assembleInstrumented app:assembleAndroidTest
   dependencies:
     - core:build
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest
-      - app/build/outputs/apk/debug
+      - app/build/outputs/apk/instrumented
       - app/build/outputs/apk/release
-      - app/build/tmp/kotlin-classes/debug
-      - app/build/tmp/kotlin-classes/debugAndroidTest
+      - app/build/tmp/kotlin-classes/instrumented
+      - app/build/tmp/kotlin-classes/instrumentedAndroidTest
       - app/build/tmp/kotlin-classes/release
     expire_in: 4 hours
 
@@ -97,15 +97,15 @@ app:test:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:testDebugUnitTest
+    - ./gradlew app:testInstrumentedUnitTest
   dependencies:
     - core:build
     - app:build
   artifacts:
     paths:
       - app/build/jacoco/
-      - app/build/test-results/testDebugUnitTest/
-      - app/build/tmp/kotlin-classes/debugUnitTest/
+      - app/build/test-results/testInstrumentedUnitTest/
+      - app/build/tmp/kotlin-classes/instrumentedUnitTest/
     expire_in: 4 hours
 
 app:instrumented test:
