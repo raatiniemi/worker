@@ -144,9 +144,9 @@ app:instrumented test:
 sonar:analyze:
   stage: sonar
   extends:
-    - .in-docker
+    - .in-android-environment
   script:
-    - gradle jacocoTestReport sonarqube
+    - ./gradlew jacocoTestReport sonarqube
   dependencies:
     - core:build
     - app:build
