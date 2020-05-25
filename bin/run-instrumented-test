@@ -29,7 +29,7 @@ if [ -z "${GSUTIL}" ]; then
   exit 1
 fi
 
-$GCLOUD firebase test android run \
+if ! $GCLOUD firebase test android run \
   --type instrumentation \
   --app "${APK_DIRECTORY}/debug/app-debug.apk" \
   --test "${APK_DIRECTORY}/androidTest/debug/app-debug-androidTest.apk" \
@@ -37,13 +37,27 @@ $GCLOUD firebase test android run \
   --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
   --directories-to-pull /sdcard \
   --results-dir "${GCLOUD_RESULT_DIRECTORY}" \
-  --timeout 90s 1>"${GCLOUD_LOG_FILE}" 2>&1
+  --timeout 90s 1>"${GCLOUD_LOG_FILE}" 2>&1; then
+  cat "${GCLOUD_LOG_FILE}"
+  exit $?
+fi
 
 BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/${GCLOUD_RESULT_DIRECTORY})" "${GCLOUD_LOG_FILE}")
+if [ -z "${BUCKET_NAME}" ]; then
+  echo "Unable to parse bucket name from log file."
+  cat "${GCLOUD_LOG_FILE}"
+  exit 1
+fi
 
 mkdir -p "${COVERAGE_OUTPUT_DIRECTORY}"
-$GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_COVERAGE_PATH}" "${COVERAGE_OUTPUT_DIRECTORY}"
+if ! $GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_COVERAGE_PATH}" "${COVERAGE_OUTPUT_DIRECTORY}"; then
+  echo "Unable to pull down coverage output from bucket."
+  exit $?
+fi
 
 mkdir -p "${REPORT_OUTPUT_DIRECTORY}"
-$GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_REPORT_PATH}" "${REPORT_OUTPUT_DIRECTORY}"
-exit $?
+if ! $GSUTIL -m cp -R gs://"${BUCKET_NAME}/${BUCKET_REPORT_PATH}" "${REPORT_OUTPUT_DIRECTORY}"; then
+  echo "Unable to pull down coverage output from bucket."
+  exit $?
+fi
+exit 0
