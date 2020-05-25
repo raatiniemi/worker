@@ -115,7 +115,6 @@ app:instrumented test:
     - bin/run-instrumented-test
   dependencies:
     - app:build
-    - app:build for instrumented test
   artifacts:
     paths:
       - app/build/outputs/androidTest-results/connected/
@@ -136,7 +135,6 @@ sonar:analyze:
   dependencies:
     - core:build
     - app:build
-    - app:build for instrumented test
     - core:test
     - app:test
     - app:instrumented test
