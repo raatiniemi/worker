@@ -29,7 +29,7 @@ if [ -z "${GSUTIL}" ]; then
   exit 1
 fi
 
-if ! $GCLOUD firebase test android run \
+$GCLOUD firebase test android run \
   --type instrumentation \
   --app "${APK_DIRECTORY}/instrumented/app-instrumented.apk" \
   --test "${APK_DIRECTORY}/androidTest/instrumented/app-instrumented-androidTest.apk" \
@@ -37,9 +37,12 @@ if ! $GCLOUD firebase test android run \
   --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
   --directories-to-pull /sdcard \
   --results-dir "${GCLOUD_RESULT_DIRECTORY}" \
-  --timeout 90s 1>"${GCLOUD_LOG_FILE}" 2>&1; then
+  --timeout 90s 1>"${GCLOUD_LOG_FILE}" 2>&1
+# shellcheck disable=SC2181
+if [ $? -ne 0 ]; then
+  echo "Unable to run test in firebase."
   cat "${GCLOUD_LOG_FILE}"
-  exit $?
+  exit 1
 fi
 
 BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/${GCLOUD_RESULT_DIRECTORY})" "${GCLOUD_LOG_FILE}")
