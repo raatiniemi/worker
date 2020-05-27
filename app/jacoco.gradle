@@ -33,16 +33,8 @@ task jacocoTestReport(type: JacocoReport) {
         html.enabled = jacocoReportFormats.contains('html')
     }
 
-    classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion).matching {
-        include "tmp/kotlin-classes/instrumented/${classPattern}"
-        include "tmp/kotlin-classes/instrumentedUnitTest/${classPattern}"
-        include "tmp/kotlin-classes/instrumentedAndroidTest/${classPattern}"
-    }
-    sourceDirectories = files(
-            "${project.projectDir}/src/androidTest/java/$packageDirectory",
-            "${project.projectDir}/src/main/java/$packageDirectory",
-            "${project.projectDir}/src/sharedTest/java/$packageDirectory",
-            "${project.projectDir}/src/test/java/$packageDirectory"
-    )
+    classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion)
+            .matching { include "tmp/kotlin-classes/instrumented/${classPattern}" }
+    sourceDirectories = files("${project.projectDir}/src/main/java/$packageDirectory")
     executionData = fileTree(dir: project.buildDir, includes: ["**/*.exec", "**/*.ec"])
 }
