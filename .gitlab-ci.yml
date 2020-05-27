@@ -143,12 +143,6 @@ sonar:analyze:
     - core:test
     - app:test
     - app:instrumented test
-  artifacts:
-    paths:
-      - app/build/reports/jacoco/jacocoTestReport/
-      - core/build/reports/jacoco/test/
-      - core-test/build/reports/jacoco/test/
-    expire_in: 4 hours
   only:
     - master
 
