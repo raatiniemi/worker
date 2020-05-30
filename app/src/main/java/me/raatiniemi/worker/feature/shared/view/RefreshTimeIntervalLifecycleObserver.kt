@@ -20,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import me.raatiniemi.worker.domain.time.minutes
+import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -43,6 +44,7 @@ internal class RefreshTimeIntervalLifecycleObserver(
         cancelRefreshTimer()
 
         refreshTimer = Timer().also { timer ->
+            Timber.d("Configure refresh timer with interval of $refreshTimeIntervalInMilliseconds milliseconds")
             timer.schedule(Date(), refreshTimeIntervalInMilliseconds) {
                 refresh()
             }
@@ -50,7 +52,16 @@ internal class RefreshTimeIntervalLifecycleObserver(
     }
 
     private fun cancelRefreshTimer() {
-        refreshTimer?.cancel()
-        refreshTimer = null
+        refreshTimer = refreshTimer.let { timer ->
+            if (timer == null) {
+                Timber.d("No active refresh timer is available for cancellation")
+                return@let null
+            }
+
+            Timber.d("Cancelling active refresh timer")
+            timer.cancel()
+            timer.purge()
+            null
+        }
     }
 }
