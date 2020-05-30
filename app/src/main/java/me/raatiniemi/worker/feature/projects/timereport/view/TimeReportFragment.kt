@@ -26,7 +26,6 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.project.model.projectName
-import me.raatiniemi.worker.domain.time.minutes
 import me.raatiniemi.worker.feature.projects.model.ProjectHolder
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportAction
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportViewActions
@@ -43,8 +42,6 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
-import kotlin.concurrent.schedule
 
 class TimeReportFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
@@ -57,7 +54,12 @@ class TimeReportFragment : CoroutineScopedFragment() {
         TimeReportAdapter(vm, get())
     }
 
-    private var refreshActiveTimeTimer: Timer? = null
+    private val refreshActiveWeeks = RefreshTimeIntervalLifecycleObserver {
+        timeReportAdapter.currentList?.let { weeks ->
+            vm.refreshActiveTimeReportWeek(weeks)
+        }
+    }
+
     private var actionMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +70,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
             id = ProjectId(arguments.projectId),
             name = projectName(arguments.projectName)
         )
+        lifecycle.addObserver(refreshActiveWeeks)
     }
 
     override fun onCreateView(
@@ -97,18 +100,12 @@ class TimeReportFragment : CoroutineScopedFragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
-        startRefreshActiveTimeTimer()
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        cancelRefreshActiveTimeTimer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
+        lifecycle.removeObserver(refreshActiveWeeks)
         eventBus.unregister(this)
     }
 
@@ -203,34 +200,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
         vm.clearSelection()
 
         timeReportAdapter.notifyDataSetChanged()
-    }
-
-    // Refresh active time reports
-
-    private fun startRefreshActiveTimeTimer() {
-        cancelRefreshActiveTimeTimer()
-
-        refreshActiveTimeTimer = Timer().also { timer ->
-            Timber.d("Configure refresh timer of active time interval")
-            timer.schedule(Date(), 1.minutes) {
-                val weeks = timeReportAdapter.currentList ?: return@schedule
-                vm.refreshActiveTimeReportWeek(weeks)
-            }
-        }
-    }
-
-    private fun cancelRefreshActiveTimeTimer() {
-        refreshActiveTimeTimer = refreshActiveTimeTimer.let { timer ->
-            if (timer == null) {
-                Timber.d("No active refresh timer is available for cancellation")
-                return@let null
-            }
-
-            Timber.d("Cancelling active refresh timer")
-            timer.cancel()
-            timer.purge()
-            null
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
