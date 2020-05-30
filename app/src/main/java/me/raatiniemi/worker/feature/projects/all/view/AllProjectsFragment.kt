@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.projects.all.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_all_projects.*
 import kotlinx.coroutines.launch
@@ -29,10 +30,7 @@ import me.raatiniemi.worker.feature.settings.model.TimeSummaryStartingPointChang
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.feature.shared.view.ConfirmAction
-import me.raatiniemi.worker.feature.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.feature.shared.view.observe
-import me.raatiniemi.worker.feature.shared.view.observeAndConsume
+import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,8 +38,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
-import kotlin.concurrent.schedule
 
 class AllProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
@@ -52,12 +48,18 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         AllProjectsAdapter(vm)
     }
 
-    private var refreshActiveProjectsTimer: Timer? = null
+    private val refreshActiveProjects = RefreshTimeIntervalLifecycleObserver {
+        lifecycleScope.launch {
+            val projects = allProjectsAdapter.currentList ?: return@launch
+            vm.refreshActiveProjects(projects)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         eventBus.register(this)
+        lifecycle.addObserver(refreshActiveProjects)
     }
 
     override fun onCreateView(
@@ -84,18 +86,12 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
-        startRefreshTimer()
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        cancelRefreshTimer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
+        lifecycle.removeObserver(refreshActiveProjects)
         eventBus.unregister(this)
     }
 
@@ -181,24 +177,6 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         if (ConfirmAction.YES == confirmAction) {
             vm.remove(viewAction.item.asProject())
         }
-    }
-
-    private fun startRefreshTimer() {
-        cancelRefreshTimer()
-
-        refreshActiveProjectsTimer = Timer()
-        refreshActiveProjectsTimer?.schedule(Date(), 60_000) {
-            launch {
-                val projects = allProjectsAdapter.currentList ?: return@launch
-
-                vm.refreshActiveProjects(projects)
-            }
-        }
-    }
-
-    private fun cancelRefreshTimer() {
-        refreshActiveProjectsTimer?.cancel()
-        refreshActiveProjectsTimer = null
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
