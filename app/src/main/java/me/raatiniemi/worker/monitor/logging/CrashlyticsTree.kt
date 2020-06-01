@@ -17,13 +17,13 @@
 package me.raatiniemi.worker.monitor.logging
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
-class CrashlyticsTree : Timber.Tree() {
+class CrashlyticsTree(private val crashlytics: FirebaseCrashlytics) : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (t == null) {
-            Crashlytics.log(message)
+            crashlytics.log(message)
             return
         }
 
@@ -31,9 +31,9 @@ class CrashlyticsTree : Timber.Tree() {
             return
         }
 
-        Crashlytics.setString(CRASHLYTICS_KEY_PRIORITY, readable(priority))
-        Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
-        Crashlytics.logException(t)
+        crashlytics.setCustomKey(CRASHLYTICS_KEY_PRIORITY, readable(priority))
+        crashlytics.setCustomKey(CRASHLYTICS_KEY_MESSAGE, message)
+        crashlytics.recordException(t)
     }
 
     private fun readable(priority: Int): String {

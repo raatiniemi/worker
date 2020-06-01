@@ -17,7 +17,7 @@
 package me.raatiniemi.worker
 
 import android.app.Application
-import io.fabric.sdk.android.Fabric
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import me.raatiniemi.worker.feature.shared.view.buildOngoingChannel
 import me.raatiniemi.worker.feature.shared.view.createNotificationChannel
 import me.raatiniemi.worker.koin.defaultKoinModules
@@ -48,11 +48,10 @@ open class WorkerApplication : Application() {
     private fun configureLogging() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
+            return
         }
 
-        if (Fabric.isInitialized()) {
-            Timber.plant(CrashlyticsTree())
-        }
+        Timber.plant(CrashlyticsTree(FirebaseCrashlytics.getInstance()))
     }
 
     private fun registerNotificationChannel() {
