@@ -36,8 +36,10 @@ core:build:
     - gradle core:assemble core-test:assemble
   artifacts:
     paths:
-      - core/build/
-      - core-test/build/
+      - core/build/libs/
+      - core/build/classes/kotlin/main/
+      - core-test/build/libs/
+      - core-test/build/classes/kotlin/main/
     expire_in: 4 hours
 
 # stage: build-app
@@ -52,7 +54,12 @@ app:build:
     - core:build
   artifacts:
     paths:
-      - app/build/
+      - app/build/outputs/apk/androidTest
+      - app/build/outputs/apk/instrumented
+      - app/build/outputs/apk/release
+      - app/build/tmp/kotlin-classes/instrumented
+      - app/build/tmp/kotlin-classes/instrumentedAndroidTest
+      - app/build/tmp/kotlin-classes/release
     expire_in: 4 hours
 
 # stage: test
@@ -67,8 +74,12 @@ core:test:
     - core:build
   artifacts:
     paths:
-      - core/build/
-      - core-test/build/
+      - core/build/jacoco/
+      - core/build/test-results/test/
+      - core/build/classes/kotlin/test/
+      - core-test/build/jacoco/
+      - core-test/build/test-results/test/
+      - core-test/build/classes/kotlin/test/
     expire_in: 4 hours
 
 app:lint:
@@ -92,7 +103,9 @@ app:test:
     - app:build
   artifacts:
     paths:
-      - app/build/
+      - app/build/jacoco/
+      - app/build/test-results/testInstrumentedUnitTest/
+      - app/build/tmp/kotlin-classes/instrumentedUnitTest/
     expire_in: 4 hours
 
 app:instrumented test:
@@ -107,7 +120,8 @@ app:instrumented test:
     - app:build
   artifacts:
     paths:
-      - app/build/
+      - app/build/outputs/androidTest-results/connected/
+      - app/build/outputs/code_coverage/
     when: always
     expire_in: 4 hours
   allow_failure: true
@@ -124,6 +138,8 @@ sonar:analyze:
     - ./gradlew jacocoTestReport sonarqube
   interruptible: false
   dependencies:
+    - core:build
+    - app:build
     - core:test
     - app:test
     - app:instrumented test
