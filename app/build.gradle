@@ -164,7 +164,7 @@ dependencies {
     def lifecycleVersion = '2.2.0'
     def roomVersion = '2.2.5'
     def pagingVersion = '2.1.2'
-    def fragmentVersion = '1.2.4'
+    def fragmentVersion = '1.2.5'
     def navigationVersion = '2.3.0'
     def materialVersion = '1.1.0'
     def firebaseAnalyticsVersion = '17.4.3'
