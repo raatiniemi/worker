@@ -114,8 +114,13 @@ app:instrumented test:
   extends:
     - .in-docker
   image: google/cloud-sdk:latest
+  before_script:
+    - if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "No project id is available for gcloud configuration, ensure that \$GCLOUD_PROJECT_ID is set for project."; exit 1; fi;
+    - if [ -z "${GCLOUD_SERVICE_ACCOUNT}" ]; then echo "No service account configuration is available for gcloud, ensure that \$GCLOUD_SERVICE_ACCOUNT is set for project."; exit 1; fi;
+    - gcloud config set project "${GCLOUD_PROJECT_ID}"
+    - echo "${GCLOUD_SERVICE_ACCOUNT}" >service-account.json
+    - gcloud auth activate-service-account --key-file service-account.json
   script:
-    - bin/configure-gcloud-environment
     - bin/run-instrumented-test
   dependencies:
     - app:build
