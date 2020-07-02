@@ -159,7 +159,8 @@ app:deploy:
   extends:
     - .in-android-environment
   script:
-    - bin/configure-deploy-environment
+    - if [ -z "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" ]; then echo "No Google Play Android developer key is available, ensure that \$GOOGLE_PLAY_ANDROID_DEVELOPER_KEY is set for project."; exit 1; fi;
+    - echo "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" >"app/google-play-android-developer-key.json";
     - ./gradlew app:publishReleaseApk
   interruptible: false
   dependencies:
