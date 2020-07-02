@@ -22,7 +22,8 @@ stages:
   image: raatiniemi/android-environment:android-29-latest
   before_script:
     - *configure-timezone
-    - bin/configure-signing-environment
+    - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
+    - echo "$KEYSTORE_BASE64" | base64 -d >app/upload.jks
   variables:
     ANDROID_HOME: "/opt/android-sdk"
 
