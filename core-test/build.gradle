@@ -35,6 +35,8 @@ jacocoTestReport {
 
 dependencies {
     compileOnly project(':core')
+    compileOnly 'junit:junit:4.13'
+    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
