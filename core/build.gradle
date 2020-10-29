@@ -45,5 +45,5 @@ dependencies {
 
     testImplementation project(':core-test')
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 }
