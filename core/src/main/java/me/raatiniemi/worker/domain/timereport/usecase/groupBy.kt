@@ -41,7 +41,7 @@ fun groupByWeek(timeIntervals: List<TimeInterval>): List<TimeReportWeek> {
 private fun week(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportWeek? {
     return { (_, timeIntervals) ->
         val days = groupByDay(timeIntervals)
-        days.minBy { it.milliseconds }
+        days.minByOrNull { it.milliseconds }
             ?.let { earliestDay ->
                 timeReportWeek(earliestDay.milliseconds, days)
             }
@@ -81,7 +81,7 @@ fun groupByDay(timeIntervals: List<TimeInterval>): List<TimeReportDay> {
 private fun day(): (Map.Entry<Milliseconds, List<TimeInterval>>) -> TimeReportDay? {
     return { (_, timeIntervals) ->
         val sortedTimeIntervals = timeIntervals.sortedByDescending { it.start.value }
-        sortedTimeIntervals.minBy { it.start.value }
+        sortedTimeIntervals.minByOrNull { it.start.value }
             ?.let { earliestTimeInterval ->
                 timeReportDay(earliestTimeInterval.start, sortedTimeIntervals)
             }
