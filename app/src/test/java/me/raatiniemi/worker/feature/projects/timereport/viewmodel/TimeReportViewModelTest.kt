@@ -30,7 +30,6 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.domain.timereport.usecase.FindTimeReportWeeks
 import me.raatiniemi.worker.domain.timereport.usecase.groupByWeek
-import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.feature.projects.model.ProjectHolder
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportTapAction
