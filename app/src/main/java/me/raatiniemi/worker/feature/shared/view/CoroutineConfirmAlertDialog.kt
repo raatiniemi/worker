@@ -29,10 +29,10 @@ object CoroutineConfirmAlertDialog {
             val alert = AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(android.R.string.yes) { _, _ ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     it.resume(ConfirmAction.YES)
                 }
-                .setNegativeButton(android.R.string.no) { _, _ ->
+                .setNegativeButton(android.R.string.cancel) { _, _ ->
                     it.resume(ConfirmAction.NO)
                 }
                 .create()

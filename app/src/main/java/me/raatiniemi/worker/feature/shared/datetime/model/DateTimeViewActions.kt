@@ -71,7 +71,7 @@ internal sealed class DateTimeViewActions {
                 .setTitle(R.string.date_time_picker_date_is_before_allowed_title)
                 .setMessage(R.string.date_time_picker_date_is_before_allowed_message)
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
                     t(yearsMonthsDays(date))
                 }
@@ -88,7 +88,7 @@ internal sealed class DateTimeViewActions {
                 .setTitle(R.string.date_time_picker_date_is_after_allowed_title)
                 .setMessage(R.string.date_time_picker_date_is_after_allowed_message)
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
                     t(yearsMonthsDays(date))
                 }
@@ -108,7 +108,7 @@ internal sealed class DateTimeViewActions {
                 .setTitle(R.string.date_time_picker_time_is_before_allowed_title)
                 .setMessage(R.string.date_time_picker_time_is_before_allowed_message)
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
                     t(hoursMinutes(date))
                 }
@@ -125,7 +125,7 @@ internal sealed class DateTimeViewActions {
                 .setTitle(R.string.date_time_picker_time_is_after_allowed_title)
                 .setMessage(R.string.date_time_picker_time_is_after_allowed_message)
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
                     t(hoursMinutes(date))
                 }

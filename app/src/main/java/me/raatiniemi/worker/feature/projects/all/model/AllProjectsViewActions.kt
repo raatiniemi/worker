@@ -129,7 +129,7 @@ internal sealed class AllProjectsViewActions {
                 .setTitle(R.string.projects_all_elapsed_time_past_allowed_title)
                 .setMessage(R.string.projects_all_elapsed_time_past_allowed_message)
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
                 }
                 .create()
