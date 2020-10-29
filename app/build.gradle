@@ -170,7 +170,7 @@ dependencies {
     def firebaseAnalyticsVersion = '18.0.0'
     def firebaseCrashlyticsVersion = '17.2.2'
     def firebasePerformanceVersion = '19.0.9'
-    def koinVersion = '2.0.1'
+    def koinVersion = '2.1.6'
     def timberVersion = '4.7.1'
     def eventBusVersion = '3.0.0'
 
