@@ -199,7 +199,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
-    implementation "androidx.fragment:fragment:$fragmentVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
     debugImplementation("androidx.fragment:fragment-testing:$fragmentVersion") {
         exclude group: 'androidx.test', module: 'core'
