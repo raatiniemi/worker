@@ -45,7 +45,7 @@ class ProjectsItemIsActiveTest(
         @JvmStatic
         val parameters: Collection<Array<Any>>
             @Parameters
-            get() = Arrays.asList(
+            get() = listOf(
                 arrayOf(
                     false,
                     getTimeIntervals(false)

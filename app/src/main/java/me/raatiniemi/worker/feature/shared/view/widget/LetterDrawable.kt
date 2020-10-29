@@ -20,6 +20,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ShapeDrawable
+import kotlin.math.min
 
 internal class LetterDrawable(private val character: Char) : ShapeDrawable() {
     private val textPaint = Paint()
@@ -30,7 +31,7 @@ internal class LetterDrawable(private val character: Char) : ShapeDrawable() {
         get() = bounds.height()
 
     private val textSize
-        get() = Math.min(width, height).toFloat() / 2
+        get() = min(width, height).toFloat() / 2
 
     private val text by lazy {
         character.toString()

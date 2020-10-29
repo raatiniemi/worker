@@ -33,7 +33,7 @@ class HoursMinutesMinusTest(
         @JvmStatic
         @Parameters
         fun data(): Collection<Array<Any>> {
-            return listOf<Array<Any>>(
+            return listOf(
                 arrayOf(
                     HoursMinutes(hours = 1, minutes = 0),
                     HoursMinutes(hours = 1, minutes = 0),

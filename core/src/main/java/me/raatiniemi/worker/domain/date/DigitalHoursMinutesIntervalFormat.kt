@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.domain.date
 
 import me.raatiniemi.worker.domain.time.HoursMinutes
-import java.lang.Math.abs
 import java.util.*
+import kotlin.math.abs
 
 /**
  * Format a time interval into digital hours and minutes, i.e. 1:30.
