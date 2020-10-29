@@ -40,13 +40,13 @@ apply plugin: 'com.github.triplet.play'
 apply from: 'jacoco.gradle'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.2'
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
         minSdkVersion 27
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionName projectVersion
         versionCode projectVersionCode
 
