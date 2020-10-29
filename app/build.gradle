@@ -68,7 +68,7 @@ android {
             release {
                 storeFile file("upload.jks")
                 storePassword System.getenv("KEYSTORE_PASSWORD")
-                keyAlias System.getenv("KEY_ALIAS")
+                keyAlias "upload"
                 keyPassword System.getenv("KEY_PASSWORD")
             }
         }
