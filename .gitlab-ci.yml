@@ -69,7 +69,7 @@ app:build:
     - .in-android-environment
   script:
     - ./gradlew app:assembleRelease app:assembleInstrumented app:assembleAndroidTest
-  dependencies:
+  needs:
     - core:build
   cache:
     key: "$CI_COMMIT_REF_NAME"
@@ -96,7 +96,7 @@ core:test:
     - .in-gradle-environment
   script:
     - gradle core:test core-test:test
-  dependencies:
+  needs:
     - core:build
   cache:
     key: "$CI_COMMIT_REF_NAME"
@@ -121,7 +121,7 @@ app:lint:
     - .in-android-environment
   script:
     - ./gradlew app:lintRelease
-  dependencies:
+  needs:
     - core:build
     - app:build
   cache:
@@ -139,7 +139,7 @@ app:test:
     - .in-android-environment
   script:
     - ./gradlew app:testInstrumentedUnitTest
-  dependencies:
+  needs:
     - core:build
     - app:build
   cache:
@@ -170,7 +170,7 @@ app:instrumented test:
     - gcloud auth activate-service-account --key-file service-account.json
   script:
     - bin/run-instrumented-test
-  dependencies:
+  needs:
     - app:build
   artifacts:
     paths:
@@ -191,7 +191,7 @@ sonar:analyze:
   script:
     - ./gradlew jacocoTestReport sonarqube
   interruptible: false
-  dependencies:
+  needs:
     - core:build
     - app:build
     - core:test
@@ -219,8 +219,11 @@ app:deploy:
     - echo "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" >"app/google-play-android-developer-key.json";
     - ./gradlew app:publishReleaseApk
   interruptible: false
-  dependencies:
+  needs:
+    - core:build
     - app:build
+    - core:test
+    - app:test
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
