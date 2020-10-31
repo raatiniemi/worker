@@ -165,7 +165,7 @@ dependencies {
 
     def annotationVersion = '1.1.0'
     def appcompatVersion = '1.2.0'
-    def constraintLayoutVersion = '2.0.3'
+    def constraintLayoutVersion = '2.0.4'
     def recyclerViewVersion = '1.1.0'
     def cardViewVersion = '1.0.0'
     def preferenceVersion = '1.1.1'
