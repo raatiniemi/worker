@@ -46,6 +46,13 @@ core:build:
     - .in-gradle-environment
   script:
     - gradle core:assemble core-test:assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - .gradle
+      - core/build
+      - core-test/build
   artifacts:
     paths:
       - core/build/libs/
@@ -64,6 +71,13 @@ app:build:
     - ./gradlew app:assembleRelease app:assembleInstrumented app:assembleAndroidTest
   dependencies:
     - core:build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest
@@ -84,6 +98,13 @@ core:test:
     - gradle core:test core-test:test
   dependencies:
     - core:build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - core/build
+      - core-test/build
   artifacts:
     paths:
       - core/build/jacoco/
@@ -103,6 +124,14 @@ app:lint:
   dependencies:
     - core:build
     - app:build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
 
 app:test:
   stage: test
@@ -113,6 +142,14 @@ app:test:
   dependencies:
     - core:build
     - app:build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
   artifacts:
     paths:
       - app/build/jacoco/
@@ -160,6 +197,14 @@ sonar:analyze:
     - core:test
     - app:test
     - app:instrumented test
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
   only:
     - master
 
@@ -176,5 +221,13 @@ app:deploy:
   interruptible: false
   dependencies:
     - app:build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
   only:
     - tags
