@@ -180,7 +180,7 @@ app:instrumented test:
     expire_in: 4 hours
   allow_failure: true
   only:
-    - master
+    - main
 
 # stage: sonar
 
@@ -206,7 +206,7 @@ sonar:analyze:
       - core/build
       - core-test/build
   only:
-    - master
+    - main
 
 # stage: deploy
 
