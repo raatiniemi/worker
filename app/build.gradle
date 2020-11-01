@@ -24,7 +24,6 @@ buildscript {
 
     dependencies {
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1'
-        classpath 'com.github.triplet.gradle:play-publisher:2.2.1'
     }
 }
 
@@ -36,7 +35,6 @@ apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
-apply plugin: 'com.github.triplet.play'
 apply from: 'jacoco.gradle'
 
 android {
@@ -146,16 +144,6 @@ android {
             }
         }
         animationsDisabled = true
-    }
-}
-
-play {
-    track = 'internal'
-    enabled = false
-
-    if (System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME")) {
-        enabled = true
-        serviceAccountCredentials = file(System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME"))
     }
 }
 

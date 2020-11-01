@@ -213,14 +213,15 @@ sonar:analyze:
 app:deploy:
   stage: deploy
   extends:
-    - .in-android-environment
+    - .in-docker
+  image: ruby:2.7.1-buster
   script:
     - if [ -z "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" ]; then echo "No Google Play Android developer key is available, ensure that \$GOOGLE_PLAY_ANDROID_DEVELOPER_KEY is set for project."; exit 1; fi;
-    - echo "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" >"app/google-play-android-developer-key.json";
-    - ./gradlew app:publishReleaseApk
+    - echo "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" >"${SUPPLY_JSON_KEY}";
+    - bundle install
+    - bundle exec fastlane run upload_to_play_store
   interruptible: false
   needs:
-    - core:build
     - app:build
     - core:test
     - app:test
@@ -234,3 +235,8 @@ app:deploy:
       - core-test/build
   only:
     - tags
+  variables:
+    SUPPLY_PACKAGE_NAME: 'me.raatiniemi.worker'
+    SUPPLY_APK: 'app/build/outputs/apk/release/app-release.apk'
+    SUPPLY_TRACK: 'internal'
+    SUPPLY_JSON_KEY: 'app/google-play-android-developer-key.json'
