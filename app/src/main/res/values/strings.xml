@@ -129,17 +129,11 @@
     <string name="date_time_picker_date_title">Date</string>
     <string name="date_time_picker_time_title">Time</string>
 
-    <string name="date_time_picker_date_is_before_allowed_title">Date is not allowed</string>
-    <string name="date_time_picker_date_is_before_allowed_message">The chosen date is before the minimum allowed date.</string>
+    <string name="date_time_picker_time_is_before_allowed_title">Date/time is not allowed</string>
+    <string name="date_time_picker_time_is_before_allowed_message">The chosen date and time combination is before the minimum allowed time.\n\nPlease ensure that the date/time is after %s.</string>
 
-    <string name="date_time_picker_date_is_after_allowed_title">Date is not allowed</string>
-    <string name="date_time_picker_date_is_after_allowed_message">The chosen date is after the maximum allowed date.</string>
-
-    <string name="date_time_picker_time_is_before_allowed_title">Time is not allowed</string>
-    <string name="date_time_picker_time_is_before_allowed_message">The chosen time is before the minimum allowed time.</string>
-
-    <string name="date_time_picker_time_is_after_allowed_title">Time is not allowed</string>
-    <string name="date_time_picker_time_is_after_allowed_message">The chosen time is after the maximum allowed time.</string>
+    <string name="date_time_picker_time_is_after_allowed_title">Date/time is not allowed</string>
+    <string name="date_time_picker_time_is_after_allowed_message">The chosen date and time combination is after the maximum allowed time.\n\nPlease ensure that the date/time is before %s.</string>
     <!--</editor-fold>-->
 
 </resources>

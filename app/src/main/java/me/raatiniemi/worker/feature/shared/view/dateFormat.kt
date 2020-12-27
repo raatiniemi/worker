@@ -19,6 +19,10 @@ package me.raatiniemi.worker.feature.shared.view
 import java.text.SimpleDateFormat
 import java.util.*
 
+internal fun yearMonthDayHourMinute(date: Date): String {
+    return SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        .run { format(date) }
+}
 internal fun yearMonthDay(date: Date): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         .run { format(date) }

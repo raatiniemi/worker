@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import me.raatiniemi.worker.domain.time.HoursMinutes
+import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.YearsMonthsDays
 import me.raatiniemi.worker.domain.time.date
 import me.raatiniemi.worker.feature.shared.datetime.model.DateTimeConfiguration
@@ -63,30 +64,8 @@ internal class DateTimeViewModel : ViewModel() {
 
     fun chooseDate(yearsMonthsDays: YearsMonthsDays) {
         consume(_date) { date ->
-            try {
-                _date += validate(date(date, yearsMonthsDays))
-            } catch (e: DateIsBeforeAllowedDateTimeIntervalException) {
-                viewActions += DateTimeViewActions.DateIsBeforeAllowedDateTimeInterval(date)
-            } catch (e: DateIsAfterAllowedDateTimeIntervalException) {
-                viewActions += DateTimeViewActions.DateIsAfterAllowedDateTimeInterval(date)
-            }
+            _date += date(date, yearsMonthsDays)
         }
-    }
-
-    private fun validate(date: Date): Date {
-        consume(minDate) { milliseconds ->
-            if (date.time < milliseconds) {
-                throw DateIsBeforeAllowedDateTimeIntervalException()
-            }
-        }
-
-        consume(maxDate) { milliseconds ->
-            if (date.time > milliseconds) {
-                throw DateIsAfterAllowedDateTimeIntervalException()
-            }
-        }
-
-        return date
     }
 
     fun chooseTime() {
@@ -95,19 +74,35 @@ internal class DateTimeViewModel : ViewModel() {
 
     fun chooseTime(hoursMinutes: HoursMinutes) {
         consume(_date) { date ->
-            try {
-                _date += validate(date(date, hoursMinutes))
-            } catch (e: DateIsBeforeAllowedDateTimeIntervalException) {
-                viewActions += DateTimeViewActions.TimeIsBeforeAllowedDateTimeInterval(date)
-            } catch (e: DateIsAfterAllowedDateTimeIntervalException) {
-                viewActions += DateTimeViewActions.TimeIsAfterAllowedDateTimeInterval(date)
-            }
+            _date += date(date, hoursMinutes)
         }
     }
 
     fun choose() {
         consume(_date) { date ->
-            viewActions += DateTimeViewActions.Choose(date)
+            viewActions += try {
+                DateTimeViewActions.Choose(validate(date))
+            } catch (e: DateTimeIsBeforeAllowedIntervalException) {
+                DateTimeViewActions.DateTimeIsIsBeforeAllowedInterval(Date(e.minimumAllowedDate.value))
+            } catch (e: DateTimeIsAfterAllowedIntervalException) {
+                DateTimeViewActions.DateTimeIsIsAfterAllowedInterval(Date(e.minimumAllowedDate.value))
+            }
         }
+    }
+
+    private fun validate(date: Date): Date {
+        consume(minDate) { milliseconds ->
+            if (date.time < milliseconds) {
+                throw DateTimeIsBeforeAllowedIntervalException(Milliseconds(milliseconds))
+            }
+        }
+
+        consume(maxDate) { milliseconds ->
+            if (date.time > milliseconds) {
+                throw DateTimeIsAfterAllowedIntervalException(Milliseconds(milliseconds))
+            }
+        }
+
+        return date
     }
 }
