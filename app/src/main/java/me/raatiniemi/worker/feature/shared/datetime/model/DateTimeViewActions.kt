@@ -23,13 +23,10 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.time.HoursMinutes
-import me.raatiniemi.worker.domain.time.YearsMonthsDays
-import me.raatiniemi.worker.domain.time.hoursMinutes
-import me.raatiniemi.worker.domain.time.yearsMonthsDays
-import me.raatiniemi.worker.feature.shared.model.ContextBiViewAction
+import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.view.hide
 import me.raatiniemi.worker.feature.shared.view.show
+import me.raatiniemi.worker.feature.shared.view.yearMonthDayHourMinute
 import timber.log.Timber
 import java.util.*
 
@@ -60,74 +57,42 @@ internal sealed class DateTimeViewActions {
         }
     }
 
-    abstract class DateOutsideOfAllowedDateTimeInterval : DateTimeViewActions(),
-        ContextBiViewAction<(YearsMonthsDays) -> Unit>
+    abstract class DateTimeIsOutsideOfAllowedInterval : DateTimeViewActions(), ContextViewAction
 
-    data class DateIsBeforeAllowedDateTimeInterval(
-        private val date: Date
-    ) : DateOutsideOfAllowedDateTimeInterval() {
-        override fun accept(context: Context, t: (YearsMonthsDays) -> Unit) {
-            AlertDialog.Builder(context)
-                .setTitle(R.string.date_time_picker_date_is_before_allowed_title)
-                .setMessage(R.string.date_time_picker_date_is_before_allowed_message)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    dialog?.dismiss()
-                    t(yearsMonthsDays(date))
-                }
-                .create()
-                .show()
-        }
-    }
-
-    data class DateIsAfterAllowedDateTimeInterval(
-        private val date: Date
-    ) : DateOutsideOfAllowedDateTimeInterval() {
-        override fun accept(context: Context, t: (YearsMonthsDays) -> Unit) {
-            AlertDialog.Builder(context)
-                .setTitle(R.string.date_time_picker_date_is_after_allowed_title)
-                .setMessage(R.string.date_time_picker_date_is_after_allowed_message)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    dialog?.dismiss()
-                    t(yearsMonthsDays(date))
-                }
-                .create()
-                .show()
-        }
-    }
-
-    abstract class TimeOutsideOfAllowedDateTimeInterval : DateTimeViewActions(),
-        ContextBiViewAction<(HoursMinutes) -> Unit>
-
-    data class TimeIsBeforeAllowedDateTimeInterval(
-        private val date: Date
-    ) : TimeOutsideOfAllowedDateTimeInterval() {
-        override fun accept(context: Context, t: (HoursMinutes) -> Unit) {
+    data class DateTimeIsIsBeforeAllowedInterval(private val minimumAllowedDate: Date) :
+        DateTimeIsOutsideOfAllowedInterval() {
+        override fun action(context: Context) {
             AlertDialog.Builder(context)
                 .setTitle(R.string.date_time_picker_time_is_before_allowed_title)
-                .setMessage(R.string.date_time_picker_time_is_before_allowed_message)
+                .setMessage(
+                    context.resources.getString(
+                        R.string.date_time_picker_time_is_before_allowed_message,
+                        yearMonthDayHourMinute(minimumAllowedDate)
+                    )
+                )
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
-                    t(hoursMinutes(date))
                 }
                 .create()
                 .show()
         }
     }
 
-    data class TimeIsAfterAllowedDateTimeInterval(
-        private val date: Date
-    ) : TimeOutsideOfAllowedDateTimeInterval() {
-        override fun accept(context: Context, t: (HoursMinutes) -> Unit) {
+    data class DateTimeIsIsAfterAllowedInterval(private val maximumAllowedDate: Date) :
+        DateTimeIsOutsideOfAllowedInterval() {
+        override fun action(context: Context) {
             AlertDialog.Builder(context)
                 .setTitle(R.string.date_time_picker_time_is_after_allowed_title)
-                .setMessage(R.string.date_time_picker_time_is_after_allowed_message)
+                .setMessage(
+                    context.resources.getString(
+                        R.string.date_time_picker_time_is_after_allowed_message,
+                        yearMonthDayHourMinute(maximumAllowedDate)
+                    )
+                )
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog?.dismiss()
-                    t(hoursMinutes(date))
                 }
                 .create()
                 .show()

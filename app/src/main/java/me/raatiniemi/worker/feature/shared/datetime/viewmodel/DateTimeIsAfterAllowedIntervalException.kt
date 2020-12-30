@@ -16,4 +16,8 @@
 
 package me.raatiniemi.worker.feature.shared.datetime.viewmodel
 
-internal class DateIsBeforeAllowedDateTimeIntervalException : RuntimeException()
+import me.raatiniemi.worker.domain.time.Milliseconds
+
+internal data class DateTimeIsAfterAllowedIntervalException(
+    val minimumAllowedDate: Milliseconds
+) : RuntimeException()

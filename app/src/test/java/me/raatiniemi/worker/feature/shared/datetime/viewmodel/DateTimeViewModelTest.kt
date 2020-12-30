@@ -165,6 +165,15 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `choose date without date`() {
+        val now = yearsMonthsDays(Date())
+
+        vm.chooseDate(now)
+
+        vm.date.observeNoValue()
+    }
+
+    @Test
     fun `choose date with date before min date`() {
         val now = Date()
         val yesterday = now - 1.days
@@ -173,11 +182,13 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
             minDate = now
         )
         vm.configure(configuration)
+        val expected = yearMonthDay(yesterday)
 
         vm.chooseDate(yearsMonthsDays(yesterday))
 
-        vm.viewActions.observeNonNull {
-            assertEquals(DateTimeViewActions.DateIsBeforeAllowedDateTimeInterval(now), it)
+        vm.viewActions.observeNoValue()
+        vm.date.observeNonNull {
+            assertEquals(expected, it)
         }
     }
 
@@ -190,25 +201,18 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
             maxDate = now
         )
         vm.configure(configuration)
+        val expected = yearMonthDay(tomorrow)
 
         vm.chooseDate(yearsMonthsDays(tomorrow))
 
-        vm.viewActions.observeNonNull {
-            assertEquals(DateTimeViewActions.DateIsAfterAllowedDateTimeInterval(now), it)
+        vm.viewActions.observeNoValue()
+        vm.date.observeNonNull {
+            assertEquals(expected, it)
         }
     }
 
     @Test
-    fun `choose date without date`() {
-        val now = yearsMonthsDays(Date())
-
-        vm.chooseDate(now)
-
-        vm.date.observeNoValue()
-    }
-
-    @Test
-    fun `choose date with date`() {
+    fun `choose date with valid date`() {
         vm.configure(DateTimeConfiguration())
         val lastWeek = Date() - 1.weeks
         val expected = yearMonthDay(lastWeek)
@@ -232,6 +236,15 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `choose time without date`() {
+        val now = yearsMonthsDays(Date())
+
+        vm.chooseDate(now)
+
+        vm.date.observeNoValue()
+    }
+
+    @Test
     fun `choose time with date before min date`() {
         val now = Date()
         val lastHour = now - 1.hours
@@ -240,11 +253,13 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
             minDate = now
         )
         vm.configure(configuration)
+        val expected = hourMinute(lastHour)
 
         vm.chooseTime(hoursMinutes(lastHour))
 
-        vm.viewActions.observeNonNull {
-            assertEquals(DateTimeViewActions.TimeIsBeforeAllowedDateTimeInterval(now), it)
+        vm.viewActions.observeNoValue()
+        vm.time.observeNonNull {
+            assertEquals(expected, it)
         }
     }
 
@@ -257,21 +272,14 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
             maxDate = now
         )
         vm.configure(configuration)
+        val expected = hourMinute(nextHour)
 
         vm.chooseTime(hoursMinutes(nextHour))
 
-        vm.viewActions.observeNonNull {
-            assertEquals(DateTimeViewActions.TimeIsAfterAllowedDateTimeInterval(now), it)
+        vm.viewActions.observeNoValue()
+        vm.time.observeNonNull {
+            assertEquals(expected, it)
         }
-    }
-
-    @Test
-    fun `choose time without date`() {
-        val now = yearsMonthsDays(Date())
-
-        vm.chooseDate(now)
-
-        vm.date.observeNoValue()
     }
 
     @Test
@@ -305,20 +313,40 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `choose with chosen time`() {
+    fun `choose with chosen date and date is before min date`() {
         val now = Date()
-        val hoursMinutes = hoursMinutes(Hours(0), Minutes(0))
+        val yesterday = now - 1.days
+        val lastWeek = now - 7.days
         val configuration = DateTimeConfiguration(
-            date = now
+            date = now,
+            minDate = yesterday
         )
         vm.configure(configuration)
-        vm.chooseTime(hoursMinutes)
-        val expected = date(now, hoursMinutes)
+        vm.chooseDate(yearsMonthsDays(lastWeek))
 
         vm.choose()
 
         vm.viewActions.observeNonNull {
-            assertEquals(DateTimeViewActions.Choose(expected), it)
+            assertEquals(DateTimeViewActions.DateTimeIsIsBeforeAllowedInterval(yesterday), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen date and date is after max date`() {
+        val now = Date()
+        val tomorrow = now - 1.days
+        val nextWeek = now + 7.days
+        val configuration = DateTimeConfiguration(
+            date = now,
+            maxDate = tomorrow
+        )
+        vm.configure(configuration)
+        vm.chooseDate(yearsMonthsDays(nextWeek))
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.DateTimeIsIsAfterAllowedInterval(tomorrow), it)
         }
     }
 
@@ -341,16 +369,72 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `choose with chosen time and date`() {
+    fun `choose with chosen time and time is before min date`() {
+        val midnight = Date(setToStartOfDay(Milliseconds.now).value)
+        val noon = midnight + 12.hours
+        val sevenInTheMorning = midnight + 7.hours
+        val configuration = DateTimeConfiguration(
+            date = midnight,
+            minDate = noon
+        )
+        vm.configure(configuration)
+        vm.chooseTime(hoursMinutes(sevenInTheMorning))
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.DateTimeIsIsBeforeAllowedInterval(noon), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen time and time is after max date`() {
+        val midnight = Date(setToStartOfDay(Milliseconds.now).value)
+        val noon = midnight + 12.hours
+        val sevenInTheEvening = midnight + 19.hours
+        val configuration = DateTimeConfiguration(
+            date = midnight,
+            maxDate = noon
+        )
+        vm.configure(configuration)
+        vm.chooseTime(hoursMinutes(sevenInTheEvening))
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.DateTimeIsIsAfterAllowedInterval(noon), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen time`() {
         val now = Date()
         val hoursMinutes = hoursMinutes(Hours(0), Minutes(0))
-        val yearsMonthsDays = yearsMonthsDays(Years(2015), Months(0), Days(18))
         val configuration = DateTimeConfiguration(
             date = now
         )
         vm.configure(configuration)
         vm.chooseTime(hoursMinutes)
+        val expected = date(now, hoursMinutes)
+
+        vm.choose()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.Choose(expected), it)
+        }
+    }
+
+    @Test
+    fun `choose with chosen date and time`() {
+        val now = Date()
+        val yearsMonthsDays = yearsMonthsDays(Years(2015), Months(0), Days(18))
+        val hoursMinutes = hoursMinutes(Hours(0), Minutes(0))
+        val configuration = DateTimeConfiguration(
+            date = now
+        )
+        vm.configure(configuration)
         vm.chooseDate(yearsMonthsDays)
+        vm.chooseTime(hoursMinutes)
         val expected = date(date(now, yearsMonthsDays), hoursMinutes)
 
         vm.choose()
