@@ -166,7 +166,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun observeViewModel() {
         observeAndConsume(vm.viewActions) {
-            it.action(requireActivity())
+            it(requireActivity())
         }
     }
 }

@@ -156,7 +156,7 @@ class TimeReportFragment : Fragment() {
         observeAndConsume(vm.viewActions) {
             when (it) {
                 is TimeReportViewActions.RefreshTimeReportWeek -> it.action(timeReportAdapter)
-                is ActivityViewAction -> it.action(requireActivity())
+                is ActivityViewAction -> it(requireActivity())
                 is ContextViewAction -> it.action(requireContext())
                 else -> Timber.w("No observation for ${it.javaClass.simpleName}")
             }

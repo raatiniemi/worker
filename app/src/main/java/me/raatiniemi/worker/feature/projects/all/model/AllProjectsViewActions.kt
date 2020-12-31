@@ -50,9 +50,9 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ProjectCreated : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_project_created_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -113,9 +113,9 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ShowUnableToClockInErrorMessage : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_unable_to_clock_in_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -138,9 +138,9 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ShowUnableToClockOutErrorMessage : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_unable_to_clock_out_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -151,9 +151,9 @@ internal sealed class AllProjectsViewActions {
     data class ShowConfirmRemoveProjectMessage(val item: ProjectsItem) : AllProjectsViewActions()
 
     object ShowUnableToDeleteProjectErrorMessage : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_unable_to_delete_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -163,8 +163,8 @@ internal sealed class AllProjectsViewActions {
 
     data class UpdateNotification(val project: Project) : AllProjectsViewActions(),
         ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
-            ProjectNotificationService.startServiceWithContext(activity, project)
+        override fun accept(t: FragmentActivity) {
+            ProjectNotificationService.startServiceWithContext(t, project)
         }
     }
 

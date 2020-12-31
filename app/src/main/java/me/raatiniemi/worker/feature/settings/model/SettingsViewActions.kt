@@ -24,13 +24,13 @@ import org.greenrobot.eventbus.EventBus
 
 internal sealed class SettingsViewActions : ActivityViewAction {
     object ShowTimeSummaryStartingPointChangedToWeek : SettingsViewActions() {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             with(EventBus.getDefault()) {
                 post(TimeSummaryStartingPointChangeEvent())
             }
 
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.settings_time_summary_changed_starting_point_to_week_message,
                 Snackbar.LENGTH_LONG
             )
@@ -39,13 +39,13 @@ internal sealed class SettingsViewActions : ActivityViewAction {
     }
 
     object ShowTimeSummaryStartingPointChangedToMonth : SettingsViewActions() {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             with(EventBus.getDefault()) {
                 post(TimeSummaryStartingPointChangeEvent())
             }
 
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.settings_time_summary_changed_starting_point_to_month_message,
                 Snackbar.LENGTH_LONG
             )
@@ -54,9 +54,9 @@ internal sealed class SettingsViewActions : ActivityViewAction {
     }
 
     object ShowUnableToChangeTimeSummaryStartingPointErrorMessage : SettingsViewActions() {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.settings_time_summary_unable_to_change_starting_point_message,
                 Snackbar.LENGTH_LONG
             )

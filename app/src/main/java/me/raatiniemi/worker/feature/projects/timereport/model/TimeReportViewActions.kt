@@ -46,9 +46,9 @@ internal sealed class TimeReportViewActions {
     }
 
     object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_time_report_unable_to_register_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -57,9 +57,9 @@ internal sealed class TimeReportViewActions {
     }
 
     object ShowUnableToDeleteErrorMessage : TimeReportViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_time_report_unable_to_delete_message,
                 Snackbar.LENGTH_SHORT
             )
