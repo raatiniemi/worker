@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.monitor.analytics
 
 import androidx.annotation.MainThread
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
-import me.raatiniemi.worker.util.bundleOf
 import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
@@ -44,10 +44,8 @@ internal class FirebaseUsageAnalytics(
         analytics.logEvent(
             FirebaseAnalytics.Event.SCREEN_VIEW,
             bundleOf(
-                mapOf(
-                    FirebaseAnalytics.Param.SCREEN_NAME to name(screenName),
-                    FirebaseAnalytics.Param.SCREEN_CLASS to fragment.javaClass.name
-                )
+                FirebaseAnalytics.Param.SCREEN_NAME to name(screenName),
+                FirebaseAnalytics.Param.SCREEN_CLASS to fragment.javaClass.name
             )
         )
     }
@@ -56,9 +54,10 @@ internal class FirebaseUsageAnalytics(
         with(event) {
             analytics.logEvent(
                 truncate(name.value, 40),
-                parameters.map { it.key to it.value }
-                    .toMap()
-                    .let(::bundleOf)
+                bundleOf(
+                    *parameters.map { it.key to it.value }
+                        .toTypedArray()
+                )
             )
         }
     }
