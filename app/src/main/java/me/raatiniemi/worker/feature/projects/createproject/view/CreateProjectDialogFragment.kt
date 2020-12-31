@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
@@ -30,7 +31,7 @@ import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CreateProjectDialogFragment : CoroutineScopedDialogFragment() {
+class CreateProjectDialogFragment : DialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
