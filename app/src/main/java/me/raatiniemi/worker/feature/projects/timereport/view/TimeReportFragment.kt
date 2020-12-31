@@ -18,6 +18,8 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_project_time_report.*
@@ -43,7 +45,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class TimeReportFragment : CoroutineScopedFragment() {
+class TimeReportFragment : Fragment() {
     private val eventBus = EventBus.getDefault()
     private val arguments: TimeReportFragmentArgs by navArgs()
     private val projectHolder: ProjectHolder by inject()
@@ -183,17 +185,21 @@ class TimeReportFragment : CoroutineScopedFragment() {
         actionMode = null
     }
 
-    private fun toggleRegisteredStateForSelectedItems() = launch {
-        vm.toggleRegisteredStateForSelectedItems()
+    private fun toggleRegisteredStateForSelectedItems() {
+        lifecycleScope.launch {
+            vm.toggleRegisteredStateForSelectedItems()
+        }
     }
 
-    private fun confirmRemoveSelectedItems() = launch {
-        val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
-        if (confirmAction == ConfirmAction.NO) {
-            return@launch
-        }
+    private fun confirmRemoveSelectedItems() {
+        lifecycleScope.launch {
+            val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
+            if (confirmAction == ConfirmAction.NO) {
+                return@launch
+            }
 
-        vm.removeSelectedItems()
+            vm.removeSelectedItems()
+        }
     }
 
     private fun clearSelection() {

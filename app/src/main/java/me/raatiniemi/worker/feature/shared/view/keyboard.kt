@@ -18,21 +18,25 @@ package me.raatiniemi.worker.feature.shared.view
 
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import me.raatiniemi.worker.domain.time.milliseconds
 
 private val delayBeforeShowingKeyboard = 100.milliseconds
 
-internal fun CoroutineScopedDialogFragment.showKeyboard(view: View) {
+internal fun DialogFragment.showKeyboard(view: View) {
     if (view.requestFocus()) {
-        showKeyboard(view, this)
+        showKeyboard(view, lifecycleScope)
     }
 }
 
-private fun showKeyboard(view: View, scope: CoroutineScope) = scope.launch {
-    delay(delayBeforeShowingKeyboard)
-    withContext(Dispatchers.Main) {
-        view.context.inputMethodManager
-            ?.run { showSoftInput(view, InputMethodManager.SHOW_IMPLICIT) }
+private fun showKeyboard(view: View, scope: CoroutineScope) {
+    scope.launch {
+        delay(delayBeforeShowingKeyboard)
+        withContext(Dispatchers.Main) {
+            view.context.inputMethodManager
+                ?.run { showSoftInput(view, InputMethodManager.SHOW_IMPLICIT) }
+        }
     }
 }

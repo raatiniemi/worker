@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.projects.all.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_all_projects.*
@@ -39,7 +40,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class AllProjectsFragment : CoroutineScopedFragment() {
+class AllProjectsFragment : Fragment() {
     private val eventBus = EventBus.getDefault()
 
     private val usageAnalytics: UsageAnalytics by inject()
@@ -141,14 +142,14 @@ class AllProjectsFragment : CoroutineScopedFragment() {
             )
             is AllProjectsViewActions.ChooseDateAndTimeForClockIn -> {
                 viewAction.action(this) { project, date ->
-                    launch {
+                    lifecycleScope.launch {
                         vm.clockInAt(project, date)
                     }
                 }
             }
             is AllProjectsViewActions.ChooseDateAndTimeForClockOut -> {
                 viewAction.action(this) { project, date ->
-                    launch {
+                    lifecycleScope.launch {
                         vm.clockOutAt(project, date)
                     }
                 }
@@ -162,20 +163,23 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         }
     }
 
-    private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) =
-        launch {
+    private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) {
+        lifecycleScope.launch {
             val confirmAction = ConfirmClockOutDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
                 vm.clockOutAt(viewAction.item.asProject(), viewAction.date)
             }
         }
+    }
 
     private fun showConfirmRemoveProjectMessage(
         viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage
-    ) = launch {
-        val confirmAction = RemoveProjectDialog.show(requireContext())
-        if (ConfirmAction.YES == confirmAction) {
-            vm.remove(viewAction.item.asProject())
+    ) {
+        lifecycleScope.launch {
+            val confirmAction = RemoveProjectDialog.show(requireContext())
+            if (ConfirmAction.YES == confirmAction) {
+                vm.remove(viewAction.item.asProject())
+            }
         }
     }
 
