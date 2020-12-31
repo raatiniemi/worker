@@ -164,7 +164,7 @@ dependencies {
     def navigationVersion = '2.3.2'
     def materialVersion = '1.2.1'
     def firebaseAnalyticsVersion = '18.0.0'
-    def firebaseCrashlyticsVersion = '17.2.2'
+    def firebaseCrashlyticsVersion = '17.3.0'
     def firebasePerformanceVersion = '19.0.9'
     def koinVersion = '2.1.6'
     def timberVersion = '4.7.1'
