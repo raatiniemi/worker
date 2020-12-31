@@ -19,7 +19,6 @@ package me.raatiniemi.worker.monitor.analytics
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
-import me.raatiniemi.worker.feature.shared.view.requireActivity
 import me.raatiniemi.worker.util.bundleOf
 import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
@@ -41,14 +40,16 @@ internal class FirebaseUsageAnalytics(
 
         lastScreenName = screenName
 
-        requireActivity(fragment) { activity ->
-            Timber.v("Set current screen to: $screenName")
-            analytics.setCurrentScreen(
-                activity,
-                name(screenName),
-                name(screenName)
+        Timber.v("Set current screen to: $screenName")
+        analytics.logEvent(
+            FirebaseAnalytics.Event.SCREEN_VIEW,
+            bundleOf(
+                mapOf(
+                    FirebaseAnalytics.Param.SCREEN_NAME to name(screenName),
+                    FirebaseAnalytics.Param.SCREEN_CLASS to fragment.javaClass.name
+                )
             )
-        }
+        )
     }
 
     override fun log(event: Event) = runOnMainThread {
