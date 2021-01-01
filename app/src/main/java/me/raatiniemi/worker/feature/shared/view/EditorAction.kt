@@ -18,7 +18,7 @@ package me.raatiniemi.worker.feature.shared.view
 
 import android.view.inputmethod.EditorInfo
 
-enum class EditorAction {
+internal enum class EditorAction {
     DONE,
     NONE;
 }
