@@ -68,13 +68,16 @@ internal sealed class AllProjectsViewActions {
         }
     }
 
-    data class OpenProject(private val project: Project) : AllProjectsViewActions(),
-        FragmentViewAction {
-        override fun action(fragment: Fragment) {
-            val destinationAction =
-                AllProjectsFragmentDirections.openTimeReport(project.id.value, project.name.value)
+    data class OpenProject(
+        private val project: Project
+    ) : AllProjectsViewActions(), FragmentViewAction {
+        override fun accept(t: Fragment) {
+            val destinationAction = AllProjectsFragmentDirections.openTimeReport(
+                project.id.value,
+                project.name.value
+            )
 
-            fragment.findNavController()
+            t.findNavController()
                 .navigate(destinationAction)
         }
     }

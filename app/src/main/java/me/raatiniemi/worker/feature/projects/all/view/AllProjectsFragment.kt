@@ -136,7 +136,7 @@ class AllProjectsFragment : Fragment() {
             }
             is AllProjectsViewActions.ProjectCreated -> viewAction(requireActivity())
             is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
-            is AllProjectsViewActions.OpenProject -> viewAction.action(this)
+            is AllProjectsViewActions.OpenProject -> viewAction(this)
             is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(
                 viewAction
             )
