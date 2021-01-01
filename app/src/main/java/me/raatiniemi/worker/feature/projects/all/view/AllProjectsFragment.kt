@@ -158,7 +158,7 @@ class AllProjectsFragment : Fragment() {
                 viewAction
             )
             is ActivityViewAction -> viewAction(requireActivity())
-            is ContextViewAction -> viewAction.action(requireContext())
+            is ContextViewAction -> viewAction(requireContext())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
         }
     }

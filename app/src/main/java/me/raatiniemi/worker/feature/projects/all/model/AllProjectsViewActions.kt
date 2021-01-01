@@ -124,8 +124,8 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ShowElapsedTimePastAllowedErrorMessage : AllProjectsViewActions(), ContextViewAction {
-        override fun action(context: Context) {
-            AlertDialog.Builder(context)
+        override fun accept(t: Context) {
+            AlertDialog.Builder(t)
                 .setTitle(R.string.projects_all_elapsed_time_past_allowed_title)
                 .setMessage(R.string.projects_all_elapsed_time_past_allowed_message)
                 .setCancelable(false)
@@ -170,8 +170,8 @@ internal sealed class AllProjectsViewActions {
 
     data class DismissNotification(val project: Project) : AllProjectsViewActions(),
         ContextViewAction {
-        override fun action(context: Context) {
-            val notificationManager = NotificationManagerCompat.from(context)
+        override fun accept(t: Context) {
+            val notificationManager = NotificationManagerCompat.from(t)
             notificationManager.cancel(
                 project.id.value.toString(),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID

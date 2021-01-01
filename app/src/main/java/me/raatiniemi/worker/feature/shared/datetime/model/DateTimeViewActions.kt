@@ -61,11 +61,11 @@ internal sealed class DateTimeViewActions {
 
     data class DateTimeIsIsBeforeAllowedInterval(private val minimumAllowedDate: Date) :
         DateTimeIsOutsideOfAllowedInterval() {
-        override fun action(context: Context) {
-            AlertDialog.Builder(context)
+        override fun accept(t: Context) {
+            AlertDialog.Builder(t)
                 .setTitle(R.string.date_time_picker_time_is_before_allowed_title)
                 .setMessage(
-                    context.resources.getString(
+                    t.resources.getString(
                         R.string.date_time_picker_time_is_before_allowed_message,
                         yearMonthDayHourMinute(minimumAllowedDate)
                     )
@@ -81,11 +81,11 @@ internal sealed class DateTimeViewActions {
 
     data class DateTimeIsIsAfterAllowedInterval(private val maximumAllowedDate: Date) :
         DateTimeIsOutsideOfAllowedInterval() {
-        override fun action(context: Context) {
-            AlertDialog.Builder(context)
+        override fun accept(t: Context) {
+            AlertDialog.Builder(t)
                 .setTitle(R.string.date_time_picker_time_is_after_allowed_title)
                 .setMessage(
-                    context.resources.getString(
+                    t.resources.getString(
                         R.string.date_time_picker_time_is_after_allowed_message,
                         yearMonthDayHourMinute(maximumAllowedDate)
                     )

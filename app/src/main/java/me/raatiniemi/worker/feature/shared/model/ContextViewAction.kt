@@ -19,6 +19,4 @@ package me.raatiniemi.worker.feature.shared.model
 import android.content.Context
 
 @FunctionalInterface
-interface ContextViewAction {
-    fun action(context: Context)
-}
+internal interface ContextViewAction : ViewAction<Context>

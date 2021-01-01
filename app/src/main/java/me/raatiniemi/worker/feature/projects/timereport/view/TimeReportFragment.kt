@@ -157,7 +157,7 @@ class TimeReportFragment : Fragment() {
             when (it) {
                 is TimeReportViewActions.RefreshTimeReportWeek -> it.action(timeReportAdapter)
                 is ActivityViewAction -> it(requireActivity())
-                is ContextViewAction -> it.action(requireContext())
+                is ContextViewAction -> it(requireContext())
                 else -> Timber.w("No observation for ${it.javaClass.simpleName}")
             }
         }

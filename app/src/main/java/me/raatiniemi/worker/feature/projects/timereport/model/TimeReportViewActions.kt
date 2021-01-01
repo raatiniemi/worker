@@ -34,15 +34,17 @@ internal sealed class TimeReportViewActions {
 
     object ShowUnableToMarkActiveTimeIntervalsAsRegisteredErrorMessage : TimeReportViewActions(),
         ContextViewAction {
-        override fun action(context: Context) = AlertDialog.Builder(context)
-            .setTitle(R.string.projects_time_report_unable_to_mark_active_items_as_registered_title)
-            .setMessage(R.string.projects_time_report_unable_to_mark_active_items_as_registered_message)
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                dialog?.dismiss()
-            }
-            .setCancelable(false)
-            .create()
-            .show()
+        override fun accept(t: Context) {
+            AlertDialog.Builder(t)
+                .setTitle(R.string.projects_time_report_unable_to_mark_active_items_as_registered_title)
+                .setMessage(R.string.projects_time_report_unable_to_mark_active_items_as_registered_message)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    dialog?.dismiss()
+                }
+                .setCancelable(false)
+                .create()
+                .show()
+        }
     }
 
     object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ActivityViewAction {
