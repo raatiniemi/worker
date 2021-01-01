@@ -21,9 +21,9 @@ import android.content.Context
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-enum class ConfirmAction { YES, NO }
+internal enum class ConfirmAction { YES, NO }
 
-object CoroutineConfirmAlertDialog {
+internal object CoroutineConfirmAlertDialog {
     suspend fun build(context: Context, title: Int, message: Int) =
         suspendCoroutine<ConfirmAction> {
             val alert = AlertDialog.Builder(context)
