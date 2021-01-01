@@ -35,7 +35,7 @@ internal fun doOnTextChange(tv: TextView, onTextChanged: (String) -> Unit) {
 
 internal fun done(tv: TextView, cb: () -> Unit) {
     tv.setOnEditorActionListener { _, actionId, event ->
-        val configuration = EditorAction.from(actionId)
+        val configuration = editorAction(actionId)
         if (configuration == EditorAction.DONE || (BuildConfig.DEBUG && event.isEnterKey)) {
             cb()
             return@setOnEditorActionListener true
