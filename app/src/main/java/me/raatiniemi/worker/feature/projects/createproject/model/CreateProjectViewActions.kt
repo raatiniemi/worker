@@ -44,8 +44,8 @@ sealed class CreateProjectViewActions {
     }
 
     object CreatedProject : CreateProjectViewActions(), DialogFragmentViewAction {
-        override fun action(fragment: DialogFragment) {
-            fragment.dismiss()
+        override fun accept(t: DialogFragment) {
+            t.dismiss()
         }
     }
 }

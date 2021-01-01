@@ -75,7 +75,7 @@ class CreateProjectDialogFragment : DialogFragment() {
             when (it) {
                 is CreateProjectViewActions.CreatedProject -> {
                     onCreateProject()
-                    it.action(this)
+                    it(this)
                 }
                 is EditTextViewAction -> it.action(requireContext(), etProjectName)
             }
