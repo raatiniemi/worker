@@ -101,9 +101,9 @@ class CreateProjectDialogFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(onCreateProject: () -> Unit) = CreateProjectDialogFragment()
-            .also {
-                it.onCreateProject = onCreateProject
-            }
+        fun newInstance(onCreateProject: () -> Unit): CreateProjectDialogFragment {
+            return CreateProjectDialogFragment()
+                .also { it.onCreateProject = onCreateProject }
+        }
     }
 }
