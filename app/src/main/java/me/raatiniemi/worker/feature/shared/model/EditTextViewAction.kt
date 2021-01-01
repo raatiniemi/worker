@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.feature.shared.model
 
-import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 
 @FunctionalInterface
-internal interface EditTextViewAction : ViewAction<EditText>
+internal interface EditTextViewAction : ViewAction<AppCompatEditText>
