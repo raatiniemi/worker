@@ -16,8 +16,10 @@
 
 package me.raatiniemi.worker.feature.shared.view
 
+import android.view.KeyEvent
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
+import me.raatiniemi.worker.BuildConfig
 
 internal fun doOnTextChange(tv: TextView, onTextChanged: (String) -> Unit) {
     tv.doOnTextChanged { text, _, _, _ ->
@@ -30,3 +32,21 @@ internal fun doOnTextChange(tv: TextView, onTextChanged: (String) -> Unit) {
         )
     }
 }
+
+internal fun done(tv: TextView, cb: () -> Unit) {
+    tv.setOnEditorActionListener { _, actionId, event ->
+        val configuration = EditorAction.from(actionId)
+        if (configuration == EditorAction.DONE || (BuildConfig.DEBUG && event.isEnterKey)) {
+            cb()
+            return@setOnEditorActionListener true
+        }
+
+        return@setOnEditorActionListener false
+    }
+}
+
+private val KeyEvent?.isEnterKey: Boolean
+    get() {
+        this ?: return false
+        return keyCode == KeyEvent.KEYCODE_ENTER
+    }
