@@ -86,8 +86,8 @@ class CreateProjectDialogFragment : DialogFragment() {
     }
 
     private fun bindUserInterfaceToViewModel() {
-        etProjectName.onChange { vm.name = it }
-        etProjectName.on(EditorAction.DONE) {
+        doOnTextChange(etProjectName) { vm.name = it }
+        done(etProjectName) {
             vm.createProject()
         }
 
@@ -101,9 +101,9 @@ class CreateProjectDialogFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(onCreateProject: () -> Unit) = CreateProjectDialogFragment()
-            .also {
-                it.onCreateProject = onCreateProject
-            }
+        internal fun newInstance(onCreateProject: () -> Unit): CreateProjectDialogFragment {
+            return CreateProjectDialogFragment()
+                .also { it.onCreateProject = onCreateProject }
+        }
     }
 }

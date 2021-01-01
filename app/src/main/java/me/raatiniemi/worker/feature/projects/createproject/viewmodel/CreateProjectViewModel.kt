@@ -72,20 +72,20 @@ internal class CreateProjectViewModel(
     @AddTrace(name = TracePerformanceEvents.CREATE_PROJECT)
     fun createProject() = viewModelScope.launch(dispatchProvider.io()) {
         consumeSuspending(_name) { name ->
-            viewActions += try {
+            try {
                 createProject(projectName(name))
 
                 usageAnalytics.log(Event.ProjectCreate)
-                CreateProjectViewActions.CreatedProject
+                viewActions += CreateProjectViewActions.CreatedProject
             } catch (e: ProjectAlreadyExistsException) {
                 Timber.d("Project with name \"$name\" already exists")
-                CreateProjectViewActions.DuplicateNameErrorMessage
+                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
             } catch (e: InvalidProjectNameException) {
                 Timber.w("Project name \"$name\" is not valid")
-                CreateProjectViewActions.InvalidProjectNameErrorMessage
+                viewActions += CreateProjectViewActions.InvalidProjectNameErrorMessage
             } catch (e: Exception) {
                 Timber.w(e, "Unable to create project")
-                CreateProjectViewActions.UnknownErrorMessage
+                viewActions += CreateProjectViewActions.UnknownErrorMessage
             }
         }
     }

@@ -18,14 +18,14 @@ package me.raatiniemi.worker.feature.shared.view
 
 import android.view.inputmethod.EditorInfo
 
-enum class EditorAction {
+internal enum class EditorAction {
     DONE,
     NONE;
+}
 
-    companion object {
-        fun from(imeAction: Int): EditorAction = when (imeAction) {
-            EditorInfo.IME_ACTION_DONE -> DONE
-            else -> NONE
-        }
+internal fun editorAction(id: Int): EditorAction {
+    return when (id) {
+        EditorInfo.IME_ACTION_DONE -> EditorAction.DONE
+        else -> EditorAction.NONE
     }
 }

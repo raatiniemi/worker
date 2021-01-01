@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Tobias Raatiniemi
+ * Copyright (C) 2021 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +17,30 @@
 package me.raatiniemi.worker.feature.shared.view
 
 import android.view.KeyEvent
-import android.widget.EditText
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import me.raatiniemi.worker.BuildConfig
 
-fun EditText.onChange(onTextChanged: (String) -> Unit) {
-    addTextChangedListener(onChangeTextWatcher { onTextChanged(it) })
+internal fun doOnTextChange(tv: TextView, onTextChanged: (String) -> Unit) {
+    tv.doOnTextChanged { text, _, _, _ ->
+        onTextChanged(
+            if (text.isNullOrBlank()) {
+                ""
+            } else {
+                text as String
+            }
+        )
+    }
 }
 
-fun EditText.on(action: EditorAction, cb: suspend () -> Unit) {
-    setOnEditorActionListener { _, actionId, event ->
-        if (BuildConfig.DEBUG && event.isEnterKey) {
-            GlobalScope.launch(Dispatchers.Default) { cb() }
+internal fun done(tv: TextView, cb: () -> Unit) {
+    tv.setOnEditorActionListener { _, actionId, event ->
+        val configuration = editorAction(actionId)
+        if (configuration == EditorAction.DONE || (BuildConfig.DEBUG && event.isEnterKey)) {
+            cb()
             return@setOnEditorActionListener true
         }
 
-        val configuration = EditorAction.from(actionId)
-        if (configuration == action) {
-            GlobalScope.launch(Dispatchers.Default) { cb() }
-            return@setOnEditorActionListener true
-        }
         return@setOnEditorActionListener false
     }
 }
