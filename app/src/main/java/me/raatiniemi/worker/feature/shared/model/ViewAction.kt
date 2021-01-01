@@ -16,13 +16,11 @@
 
 package me.raatiniemi.worker.feature.shared.model
 
-import android.content.Context
-
 @FunctionalInterface
-internal interface ContextBiViewAction<T : Any> {
-    fun accept(context: Context, t: T)
+internal interface ViewAction<T : Any> {
+    fun accept(t: T)
 
-    operator fun invoke(context: Context, t: T) {
-        accept(context, t)
+    operator fun invoke(t: T) {
+        accept(t)
     }
 }

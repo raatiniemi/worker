@@ -19,6 +19,4 @@ package me.raatiniemi.worker.feature.shared.model
 import androidx.fragment.app.FragmentActivity
 
 @FunctionalInterface
-internal interface ActivityViewAction {
-    fun action(activity: FragmentActivity)
-}
+internal interface ActivityViewAction : ViewAction<FragmentActivity>

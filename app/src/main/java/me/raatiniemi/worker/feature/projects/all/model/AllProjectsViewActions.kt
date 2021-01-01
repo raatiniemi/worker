@@ -50,9 +50,9 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ProjectCreated : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_project_created_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -68,13 +68,16 @@ internal sealed class AllProjectsViewActions {
         }
     }
 
-    data class OpenProject(private val project: Project) : AllProjectsViewActions(),
-        FragmentViewAction {
-        override fun action(fragment: Fragment) {
-            val destinationAction =
-                AllProjectsFragmentDirections.openTimeReport(project.id.value, project.name.value)
+    data class OpenProject(
+        private val project: Project
+    ) : AllProjectsViewActions(), FragmentViewAction {
+        override fun accept(t: Fragment) {
+            val destinationAction = AllProjectsFragmentDirections.openTimeReport(
+                project.id.value,
+                project.name.value
+            )
 
-            fragment.findNavController()
+            t.findNavController()
                 .navigate(destinationAction)
         }
     }
@@ -113,9 +116,9 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ShowUnableToClockInErrorMessage : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_unable_to_clock_in_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -124,8 +127,8 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ShowElapsedTimePastAllowedErrorMessage : AllProjectsViewActions(), ContextViewAction {
-        override fun action(context: Context) {
-            AlertDialog.Builder(context)
+        override fun accept(t: Context) {
+            AlertDialog.Builder(t)
                 .setTitle(R.string.projects_all_elapsed_time_past_allowed_title)
                 .setMessage(R.string.projects_all_elapsed_time_past_allowed_message)
                 .setCancelable(false)
@@ -138,9 +141,9 @@ internal sealed class AllProjectsViewActions {
     }
 
     object ShowUnableToClockOutErrorMessage : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_unable_to_clock_out_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -151,9 +154,9 @@ internal sealed class AllProjectsViewActions {
     data class ShowConfirmRemoveProjectMessage(val item: ProjectsItem) : AllProjectsViewActions()
 
     object ShowUnableToDeleteProjectErrorMessage : AllProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_all_unable_to_delete_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -163,15 +166,15 @@ internal sealed class AllProjectsViewActions {
 
     data class UpdateNotification(val project: Project) : AllProjectsViewActions(),
         ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
-            ProjectNotificationService.startServiceWithContext(activity, project)
+        override fun accept(t: FragmentActivity) {
+            ProjectNotificationService.startServiceWithContext(t, project)
         }
     }
 
     data class DismissNotification(val project: Project) : AllProjectsViewActions(),
         ContextViewAction {
-        override fun action(context: Context) {
-            val notificationManager = NotificationManagerCompat.from(context)
+        override fun accept(t: Context) {
+            val notificationManager = NotificationManagerCompat.from(t)
             notificationManager.cancel(
                 project.id.value.toString(),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID

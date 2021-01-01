@@ -18,6 +18,5 @@ package me.raatiniemi.worker.feature.shared.model
 
 import androidx.fragment.app.DialogFragment
 
-interface DialogFragmentViewAction {
-    fun action(fragment: DialogFragment)
-}
+@FunctionalInterface
+internal interface DialogFragmentViewAction : ViewAction<DialogFragment>

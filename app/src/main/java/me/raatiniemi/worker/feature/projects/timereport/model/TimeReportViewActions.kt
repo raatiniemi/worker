@@ -34,21 +34,23 @@ internal sealed class TimeReportViewActions {
 
     object ShowUnableToMarkActiveTimeIntervalsAsRegisteredErrorMessage : TimeReportViewActions(),
         ContextViewAction {
-        override fun action(context: Context) = AlertDialog.Builder(context)
-            .setTitle(R.string.projects_time_report_unable_to_mark_active_items_as_registered_title)
-            .setMessage(R.string.projects_time_report_unable_to_mark_active_items_as_registered_message)
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                dialog?.dismiss()
-            }
-            .setCancelable(false)
-            .create()
-            .show()
+        override fun accept(t: Context) {
+            AlertDialog.Builder(t)
+                .setTitle(R.string.projects_time_report_unable_to_mark_active_items_as_registered_title)
+                .setMessage(R.string.projects_time_report_unable_to_mark_active_items_as_registered_message)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    dialog?.dismiss()
+                }
+                .setCancelable(false)
+                .create()
+                .show()
+        }
     }
 
     object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_time_report_unable_to_register_message,
                 Snackbar.LENGTH_SHORT
             )
@@ -57,9 +59,9 @@ internal sealed class TimeReportViewActions {
     }
 
     object ShowUnableToDeleteErrorMessage : TimeReportViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
+        override fun accept(t: FragmentActivity) {
             val snackBar = Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                t.findViewById(android.R.id.content),
                 R.string.projects_time_report_unable_to_delete_message,
                 Snackbar.LENGTH_SHORT
             )

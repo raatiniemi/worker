@@ -134,9 +134,9 @@ class AllProjectsFragment : Fragment() {
             is AllProjectsViewActions.CreateProject -> viewAction.action(this) {
                 vm.projectCreated()
             }
-            is AllProjectsViewActions.ProjectCreated -> viewAction.action(requireActivity())
+            is AllProjectsViewActions.ProjectCreated -> viewAction(requireActivity())
             is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
-            is AllProjectsViewActions.OpenProject -> viewAction.action(this)
+            is AllProjectsViewActions.OpenProject -> viewAction(this)
             is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(
                 viewAction
             )
@@ -157,8 +157,8 @@ class AllProjectsFragment : Fragment() {
             is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(
                 viewAction
             )
-            is ActivityViewAction -> viewAction.action(requireActivity())
-            is ContextViewAction -> viewAction.action(requireContext())
+            is ActivityViewAction -> viewAction(requireActivity())
+            is ContextViewAction -> viewAction(requireContext())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
         }
     }

@@ -16,36 +16,36 @@
 
 package me.raatiniemi.worker.feature.projects.createproject.model
 
-import android.content.Context
-import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.feature.shared.model.DialogFragmentViewAction
 import me.raatiniemi.worker.feature.shared.model.EditTextViewAction
 
-sealed class CreateProjectViewActions {
+internal sealed class CreateProjectViewActions {
     object InvalidProjectNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
-        override fun action(context: Context, editText: EditText) {
-            editText.error = context.getString(R.string.projects_create_missing_name_error_message)
+        override fun accept(t: AppCompatEditText) {
+            t.error = t.context.getString(R.string.projects_create_missing_name_error_message)
         }
     }
 
     object DuplicateNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
-        override fun action(context: Context, editText: EditText) {
-            editText.error =
-                context.getString(R.string.projects_create_project_already_exists_error_message)
+        override fun accept(t: AppCompatEditText) {
+            t.error = t.context.getString(
+                R.string.projects_create_project_already_exists_error_message
+            )
         }
     }
 
     object UnknownErrorMessage : CreateProjectViewActions(), EditTextViewAction {
-        override fun action(context: Context, editText: EditText) {
-            editText.error = context.getString(R.string.projects_create_unknown_error_message)
+        override fun accept(t: AppCompatEditText) {
+            t.error = t.context.getString(R.string.projects_create_unknown_error_message)
         }
     }
 
     object CreatedProject : CreateProjectViewActions(), DialogFragmentViewAction {
-        override fun action(fragment: DialogFragment) {
-            fragment.dismiss()
+        override fun accept(t: DialogFragment) {
+            t.dismiss()
         }
     }
 }
