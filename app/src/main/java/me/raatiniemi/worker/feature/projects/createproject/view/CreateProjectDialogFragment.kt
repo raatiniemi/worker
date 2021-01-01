@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
-import me.raatiniemi.worker.feature.shared.model.EditTextViewAction
 import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -71,13 +70,17 @@ class CreateProjectDialogFragment : DialogFragment() {
             btnCreate.isEnabled = it
         }
 
-        observeAndConsume(vm.viewActions) {
-            when (it) {
+        observeAndConsume(vm.viewActions) { viewAction ->
+            when (viewAction) {
                 is CreateProjectViewActions.CreatedProject -> {
                     onCreateProject()
-                    it(this)
+                    viewAction(this)
                 }
-                is EditTextViewAction -> it.action(requireContext(), etProjectName)
+                is CreateProjectViewActions.InvalidProjectNameErrorMessage -> {
+                    viewAction(etProjectName)
+                }
+                is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
+                is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
             }
         }
     }

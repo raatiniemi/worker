@@ -16,9 +16,7 @@
 
 package me.raatiniemi.worker.feature.shared.model
 
-import android.content.Context
 import android.widget.EditText
 
-internal interface EditTextViewAction {
-    fun action(context: Context, editText: EditText)
-}
+@FunctionalInterface
+internal interface EditTextViewAction : ViewAction<EditText>
