@@ -22,7 +22,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.feature.shared.model.DialogFragmentViewAction
 import me.raatiniemi.worker.feature.shared.model.EditTextViewAction
 
-sealed class CreateProjectViewActions {
+internal sealed class CreateProjectViewActions {
     object InvalidProjectNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun accept(t: AppCompatEditText) {
             t.error = t.context.getString(R.string.projects_create_missing_name_error_message)
