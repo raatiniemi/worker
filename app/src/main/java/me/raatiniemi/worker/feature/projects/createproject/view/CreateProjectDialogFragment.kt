@@ -86,7 +86,7 @@ class CreateProjectDialogFragment : DialogFragment() {
     }
 
     private fun bindUserInterfaceToViewModel() {
-        etProjectName.onChange { vm.name = it }
+        doOnTextChange(etProjectName) { vm.name = it }
         etProjectName.on(EditorAction.DONE) {
             vm.createProject()
         }

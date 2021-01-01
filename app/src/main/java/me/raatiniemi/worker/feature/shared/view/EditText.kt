@@ -23,10 +23,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.BuildConfig
 
-fun EditText.onChange(onTextChanged: (String) -> Unit) {
-    addTextChangedListener(onChangeTextWatcher { onTextChanged(it) })
-}
-
 fun EditText.on(action: EditorAction, cb: suspend () -> Unit) {
     setOnEditorActionListener { _, actionId, event ->
         if (BuildConfig.DEBUG && event.isEnterKey) {
