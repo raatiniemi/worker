@@ -27,7 +27,7 @@ internal fun doOnTextChange(tv: TextView, onTextChanged: (String) -> Unit) {
             if (text.isNullOrBlank()) {
                 ""
             } else {
-                text as String
+                text.toString()
             }
         )
     }
