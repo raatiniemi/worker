@@ -138,7 +138,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
         vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.CreatedProject, it)
+            assertEquals(CreateProjectViewActions.Created(android), it)
         }
         val actual = findProject(android.name)
         assertEquals(android, actual)

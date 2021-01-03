@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.feature.shared.view.*
@@ -34,7 +35,7 @@ class CreateProjectDialogFragment : DialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
-    private lateinit var onCreateProject: () -> Unit
+    private lateinit var onCreateProject: (Project?) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,23 +92,20 @@ class CreateProjectDialogFragment : DialogFragment() {
 
         observeAndConsume(vm.viewActions) { viewAction ->
             when (viewAction) {
-                is CreateProjectViewActions.CreatedProject -> {
-                    onCreateProject()
-                    viewAction(this)
-                }
                 is CreateProjectViewActions.InvalidProjectNameErrorMessage -> {
                     viewAction(etProjectName)
                 }
                 is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
                 is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
-                is CreateProjectViewActions.Dismiss -> viewAction(this)
+                is CreateProjectViewActions.Created -> viewAction(this, onCreateProject)
+                is CreateProjectViewActions.Dismiss -> viewAction(this, onCreateProject)
             }
         }
     }
 
     companion object {
         @JvmStatic
-        internal fun newInstance(onCreateProject: () -> Unit): CreateProjectDialogFragment {
+        internal fun newInstance(onCreateProject: (Project?) -> Unit): CreateProjectDialogFragment {
             return CreateProjectDialogFragment()
                 .also { it.onCreateProject = onCreateProject }
         }

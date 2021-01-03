@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
@@ -40,12 +41,18 @@ import me.raatiniemi.worker.feature.shared.model.FragmentViewAction
 import me.raatiniemi.worker.feature.shared.view.show
 import timber.log.Timber
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 internal sealed class AllProjectsViewActions {
     object CreateProject : AllProjectsViewActions() {
-        fun action(fragment: Fragment, onCreateProject: () -> Unit) {
-            show(fragment.childFragmentManager) {
-                CreateProjectDialogFragment.newInstance(onCreateProject)
+        suspend fun apply(fm: FragmentManager): Project? {
+            return suspendCoroutine { continuation ->
+                show(fm) {
+                    CreateProjectDialogFragment.newInstance {
+                        continuation.resume(it)
+                    }
+                }
             }
         }
     }

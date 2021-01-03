@@ -131,8 +131,11 @@ class AllProjectsFragment : Fragment() {
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
-            is AllProjectsViewActions.CreateProject -> viewAction.action(this) {
-                vm.projectCreated()
+            is AllProjectsViewActions.CreateProject -> {
+                lifecycleScope.launch {
+                    val project = viewAction.apply(childFragmentManager)
+                    project?.also { vm.projectCreated() }
+                }
             }
             is AllProjectsViewActions.ProjectCreated -> viewAction(requireActivity())
             is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
