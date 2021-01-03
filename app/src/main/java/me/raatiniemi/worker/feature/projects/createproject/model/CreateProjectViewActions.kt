@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.feature.projects.createproject.view.OnCreateProject
 import me.raatiniemi.worker.feature.shared.model.BiViewAction
 import me.raatiniemi.worker.feature.shared.model.EditTextViewAction
 
@@ -46,15 +47,15 @@ internal sealed class CreateProjectViewActions {
 
     data class Created(
         private val project: Project
-    ) : CreateProjectViewActions(), BiViewAction<DialogFragment, (Project?) -> Unit> {
-        override fun accept(t: DialogFragment, r: (Project?) -> Unit) {
+    ) : CreateProjectViewActions(), BiViewAction<DialogFragment, OnCreateProject> {
+        override fun accept(t: DialogFragment, r: OnCreateProject) {
             r(project)
             t.dismiss()
         }
     }
 
-    object Dismiss : CreateProjectViewActions(), BiViewAction<DialogFragment, (Project?) -> Unit> {
-        override fun accept(t: DialogFragment, r: (Project?) -> Unit) {
+    object Dismiss : CreateProjectViewActions(), BiViewAction<DialogFragment, OnCreateProject> {
+        override fun accept(t: DialogFragment, r: OnCreateProject) {
             r(null)
             t.dismiss()
         }

@@ -31,11 +31,13 @@ import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
+internal typealias OnCreateProject = (Project?) -> Unit
+
 class CreateProjectDialogFragment : DialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
-    private lateinit var onCreateProject: (Project?) -> Unit
+    private lateinit var onCreateProject: OnCreateProject
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -105,7 +107,7 @@ class CreateProjectDialogFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        internal fun newInstance(onCreateProject: (Project?) -> Unit): CreateProjectDialogFragment {
+        internal fun newInstance(onCreateProject: OnCreateProject): CreateProjectDialogFragment {
             return CreateProjectDialogFragment()
                 .also { it.onCreateProject = onCreateProject }
         }
