@@ -41,6 +41,7 @@ class CreateProjectDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        configureUserInterface()
         return inflater.inflate(R.layout.dialogfragment_create_project, container, false)
     }
 
@@ -63,6 +64,12 @@ class CreateProjectDialogFragment : DialogFragment() {
 
         showKeyboard(etProjectName)
         usageAnalytics.setCurrentScreen(this)
+    }
+
+    private fun configureUserInterface() {
+        dialog?.also {
+            it.setCanceledOnTouchOutside(false)
+        }
     }
 
     private fun observeViewModel() {
