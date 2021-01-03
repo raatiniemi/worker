@@ -51,6 +51,7 @@ class DateTimePickerDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        configureUserInterface()
         return inflater.inflate(R.layout.dialogfragment_date_time_picker, container, false)
     }
 
@@ -81,6 +82,12 @@ class DateTimePickerDialogFragment : DialogFragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
+    }
+
+    private fun configureUserInterface() {
+        dialog?.also {
+            it.setCanceledOnTouchOutside(false)
+        }
     }
 
     private fun configureUserInterface(configuration: DateTimeConfiguration) {
