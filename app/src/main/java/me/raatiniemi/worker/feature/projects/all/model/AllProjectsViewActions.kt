@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
@@ -40,12 +41,19 @@ import me.raatiniemi.worker.feature.shared.model.FragmentViewAction
 import me.raatiniemi.worker.feature.shared.view.show
 import timber.log.Timber
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 internal sealed class AllProjectsViewActions {
     object CreateProject : AllProjectsViewActions() {
-        fun action(fragment: Fragment, onCreateProject: () -> Unit) {
-            val dialogFragment = CreateProjectDialogFragment.newInstance(onCreateProject)
-            fragment.show(dialogFragment)
+        suspend fun apply(fm: FragmentManager): Project? {
+            return suspendCoroutine { continuation ->
+                show(fm) {
+                    CreateProjectDialogFragment.newInstance {
+                        continuation.resume(it)
+                    }
+                }
+            }
         }
     }
 
@@ -87,31 +95,33 @@ internal sealed class AllProjectsViewActions {
 
     data class ChooseDateAndTimeForClockIn(val item: ProjectsItem) : AllProjectsViewActions() {
         fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
-            val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
-                configuration.choose = { date ->
-                    onChooseTime(item.asProject(), date)
+            show(fragment.childFragmentManager) {
+                DateTimePickerDialogFragment.newInstance { configuration ->
+                    configuration.choose = { date ->
+                        onChooseTime(item.asProject(), date)
+                    }
                 }
             }
-            fragment.show(dialogFragment)
         }
     }
 
     data class ChooseDateAndTimeForClockOut(val item: ProjectsItem) : AllProjectsViewActions() {
         fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
-            val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
-                val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
-                val maxDate = minDate + 1.days
+            show(fragment.childFragmentManager) {
+                DateTimePickerDialogFragment.newInstance { configuration ->
+                    val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
+                    val maxDate = minDate + 1.days
 
-                val now = Milliseconds.now
-                val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
-                configuration.date = Date(milliseconds.value)
-                configuration.minDate = Date(minDate.value)
-                configuration.maxDate = Date(maxDate.value)
-                configuration.choose = { date ->
-                    onChooseTime(item.asProject(), date)
+                    val now = Milliseconds.now
+                    val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
+                    configuration.date = Date(milliseconds.value)
+                    configuration.minDate = Date(minDate.value)
+                    configuration.maxDate = Date(maxDate.value)
+                    configuration.choose = { date ->
+                        onChooseTime(item.asProject(), date)
+                    }
                 }
             }
-            fragment.show(dialogFragment)
         }
     }
 

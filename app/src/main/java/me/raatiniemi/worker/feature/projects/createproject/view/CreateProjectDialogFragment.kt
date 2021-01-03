@@ -23,24 +23,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
+
+internal typealias OnCreateProject = (Project?) -> Unit
 
 class CreateProjectDialogFragment : DialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
-    private lateinit var onCreateProject: () -> Unit
+    private var onCreateProject: OnCreateProject? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        configureUserInterface()
         return inflater.inflate(R.layout.dialogfragment_create_project, container, false)
     }
 
@@ -61,27 +66,22 @@ class CreateProjectDialogFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
 
-        showKeyboard(etProjectName)
-        usageAnalytics.setCurrentScreen(this)
+        try {
+            requireNotNull(onCreateProject) {
+                "No `OnCreateProject` closure is available"
+            }
+
+            showKeyboard(etProjectName)
+            usageAnalytics.setCurrentScreen(this)
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e, "Unable to show create project dialog")
+            dismiss()
+        }
     }
 
-    private fun observeViewModel() {
-        observe(vm.isCreateEnabled) {
-            btnCreate.isEnabled = it
-        }
-
-        observeAndConsume(vm.viewActions) { viewAction ->
-            when (viewAction) {
-                is CreateProjectViewActions.CreatedProject -> {
-                    onCreateProject()
-                    viewAction(this)
-                }
-                is CreateProjectViewActions.InvalidProjectNameErrorMessage -> {
-                    viewAction(etProjectName)
-                }
-                is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
-                is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
-            }
+    private fun configureUserInterface() {
+        dialog?.also {
+            it.setCanceledOnTouchOutside(false)
         }
     }
 
@@ -94,14 +94,34 @@ class CreateProjectDialogFragment : DialogFragment() {
         click(btnCreate) {
             vm.createProject()
         }
-        click(btnDismiss) {
-            dismiss()
+        click(btnDismiss) { vm.dismiss() }
+    }
+
+    private fun observeViewModel() {
+        observe(vm.isCreateEnabled) {
+            btnCreate.isEnabled = it
+        }
+
+        observeAndConsume(vm.viewActions) { viewAction ->
+            when (viewAction) {
+                is CreateProjectViewActions.InvalidProjectNameErrorMessage -> {
+                    viewAction(etProjectName)
+                }
+                is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
+                is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
+                is CreateProjectViewActions.Created -> {
+                    viewAction(this, requireNotNull(onCreateProject))
+                }
+                is CreateProjectViewActions.Dismiss -> {
+                    viewAction(this, requireNotNull(onCreateProject))
+                }
+            }
         }
     }
 
     companion object {
         @JvmStatic
-        internal fun newInstance(onCreateProject: () -> Unit): CreateProjectDialogFragment {
+        internal fun newInstance(onCreateProject: OnCreateProject): CreateProjectDialogFragment {
             return CreateProjectDialogFragment()
                 .also { it.onCreateProject = onCreateProject }
         }
