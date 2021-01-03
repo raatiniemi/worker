@@ -52,8 +52,6 @@ class CreateProjectDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dialog?.setTitle(R.string.projects_create_title)
-
         bindUserInterfaceToViewModel()
     }
 
@@ -81,6 +79,7 @@ class CreateProjectDialogFragment : DialogFragment() {
 
     private fun configureUserInterface() {
         dialog?.also {
+            it.setTitle(R.string.projects_create_title)
             it.setCanceledOnTouchOutside(false)
         }
     }
