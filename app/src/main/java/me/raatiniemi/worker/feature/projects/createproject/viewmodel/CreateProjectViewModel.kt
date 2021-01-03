@@ -89,4 +89,8 @@ internal class CreateProjectViewModel(
             }
         }
     }
+
+    fun dismiss() {
+        viewActions += CreateProjectViewActions.Dismiss
+    }
 }

@@ -48,4 +48,10 @@ internal sealed class CreateProjectViewActions {
             t.dismiss()
         }
     }
+
+    object Dismiss : CreateProjectViewActions(), DialogFragmentViewAction {
+        override fun accept(t: DialogFragment) {
+            t.dismiss()
+        }
+    }
 }

@@ -143,4 +143,15 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
         val actual = findProject(android.name)
         assertEquals(android, actual)
     }
+
+    // Dismiss
+
+    @Test
+    fun dismiss() {
+        vm.dismiss()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(CreateProjectViewActions.Dismiss, it)
+        }
+    }
 }

@@ -81,9 +81,7 @@ class CreateProjectDialogFragment : DialogFragment() {
         click(btnCreate) {
             vm.createProject()
         }
-        click(btnDismiss) {
-            dismiss()
-        }
+        click(btnDismiss) { vm.dismiss() }
     }
 
     private fun observeViewModel() {
@@ -102,6 +100,7 @@ class CreateProjectDialogFragment : DialogFragment() {
                 }
                 is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
                 is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
+                is CreateProjectViewActions.Dismiss -> viewAction(this)
             }
         }
     }
