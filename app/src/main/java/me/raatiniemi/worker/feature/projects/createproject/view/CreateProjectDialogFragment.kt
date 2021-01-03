@@ -72,6 +72,20 @@ class CreateProjectDialogFragment : DialogFragment() {
         }
     }
 
+    private fun bindUserInterfaceToViewModel() {
+        doOnTextChange(etProjectName) { vm.name = it }
+        done(etProjectName) {
+            vm.createProject()
+        }
+
+        click(btnCreate) {
+            vm.createProject()
+        }
+        click(btnDismiss) {
+            dismiss()
+        }
+    }
+
     private fun observeViewModel() {
         observe(vm.isCreateEnabled) {
             btnCreate.isEnabled = it
@@ -89,20 +103,6 @@ class CreateProjectDialogFragment : DialogFragment() {
                 is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
                 is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
             }
-        }
-    }
-
-    private fun bindUserInterfaceToViewModel() {
-        doOnTextChange(etProjectName) { vm.name = it }
-        done(etProjectName) {
-            vm.createProject()
-        }
-
-        click(btnCreate) {
-            vm.createProject()
-        }
-        click(btnDismiss) {
-            dismiss()
         }
     }
 
