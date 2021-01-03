@@ -104,7 +104,7 @@ class DateTimePickerDialogFragment : DialogFragment() {
             vm.choose()
         }
         click(btnCancel) {
-            dismiss()
+            vm.dismiss()
         }
     }
 
@@ -132,6 +132,7 @@ class DateTimePickerDialogFragment : DialogFragment() {
                     val configuration = requireNotNull(configuration)
                     viewAction(this, configuration.choose)
                 }
+                is DateTimeViewActions.Dismiss -> viewAction(this)
             }
         }
     }
