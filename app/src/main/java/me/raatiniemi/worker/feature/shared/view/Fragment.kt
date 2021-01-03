@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.feature.shared.view
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -95,10 +94,6 @@ internal fun Fragment.setTitle(title: String) {
     }
 }
 
-internal fun Fragment.show(dialogFragment: DialogFragment) {
-    dialogFragment.show(childFragmentManager, tag(dialogFragment::class))
-}
-
-private fun <T : Fragment> tag(reference: KClass<T>): String {
+internal fun <T : Fragment> tag(reference: KClass<T>): String {
     return reference.java.simpleName
 }

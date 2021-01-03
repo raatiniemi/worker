@@ -44,8 +44,9 @@ import java.util.*
 internal sealed class AllProjectsViewActions {
     object CreateProject : AllProjectsViewActions() {
         fun action(fragment: Fragment, onCreateProject: () -> Unit) {
-            val dialogFragment = CreateProjectDialogFragment.newInstance(onCreateProject)
-            fragment.show(dialogFragment)
+            show(fragment.childFragmentManager) {
+                CreateProjectDialogFragment.newInstance(onCreateProject)
+            }
         }
     }
 
@@ -87,31 +88,33 @@ internal sealed class AllProjectsViewActions {
 
     data class ChooseDateAndTimeForClockIn(val item: ProjectsItem) : AllProjectsViewActions() {
         fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
-            val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
-                configuration.choose = { date ->
-                    onChooseTime(item.asProject(), date)
+            show(fragment.childFragmentManager) {
+                DateTimePickerDialogFragment.newInstance { configuration ->
+                    configuration.choose = { date ->
+                        onChooseTime(item.asProject(), date)
+                    }
                 }
             }
-            fragment.show(dialogFragment)
         }
     }
 
     data class ChooseDateAndTimeForClockOut(val item: ProjectsItem) : AllProjectsViewActions() {
         fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
-            val dialogFragment = DateTimePickerDialogFragment.newInstance { configuration ->
-                val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
-                val maxDate = minDate + 1.days
+            show(fragment.childFragmentManager) {
+                DateTimePickerDialogFragment.newInstance { configuration ->
+                    val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
+                    val maxDate = minDate + 1.days
 
-                val now = Milliseconds.now
-                val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
-                configuration.date = Date(milliseconds.value)
-                configuration.minDate = Date(minDate.value)
-                configuration.maxDate = Date(maxDate.value)
-                configuration.choose = { date ->
-                    onChooseTime(item.asProject(), date)
+                    val now = Milliseconds.now
+                    val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
+                    configuration.date = Date(milliseconds.value)
+                    configuration.minDate = Date(minDate.value)
+                    configuration.maxDate = Date(maxDate.value)
+                    configuration.choose = { date ->
+                        onChooseTime(item.asProject(), date)
+                    }
                 }
             }
-            fragment.show(dialogFragment)
         }
     }
 
