@@ -30,6 +30,7 @@ import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 internal typealias OnCreateProject = (Project?) -> Unit
 
@@ -37,7 +38,7 @@ class CreateProjectDialogFragment : DialogFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
-    private lateinit var onCreateProject: OnCreateProject
+    private var onCreateProject: OnCreateProject? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,8 +66,17 @@ class CreateProjectDialogFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
 
-        showKeyboard(etProjectName)
-        usageAnalytics.setCurrentScreen(this)
+        try {
+            requireNotNull(onCreateProject) {
+                "No `OnCreateProject` closure is available"
+            }
+
+            showKeyboard(etProjectName)
+            usageAnalytics.setCurrentScreen(this)
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e, "Unable to show create project dialog")
+            dismiss()
+        }
     }
 
     private fun configureUserInterface() {
@@ -99,8 +109,12 @@ class CreateProjectDialogFragment : DialogFragment() {
                 }
                 is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
                 is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
-                is CreateProjectViewActions.Created -> viewAction(this, onCreateProject)
-                is CreateProjectViewActions.Dismiss -> viewAction(this, onCreateProject)
+                is CreateProjectViewActions.Created -> {
+                    viewAction(this, requireNotNull(onCreateProject))
+                }
+                is CreateProjectViewActions.Dismiss -> {
+                    viewAction(this, requireNotNull(onCreateProject))
+                }
             }
         }
     }
