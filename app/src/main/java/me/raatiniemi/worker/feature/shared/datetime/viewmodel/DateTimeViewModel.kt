@@ -105,4 +105,8 @@ internal class DateTimeViewModel : ViewModel() {
 
         return date
     }
+
+    fun dismiss() {
+        viewActions += DateTimeViewActions.Dismiss
+    }
 }

@@ -443,4 +443,15 @@ class DateTimeViewModelTest : AutoCloseKoinTest() {
             assertEquals(DateTimeViewActions.Choose(expected), it)
         }
     }
+
+    // Dismiss
+
+    @Test
+    fun dismiss() {
+        vm.dismiss()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(DateTimeViewActions.Dismiss, it)
+        }
+    }
 }

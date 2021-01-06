@@ -22,5 +22,5 @@ internal data class DateTimeConfiguration(
     var date: Date = Date(),
     var minDate: Date? = null,
     var maxDate: Date? = null,
-    var choose: (Date) -> Unit = { }
+    var choose: (Date?) -> Unit = { }
 )

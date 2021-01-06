@@ -106,6 +106,14 @@ internal sealed class DateTimeViewActions {
             dialogFragment.dismiss()
         }
     }
+
+    object Dismiss : DateTimeViewActions() {
+        operator fun invoke(dialogFragment: DialogFragment, choose: (Date?) -> Unit) {
+            choose(null)
+
+            dialogFragment.dismiss()
+        }
+    }
 }
 
 private fun findDatePicker(view: View): DatePicker {

@@ -94,11 +94,17 @@ internal sealed class AllProjectsViewActions {
         AllProjectsViewActions()
 
     data class ChooseDateAndTimeForClockIn(val item: ProjectsItem) : AllProjectsViewActions() {
-        fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
-            show(fragment.childFragmentManager) {
-                DateTimePickerDialogFragment.newInstance { configuration ->
-                    configuration.choose = { date ->
-                        onChooseTime(item.asProject(), date)
+        suspend fun apply(fm: FragmentManager): Pair<Project, Date>? {
+            return suspendCoroutine {
+                show(fm) {
+                    DateTimePickerDialogFragment.newInstance { configuration ->
+                        configuration.choose = { date ->
+                            if (date != null) {
+                                it.resume(item.asProject() to date)
+                            } else {
+                                it.resume(null)
+                            }
+                        }
                     }
                 }
             }
@@ -106,19 +112,25 @@ internal sealed class AllProjectsViewActions {
     }
 
     data class ChooseDateAndTimeForClockOut(val item: ProjectsItem) : AllProjectsViewActions() {
-        fun action(fragment: Fragment, onChooseTime: (Project, Date) -> Unit) {
-            show(fragment.childFragmentManager) {
-                DateTimePickerDialogFragment.newInstance { configuration ->
-                    val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
-                    val maxDate = minDate + 1.days
+        suspend fun apply(fm: FragmentManager): Pair<Project, Date>? {
+            return suspendCoroutine {
+                show(fm) {
+                    DateTimePickerDialogFragment.newInstance { configuration ->
+                        val minDate = Milliseconds(item.clockedInSinceInMilliseconds)
+                        val maxDate = minDate + 1.days
 
-                    val now = Milliseconds.now
-                    val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
-                    configuration.date = Date(milliseconds.value)
-                    configuration.minDate = Date(minDate.value)
-                    configuration.maxDate = Date(maxDate.value)
-                    configuration.choose = { date ->
-                        onChooseTime(item.asProject(), date)
+                        val now = Milliseconds.now
+                        val milliseconds = constrainedMilliseconds(now, minDate, maxDate)
+                        configuration.date = Date(milliseconds.value)
+                        configuration.minDate = Date(minDate.value)
+                        configuration.maxDate = Date(maxDate.value)
+                        configuration.choose = { date ->
+                            if (date != null) {
+                                it.resume(item.asProject() to date)
+                            } else {
+                                it.resume(null)
+                            }
+                        }
                     }
                 }
             }

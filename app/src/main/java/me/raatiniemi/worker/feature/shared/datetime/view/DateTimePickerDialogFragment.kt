@@ -32,11 +32,13 @@ import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class DateTimePickerDialogFragment : DialogFragment() {
-    private lateinit var configuration: DateTimeConfiguration
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: DateTimeViewModel by viewModel()
+
+    private var configuration: DateTimeConfiguration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,19 +47,29 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        configureUserInterface()
         return inflater.inflate(R.layout.dialogfragment_date_time_picker, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm.configure(configuration)
+        try {
+            val configuration = requireNotNull(configuration) {
+                "No configuration is available for view"
+            }
+            vm.configure(configuration)
 
-        configureUserInterface()
-        bindUserInterfaceToViewModel()
+            configureUserInterface(configuration)
+            bindUserInterfaceToViewModel()
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e, "Unable to show date time picker dialog")
+            dismiss()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -73,6 +85,12 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun configureUserInterface() {
+        dialog?.also {
+            it.setCanceledOnTouchOutside(false)
+        }
+    }
+
+    private fun configureUserInterface(configuration: DateTimeConfiguration) {
         update(dpDate, yearsMonthsDays(configuration.date))
         update(tpTime, hoursMinutes(configuration.date))
 
@@ -93,7 +111,7 @@ class DateTimePickerDialogFragment : DialogFragment() {
             vm.choose()
         }
         click(btnCancel) {
-            dismiss()
+            vm.dismiss()
         }
     }
 
@@ -117,7 +135,14 @@ class DateTimePickerDialogFragment : DialogFragment() {
                 is DateTimeViewActions.DateTimeIsOutsideOfAllowedInterval -> {
                     viewAction(requireContext())
                 }
-                is DateTimeViewActions.Choose -> viewAction(this, configuration.choose)
+                is DateTimeViewActions.Choose -> {
+                    val configuration = requireNotNull(configuration)
+                    viewAction(this, configuration.choose)
+                }
+                is DateTimeViewActions.Dismiss -> {
+                    val configuration = requireNotNull(configuration)
+                    viewAction(this, configuration.choose)
+                }
             }
         }
     }
