@@ -94,12 +94,16 @@ internal sealed class AllProjectsViewActions {
         AllProjectsViewActions()
 
     data class ChooseDateAndTimeForClockIn(val item: ProjectsItem) : AllProjectsViewActions() {
-        suspend fun apply(fm: FragmentManager): Pair<Project, Date> {
+        suspend fun apply(fm: FragmentManager): Pair<Project, Date>? {
             return suspendCoroutine {
                 show(fm) {
                     DateTimePickerDialogFragment.newInstance { configuration ->
                         configuration.choose = { date ->
-                            it.resume(item.asProject() to date)
+                            if (date != null) {
+                                it.resume(item.asProject() to date)
+                            } else {
+                                it.resume(null)
+                            }
                         }
                     }
                 }
@@ -108,7 +112,7 @@ internal sealed class AllProjectsViewActions {
     }
 
     data class ChooseDateAndTimeForClockOut(val item: ProjectsItem) : AllProjectsViewActions() {
-        suspend fun apply(fm: FragmentManager): Pair<Project, Date> {
+        suspend fun apply(fm: FragmentManager): Pair<Project, Date>? {
             return suspendCoroutine {
                 show(fm) {
                     DateTimePickerDialogFragment.newInstance { configuration ->
@@ -121,7 +125,11 @@ internal sealed class AllProjectsViewActions {
                         configuration.minDate = Date(minDate.value)
                         configuration.maxDate = Date(maxDate.value)
                         configuration.choose = { date ->
-                            it.resume(item.asProject() to date)
+                            if (date != null) {
+                                it.resume(item.asProject() to date)
+                            } else {
+                                it.resume(null)
+                            }
                         }
                     }
                 }

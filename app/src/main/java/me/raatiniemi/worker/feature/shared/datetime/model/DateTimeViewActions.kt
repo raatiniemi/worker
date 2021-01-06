@@ -24,7 +24,6 @@ import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
-import me.raatiniemi.worker.feature.shared.model.DialogFragmentViewAction
 import me.raatiniemi.worker.feature.shared.view.hide
 import me.raatiniemi.worker.feature.shared.view.show
 import me.raatiniemi.worker.feature.shared.view.yearMonthDayHourMinute
@@ -108,9 +107,11 @@ internal sealed class DateTimeViewActions {
         }
     }
 
-    object Dismiss : DateTimeViewActions(), DialogFragmentViewAction {
-        override fun accept(t: DialogFragment) {
-            t.dismiss()
+    object Dismiss : DateTimeViewActions() {
+        operator fun invoke(dialogFragment: DialogFragment, choose: (Date?) -> Unit) {
+            choose(null)
+
+            dialogFragment.dismiss()
         }
     }
 }

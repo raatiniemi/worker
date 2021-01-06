@@ -139,7 +139,10 @@ class DateTimePickerDialogFragment : DialogFragment() {
                     val configuration = requireNotNull(configuration)
                     viewAction(this, configuration.choose)
                 }
-                is DateTimeViewActions.Dismiss -> viewAction(this)
+                is DateTimeViewActions.Dismiss -> {
+                    val configuration = requireNotNull(configuration)
+                    viewAction(this, configuration.choose)
+                }
             }
         }
     }

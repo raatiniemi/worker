@@ -146,14 +146,14 @@ class AllProjectsFragment : Fragment() {
             )
             is AllProjectsViewActions.ChooseDateAndTimeForClockIn -> {
                 lifecycleScope.launch {
-                    val (project, date) = viewAction.apply(childFragmentManager)
-                    vm.clockInAt(project, date)
+                    viewAction.apply(childFragmentManager)
+                        ?.let { (project, date) -> vm.clockInAt(project, date) }
                 }
             }
             is AllProjectsViewActions.ChooseDateAndTimeForClockOut -> {
                 lifecycleScope.launch {
-                    val (project, date) = viewAction.apply(childFragmentManager)
-                    vm.clockOutAt(project, date)
+                    viewAction.apply(childFragmentManager)
+                        ?.let { (project, date) -> vm.clockOutAt(project, date) }
                 }
             }
             is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(
