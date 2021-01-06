@@ -5,6 +5,9 @@ stages:
   - sonar
   - deploy
 
+variables:
+  GRADLE_VERSION: "6.5.0"
+
 .configure-timezone: &configure-timezone
   - echo "Europe/Stockholm" > /etc/timezone
 
@@ -12,7 +15,7 @@ stages:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 .in-docker:
-  image: gradle:6.5.0-jdk8
+  image: "gradle:${GRADLE_VERSION}-jdk8"
   interruptible: true
   tags:
     - docker
@@ -185,6 +188,7 @@ app:instrumented test:
 # stage: sonar
 
 sonar:analyze:
+  image: "gradle:${GRADLE_VERSION}-jdk11"
   stage: sonar
   extends:
     - .in-android-environment
