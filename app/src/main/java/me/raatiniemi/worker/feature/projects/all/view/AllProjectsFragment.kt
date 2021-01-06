@@ -39,6 +39,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.util.*
 
 class AllProjectsFragment : Fragment() {
     private val eventBus = EventBus.getDefault()
@@ -144,17 +145,15 @@ class AllProjectsFragment : Fragment() {
                 viewAction
             )
             is AllProjectsViewActions.ChooseDateAndTimeForClockIn -> {
-                viewAction.action(this) { project, date ->
-                    lifecycleScope.launch {
-                        vm.clockInAt(project, date)
-                    }
+                lifecycleScope.launch {
+                    val (project, date) = viewAction.apply(childFragmentManager)
+                    vm.clockInAt(project, date)
                 }
             }
             is AllProjectsViewActions.ChooseDateAndTimeForClockOut -> {
-                viewAction.action(this) { project, date ->
-                    lifecycleScope.launch {
-                        vm.clockOutAt(project, date)
-                    }
+                lifecycleScope.launch {
+                    val (project, date) = viewAction.apply(childFragmentManager)
+                    vm.clockOutAt(project, date)
                 }
             }
             is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(
