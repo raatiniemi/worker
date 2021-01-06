@@ -41,6 +41,9 @@ variables:
   variables:
     ANDROID_HOME: "/opt/android-sdk"
 
+include:
+  - template: Dependency-Scanning.gitlab-ci.yml
+
 # stage: build-core
 
 core:build:
