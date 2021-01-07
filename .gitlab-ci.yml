@@ -181,15 +181,13 @@ app:instrumented test:
       --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
       --directories-to-pull /sdcard \
       --results-dir "$RESULTS_DIRECTORY" \
-      --timeout 90s 1>"$LOG_FILE" 2>&1;
-    FIREBASE_EXIT_VALUE=$?;
-    cat "$LOG_FILE";
+      --timeout 90s | tee "$LOG_FILE";
 
     BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/$RESULTS_DIRECTORY)" "$LOG_FILE");
     if [ -z "$BUCKET_NAME" ]; then
       echo "Unable to parse bucket name from log file.";
       exit 1;
-    fi
+    fi;
 
     BUCKET_DEVICE_FOLDER="$DEVICE_MODEL-$DEVICE_API_VERSION-$DEVICE_LOCALE-$DEVICE_ORIENTATION";
     BUCKET_COVERAGE_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/artifacts/coverage.ec";
@@ -199,14 +197,13 @@ app:instrumented test:
     if ! gsutil -m cp -R "$BUCKET_COVERAGE_PATH" "$COVERAGE_OUTPUT_DIRECTORY"; then
       echo "Unable to pull down coverage output from bucket.";
       exit $?;
-    fi
+    fi;
 
     mkdir -p "$REPORT_OUTPUT_DIRECTORY";
     if ! gsutil -m cp -R "$BUCKET_REPORT_PATH" "$REPORT_OUTPUT_DIRECTORY"; then
       echo "Unable to pull down report output from bucket.";
       exit $?;
-    fi
-    exit $FIREBASE_EXIT_VALUE;
+    fi;
   needs:
     - app:build
   artifacts:
