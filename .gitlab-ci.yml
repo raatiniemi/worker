@@ -168,42 +168,37 @@ app:instrumented test:
     - gcloud config set project "${GCLOUD_PROJECT_ID}"
     - echo "${GCLOUD_SERVICE_ACCOUNT}" >service-account.json
     - gcloud auth activate-service-account --key-file service-account.json
-  script: |
-    DEVICE="model=$DEVICE_MODEL,version=$DEVICE_API_VERSION,locale=$DEVICE_LOCALE,orientation=$DEVICE_ORIENTATION";
-    RESULTS_DIRECTORY="build-$CI_COMMIT_SHA";
-
-    LOG_FILE="instrumentation.log";
-    gcloud firebase test android run \
-      --type instrumentation \
-      --app "$APK_DIRECTORY/instrumented/app-instrumented.apk" \
-      --test "$APK_DIRECTORY/androidTest/instrumented/app-instrumented-androidTest.apk" \
-      --device "$DEVICE" \
-      --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
-      --directories-to-pull /sdcard \
-      --results-dir "$RESULTS_DIRECTORY" \
-      --timeout 90s | tee "$LOG_FILE";
-
-    BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/$RESULTS_DIRECTORY)" "$LOG_FILE");
-    if [ -z "$BUCKET_NAME" ]; then
-      echo "Unable to parse bucket name from log file.";
-      exit 1;
-    fi;
-
-    BUCKET_DEVICE_FOLDER="$DEVICE_MODEL-$DEVICE_API_VERSION-$DEVICE_LOCALE-$DEVICE_ORIENTATION";
-    BUCKET_COVERAGE_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/artifacts/coverage.ec";
-    BUCKET_REPORT_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/*.xml";
-
-    mkdir -p "$COVERAGE_OUTPUT_DIRECTORY";
-    if ! gsutil -m cp -R "$BUCKET_COVERAGE_PATH" "$COVERAGE_OUTPUT_DIRECTORY"; then
-      echo "Unable to pull down coverage output from bucket.";
-      exit $?;
-    fi;
-
-    mkdir -p "$REPORT_OUTPUT_DIRECTORY";
-    if ! gsutil -m cp -R "$BUCKET_REPORT_PATH" "$REPORT_OUTPUT_DIRECTORY"; then
-      echo "Unable to pull down report output from bucket.";
-      exit $?;
-    fi;
+  script:
+    - DEVICE="model=$DEVICE_MODEL,version=$DEVICE_API_VERSION,locale=$DEVICE_LOCALE,orientation=$DEVICE_ORIENTATION";
+    - RESULTS_DIRECTORY="build-$CI_COMMIT_SHA";
+    - LOG_FILE="instrumentation.log";
+    - gcloud firebase test android run \
+        --type instrumentation \
+        --app "$APK_DIRECTORY/instrumented/app-instrumented.apk" \
+        --test "$APK_DIRECTORY/androidTest/instrumented/app-instrumented-androidTest.apk" \
+        --device "$DEVICE" \
+        --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" \
+        --directories-to-pull /sdcard \
+        --results-dir "$RESULTS_DIRECTORY" \
+        --timeout 90s | tee "$LOG_FILE";
+    - BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/$RESULTS_DIRECTORY)" "$LOG_FILE");
+    - if [ -z "$BUCKET_NAME" ]; then
+        echo "Unable to parse bucket name from log file.";
+        exit 1;
+      fi;
+    - BUCKET_DEVICE_FOLDER="$DEVICE_MODEL-$DEVICE_API_VERSION-$DEVICE_LOCALE-$DEVICE_ORIENTATION";
+    - BUCKET_COVERAGE_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/artifacts/coverage.ec";
+    - BUCKET_REPORT_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/*.xml";
+    - mkdir -p "$COVERAGE_OUTPUT_DIRECTORY";
+    - if ! gsutil -m cp -R "$BUCKET_COVERAGE_PATH" "$COVERAGE_OUTPUT_DIRECTORY"; then
+        echo "Unable to pull down coverage output from bucket.";
+        exit $?;
+      fi;
+    - mkdir -p "$REPORT_OUTPUT_DIRECTORY";
+    - if ! gsutil -m cp -R "$BUCKET_REPORT_PATH" "$REPORT_OUTPUT_DIRECTORY"; then
+        echo "Unable to pull down report output from bucket.";
+        exit $?;
+      fi;
   needs:
     - app:build
   artifacts:
