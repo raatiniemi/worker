@@ -168,6 +168,8 @@ app:instrumented test:
     - gcloud config set project "${GCLOUD_PROJECT_ID}"
     - echo "${GCLOUD_SERVICE_ACCOUNT}" >service-account.json
     - gcloud auth activate-service-account --key-file service-account.json
+    - gcloud firebase test android models list
+    - gcloud firebase test android versions list
   script:
     - bin/run-instrumented-test
   needs:
