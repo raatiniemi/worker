@@ -168,37 +168,28 @@ app:instrumented test:
     - gcloud config set project "${GCLOUD_PROJECT_ID}"
     - echo "${GCLOUD_SERVICE_ACCOUNT}" >service-account.json
     - gcloud auth activate-service-account --key-file service-account.json
-  script:
-    - DEVICE="model=$DEVICE_MODEL,version=$DEVICE_API_VERSION,locale=$DEVICE_LOCALE,orientation=$DEVICE_ORIENTATION";
-    - RESULTS_DIRECTORY="build-$CI_COMMIT_SHA";
-    - LOG_FILE="instrumentation.log";
-    - gcloud firebase test android run
-        --type instrumentation
-        --app "$APK_DIRECTORY/instrumented/app-instrumented.apk"
-        --test "$APK_DIRECTORY/androidTest/instrumented/app-instrumented-androidTest.apk"
-        --device "$DEVICE"
-        --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec"
-        --directories-to-pull /sdcard
-        --results-dir "$RESULTS_DIRECTORY"
-        --timeout 90s | tee "$LOG_FILE" || true;
+  script: |
+    gcloud firebase test android run
+      --type instrumentation
+      --app "$APK_DIRECTORY/instrumented/app-instrumented.apk"
+      --test "$APK_DIRECTORY/androidTest/instrumented/app-instrumented-androidTest.apk"
+      --device "$DEVICE"
+      --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec"
+      --directories-to-pull /sdcard
+      --results-dir "$RESULTS_DIRECTORY"
+      --timeout 90s | tee "$LOG_FILE";
+  after_script:
     - BUCKET_NAME=$(grep -oP "(?<=browser\/).*(?<=\/$RESULTS_DIRECTORY)" "$LOG_FILE");
-    - if [ -z "$BUCKET_NAME" ]; then
-        echo "Unable to parse bucket name from log file.";
-        exit 1;
-      fi;
+    - if [ -z "$BUCKET_NAME" ]; then echo "Unable to parse bucket name from log file."; exit 1; fi;
     - BUCKET_DEVICE_FOLDER="$DEVICE_MODEL-$DEVICE_API_VERSION-$DEVICE_LOCALE-$DEVICE_ORIENTATION";
     - BUCKET_COVERAGE_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/artifacts/coverage.ec";
     - BUCKET_REPORT_PATH="gs://$BUCKET_NAME/$BUCKET_DEVICE_FOLDER/*.xml";
+    - echo "Fetching coverage output from gcloud";
     - mkdir -p "$COVERAGE_OUTPUT_DIRECTORY";
-    - if ! gsutil -m cp -R "$BUCKET_COVERAGE_PATH" "$COVERAGE_OUTPUT_DIRECTORY"; then
-        echo "Unable to pull down coverage output from bucket.";
-        exit $?;
-      fi;
+    - if ! gsutil -m cp -R "$BUCKET_COVERAGE_PATH" "$COVERAGE_OUTPUT_DIRECTORY"; then echo "Unable to pull down coverage output from bucket."; exit $?; fi;
+    - echo "Fetching report output from gcloud";
     - mkdir -p "$REPORT_OUTPUT_DIRECTORY";
-    - if ! gsutil -m cp -R "$BUCKET_REPORT_PATH" "$REPORT_OUTPUT_DIRECTORY"; then
-        echo "Unable to pull down report output from bucket.";
-        exit $?;
-      fi;
+    - if ! gsutil -m cp -R "$BUCKET_REPORT_PATH" "$REPORT_OUTPUT_DIRECTORY"; then echo "Unable to pull down report output from bucket."; exit $?; fi;
   needs:
     - app:build
   artifacts:
@@ -212,13 +203,16 @@ app:instrumented test:
     - main
   variables:
     BUILD_DIRECTORY: app/build
-    APK_DIRECTORY: "$BUILD_DIRECTORY/outputs/apk"
-    COVERAGE_OUTPUT_DIRECTORY: "$BUILD_DIRECTORY/outputs/code_coverage/"
-    REPORT_OUTPUT_DIRECTORY: "$BUILD_DIRECTORY/outputs/androidTest-results/connected/"
+    APK_DIRECTORY: "${BUILD_DIRECTORY}/outputs/apk"
+    COVERAGE_OUTPUT_DIRECTORY: "${BUILD_DIRECTORY}/outputs/code_coverage/"
+    REPORT_OUTPUT_DIRECTORY: "${BUILD_DIRECTORY}/outputs/androidTest-results/connected/"
+    RESULTS_DIRECTORY: "build-${CI_COMMIT_SHA}"
+    LOG_FILE: instrumentation.log
     DEVICE_MODEL: Pixel2
     DEVICE_API_VERSION: 28
     DEVICE_LOCALE: en
     DEVICE_ORIENTATION: portrait
+    DEVICE: "model=${DEVICE_MODEL},version=${DEVICE_API_VERSION},locale=${DEVICE_LOCALE},orientation=${DEVICE_ORIENTATION}";
 
 # stage: sonar
 
