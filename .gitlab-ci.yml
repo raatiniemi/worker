@@ -212,7 +212,7 @@ app:instrumented test:
     DEVICE_API_VERSION: 28
     DEVICE_LOCALE: en
     DEVICE_ORIENTATION: portrait
-    DEVICE: "model=${DEVICE_MODEL},version=${DEVICE_API_VERSION},locale=${DEVICE_LOCALE},orientation=${DEVICE_ORIENTATION}";
+    DEVICE: "model=${DEVICE_MODEL},version=${DEVICE_API_VERSION},locale=${DEVICE_LOCALE},orientation=${DEVICE_ORIENTATION}"
 
 # stage: sonar
 
