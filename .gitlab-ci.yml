@@ -5,8 +5,8 @@ stages:
   - sonar
   - deploy
 
-.configure-timezone: &configure-timezone
-  - echo "Europe/Stockholm" > /etc/timezone
+variables:
+  TZ: "Europe/Stockholm"
 
 .configure-gradle-home: &configure-gradle-home
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -21,7 +21,6 @@ stages:
   extends:
     - .in-docker
   before_script:
-    - *configure-timezone
     - *configure-gradle-home
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
@@ -31,7 +30,6 @@ stages:
     - .in-gradle-environment
   image: raatiniemi/android-environment:android-30-latest
   before_script:
-    - *configure-timezone
     - *configure-gradle-home
     - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
     - echo "$KEYSTORE_BASE64" | base64 -d >app/upload.jks
