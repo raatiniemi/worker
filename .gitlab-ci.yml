@@ -186,20 +186,14 @@ app:instrumented test:
   only:
     - main
 
-# stage: sonar
+# stage: post-test
 
-sonar:analyze:
-  stage: sonar
+generate coverage reports:
+  stage: post-test
   extends:
-    - .in-docker
-  image: sonarsource/sonar-scanner-cli
+    - .in-android-environment
   script:
     - ./gradlew jacocoTestReport
-    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
-        -Dsonar.organization="${SONAR_ORGANIZATION}"
-        -Dsonar.login="${SONAR_LOGIN}"
-        -Dsonar.projectVersion="${PROJECT_VERSION}"
-  interruptible: false
   needs:
     - core:build
     - app:build
@@ -214,6 +208,29 @@ sonar:analyze:
       - app/build
       - core/build
       - core-test/build
+  only:
+    - main
+
+# stage: sonar
+
+sonar:analyze:
+  stage: sonar
+  extends:
+    - .in-docker
+  image: sonarsource/sonar-scanner-cli
+  script:
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+        -Dsonar.organization="${SONAR_ORGANIZATION}"
+        -Dsonar.login="${SONAR_LOGIN}"
+        -Dsonar.projectVersion="${PROJECT_VERSION}"
+  interruptible: false
+  needs:
+    - core:build
+    - app:build
+    - core:test
+    - app:test
+    - app:instrumented test
+    - generate coverage reports
   only:
     - main
 
