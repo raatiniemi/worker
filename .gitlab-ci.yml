@@ -2,6 +2,7 @@ stages:
   - build-core
   - build-app
   - test
+  - post-test
   - sonar
   - deploy
 
@@ -44,6 +45,7 @@ core:build:
     - .in-gradle-environment
   script:
     - gradle core:assemble core-test:assemble
+    - echo "PROJECT_VERSION=$(gradle showVersion | grep -Poi '(?<=version[:]\s)(.+)')" >> core-build.env
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -52,6 +54,8 @@ core:build:
       - core/build
       - core-test/build
   artifacts:
+    reports:
+      dotenv: core-build.env
     paths:
       - core/build/libs/
       - core/build/classes/kotlin/main/
@@ -187,9 +191,14 @@ app:instrumented test:
 sonar:analyze:
   stage: sonar
   extends:
-    - .in-android-environment
+    - .in-docker
+  image: sonarsource/sonar-scanner-cli
   script:
-    - ./gradlew jacocoTestReport sonarqube
+    - ./gradlew jacocoTestReport
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+        -Dsonar.organization="${SONAR_ORGANIZATION}"
+        -Dsonar.login="${SONAR_LOGIN}"
+        -Dsonar.projectVersion="${PROJECT_VERSION}"
   interruptible: false
   needs:
     - core:build

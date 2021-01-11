@@ -33,7 +33,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
         classpath 'gradle.plugin.com.cinnober.gradle:semver-git:2.4.0'
 
         classpath 'com.google.gms:google-services:4.3.4'
@@ -62,4 +61,3 @@ ext {
 }
 
 apply from: 'versioning.gradle'
-apply from: 'sonarqube.gradle'
