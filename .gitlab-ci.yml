@@ -208,6 +208,13 @@ generate coverage reports:
       - app/build
       - core/build
       - core-test/build
+  artifacts:
+    paths:
+      - app/build/reports/jacoco/jacocoTestReport
+      - core/build/reports/jacoco/test
+      - core-test/build/reports/jacoco/test
+    when: always
+    expire_in: 4 hours
   only:
     - main
 
