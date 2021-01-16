@@ -16,31 +16,26 @@
 
 package me.raatiniemi.worker.feature.projects.all.view
 
-import android.view.View
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentAllProjectsItemBinding
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.shared.view.visibleIf
 
-internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val name: AppCompatTextView = view.findViewById(R.id.tvName)
-    private val time: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
-
-    val clockActivityToggle: AppCompatImageButton = view.findViewById(R.id.ibClockActivityToggle)
-    val clockActivityAt: AppCompatImageButton = view.findViewById(R.id.ibClockActivityAt)
-    val delete: AppCompatImageButton = view.findViewById(R.id.ibDelete)
-
-    private val clockedInSince: AppCompatTextView = view.findViewById(R.id.tvClockedInSince)
+internal class ViewHolder(private val binding: FragmentAllProjectsItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    val clockActivityToggle: AppCompatImageButton = binding.ibClockActivityToggle
+    val clockActivityAt: AppCompatImageButton = binding.ibClockActivityAt
+    val delete: AppCompatImageButton = binding.ibDelete
 
     fun bind(projectsItem: ProjectsItem) {
         val resources = itemView.resources
 
-        name.text = projectsItem.title
-        time.text = projectsItem.timeSummary
+        binding.tvName.text = projectsItem.title
+        binding.tvTimeSummary.text = projectsItem.timeSummary
 
-        with(clockActivityToggle) {
+        with(binding.ibClockActivityToggle) {
             isActivated = projectsItem.isActive
             contentDescription = if (projectsItem.isActive) {
                 resources.getString(R.string.projects_all_clock_out, projectsItem.title)
@@ -49,7 +44,7 @@ internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         }
 
-        with(clockActivityAt) {
+        with(binding.ibClockActivityAt) {
             contentDescription = if (projectsItem.isActive) {
                 resources.getString(R.string.projects_all_clock_out_at, projectsItem.title)
             } else {
@@ -57,19 +52,19 @@ internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         }
 
-        with(delete) {
+        with(binding.ibDelete) {
             contentDescription =
                 resources.getString(R.string.projects_all_delete, projectsItem.title)
         }
 
-        clockedInSince.visibleIf { projectsItem.isActive }
-        clockedInSince.text = projectsItem.getClockedInSince(resources)
+        binding.tvClockedInSince.visibleIf { projectsItem.isActive }
+        binding.tvClockedInSince.text = projectsItem.getClockedInSince(resources)
     }
 
     fun clearValues() {
-        name.text = null
-        time.text = null
+        binding.tvName.text = null
+        binding.tvTimeSummary.text = null
 
-        clockedInSince.text = null
+        binding.tvClockedInSince.text = null
     }
 }

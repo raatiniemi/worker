@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentAllProjectsItemBinding
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.feature.projects.all.view.ViewHolder
@@ -39,9 +40,8 @@ internal class AllProjectsAdapter(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
-        val view = inflater.inflate(viewType, viewGroup, false)
-
-        return ViewHolder(view)
+        val binding = FragmentAllProjectsItemBinding.inflate(inflater, viewGroup, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(vh: ViewHolder, index: Int) {

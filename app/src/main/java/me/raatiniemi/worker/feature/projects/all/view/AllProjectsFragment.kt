@@ -21,9 +21,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_all_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
 import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
@@ -57,6 +57,10 @@ class AllProjectsFragment : Fragment() {
         }
     }
 
+    private var _binding: FragmentAllProjectsBinding? = null
+    private val binding: FragmentAllProjectsBinding
+        get() = requireNotNull(_binding) { "Unable to configure binding for view" }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,8 +72,9 @@ class AllProjectsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_all_projects, container, false)
+    ): View {
+        _binding = FragmentAllProjectsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,6 +93,12 @@ class AllProjectsFragment : Fragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     override fun onDestroy() {
@@ -114,7 +125,7 @@ class AllProjectsFragment : Fragment() {
     private fun configureView() {
         setHasOptionsMenu(true)
 
-        rvProjects.apply {
+        binding.rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = allProjectsAdapter
         }
