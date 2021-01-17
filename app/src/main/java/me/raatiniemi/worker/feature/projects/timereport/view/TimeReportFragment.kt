@@ -22,9 +22,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_project_time_report.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportBinding
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.project.model.projectName
@@ -64,6 +64,10 @@ class TimeReportFragment : Fragment() {
 
     private var actionMode: ActionMode? = null
 
+    private var _binding: FragmentProjectTimeReportBinding? = null
+    private val binding: FragmentProjectTimeReportBinding
+        get() = requireNotNull(_binding) { "Unable to configure binding for view" }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -79,8 +83,9 @@ class TimeReportFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_project_time_report, container, false)
+    ): View {
+        _binding = FragmentProjectTimeReportBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,6 +107,12 @@ class TimeReportFragment : Fragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     override fun onDestroy() {
@@ -133,7 +144,7 @@ class TimeReportFragment : Fragment() {
     private fun configureView() {
         setHasOptionsMenu(true)
 
-        rvTimeReport.apply {
+        binding.rvTimeReport.apply {
             adapter = timeReportAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)

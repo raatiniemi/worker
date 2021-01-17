@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.feature.projects.timereport.view
 
-import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportItemBinding
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.time.calculateHoursMinutes
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -31,27 +28,25 @@ import me.raatiniemi.worker.feature.shared.view.click
 import me.raatiniemi.worker.feature.shared.view.longClick
 
 internal class ItemViewHolder(
+    private val binding: FragmentProjectTimeReportItemBinding,
     private val stateManager: TimeReportStateManager,
-    private val formatter: HoursMinutesFormat,
-    view: View
+    private val formatter: HoursMinutesFormat
 ) {
-    private val itemView: ConstraintLayout = view.findViewById(R.id.clItem)
-    private val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
-    private val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
-
     fun bind(timeInterval: TimeInterval) {
-        this.timeInterval.text = title(timeInterval)
+        with(binding) {
+            tvTimeInterval.text = title(timeInterval)
 
-        val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
-        timeSummary.text = formatter.apply(hoursMinutes)
+            val hoursMinutes = calculateHoursMinutes(calculateInterval(timeInterval))
+            tvTimeSummary.text = formatter.apply(hoursMinutes)
 
-        apply(stateManager.state(timeInterval), itemView)
-        longClick(itemView) {
-            stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
-            true
-        }
-        click(itemView) {
-            stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+            apply(stateManager.state(timeInterval), clItem)
+            longClick(clItem) {
+                stateManager.consume(TimeReportLongPressAction.LongPressItem(timeInterval))
+                true
+            }
+            click(clItem) {
+                stateManager.consume(TimeReportTapAction.TapItem(timeInterval))
+            }
         }
     }
 }

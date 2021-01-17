@@ -20,7 +20,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportWeekBinding
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportStateManagerAdapterDecorator
@@ -35,9 +35,9 @@ internal class TimeReportAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeekViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.fragment_project_time_report_week, parent, false)
+        val binding = FragmentProjectTimeReportWeekBinding.inflate(inflater, parent, false)
 
-        return WeekViewHolder(stateManager, formatter, view)
+        return WeekViewHolder(binding, stateManager, formatter)
     }
 
     override fun onBindViewHolder(vh: WeekViewHolder, position: Int) {

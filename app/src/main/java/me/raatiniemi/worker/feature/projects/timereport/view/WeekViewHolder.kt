@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.view.LayoutInflater
-import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportDayBinding
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportWeekBinding
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 import me.raatiniemi.worker.domain.timereport.model.TimeReportWeek
@@ -29,14 +29,10 @@ import me.raatiniemi.worker.domain.timereport.model.timeSummary
 import me.raatiniemi.worker.feature.projects.timereport.viewmodel.TimeReportStateManager
 
 internal class WeekViewHolder(
+    private val binding: FragmentProjectTimeReportWeekBinding,
     private val stateManager: TimeReportStateManager,
-    private val formatter: HoursMinutesFormat,
-    itemView: View
-) : RecyclerView.ViewHolder(itemView) {
-    private val title: AppCompatTextView = itemView.findViewById(R.id.tvTitle)
-    private val summary: AppCompatTextView = itemView.findViewById(R.id.tvSummary)
-    private val days: LinearLayoutCompat = itemView.findViewById(R.id.llDays)
-
+    private val formatter: HoursMinutesFormat
+) : RecyclerView.ViewHolder(binding.root) {
     fun bind(week: TimeReportWeek?) {
         if (week == null) {
             clearValues()
@@ -47,38 +43,36 @@ internal class WeekViewHolder(
     }
 
     private fun clearValues() {
-        title.text = ""
-        summary.text = ""
+        with(binding) {
+            tvTitle.text = ""
+            tvSummary.text = ""
 
-        days.removeAllViews()
+            llDays.removeAllViews()
+        }
     }
 
     private fun bindWeek(week: TimeReportWeek) {
-        title.text = itemView.resources.getString(R.string.projects_time_report_week, week(week))
-        summary.text = formatter.apply(timeSummary(week))
+        with(binding) {
+            tvTitle.text = itemView.resources.getString(
+                R.string.projects_time_report_week,
+                week(week)
+            )
+            tvSummary.text = formatter.apply(timeSummary(week))
 
-        buildItemList(days, week.days)
+            buildItemList(llDays, week.days)
+        }
     }
 
     private fun buildItemList(items: LinearLayoutCompat, days: List<TimeReportDay>) {
         items.removeAllViews()
 
-        val layoutInflater = LayoutInflater.from(items.context)
+        val inflater = LayoutInflater.from(items.context)
         days.forEach { day ->
-            layoutInflater.inflateDayView(items)
-                .also {
-                    bindItemView(it, day)
-                    items.addView(it)
-                }
+            val binding = FragmentProjectTimeReportDayBinding.inflate(inflater, items, false)
+            val viewHolder = DayViewHolder(binding, stateManager, formatter)
+            viewHolder.bind(day)
+
+            items.addView(binding.root)
         }
     }
-
-    private fun bindItemView(view: View, day: TimeReportDay) {
-        val viewHolder = DayViewHolder(stateManager, formatter, view)
-        viewHolder.bind(day)
-    }
-}
-
-private fun LayoutInflater.inflateDayView(items: LinearLayoutCompat): View {
-    return inflate(R.layout.fragment_project_time_report_day, items, false)
 }
