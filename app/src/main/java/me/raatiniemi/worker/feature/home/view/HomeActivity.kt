@@ -22,14 +22,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import kotlinx.android.synthetic.main.activity_home.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.ActivityHomeBinding
 import me.raatiniemi.worker.feature.ongoing.service.ReloadNotificationService
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -40,12 +44,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun configureView() {
-        setSupportActionBar(tbMain)
+        setSupportActionBar(binding.tbMain)
 
         val navController = findNavController(R.id.fragmentContainer)
-        val appBarConfiguration = AppBarConfiguration(navController.graph, dlProjects)
-        tbMain.setupWithNavController(navController, appBarConfiguration)
-        nvProjects.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(navController.graph, binding.dlProjects)
+        binding.tbMain.setupWithNavController(navController, appBarConfiguration)
+        binding.nvProjects.setupWithNavController(navController)
     }
 
     private fun reloadOngoingNotifications() {

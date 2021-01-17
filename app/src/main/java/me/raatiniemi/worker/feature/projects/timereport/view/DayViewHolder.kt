@@ -18,11 +18,9 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.constraintlayout.widget.ConstraintLayout
-import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportDayBinding
+import me.raatiniemi.worker.databinding.FragmentProjectTimeReportItemBinding
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
 import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
@@ -35,16 +33,10 @@ import me.raatiniemi.worker.feature.shared.view.visibleIf
 import me.raatiniemi.worker.feature.shared.view.widget.letterDrawable
 
 internal class DayViewHolder(
+    private val binding: FragmentProjectTimeReportDayBinding,
     private val stateManager: TimeReportStateManager,
-    private val formatter: HoursMinutesFormat,
-    private val itemView: View
+    private val formatter: HoursMinutesFormat
 ) {
-    private val header: ConstraintLayout = itemView.findViewById(R.id.clHeader)
-    private val letter: AppCompatImageView = itemView.findViewById(R.id.ivLetter)
-    private val title: AppCompatTextView = itemView.findViewById(R.id.tvTitle)
-    private val timeSummary: AppCompatTextView = itemView.findViewById(R.id.tvTimeSummary)
-    private val items: LinearLayoutCompat = itemView.findViewById(R.id.llItems)
-
     fun bind(day: TimeReportDay?) {
         if (day == null) {
             clearValues()
@@ -55,62 +47,57 @@ internal class DayViewHolder(
     }
 
     private fun clearValues() {
-        title.text = null
-        timeSummary.text = null
+        with(binding) {
+            tvTitle.text = null
+            tvTimeSummary.text = null
 
-        letter.setOnLongClickListener(null)
-        letter.setOnClickListener(null)
-        itemView.setOnClickListener(null)
+            ivLetter.setOnLongClickListener(null)
+            ivLetter.setOnClickListener(null)
+            root.setOnClickListener(null)
 
-        items.removeAllViews()
+            llItems.removeAllViews()
+        }
     }
 
     private fun bindDay(day: TimeReportDay) {
-        title(day).also {
-            title.text = it
-            letter.setImageDrawable(letterDrawable(firstLetter(it)))
-        }
-        timeSummary.text = timeSummaryWithDifference(day, formatter)
-
-        apply(stateManager.state(day), header)
-        longClick(letter) {
-            stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
-            true
-        }
-        click(letter) {
-            stateManager.consume(TimeReportTapAction.TapDay(day))
-        }
-        click(itemView) {
-            if (items.visibility == View.VISIBLE) {
-                stateManager.collapse(day)
-                return@click
+        with(binding) {
+            title(day).also {
+                tvTitle.text = it
+                ivLetter.setImageDrawable(letterDrawable(firstLetter(it)))
             }
-            stateManager.expand(day)
-        }
+            tvTimeSummary.text = timeSummaryWithDifference(day, formatter)
 
-        buildItemList(items, day.timeIntervals)
-        items.visibleIf(View.GONE) { stateManager.expanded(day) }
+            apply(stateManager.state(day), clHeader)
+            longClick(ivLetter) {
+                stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
+                true
+            }
+            click(ivLetter) {
+                stateManager.consume(TimeReportTapAction.TapDay(day))
+            }
+            click(root) {
+                if (llItems.visibility == View.VISIBLE) {
+                    stateManager.collapse(day)
+                    return@click
+                }
+                stateManager.expand(day)
+            }
+
+            buildItemList(llItems, day.timeIntervals)
+            llItems.visibleIf(View.GONE) { stateManager.expanded(day) }
+        }
     }
 
     private fun buildItemList(items: LinearLayoutCompat, timeIntervals: List<TimeInterval>) {
         items.removeAllViews()
 
-        val layoutInflater = LayoutInflater.from(items.context)
+        val inflater = LayoutInflater.from(items.context)
         timeIntervals.forEach { timeInterval ->
-            layoutInflater.inflateItemView(items)
-                .also {
-                    bindItemView(it, timeInterval)
-                    items.addView(it)
-                }
+            val binding = FragmentProjectTimeReportItemBinding.inflate(inflater, items, false)
+            val viewHolder = ItemViewHolder(binding, stateManager, formatter)
+            viewHolder.bind(timeInterval)
+
+            items.addView(binding.root)
         }
     }
-
-    private fun bindItemView(view: View, timeInterval: TimeInterval) {
-        val viewHolder = ItemViewHolder(stateManager, formatter, view)
-        viewHolder.bind(timeInterval)
-    }
-}
-
-private fun LayoutInflater.inflateItemView(items: LinearLayoutCompat): View {
-    return inflate(R.layout.fragment_project_time_report_item, items, false)
 }

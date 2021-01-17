@@ -21,8 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialogfragment_create_project.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.DialogfragmentCreateProjectBinding
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
@@ -40,13 +40,19 @@ class CreateProjectDialogFragment : DialogFragment() {
 
     private var onCreateProject: OnCreateProject? = null
 
+    private var _binding: DialogfragmentCreateProjectBinding? = null
+    private val binding: DialogfragmentCreateProjectBinding
+        get() = requireNotNull(_binding) { "Unable to configure binding for view" }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         configureUserInterface()
-        return inflater.inflate(R.layout.dialogfragment_create_project, container, false)
+
+        _binding = DialogfragmentCreateProjectBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,12 +75,18 @@ class CreateProjectDialogFragment : DialogFragment() {
                 "No `OnCreateProject` closure is available"
             }
 
-            showKeyboard(etProjectName)
+            showKeyboard(binding.etProjectName)
             usageAnalytics.setCurrentScreen(this)
         } catch (e: IllegalArgumentException) {
             Timber.w(e, "Unable to show create project dialog")
             dismiss()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     private fun configureUserInterface() {
@@ -85,29 +97,33 @@ class CreateProjectDialogFragment : DialogFragment() {
     }
 
     private fun bindUserInterfaceToViewModel() {
-        doOnTextChange(etProjectName) { vm.name = it }
-        done(etProjectName) {
+        doOnTextChange(binding.etProjectName) { vm.name = it }
+        done(binding.etProjectName) {
             vm.createProject()
         }
 
-        click(btnCreate) {
+        click(binding.btnCreate) {
             vm.createProject()
         }
-        click(btnDismiss) { vm.dismiss() }
+        click(binding.btnDismiss) { vm.dismiss() }
     }
 
     private fun observeViewModel() {
         observe(vm.isCreateEnabled) {
-            btnCreate.isEnabled = it
+            binding.btnCreate.isEnabled = it
         }
 
         observeAndConsume(vm.viewActions) { viewAction ->
             when (viewAction) {
                 is CreateProjectViewActions.InvalidProjectNameErrorMessage -> {
-                    viewAction(etProjectName)
+                    viewAction(binding.etProjectName)
                 }
-                is CreateProjectViewActions.DuplicateNameErrorMessage -> viewAction(etProjectName)
-                is CreateProjectViewActions.UnknownErrorMessage -> viewAction(etProjectName)
+                is CreateProjectViewActions.DuplicateNameErrorMessage -> {
+                    viewAction(binding.etProjectName)
+                }
+                is CreateProjectViewActions.UnknownErrorMessage -> {
+                    viewAction(binding.etProjectName)
+                }
                 is CreateProjectViewActions.Created -> {
                     viewAction(this, requireNotNull(onCreateProject))
                 }
