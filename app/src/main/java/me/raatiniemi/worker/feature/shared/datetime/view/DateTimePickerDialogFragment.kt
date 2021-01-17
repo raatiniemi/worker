@@ -21,8 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialogfragment_date_time_picker.*
-import me.raatiniemi.worker.R
+import me.raatiniemi.worker.databinding.DialogfragmentDateTimePickerBinding
 import me.raatiniemi.worker.domain.time.hoursMinutes
 import me.raatiniemi.worker.domain.time.yearsMonthsDays
 import me.raatiniemi.worker.feature.shared.datetime.model.DateTimeConfiguration
@@ -40,6 +39,10 @@ class DateTimePickerDialogFragment : DialogFragment() {
 
     private var configuration: DateTimeConfiguration? = null
 
+    private var _binding: DialogfragmentDateTimePickerBinding? = null
+    private val binding: DialogfragmentDateTimePickerBinding
+        get() = requireNotNull(_binding) { "Unable to configure binding for view" }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,9 +53,11 @@ class DateTimePickerDialogFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         configureUserInterface()
-        return inflater.inflate(R.layout.dialogfragment_date_time_picker, container, false)
+
+        _binding = DialogfragmentDateTimePickerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,6 +89,12 @@ class DateTimePickerDialogFragment : DialogFragment() {
         usageAnalytics.setCurrentScreen(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
     private fun configureUserInterface() {
         dialog?.also {
             it.setCanceledOnTouchOutside(false)
@@ -91,42 +102,42 @@ class DateTimePickerDialogFragment : DialogFragment() {
     }
 
     private fun configureUserInterface(configuration: DateTimeConfiguration) {
-        update(dpDate, yearsMonthsDays(configuration.date))
-        update(tpTime, hoursMinutes(configuration.date))
+        update(binding.dpDate, yearsMonthsDays(configuration.date))
+        update(binding.tpTime, hoursMinutes(configuration.date))
 
-        tpTime.setIs24HourView(true)
+        binding.tpTime.setIs24HourView(true)
     }
 
     private fun bindUserInterfaceToViewModel() {
-        change(dpDate, vm::chooseDate)
-        change(tpTime, vm::chooseTime)
+        change(binding.dpDate, vm::chooseDate)
+        change(binding.tpTime, vm::chooseTime)
 
-        click(tvDate) {
+        click(binding.tvDate) {
             vm.chooseDate()
         }
-        click(tvTime) {
+        click(binding.tvTime) {
             vm.chooseTime()
         }
-        click(btnOk) {
+        click(binding.btnOk) {
             vm.choose()
         }
-        click(btnCancel) {
+        click(binding.btnCancel) {
             vm.dismiss()
         }
     }
 
     private fun observeViewModel() {
         observe(vm.minDate) {
-            dpDate.minDate = it
+            binding.dpDate.minDate = it
         }
         observe(vm.maxDate) {
-            dpDate.maxDate = it
+            binding.dpDate.maxDate = it
         }
         observe(vm.date) {
-            tvDate.text = it
+            binding.tvDate.text = it
         }
         observe(vm.time) {
-            tvTime.text = it
+            binding.tvTime.text = it
         }
         observeAndConsume(vm.viewActions) { viewAction ->
             when (viewAction) {
