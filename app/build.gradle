@@ -93,12 +93,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility sourceCompatibilityVersion
-        targetCompatibility targetCompatibilityVersion
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 
     sourceSets {
@@ -138,6 +138,8 @@ android {
         unitTests.all {
             jacoco {
                 includeNoLocationClasses = true
+                // Ref: https://github.com/gradle/gradle/issues/5184#issuecomment-457865951
+                excludes = ['jdk.internal.*']
             }
         }
         animationsDisabled = true

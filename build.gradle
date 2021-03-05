@@ -31,7 +31,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha08'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'gradle.plugin.com.cinnober.gradle:semver-git:2.4.0'
 
@@ -53,11 +53,6 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.incremental = true
     }
-}
-
-ext {
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
-    targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
 apply from: 'versioning.gradle'
