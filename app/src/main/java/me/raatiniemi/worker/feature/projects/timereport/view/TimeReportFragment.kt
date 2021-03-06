@@ -47,7 +47,6 @@ import timber.log.Timber
 
 class TimeReportFragment : Fragment() {
     private val eventBus = EventBus.getDefault()
-    private val arguments: TimeReportFragmentArgs by navArgs()
     private val projectHolder: ProjectHolder by inject()
 
     private val usageAnalytics: UsageAnalytics by inject()
@@ -72,10 +71,12 @@ class TimeReportFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         eventBus.register(this)
-        projectHolder += Project(
-            id = ProjectId(arguments.projectId),
-            name = projectName(arguments.projectName)
-        )
+        arguments?.also {
+            projectHolder += Project(
+                id = ProjectId(it.getLong("projectId")),
+                name = projectName(it.getString("projectName"))
+            )
+        }
         lifecycle.addObserver(refreshActiveWeeks)
     }
 
