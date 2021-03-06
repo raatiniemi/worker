@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.projects.all.model
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -32,7 +33,6 @@ import me.raatiniemi.worker.domain.time.constrainedMilliseconds
 import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.feature.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
-import me.raatiniemi.worker.feature.projects.all.view.AllProjectsFragmentDirections
 import me.raatiniemi.worker.feature.projects.createproject.view.CreateProjectDialogFragment
 import me.raatiniemi.worker.feature.shared.datetime.view.DateTimePickerDialogFragment
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
@@ -80,13 +80,13 @@ internal sealed class AllProjectsViewActions {
         private val project: Project
     ) : AllProjectsViewActions(), FragmentViewAction {
         override fun accept(t: Fragment) {
-            val destinationAction = AllProjectsFragmentDirections.openTimeReport(
-                project.id.value,
-                project.name.value
-            )
+            val arguments = Bundle().apply {
+                putLong("projectId", project.id.value)
+                putString("projectName", project.name.value)
+            }
 
             t.findNavController()
-                .navigate(destinationAction)
+                .navigate(R.id.navTimeReport, arguments)
         }
     }
 
