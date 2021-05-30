@@ -3,6 +3,7 @@
   image: "raatiniemi/android-environment:android-${ANDROID_API_VERSION}-latest"
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
+    - sed -i -e 's/-all.zip/-bin.zip/' "${GRADLE_WRAPPER_DIRECTORY}/gradle-wrapper.properties"
     - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
     - echo "$KEYSTORE_BASE64" | base64 -d >app/upload.jks
   interruptible: true
@@ -11,4 +12,5 @@
   variables:
     ANDROID_HOME: "/opt/android-sdk"
     ANDROID_API_VERSION: "30"
+    GRADLE_WRAPPER_DIRECTORY: "./gradle/wrapper"
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
