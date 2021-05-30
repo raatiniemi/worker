@@ -1,0 +1,10 @@
+---
+.in-gradle-environment:
+  image: gradle:6.5.0-jdk8
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+  interruptible: true
+  tags:
+    - docker
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"

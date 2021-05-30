@@ -1,0 +1,13 @@
+---
+.in-android-environment:
+  image: raatiniemi/android-environment:android-30-latest
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
+    - echo "$KEYSTORE_BASE64" | base64 -d >app/upload.jks
+  interruptible: true
+  tags:
+    - docker
+  variables:
+    ANDROID_HOME: "/opt/android-sdk"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"

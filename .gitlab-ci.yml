@@ -9,33 +9,9 @@ stages:
 variables:
   TZ: "Europe/Stockholm"
 
-.configure-gradle-home: &configure-gradle-home
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-
-.in-docker:
-  image: gradle:6.5.0-jdk8
-  interruptible: true
-  tags:
-    - docker
-
-.in-gradle-environment:
-  extends:
-    - .in-docker
-  before_script:
-    - *configure-gradle-home
-  variables:
-    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-
-.in-android-environment:
-  extends:
-    - .in-gradle-environment
-  image: raatiniemi/android-environment:android-30-latest
-  before_script:
-    - *configure-gradle-home
-    - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
-    - echo "$KEYSTORE_BASE64" | base64 -d >app/upload.jks
-  variables:
-    ANDROID_HOME: "/opt/android-sdk"
+include:
+  - '/.gitlab-ci/android.yml'
+  - '/.gitlab-ci/gradle.yml'
 
 # stage: build-core
 
@@ -161,8 +137,6 @@ app:test:
 
 app:instrumented test:
   stage: test
-  extends:
-    - .in-docker
   image: google/cloud-sdk:latest
   before_script:
     - if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "No project id is available for gcloud configuration, ensure that \$GCLOUD_PROJECT_ID is set for project."; exit 1; fi;
@@ -174,6 +148,8 @@ app:instrumented test:
     - gcloud firebase test android versions list
   script:
     - bin/run-instrumented-test
+  tags:
+    - docker
   needs:
     - app:build
   artifacts:
@@ -222,8 +198,6 @@ generate coverage reports:
 
 sonar:analyze:
   stage: sonar
-  extends:
-    - .in-docker
   image: sonarsource/sonar-scanner-cli
   script:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
@@ -231,6 +205,8 @@ sonar:analyze:
         -Dsonar.login="${SONAR_LOGIN}"
         -Dsonar.projectVersion="${PROJECT_VERSION}"
   interruptible: false
+  tags:
+    - docker
   needs:
     - core:build
     - app:build
@@ -245,8 +221,6 @@ sonar:analyze:
 
 app:deploy:
   stage: deploy
-  extends:
-    - .in-docker
   image: ruby:2.7.1-buster
   script:
     - if [ -z "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" ]; then echo "No Google Play Android developer key is available, ensure that \$GOOGLE_PLAY_ANDROID_DEVELOPER_KEY is set for project."; exit 1; fi;
@@ -254,6 +228,8 @@ app:deploy:
     - bundle install
     - bundle exec fastlane run upload_to_play_store
   interruptible: false
+  tags:
+    - docker
   needs:
     - app:build
     - core:test
