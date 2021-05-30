@@ -23,7 +23,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.4'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5'
     }
 }
 
@@ -153,18 +153,19 @@ dependencies {
     def flipperVersion = '0.63.0'
     def soloaderVersion = '0.9.0'
 
-    def androidxCoreVersion = '1.3.2'
+    def androidxCoreVersion = '1.5.0'
     def annotationVersion = '1.2.0'
-    def appcompatVersion = '1.2.0'
+    def appcompatVersion = '1.3.0'
     def constraintLayoutVersion = '2.0.4'
-    def recyclerViewVersion = '1.1.0'
+    def recyclerViewVersion = '1.2.0'
     def cardViewVersion = '1.0.0'
     def preferenceVersion = '1.1.1'
     def lifecycleVersion = '2.3.1'
-    def roomVersion = '2.2.6'
-    def pagingVersion = '2.1.2'
-    def fragmentVersion = '1.3.2'
-    def navigationVersion = '2.3.4'
+    def lifecycleExtensionsVersion = '2.2.0'
+    def roomVersion = '2.3.0'
+    def pagingVersion = '3.0.0'
+    def fragmentVersion = '1.3.4'
+    def navigationVersion = '2.3.5'
     def materialVersion = '1.3.0'
     def koinVersion = '2.1.6'
     def timberVersion = '4.7.1'
@@ -190,8 +191,8 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.cardview:cardview:$cardViewVersion"
     implementation "androidx.preference:preference-ktx:$preferenceVersion"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtensionsVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
