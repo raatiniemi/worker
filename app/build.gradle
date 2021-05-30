@@ -150,8 +150,8 @@ android {
 }
 
 dependencies {
-    def flipperVersion = '0.63.0'
-    def soloaderVersion = '0.9.0'
+    def flipperVersion = '0.91.2'
+    def soloaderVersion = '0.10.1'
 
     def androidxCoreVersion = '1.5.0'
     def annotationVersion = '1.2.0'
