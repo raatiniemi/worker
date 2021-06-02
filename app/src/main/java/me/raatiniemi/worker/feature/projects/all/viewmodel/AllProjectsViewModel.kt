@@ -23,7 +23,6 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.datasource.AllProjectsDataSource
@@ -43,7 +42,6 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.ElapsedTimePastAllowedEx
 import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
@@ -63,7 +61,7 @@ internal class AllProjectsViewModel(
     private val clockOut: ClockOut,
     private val removeProject: RemoveProject,
     dispatchProvider: CoroutineDispatchProvider
-) : ViewModel(), AllProjectsActionListener {
+) : ViewModel() {
     val projects: LiveData<PagedList<ProjectsItem>>
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
@@ -135,31 +133,29 @@ internal class AllProjectsViewModel(
         }
     }
 
-    override fun open(item: ProjectsItem) {
+    fun open(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectOpen)
 
         viewActions += AllProjectsViewActions.OpenProject(item.asProject())
     }
 
-    override fun toggle(item: ProjectsItem, date: Date) {
+    suspend fun toggle(item: ProjectsItem, date: Date) {
         usageAnalytics.log(Event.TapProjectToggle)
 
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!item.isActive) {
-                clockInAt(item.asProject(), date)
-                return@launch
-            }
-
-            if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
-                viewActions += AllProjectsViewActions.ShowConfirmClockOutMessage(item, date)
-                return@launch
-            }
-
-            clockOutAt(item.asProject(), date)
+        if (!item.isActive) {
+            clockInAt(item.asProject(), date)
+            return
         }
+
+        if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
+            viewActions += AllProjectsViewActions.ShowConfirmClockOutMessage(item, date)
+            return
+        }
+
+        clockOutAt(item.asProject(), date)
     }
 
-    override fun at(item: ProjectsItem) {
+    fun at(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectAt)
 
         viewActions += if (item.isActive) {
@@ -169,7 +165,7 @@ internal class AllProjectsViewModel(
         }
     }
 
-    override fun remove(item: ProjectsItem) {
+    fun remove(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectRemove)
 
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)

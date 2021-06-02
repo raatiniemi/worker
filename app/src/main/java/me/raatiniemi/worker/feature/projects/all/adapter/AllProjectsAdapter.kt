@@ -21,8 +21,8 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsItemBinding
+import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.feature.projects.all.view.ViewHolder
 import me.raatiniemi.worker.feature.shared.view.click
 import me.raatiniemi.worker.feature.shared.view.hintContentDescription
@@ -30,7 +30,7 @@ import me.raatiniemi.worker.feature.shared.view.longClick
 import java.util.*
 
 internal class AllProjectsAdapter(
-    private val listener: AllProjectsActionListener
+    private val consumer: (AllProjectsActions) -> Unit
 ) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
@@ -55,21 +55,21 @@ internal class AllProjectsAdapter(
             bind(item)
 
             click(itemView) {
-                listener.open(item)
+                consumer(AllProjectsActions.Open(item))
             }
 
             click(clockActivityToggle) {
-                listener.toggle(item, Date())
+                consumer(AllProjectsActions.Toggle(item, Date()))
             }
             longClick(clockActivityToggle, ::hintContentDescription)
 
             click(clockActivityAt) {
-                listener.at(item)
+                consumer(AllProjectsActions.At(item))
             }
             longClick(clockActivityAt, ::hintContentDescription)
 
             click(delete) {
-                listener.remove(item)
+                consumer(AllProjectsActions.Remove(item))
             }
             longClick(delete, ::hintContentDescription)
         }

@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
 import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
+import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.feature.settings.model.TimeSummaryStartingPointChangeEvent
@@ -47,7 +48,18 @@ class AllProjectsFragment : Fragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: AllProjectsViewModel by viewModel()
     private val allProjectsAdapter: AllProjectsAdapter by lazy {
-        AllProjectsAdapter(vm)
+        AllProjectsAdapter { action ->
+            when (action) {
+                is AllProjectsActions.Open -> vm.open(action.item)
+                is AllProjectsActions.Toggle -> {
+                    lifecycleScope.launch {
+                        vm.toggle(action.item, action.date)
+                    }
+                }
+                is AllProjectsActions.At -> vm.at(action.item)
+                is AllProjectsActions.Remove -> vm.remove(action.item)
+            }
+        }
     }
 
     private val refreshActiveProjects = RefreshTimeIntervalLifecycleObserver {
