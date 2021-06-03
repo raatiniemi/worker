@@ -18,10 +18,10 @@ package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.google.firebase.perf.metrics.AddTrace
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.datasource.TimeReportWeekPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
@@ -83,9 +83,9 @@ internal class TimeReportViewModel(
         _selectedItems.postValue(HashSet())
     }
 
-    suspend fun toggleRegisteredStateForSelectedItems() = withContext(Dispatchers.IO) {
+    suspend fun toggleRegisteredStateForSelectedItems() {
         try {
-            val selectedItems = _selectedItems.value ?: return@withContext
+            val selectedItems = _selectedItems.value ?: return
             val timeIntervals = selectedItems.toList()
 
             markRegisteredTime(timeIntervals)
@@ -101,9 +101,9 @@ internal class TimeReportViewModel(
         }
     }
 
-    suspend fun removeSelectedItems() = withContext(Dispatchers.IO) {
+    suspend fun removeSelectedItems() {
         try {
-            val selectedItems = _selectedItems.value ?: return@withContext
+            val selectedItems = _selectedItems.value ?: return
             val timeIntervals = selectedItems.toList()
 
             removeTime(timeIntervals)
