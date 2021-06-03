@@ -118,6 +118,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         val actual = mutableListOf<AllProjectsViewActions>()
         vm.viewActions.observeForever(actual::add)
         val expected = listOf(
+            AllProjectsViewActions.ReloadProjects,
             AllProjectsViewActions.ProjectCreated
         )
 
@@ -208,7 +209,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectClockIn
         )
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android)
+            AllProjectsViewActions.UpdateNotification(android),
+            AllProjectsViewActions.ReloadProjects
         )
 
         runBlocking {
@@ -277,7 +279,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectClockOut
         )
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android)
+            AllProjectsViewActions.UpdateNotification(android),
+            AllProjectsViewActions.ReloadProjects
         )
 
         runBlocking {
@@ -429,7 +432,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         vm.viewActions.observeForever(actual::add)
         val events = listOf(Event.ProjectClockIn)
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android)
+            AllProjectsViewActions.UpdateNotification(android),
+            AllProjectsViewActions.ReloadProjects
         )
 
         runBlocking {
@@ -489,7 +493,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectClockOut
         )
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android)
+            AllProjectsViewActions.UpdateNotification(android),
+            AllProjectsViewActions.ReloadProjects
         )
 
         runBlocking {
@@ -510,7 +515,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectRemove
         )
         val expected = listOf(
-            AllProjectsViewActions.DismissNotification(android)
+            AllProjectsViewActions.DismissNotification(android),
+            AllProjectsViewActions.ReloadProjects
         )
 
         runBlocking {
@@ -532,7 +538,8 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectRemove
         )
         val expected = listOf(
-            AllProjectsViewActions.DismissNotification(android)
+            AllProjectsViewActions.DismissNotification(android),
+            AllProjectsViewActions.ReloadProjects
         )
 
         val project = runBlocking {

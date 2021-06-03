@@ -21,6 +21,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
@@ -32,7 +33,9 @@ import me.raatiniemi.worker.feature.settings.model.TimeSummaryStartingPointChang
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.feature.shared.view.*
+import me.raatiniemi.worker.feature.shared.view.ConfirmAction
+import me.raatiniemi.worker.feature.shared.view.RefreshTimeIntervalLifecycleObserver
+import me.raatiniemi.worker.feature.shared.view.observeAndConsume
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,7 +43,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
 
 class AllProjectsFragment : Fragment() {
     private val eventBus = EventBus.getDefault()
@@ -64,8 +66,7 @@ class AllProjectsFragment : Fragment() {
 
     private val refreshActiveProjects = RefreshTimeIntervalLifecycleObserver {
         lifecycleScope.launch {
-            val projects = allProjectsAdapter.currentList ?: return@launch
-            vm.refreshActiveProjects(projects)
+            vm.refreshActiveProjects(allProjectsAdapter.snapshot())
         }
     }
 
@@ -144,10 +145,11 @@ class AllProjectsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        observe(vm.projects) {
-            allProjectsAdapter.submitList(it)
+        lifecycleScope.launch {
+            vm.projects.collectLatest {
+                allProjectsAdapter.submitData(it)
+            }
         }
-
         observeAndConsume(vm.viewActions) {
             processViewAction(it)
         }
@@ -155,6 +157,7 @@ class AllProjectsFragment : Fragment() {
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
+            is AllProjectsViewActions.ReloadProjects -> allProjectsAdapter.refresh()
             is AllProjectsViewActions.CreateProject -> {
                 lifecycleScope.launch {
                     val project = viewAction.apply(childFragmentManager)

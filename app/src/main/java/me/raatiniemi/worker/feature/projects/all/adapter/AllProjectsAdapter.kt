@@ -18,7 +18,7 @@ package me.raatiniemi.worker.feature.projects.all.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsItemBinding
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
@@ -31,7 +31,7 @@ import java.util.*
 
 internal class AllProjectsAdapter(
     private val consumer: (AllProjectsActions) -> Unit
-) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
+) : PagingDataAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
     override fun getItemViewType(position: Int): Int {

@@ -16,26 +16,20 @@
 
 package me.raatiniemi.worker.feature.projects.all.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.datasource.AllProjectsDataSource
+import me.raatiniemi.worker.data.datasource.AllProjectsPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
-import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.CountProjects
 import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timeinterval.model.timeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.ElapsedTimePastAllowedException
@@ -47,60 +41,31 @@ import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import timber.log.Timber
 import java.util.*
+
+private const val ALL_PROJECTS_PAGE_SIZE = 6
 
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
     countProjects: CountProjects,
     findProjects: FindProjects,
-    private val getProjectTimeSince: GetProjectTimeSince,
+    getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
-    private val removeProject: RemoveProject,
-    dispatchProvider: CoroutineDispatchProvider
+    private val removeProject: RemoveProject
 ) : ViewModel() {
-    val projects: LiveData<PagedList<ProjectsItem>>
+    val projects = Pager(PagingConfig(pageSize = ALL_PROJECTS_PAGE_SIZE)) {
+        AllProjectsPagingSource(
+            keyValueStore,
+            countProjects,
+            findProjects,
+            getProjectTimeSince
+        )
+    }.flow.cachedIn(viewModelScope)
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
-
-    init {
-        val config = PagedList.Config.Builder()
-            .setPageSize(10)
-            .setEnablePlaceholders(false)
-            .build()
-
-        val factory = AllProjectsDataSource.Factory(
-            viewModelScope,
-            dispatchProvider,
-            countProjects,
-            findProjects
-        )
-        val builder = LivePagedListBuilder(
-            factory.map(::buildProjectsItem),
-            config
-        )
-        projects = builder.build()
-    }
-
-    private fun buildProjectsItem(project: Project): ProjectsItem {
-        val registeredTime = loadRegisteredTimeForProject(project)
-
-        return ProjectsItem(project, registeredTime)
-    }
-
-    private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
-        return try {
-            runBlocking {
-                getProjectTimeSince(project, timeIntervalStartingPoint(keyValueStore))
-            }
-        } catch (e: DomainException) {
-            Timber.w(e, "Unable to get registered time for project")
-            emptyList()
-        }
-    }
 
     internal fun createProject() {
         viewActions += AllProjectsViewActions.CreateProject
@@ -113,9 +78,7 @@ internal class AllProjectsViewModel(
     }
 
     fun reloadProjects() {
-        projects.value?.run {
-            dataSource.invalidate()
-        }
+        viewActions += AllProjectsViewActions.ReloadProjects
     }
 
     @AddTrace(name = TracePerformanceEvents.REFRESH_PROJECTS)
