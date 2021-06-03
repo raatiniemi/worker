@@ -30,12 +30,16 @@ internal inline fun <T : View> longClick(view: T, crossinline block: (T) -> Bool
     }
 }
 
-fun View.visibleIf(defaultVisibility: Int = View.INVISIBLE, predicate: () -> Boolean) {
-    if (defaultVisibility != View.INVISIBLE && defaultVisibility != View.GONE) {
-        throw IllegalArgumentException("defaultVisibility needs to be either `View.GONE` or `View.INVISIBLE`")
+internal fun visibleIf(
+    view: View,
+    defaultVisibility: Int = View.INVISIBLE,
+    predicate: () -> Boolean
+) {
+    require(defaultVisibility == View.INVISIBLE || defaultVisibility == View.GONE) {
+        "defaultVisibility needs to be either `View.GONE` or `View.INVISIBLE`"
     }
 
-    visibility = if (predicate()) {
+    view.visibility = if (predicate()) {
         View.VISIBLE
     } else {
         defaultVisibility

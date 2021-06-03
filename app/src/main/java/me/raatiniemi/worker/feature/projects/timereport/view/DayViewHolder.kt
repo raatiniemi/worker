@@ -84,7 +84,7 @@ internal class DayViewHolder(
             }
 
             buildItemList(llItems, day.timeIntervals)
-            llItems.visibleIf(View.GONE) { stateManager.expanded(day) }
+            visibleIf(llItems, View.GONE) { stateManager.expanded(day) }
         }
     }
 
