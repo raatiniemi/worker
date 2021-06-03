@@ -19,10 +19,8 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentProjectTimeReportBinding
 import me.raatiniemi.worker.domain.project.model.Project
@@ -195,13 +193,13 @@ class TimeReportFragment : Fragment() {
     }
 
     private fun toggleRegisteredStateForSelectedItems() {
-        lifecycleScope.launch {
+        launch {
             vm.toggleRegisteredStateForSelectedItems()
         }
     }
 
     private fun confirmRemoveSelectedItems() {
-        lifecycleScope.launch {
+        launch {
             val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
             if (confirmAction == ConfirmAction.NO) {
                 return@launch
