@@ -18,7 +18,9 @@ package me.raatiniemi.worker.feature.projects.all.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import me.raatiniemi.worker.R
@@ -91,7 +93,7 @@ class AllProjectsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configureView()
+        configureUserInterface()
         observeViewModel()
     }
 
@@ -128,12 +130,29 @@ class AllProjectsFragment : Fragment() {
         else -> super.onOptionsItemSelected(menuItem)
     }
 
-    private fun configureView() {
+    private fun configureUserInterface() {
         setHasOptionsMenu(true)
 
         binding.rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = allProjectsAdapter
+        }
+
+        launch {
+            allProjectsAdapter.loadStateFlow.collectLatest {
+                with(binding) {
+                    if (it.refresh is LoadState.Error) {
+                        rvProjects.isVisible = false
+                        tvEmptyProjects.isVisible = true
+                        tvEmptyProjects.text = getString(R.string.projects_all_error_text)
+                    } else {
+                        val isEmpty = allProjectsAdapter.itemCount < 1
+                        rvProjects.isVisible = !isEmpty
+                        tvEmptyProjects.isVisible = isEmpty
+                        tvEmptyProjects.text = getString(R.string.projects_all_empty_text)
+                    }
+                }
+            }
         }
     }
 

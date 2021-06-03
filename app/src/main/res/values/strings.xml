@@ -28,6 +28,7 @@
     <string name="projects_all_project_created_message">New project have been created</string>
 
     <string name="projects_all_empty_text">You haven\'t created\na project yet…</string>
+    <string name="projects_all_error_text">Unable to load projects…</string>
 
     <string name="projects_all_clock_in">Clock in %s</string>
     <string name="projects_all_clock_in_at">Clock in %s at</string>
