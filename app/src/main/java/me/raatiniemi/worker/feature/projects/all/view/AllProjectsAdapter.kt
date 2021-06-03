@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.feature.projects.all.adapter
+package me.raatiniemi.worker.feature.projects.all.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,7 +23,6 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsItemBinding
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.feature.projects.all.view.ViewHolder
 import me.raatiniemi.worker.feature.shared.view.click
 import me.raatiniemi.worker.feature.shared.view.hintContentDescription
 import me.raatiniemi.worker.feature.shared.view.longClick

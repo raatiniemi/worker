@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
-import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel

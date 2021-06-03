@@ -32,7 +32,7 @@ import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.constrainedMilliseconds
 import me.raatiniemi.worker.domain.time.days
 import me.raatiniemi.worker.feature.ongoing.service.ProjectNotificationService
-import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
+import me.raatiniemi.worker.feature.projects.all.view.AllProjectsAdapter
 import me.raatiniemi.worker.feature.projects.createproject.view.CreateProjectDialogFragment
 import me.raatiniemi.worker.feature.shared.datetime.view.DateTimePickerDialogFragment
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
