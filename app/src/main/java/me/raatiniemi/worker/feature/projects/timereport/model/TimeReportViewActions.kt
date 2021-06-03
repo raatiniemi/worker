@@ -29,7 +29,7 @@ internal sealed class TimeReportViewActions {
     object ReloadWeeks : TimeReportViewActions()
 
     data class RefreshTimeReportWeek(private val position: Int) : TimeReportViewActions() {
-        fun action(adapter: TimeReportAdapter) {
+        operator fun invoke(adapter: TimeReportAdapter) {
             adapter.notifyItemChanged(position)
         }
     }

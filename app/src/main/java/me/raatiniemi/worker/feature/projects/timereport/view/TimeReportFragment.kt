@@ -161,13 +161,13 @@ class TimeReportFragment : Fragment() {
             }
         }
 
-        observeAndConsume(vm.viewActions) {
-            when (it) {
+        observeAndConsume(vm.viewActions) { viewAction ->
+            when (viewAction) {
                 is TimeReportViewActions.ReloadWeeks -> timeReportAdapter.refresh()
-                is TimeReportViewActions.RefreshTimeReportWeek -> it.action(timeReportAdapter)
-                is ActivityViewAction -> it(requireActivity())
-                is ContextViewAction -> it(requireContext())
-                else -> Timber.w("No observation for ${it.javaClass.simpleName}")
+                is TimeReportViewActions.RefreshTimeReportWeek -> viewAction(timeReportAdapter)
+                is ActivityViewAction -> viewAction(requireActivity())
+                is ContextViewAction -> viewAction(requireContext())
+                else -> Timber.w("No observation for ${viewAction.javaClass.simpleName}")
             }
         }
     }
