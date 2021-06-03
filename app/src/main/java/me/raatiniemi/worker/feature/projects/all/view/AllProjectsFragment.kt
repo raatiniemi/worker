@@ -19,10 +19,8 @@ package me.raatiniemi.worker.feature.projects.all.view
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
 import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
@@ -35,6 +33,7 @@ import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.feature.shared.view.ConfirmAction
 import me.raatiniemi.worker.feature.shared.view.RefreshTimeIntervalLifecycleObserver
+import me.raatiniemi.worker.feature.shared.view.launch
 import me.raatiniemi.worker.feature.shared.view.observeAndConsume
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
@@ -54,7 +53,7 @@ class AllProjectsFragment : Fragment() {
             when (action) {
                 is AllProjectsActions.Open -> vm.open(action.item)
                 is AllProjectsActions.Toggle -> {
-                    lifecycleScope.launch {
+                    launch {
                         vm.toggle(action.item, action.date)
                     }
                 }
@@ -65,7 +64,7 @@ class AllProjectsFragment : Fragment() {
     }
 
     private val refreshActiveProjects = RefreshTimeIntervalLifecycleObserver {
-        lifecycleScope.launch {
+        launch {
             vm.refreshActiveProjects(allProjectsAdapter.snapshot())
         }
     }
@@ -145,7 +144,7 @@ class AllProjectsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
+        launch {
             vm.projects.collectLatest {
                 allProjectsAdapter.submitData(it)
             }
@@ -159,7 +158,7 @@ class AllProjectsFragment : Fragment() {
         when (viewAction) {
             is AllProjectsViewActions.ReloadProjects -> allProjectsAdapter.refresh()
             is AllProjectsViewActions.CreateProject -> {
-                lifecycleScope.launch {
+                launch {
                     val project = viewAction.apply(childFragmentManager)
                     project?.also { vm.projectCreated() }
                 }
@@ -171,13 +170,13 @@ class AllProjectsFragment : Fragment() {
                 viewAction
             )
             is AllProjectsViewActions.ChooseDateAndTimeForClockIn -> {
-                lifecycleScope.launch {
+                launch {
                     viewAction.apply(childFragmentManager)
                         ?.let { (project, date) -> vm.clockInAt(project, date) }
                 }
             }
             is AllProjectsViewActions.ChooseDateAndTimeForClockOut -> {
-                lifecycleScope.launch {
+                launch {
                     viewAction.apply(childFragmentManager)
                         ?.let { (project, date) -> vm.clockOutAt(project, date) }
                 }
@@ -192,7 +191,7 @@ class AllProjectsFragment : Fragment() {
     }
 
     private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) {
-        lifecycleScope.launch {
+        launch {
             val confirmAction = ConfirmClockOutDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
                 vm.clockOutAt(viewAction.item.asProject(), viewAction.date)
@@ -203,7 +202,7 @@ class AllProjectsFragment : Fragment() {
     private fun showConfirmRemoveProjectMessage(
         viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage
     ) {
-        lifecycleScope.launch {
+        launch {
             val confirmAction = RemoveProjectDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
                 vm.remove(viewAction.item.asProject())
