@@ -35,7 +35,6 @@ import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.shared.model.observeNoValue
-import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
@@ -103,52 +102,77 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project`() {
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val expected = listOf(
+            AllProjectsViewActions.CreateProject
+        )
+
         vm.createProject()
 
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.CreateProject, it)
-        }
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `project created`() {
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val expected = listOf(
+            AllProjectsViewActions.ProjectCreated
+        )
+
         vm.projectCreated()
 
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.ProjectCreated, it)
-        }
+        assertEquals(expected, actual)
     }
 
     // Refresh active projects
 
     @Test
-    fun `refresh active projects without projects`() = runBlocking {
-        vm.refreshActiveProjects(emptyList())
+    fun `refresh active projects without projects`() {
+        val items = emptyList<ProjectsItem>()
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+
+        runBlocking {
+            vm.refreshActiveProjects(items)
+        }
 
         vm.viewActions.observeNoValue()
     }
 
     @Test
-    fun `refresh active projects without active projects`() = runBlocking {
-        val items = listOf(getProjectsItem(android))
+    fun `refresh active projects without active projects`() {
+        val items = listOf(
+            getProjectsItem(android)
+        )
 
-        vm.refreshActiveProjects(items)
+        runBlocking {
+            vm.refreshActiveProjects(items)
+        }
 
         vm.viewActions.observeNoValue()
     }
 
     @Test
-    fun `refresh active projects with active project`() = runBlocking {
+    fun `refresh active projects with active project`() {
         val items = listOf(
             getProjectsItem(android),
             getProjectsItem(ios, true)
         )
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val expected = listOf(
+            AllProjectsViewActions.RefreshProjects(
+                listOf(1)
+            )
+        )
 
-        vm.refreshActiveProjects(items)
-
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.RefreshProjects(listOf(1)), it)
+        runBlocking {
+            vm.refreshActiveProjects(items)
         }
+
+        assertEquals(expected, actual)
     }
 
     // Open
@@ -382,85 +406,142 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
     // Clock in
 
     @Test
-    fun `clock in at with already active project`() = runBlocking {
-        clockIn(android, Milliseconds.now)
-
-        vm.clockInAt(android, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
+    fun `clock in at with already active project`() {
+        runBlocking {
+            clockIn(android, Milliseconds.now)
         }
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val expected = listOf(
+            AllProjectsViewActions.ShowUnableToClockInErrorMessage
+        )
+
+        runBlocking {
+            vm.clockInAt(android, Date())
+        }
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `clock in at project`() = runBlocking {
-        vm.clockInAt(android, Date())
+    fun `clock in at project`() {
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val events = listOf(Event.ProjectClockIn)
+        val expected = listOf(
+            AllProjectsViewActions.UpdateNotification(android)
+        )
 
-        assertEquals(listOf(Event.ProjectClockIn), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
+        runBlocking {
+            vm.clockInAt(android, Date())
         }
+
+        assertEquals(events, usageAnalytics.events)
+        assertEquals(expected, actual)
     }
 
     // Clock out
 
     @Test
-    fun `clock out without active project`() = runBlocking {
-        vm.clockOutAt(android, Date())
+    fun `clock out without active project`() {
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val expected = listOf(
+            AllProjectsViewActions.ShowUnableToClockOutErrorMessage
+        )
 
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
+        runBlocking {
+            vm.clockOutAt(android, Date())
         }
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `clock out project when elapsed time is past allowed`() = runBlocking {
+    fun `clock out project when elapsed time is past allowed`() {
         val now = Milliseconds.now
-        clockIn(android, now - 1.days - 3.minutes)
-
-        vm.clockOutAt(android, Date(now.value))
-
-        assertEquals(emptyList<Event>(), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.ShowElapsedTimePastAllowedErrorMessage, it)
+        runBlocking {
+            clockIn(android, now - 1.days - 3.minutes)
         }
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val events = emptyList<Event>()
+        val expected = listOf(
+            AllProjectsViewActions.ShowElapsedTimePastAllowedErrorMessage
+        )
+
+        runBlocking {
+            vm.clockOutAt(android, Date(now.value))
+        }
+
+        assertEquals(events, usageAnalytics.events)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `clock out project`() = runBlocking {
-        clockIn(android, Milliseconds.now)
-
-        vm.clockOutAt(android, Date())
-
-        assertEquals(listOf(Event.ProjectClockOut), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.UpdateNotification(android), it)
+    fun `clock out project`() {
+        runBlocking {
+            clockIn(android, Milliseconds.now)
         }
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val events = listOf(
+            Event.ProjectClockOut
+        )
+        val expected = listOf(
+            AllProjectsViewActions.UpdateNotification(android)
+        )
+
+        runBlocking {
+            vm.clockOutAt(android, Date())
+        }
+
+        assertEquals(events, usageAnalytics.events)
+        assertEquals(expected, actual)
     }
 
     // Remove
 
     @Test
-    fun `remove project without project`() = runBlocking {
-        vm.remove(android)
+    fun `remove project without project`() {
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val events = listOf(
+            Event.ProjectRemove
+        )
+        val expected = listOf(
+            AllProjectsViewActions.DismissNotification(android)
+        )
 
-        assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.DismissNotification(android), it)
+        runBlocking {
+            vm.remove(android)
         }
+
+        assertEquals(events, usageAnalytics.events)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `remove project with project`() = runBlocking {
-        createProject(android.name)
-
-        vm.remove(android)
-
-        assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
-        val actual = findProject(android.name)
-        assertNull(actual)
-        vm.viewActions.observeNonNull {
-            assertEquals(AllProjectsViewActions.DismissNotification(android), it)
+    fun `remove project with project`() {
+        runBlocking {
+            createProject(android.name)
         }
+        val actual = mutableListOf<AllProjectsViewActions>()
+        vm.viewActions.observeForever(actual::add)
+        val events = listOf(
+            Event.ProjectRemove
+        )
+        val expected = listOf(
+            AllProjectsViewActions.DismissNotification(android)
+        )
+
+        val project = runBlocking {
+            vm.remove(android)
+            findProject(android.name)
+        }
+
+        assertNull(project)
+        assertEquals(events, usageAnalytics.events)
+        assertEquals(expected, actual)
     }
 }
