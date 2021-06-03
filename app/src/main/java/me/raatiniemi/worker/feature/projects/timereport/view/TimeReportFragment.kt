@@ -91,11 +91,6 @@ class TimeReportFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         configureView()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
         observeViewModel()
     }
 
