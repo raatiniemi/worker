@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.feature.projects.all.adapter
+package me.raatiniemi.worker.feature.projects.all.view
 
 import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem

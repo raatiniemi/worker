@@ -18,11 +18,11 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentProjectTimeReportBinding
 import me.raatiniemi.worker.domain.project.model.Project
@@ -56,9 +56,7 @@ class TimeReportFragment : Fragment() {
     }
 
     private val refreshActiveWeeks = RefreshTimeIntervalLifecycleObserver {
-        timeReportAdapter.currentList?.let { weeks ->
-            vm.refreshActiveTimeReportWeek(weeks)
-        }
+        vm.refreshActiveTimeReportWeek(timeReportAdapter.snapshot())
     }
 
     private var actionMode: ActionMode? = null
@@ -92,15 +90,7 @@ class TimeReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configureView()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        observe(projectHolder.observable) {
-            setTitle(it.name.value)
-        }
+        configureUserInterface()
         observeViewModel()
     }
 
@@ -142,7 +132,7 @@ class TimeReportFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun configureView() {
+    private fun configureUserInterface() {
         setHasOptionsMenu(true)
 
         binding.rvTimeReport.apply {
@@ -150,9 +140,30 @@ class TimeReportFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
         }
+
+        launch {
+            timeReportAdapter.loadStateFlow.collectLatest {
+                with(binding) {
+                    if (it.refresh is LoadState.Error) {
+                        rvTimeReport.isVisible = false
+                        tvEmptyTimeReport.isVisible = true
+                        tvEmptyTimeReport.text = getString(R.string.projects_time_report_error_text)
+                    } else {
+                        val isEmpty = timeReportAdapter.itemCount < 1
+                        rvTimeReport.isVisible = !isEmpty
+                        tvEmptyTimeReport.isVisible = isEmpty
+                        tvEmptyTimeReport.text = getString(R.string.projects_time_report_empty_text)
+                    }
+                }
+            }
+        }
     }
 
     private fun observeViewModel() {
+        observe(vm.projectName) {
+            setTitle(it)
+        }
+
         observe(vm.isSelectionActivated) { shouldShowActionMode ->
             if (shouldShowActionMode) {
                 showActionMode()
@@ -161,16 +172,19 @@ class TimeReportFragment : Fragment() {
             }
         }
 
-        observe(vm.weeks) {
-            timeReportAdapter.submitList(it)
+        launch {
+            vm.weeks.collectLatest {
+                timeReportAdapter.submitData(it)
+            }
         }
 
-        observeAndConsume(vm.viewActions) {
-            when (it) {
-                is TimeReportViewActions.RefreshTimeReportWeek -> it.action(timeReportAdapter)
-                is ActivityViewAction -> it(requireActivity())
-                is ContextViewAction -> it(requireContext())
-                else -> Timber.w("No observation for ${it.javaClass.simpleName}")
+        observeAndConsume(vm.viewActions) { viewAction ->
+            when (viewAction) {
+                is TimeReportViewActions.ReloadWeeks -> timeReportAdapter.refresh()
+                is TimeReportViewActions.RefreshTimeReportWeek -> viewAction(timeReportAdapter)
+                is ActivityViewAction -> viewAction(requireActivity())
+                is ContextViewAction -> viewAction(requireContext())
+                else -> Timber.w("No observation for ${viewAction.javaClass.simpleName}")
             }
         }
     }
@@ -198,13 +212,13 @@ class TimeReportFragment : Fragment() {
     }
 
     private fun toggleRegisteredStateForSelectedItems() {
-        lifecycleScope.launch {
+        launch {
             vm.toggleRegisteredStateForSelectedItems()
         }
     }
 
     private fun confirmRemoveSelectedItems() {
-        lifecycleScope.launch {
+        launch {
             val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
             if (confirmAction == ConfirmAction.NO) {
                 return@launch

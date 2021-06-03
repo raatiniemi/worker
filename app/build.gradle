@@ -225,6 +225,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
     testImplementation "org.koin:koin-test:$koinVersion"
     testImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"
+    testImplementation "androidx.paging:paging-common-ktx:$pagingVersion"
 
     androidTestImplementation project(':core-test')
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"

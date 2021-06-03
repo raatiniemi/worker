@@ -18,12 +18,12 @@ package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.lifecycle.Transformations.map
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.google.firebase.perf.metrics.AddTrace
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.datasource.TimeReportWeekDataSource
+import me.raatiniemi.worker.data.datasource.TimeReportWeekPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
@@ -41,19 +41,19 @@ import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import timber.log.Timber
 
-internal class TimeReportViewModel internal constructor(
+internal class TimeReportViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    projectProvider: ProjectProvider,
-    countTimeReportWeeks: CountTimeReportWeeks,
-    findTimeReportWeeks: FindTimeReportWeeks,
+    private val projectProvider: ProjectProvider,
+    private val countTimeReportWeeks: CountTimeReportWeeks,
+    private val findTimeReportWeeks: FindTimeReportWeeks,
     private val markRegisteredTime: MarkRegisteredTime,
-    private val removeTime: RemoveTime,
-    dispatchProvider: CoroutineDispatchProvider
+    private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
+    val projectName: LiveData<String> = map(projectProvider.observable) { it.name.value }
+
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<TimeReportDay>()
 
@@ -66,45 +66,29 @@ internal class TimeReportViewModel internal constructor(
 
     val isSelectionActivated: LiveData<Boolean> = _selectedItems.map(::isSelectionActivated)
 
-    val weeks: LiveData<PagedList<TimeReportWeek>>
+    val weeks = Pager(PagingConfig(pageSize = 10)) {
+        TimeReportWeekPagingSource(
+            projectProvider,
+            countTimeReportWeeks,
+            findTimeReportWeeks
+        )
+    }.flow.cachedIn(viewModelScope)
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
-
-    init {
-        val config = PagedList.Config.Builder()
-            .setInitialLoadSizeHint(1)
-            .setPrefetchDistance(2)
-            .setPageSize(8)
-            .setMaxSize(15)
-            .setEnablePlaceholders(true)
-            .build()
-
-        val factory = TimeReportWeekDataSource.Factory(
-            viewModelScope,
-            dispatchProvider,
-            projectProvider = projectProvider,
-            countTimeReportWeeks = countTimeReportWeeks,
-            findTimeReportWeeks = findTimeReportWeeks
-        )
-
-        weeks = LivePagedListBuilder(factory, config).build()
-    }
 
     fun reloadTimeReport() {
         clearSelection()
 
-        weeks.value?.run {
-            dataSource.invalidate()
-        }
+        viewActions += TimeReportViewActions.ReloadWeeks
     }
 
     fun clearSelection() {
         _selectedItems.postValue(HashSet())
     }
 
-    suspend fun toggleRegisteredStateForSelectedItems() = withContext(Dispatchers.IO) {
+    suspend fun toggleRegisteredStateForSelectedItems() {
         try {
-            val selectedItems = _selectedItems.value ?: return@withContext
+            val selectedItems = _selectedItems.value ?: return
             val timeIntervals = selectedItems.toList()
 
             markRegisteredTime(timeIntervals)
@@ -120,9 +104,9 @@ internal class TimeReportViewModel internal constructor(
         }
     }
 
-    suspend fun removeSelectedItems() = withContext(Dispatchers.IO) {
+    suspend fun removeSelectedItems() {
         try {
-            val selectedItems = _selectedItems.value ?: return@withContext
+            val selectedItems = _selectedItems.value ?: return
             val timeIntervals = selectedItems.toList()
 
             removeTime(timeIntervals)
@@ -224,7 +208,7 @@ internal class TimeReportViewModel internal constructor(
     }
 
     @AddTrace(name = TracePerformanceEvents.REFRESH_TIME_REPORT)
-    fun refreshActiveTimeReportWeek(weeks: List<TimeReportWeek>) {
+    fun refreshActiveTimeReportWeek(weeks: List<TimeReportWeek?>) {
         val position = findActivePosition(weeks)
         if (position == null) {
             Timber.d("No time report week is active")
@@ -234,7 +218,7 @@ internal class TimeReportViewModel internal constructor(
         viewActions += TimeReportViewActions.RefreshTimeReportWeek(position)
     }
 
-    private fun findActivePosition(weeks: List<TimeReportWeek>): Int? {
+    private fun findActivePosition(weeks: List<TimeReportWeek?>): Int? {
         return weeks.filter(::containsActiveDay)
             .map(weeks::indexOf)
             .firstOrNull()

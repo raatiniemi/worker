@@ -18,20 +18,24 @@ package me.raatiniemi.worker.feature.projects.all.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
-import me.raatiniemi.worker.feature.projects.all.adapter.AllProjectsAdapter
+import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.feature.settings.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.feature.shared.view.*
+import me.raatiniemi.worker.feature.shared.view.ConfirmAction
+import me.raatiniemi.worker.feature.shared.view.RefreshTimeIntervalLifecycleObserver
+import me.raatiniemi.worker.feature.shared.view.launch
+import me.raatiniemi.worker.feature.shared.view.observeAndConsume
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -39,7 +43,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
 
 class AllProjectsFragment : Fragment() {
     private val eventBus = EventBus.getDefault()
@@ -47,13 +50,23 @@ class AllProjectsFragment : Fragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: AllProjectsViewModel by viewModel()
     private val allProjectsAdapter: AllProjectsAdapter by lazy {
-        AllProjectsAdapter(vm)
+        AllProjectsAdapter { action ->
+            when (action) {
+                is AllProjectsActions.Open -> vm.open(action.item)
+                is AllProjectsActions.Toggle -> {
+                    launch {
+                        vm.toggle(action.item, action.date)
+                    }
+                }
+                is AllProjectsActions.At -> vm.at(action.item)
+                is AllProjectsActions.Remove -> vm.remove(action.item)
+            }
+        }
     }
 
     private val refreshActiveProjects = RefreshTimeIntervalLifecycleObserver {
-        lifecycleScope.launch {
-            val projects = allProjectsAdapter.currentList ?: return@launch
-            vm.refreshActiveProjects(projects)
+        launch {
+            vm.refreshActiveProjects(allProjectsAdapter.snapshot())
         }
     }
 
@@ -80,12 +93,7 @@ class AllProjectsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configureView()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+        configureUserInterface()
         observeViewModel()
     }
 
@@ -122,20 +130,38 @@ class AllProjectsFragment : Fragment() {
         else -> super.onOptionsItemSelected(menuItem)
     }
 
-    private fun configureView() {
+    private fun configureUserInterface() {
         setHasOptionsMenu(true)
 
         binding.rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = allProjectsAdapter
         }
+
+        launch {
+            allProjectsAdapter.loadStateFlow.collectLatest {
+                with(binding) {
+                    if (it.refresh is LoadState.Error) {
+                        rvProjects.isVisible = false
+                        tvEmptyProjects.isVisible = true
+                        tvEmptyProjects.text = getString(R.string.projects_all_error_text)
+                    } else {
+                        val isEmpty = allProjectsAdapter.itemCount < 1
+                        rvProjects.isVisible = !isEmpty
+                        tvEmptyProjects.isVisible = isEmpty
+                        tvEmptyProjects.text = getString(R.string.projects_all_empty_text)
+                    }
+                }
+            }
+        }
     }
 
     private fun observeViewModel() {
-        observe(vm.projects) {
-            allProjectsAdapter.submitList(it)
+        launch {
+            vm.projects.collectLatest {
+                allProjectsAdapter.submitData(it)
+            }
         }
-
         observeAndConsume(vm.viewActions) {
             processViewAction(it)
         }
@@ -143,8 +169,9 @@ class AllProjectsFragment : Fragment() {
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
+            is AllProjectsViewActions.ReloadProjects -> allProjectsAdapter.refresh()
             is AllProjectsViewActions.CreateProject -> {
-                lifecycleScope.launch {
+                launch {
                     val project = viewAction.apply(childFragmentManager)
                     project?.also { vm.projectCreated() }
                 }
@@ -156,13 +183,13 @@ class AllProjectsFragment : Fragment() {
                 viewAction
             )
             is AllProjectsViewActions.ChooseDateAndTimeForClockIn -> {
-                lifecycleScope.launch {
+                launch {
                     viewAction.apply(childFragmentManager)
                         ?.let { (project, date) -> vm.clockInAt(project, date) }
                 }
             }
             is AllProjectsViewActions.ChooseDateAndTimeForClockOut -> {
-                lifecycleScope.launch {
+                launch {
                     viewAction.apply(childFragmentManager)
                         ?.let { (project, date) -> vm.clockOutAt(project, date) }
                 }
@@ -177,7 +204,7 @@ class AllProjectsFragment : Fragment() {
     }
 
     private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) {
-        lifecycleScope.launch {
+        launch {
             val confirmAction = ConfirmClockOutDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
                 vm.clockOutAt(viewAction.item.asProject(), viewAction.date)
@@ -188,7 +215,7 @@ class AllProjectsFragment : Fragment() {
     private fun showConfirmRemoveProjectMessage(
         viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage
     ) {
-        lifecycleScope.launch {
+        launch {
             val confirmAction = RemoveProjectDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
                 vm.remove(viewAction.item.asProject())

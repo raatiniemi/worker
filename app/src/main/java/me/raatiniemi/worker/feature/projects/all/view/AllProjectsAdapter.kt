@@ -14,24 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.feature.projects.all.adapter
+package me.raatiniemi.worker.feature.projects.all.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsItemBinding
+import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
-import me.raatiniemi.worker.feature.projects.all.view.ViewHolder
 import me.raatiniemi.worker.feature.shared.view.click
 import me.raatiniemi.worker.feature.shared.view.hintContentDescription
 import me.raatiniemi.worker.feature.shared.view.longClick
 import java.util.*
 
 internal class AllProjectsAdapter(
-    private val listener: AllProjectsActionListener
-) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
+    private val consumer: (AllProjectsActions) -> Unit
+) : PagingDataAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
     override fun getItemViewType(position: Int): Int {
@@ -55,21 +54,21 @@ internal class AllProjectsAdapter(
             bind(item)
 
             click(itemView) {
-                listener.open(item)
+                consumer(AllProjectsActions.Open(item))
             }
 
             click(clockActivityToggle) {
-                listener.toggle(item, Date())
+                consumer(AllProjectsActions.Toggle(item, Date()))
             }
             longClick(clockActivityToggle, ::hintContentDescription)
 
             click(clockActivityAt) {
-                listener.at(item)
+                consumer(AllProjectsActions.At(item))
             }
             longClick(clockActivityAt, ::hintContentDescription)
 
             click(delete) {
-                listener.remove(item)
+                consumer(AllProjectsActions.Remove(item))
             }
             longClick(delete, ::hintContentDescription)
         }

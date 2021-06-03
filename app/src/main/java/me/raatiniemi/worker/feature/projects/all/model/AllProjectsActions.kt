@@ -14,17 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.feature.projects.all.view
+package me.raatiniemi.worker.feature.projects.all.model
 
-import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import java.util.*
 
-internal interface AllProjectsActionListener {
-    fun open(item: ProjectsItem)
+internal sealed class AllProjectsActions {
+    data class Open(val item: ProjectsItem) : AllProjectsActions()
 
-    fun toggle(item: ProjectsItem, date: Date)
+    data class Toggle(val item: ProjectsItem, val date: Date) : AllProjectsActions()
 
-    fun at(item: ProjectsItem)
+    data class At(val item: ProjectsItem) : AllProjectsActions()
 
-    fun remove(item: ProjectsItem)
+    data class Remove(val item: ProjectsItem) : AllProjectsActions()
 }

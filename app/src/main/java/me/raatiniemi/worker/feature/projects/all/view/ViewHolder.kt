@@ -57,7 +57,7 @@ internal class ViewHolder(private val binding: FragmentAllProjectsItemBinding) :
                 resources.getString(R.string.projects_all_delete, projectsItem.title)
         }
 
-        binding.tvClockedInSince.visibleIf { projectsItem.isActive }
+        visibleIf(binding.tvClockedInSince) { projectsItem.isActive }
         binding.tvClockedInSince.text = projectsItem.getClockedInSince(resources)
     }
 

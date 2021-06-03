@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -47,6 +49,16 @@ internal fun <T> Fragment.observeAndConsume(source: ConsumableLiveData<T>, consu
     source.observeAndConsume(viewLifecycleOwner, Observer {
         consumer(it)
     })
+}
+
+/**
+ * Allow for easier launch coroutine with correct lifecycle scope from [Fragment].
+ *
+ * @param block Suspending call that should be launched.
+ */
+internal fun Fragment.launch(block: suspend () -> Unit) {
+    viewLifecycleOwner.lifecycleScope
+        .launch { block() }
 }
 
 /**

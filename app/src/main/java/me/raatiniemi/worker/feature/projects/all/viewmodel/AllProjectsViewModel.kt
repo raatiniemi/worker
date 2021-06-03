@@ -16,93 +16,56 @@
 
 package me.raatiniemi.worker.feature.projects.all.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
 import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.data.datasource.AllProjectsDataSource
+import me.raatiniemi.worker.data.datasource.AllProjectsPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
-import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.CountProjects
 import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.time.Milliseconds
-import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
-import me.raatiniemi.worker.domain.timeinterval.model.timeIntervalStartingPoint
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.ElapsedTimePastAllowedException
 import me.raatiniemi.worker.domain.timeinterval.usecase.GetProjectTimeSince
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.feature.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import timber.log.Timber
 import java.util.*
+
+private const val ALL_PROJECTS_PAGE_SIZE = 6
 
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
     countProjects: CountProjects,
     findProjects: FindProjects,
-    private val getProjectTimeSince: GetProjectTimeSince,
+    getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
-    private val removeProject: RemoveProject,
-    dispatchProvider: CoroutineDispatchProvider
-) : ViewModel(), AllProjectsActionListener {
-    val projects: LiveData<PagedList<ProjectsItem>>
+    private val removeProject: RemoveProject
+) : ViewModel() {
+    val projects = Pager(PagingConfig(pageSize = ALL_PROJECTS_PAGE_SIZE)) {
+        AllProjectsPagingSource(
+            keyValueStore,
+            countProjects,
+            findProjects,
+            getProjectTimeSince
+        )
+    }.flow.cachedIn(viewModelScope)
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
-
-    init {
-        val config = PagedList.Config.Builder()
-            .setPageSize(10)
-            .setEnablePlaceholders(false)
-            .build()
-
-        val factory = AllProjectsDataSource.Factory(
-            viewModelScope,
-            dispatchProvider,
-            countProjects,
-            findProjects
-        )
-        val builder = LivePagedListBuilder(
-            factory.map(::buildProjectsItem),
-            config
-        )
-        projects = builder.build()
-    }
-
-    private fun buildProjectsItem(project: Project): ProjectsItem {
-        val registeredTime = loadRegisteredTimeForProject(project)
-
-        return ProjectsItem(project, registeredTime)
-    }
-
-    private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
-        return try {
-            runBlocking {
-                getProjectTimeSince(project, timeIntervalStartingPoint(keyValueStore))
-            }
-        } catch (e: DomainException) {
-            Timber.w(e, "Unable to get registered time for project")
-            emptyList()
-        }
-    }
 
     internal fun createProject() {
         viewActions += AllProjectsViewActions.CreateProject
@@ -115,9 +78,7 @@ internal class AllProjectsViewModel(
     }
 
     fun reloadProjects() {
-        projects.value?.run {
-            dataSource.invalidate()
-        }
+        viewActions += AllProjectsViewActions.ReloadProjects
     }
 
     @AddTrace(name = TracePerformanceEvents.REFRESH_PROJECTS)
@@ -135,31 +96,29 @@ internal class AllProjectsViewModel(
         }
     }
 
-    override fun open(item: ProjectsItem) {
+    fun open(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectOpen)
 
         viewActions += AllProjectsViewActions.OpenProject(item.asProject())
     }
 
-    override fun toggle(item: ProjectsItem, date: Date) {
+    suspend fun toggle(item: ProjectsItem, date: Date) {
         usageAnalytics.log(Event.TapProjectToggle)
 
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!item.isActive) {
-                clockInAt(item.asProject(), date)
-                return@launch
-            }
-
-            if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
-                viewActions += AllProjectsViewActions.ShowConfirmClockOutMessage(item, date)
-                return@launch
-            }
-
-            clockOutAt(item.asProject(), date)
+        if (!item.isActive) {
+            clockInAt(item.asProject(), date)
+            return
         }
+
+        if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
+            viewActions += AllProjectsViewActions.ShowConfirmClockOutMessage(item, date)
+            return
+        }
+
+        clockOutAt(item.asProject(), date)
     }
 
-    override fun at(item: ProjectsItem) {
+    fun at(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectAt)
 
         viewActions += if (item.isActive) {
@@ -169,14 +128,14 @@ internal class AllProjectsViewModel(
         }
     }
 
-    override fun remove(item: ProjectsItem) {
+    fun remove(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectRemove)
 
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
     @AddTrace(name = TracePerformanceEvents.CLOCK_IN)
-    suspend fun clockInAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockInAt(project: Project, date: Date) {
         try {
             clockIn(project, Milliseconds(date.time))
 
@@ -190,7 +149,7 @@ internal class AllProjectsViewModel(
     }
 
     @AddTrace(name = TracePerformanceEvents.CLOCK_OUT)
-    suspend fun clockOutAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOutAt(project: Project, date: Date) {
         try {
             clockOut(project, Milliseconds(date.time))
 
@@ -206,7 +165,7 @@ internal class AllProjectsViewModel(
     }
 
     @AddTrace(name = TracePerformanceEvents.REMOVE_PROJECT)
-    suspend fun remove(project: Project) = withContext(Dispatchers.IO) {
+    suspend fun remove(project: Project) {
         try {
             removeProject(project)
 

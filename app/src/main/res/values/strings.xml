@@ -28,6 +28,7 @@
     <string name="projects_all_project_created_message">New project have been created</string>
 
     <string name="projects_all_empty_text">You haven\'t created\na project yet…</string>
+    <string name="projects_all_error_text">Unable to load projects…</string>
 
     <string name="projects_all_clock_in">Clock in %s</string>
     <string name="projects_all_clock_in_at">Clock in %s at</string>
@@ -67,6 +68,7 @@
 
     <string name="projects_time_report_menu_hide_registered">Hide registered</string>
     <string name="projects_time_report_empty_text">No time report entries\nwas found…</string>
+    <string name="projects_time_report_error_text">Unable to load time report…</string>
 
     <string name="projects_time_report_menu_title">Actions</string>
     <string name="projects_time_report_menu_register">Mark as registered</string>

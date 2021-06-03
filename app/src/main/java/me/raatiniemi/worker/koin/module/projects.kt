@@ -36,8 +36,7 @@ internal val projects = module {
             getProjectTimeSince = get(),
             clockIn = get(),
             clockOut = get(),
-            removeProject = get(),
-            dispatchProvider = get()
+            removeProject = get()
         )
     }
 
@@ -70,8 +69,7 @@ internal val projects = module {
             countTimeReportWeeks = get(),
             findTimeReportWeeks = get(),
             markRegisteredTime = get(),
-            removeTime = get(),
-            dispatchProvider = get()
+            removeTime = get()
         )
     }
 }
