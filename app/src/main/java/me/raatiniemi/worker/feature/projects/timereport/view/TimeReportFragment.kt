@@ -18,7 +18,9 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import me.raatiniemi.worker.R
@@ -88,7 +90,7 @@ class TimeReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configureView()
+        configureUserInterface()
         observeViewModel()
     }
 
@@ -130,13 +132,30 @@ class TimeReportFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun configureView() {
+    private fun configureUserInterface() {
         setHasOptionsMenu(true)
 
         binding.rvTimeReport.apply {
             adapter = timeReportAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
+        }
+
+        launch {
+            timeReportAdapter.loadStateFlow.collectLatest {
+                with(binding) {
+                    if (it.refresh is LoadState.Error) {
+                        rvTimeReport.isVisible = false
+                        tvEmptyTimeReport.isVisible = true
+                        tvEmptyTimeReport.text = getString(R.string.projects_time_report_error_text)
+                    } else {
+                        val isEmpty = timeReportAdapter.itemCount < 1
+                        rvTimeReport.isVisible = !isEmpty
+                        tvEmptyTimeReport.isVisible = isEmpty
+                        tvEmptyTimeReport.text = getString(R.string.projects_time_report_empty_text)
+                    }
+                }
+            }
         }
     }
 
