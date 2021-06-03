@@ -26,6 +26,8 @@ import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 
 internal sealed class TimeReportViewActions {
+    object ReloadWeeks : TimeReportViewActions()
+
     data class RefreshTimeReportWeek(private val position: Int) : TimeReportViewActions() {
         fun action(adapter: TimeReportAdapter) {
             adapter.notifyItemChanged(position)

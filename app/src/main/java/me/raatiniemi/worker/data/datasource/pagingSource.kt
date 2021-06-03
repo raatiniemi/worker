@@ -16,14 +16,24 @@
 
 package me.raatiniemi.worker.data.datasource
 
-internal sealed class PositionalDataSourceResult<T> {
-    abstract val data: List<T>
+import androidx.paging.PagingSource
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
 
-    internal data class Initial<T>(
-        override val data: List<T>,
-        val position: Int,
-        val totalCount: Int = 0
-    ) : PositionalDataSourceResult<T>()
+internal fun calculateLoadRange(params: PagingSource.LoadParams<Int>): LoadRange {
+    val pageKey = params.key ?: 0
+    return LoadRange(
+        LoadPosition(pageKey),
+        LoadSize(params.loadSize)
+    )
+}
 
-    internal data class Range<T>(override val data: List<T>) : PositionalDataSourceResult<T>()
+internal fun calculateNextKey(loadRange: LoadRange, total: Int): Int? {
+    val nextPosition = loadRange.position.value + loadRange.size.value
+    return if (nextPosition < total) {
+        nextPosition
+    } else {
+        null
+    }
 }

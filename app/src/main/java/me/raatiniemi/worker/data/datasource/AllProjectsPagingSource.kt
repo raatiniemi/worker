@@ -19,9 +19,6 @@ package me.raatiniemi.worker.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
-import me.raatiniemi.worker.domain.model.LoadPosition
-import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.project.usecase.CountProjects
 import me.raatiniemi.worker.domain.project.usecase.FindProjects
@@ -72,22 +69,5 @@ internal class AllProjectsPagingSource(
             Timber.w(e, "Unable to get registered time for project")
             emptyList()
         }
-    }
-}
-
-private fun calculateLoadRange(params: PagingSource.LoadParams<Int>): LoadRange {
-    val pageKey = params.key ?: 0
-    return LoadRange(
-        LoadPosition(pageKey),
-        LoadSize(params.loadSize)
-    )
-}
-
-private fun calculateNextKey(loadRange: LoadRange, total: Int): Int? {
-    val nextPosition = loadRange.position.value + loadRange.size.value
-    return if (nextPosition < total) {
-        nextPosition
-    } else {
-        null
     }
 }

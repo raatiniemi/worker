@@ -69,8 +69,7 @@ internal val projects = module {
             countTimeReportWeeks = get(),
             findTimeReportWeeks = get(),
             markRegisteredTime = get(),
-            removeTime = get(),
-            dispatchProvider = get()
+            removeTime = get()
         )
     }
 }

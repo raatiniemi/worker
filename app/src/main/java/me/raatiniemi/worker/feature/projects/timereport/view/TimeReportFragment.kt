@@ -20,8 +20,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentProjectTimeReportBinding
@@ -56,9 +56,7 @@ class TimeReportFragment : Fragment() {
     }
 
     private val refreshActiveWeeks = RefreshTimeIntervalLifecycleObserver {
-        timeReportAdapter.currentList?.let { weeks ->
-            vm.refreshActiveTimeReportWeek(weeks)
-        }
+        vm.refreshActiveTimeReportWeek(timeReportAdapter.snapshot())
     }
 
     private var actionMode: ActionMode? = null
@@ -161,12 +159,15 @@ class TimeReportFragment : Fragment() {
             }
         }
 
-        observe(vm.weeks) {
-            timeReportAdapter.submitList(it)
+        launch {
+            vm.weeks.collectLatest {
+                timeReportAdapter.submitData(it)
+            }
         }
 
         observeAndConsume(vm.viewActions) {
             when (it) {
+                is TimeReportViewActions.ReloadWeeks -> timeReportAdapter.refresh()
                 is TimeReportViewActions.RefreshTimeReportWeek -> it.action(timeReportAdapter)
                 is ActivityViewAction -> it(requireActivity())
                 is ContextViewAction -> it(requireContext())

@@ -18,7 +18,7 @@ package me.raatiniemi.worker.feature.projects.timereport.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.databinding.FragmentProjectTimeReportWeekBinding
 import me.raatiniemi.worker.domain.date.HoursMinutesFormat
@@ -29,7 +29,7 @@ import me.raatiniemi.worker.feature.projects.timereport.viewmodel.TimeReportStat
 internal class TimeReportAdapter(
     stateManager: TimeReportStateManager,
     private val formatter: HoursMinutesFormat
-) : PagedListAdapter<TimeReportWeek, WeekViewHolder>(timeReportDiffCallback) {
+) : PagingDataAdapter<TimeReportWeek, WeekViewHolder>(timeReportDiffCallback) {
     private val stateManager: TimeReportStateManager =
         TimeReportStateManagerAdapterDecorator(this, stateManager)
 
