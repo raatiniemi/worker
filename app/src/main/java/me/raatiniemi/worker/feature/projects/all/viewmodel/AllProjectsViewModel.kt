@@ -135,7 +135,7 @@ internal class AllProjectsViewModel(
     }
 
     @AddTrace(name = TracePerformanceEvents.CLOCK_IN)
-    suspend fun clockInAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockInAt(project: Project, date: Date) {
         try {
             clockIn(project, Milliseconds(date.time))
 
@@ -149,7 +149,7 @@ internal class AllProjectsViewModel(
     }
 
     @AddTrace(name = TracePerformanceEvents.CLOCK_OUT)
-    suspend fun clockOutAt(project: Project, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOutAt(project: Project, date: Date) {
         try {
             clockOut(project, Milliseconds(date.time))
 
@@ -165,7 +165,7 @@ internal class AllProjectsViewModel(
     }
 
     @AddTrace(name = TracePerformanceEvents.REMOVE_PROJECT)
-    suspend fun remove(project: Project) = withContext(Dispatchers.IO) {
+    suspend fun remove(project: Project) {
         try {
             removeProject(project)
 
