@@ -34,6 +34,7 @@ import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportLongPres
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.feature.shared.model.observeNoValue
+import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
@@ -66,6 +67,23 @@ class TimeReportViewModelTest : AutoCloseKoinTest() {
     fun setUp() {
         startKoin {
             modules(testKoinModules)
+        }
+    }
+
+    // Project name
+
+    @Test
+    fun `project name without project`() {
+        vm.projectName.observeNoValue()
+    }
+
+    @Test
+    fun `project name with project`() {
+        projectHolder += android
+        val expected = android.name.value
+
+        vm.projectName.observeNonNull {
+            assertEquals(expected, it)
         }
     }
 

@@ -96,9 +96,6 @@ class TimeReportFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        observe(projectHolder.observable) {
-            setTitle(it.name.value)
-        }
         observeViewModel()
     }
 
@@ -151,6 +148,10 @@ class TimeReportFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        observe(vm.projectName) {
+            setTitle(it)
+        }
+
         observe(vm.isSelectionActivated) { shouldShowActionMode ->
             if (shouldShowActionMode) {
                 showActionMode()

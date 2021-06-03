@@ -18,6 +18,7 @@ package me.raatiniemi.worker.feature.projects.timereport.viewmodel
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
+import androidx.lifecycle.Transformations.map
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
@@ -51,6 +52,8 @@ internal class TimeReportViewModel(
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
+    val projectName: LiveData<String> = map(projectProvider.observable) { it.name.value }
+
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
     private val expandedDays = mutableSetOf<TimeReportDay>()
 
