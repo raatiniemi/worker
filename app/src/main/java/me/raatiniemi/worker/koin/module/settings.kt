@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.koin.module
 
 import me.raatiniemi.worker.feature.settings.viewmodel.SettingsViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val settings = module {

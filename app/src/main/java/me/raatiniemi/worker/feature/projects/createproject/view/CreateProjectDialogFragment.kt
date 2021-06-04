@@ -29,7 +29,7 @@ import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProje
 import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 internal typealias OnCreateProject = (Project?) -> Unit

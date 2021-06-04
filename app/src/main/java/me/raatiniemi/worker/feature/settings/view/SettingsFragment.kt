@@ -34,7 +34,7 @@ import me.raatiniemi.worker.feature.shared.view.observeAndConsume
 import me.raatiniemi.worker.feature.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val CONFIRM_CLOCK_OUT_KEY = "confirm_clock_out"
 private const val TIME_SUMMARY_KEY = "time_summary"
