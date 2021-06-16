@@ -27,7 +27,7 @@ import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
 class CoroutineTestRule : TestWatcher() {
-    val testScope: TestCoroutineScope = TestCoroutineScope()
+    private val testScope: TestCoroutineScope = TestCoroutineScope()
     val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 
     override fun starting(description: Description) {
