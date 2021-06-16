@@ -24,9 +24,15 @@ data class YearsMonthsDays internal constructor(
     val days: Days
 )
 
-inline class Years(val value: Int)
-inline class Months(val value: Int)
-inline class Days(val value: Int)
+
+@JvmInline
+value class Years(val value: Int)
+
+@JvmInline
+value class Months(val value: Int)
+
+@JvmInline
+value class Days(val value: Int)
 
 fun yearsMonthsDays(years: Years, months: Months, days: Days): YearsMonthsDays {
     return YearsMonthsDays(years, months, days)

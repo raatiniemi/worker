@@ -16,4 +16,5 @@
 
 package me.raatiniemi.worker.domain.project.model
 
-inline class ProjectId(val value: Long)
+@JvmInline
+value class ProjectId(val value: Long)

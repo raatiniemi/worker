@@ -18,6 +18,8 @@ package me.raatiniemi.worker.domain.model
 
 data class LoadRange(val position: LoadPosition, val size: LoadSize)
 
-inline class LoadPosition(val value: Int)
+@JvmInline
+value class LoadPosition(val value: Int)
 
-inline class LoadSize(val value: Int)
+@JvmInline
+value class LoadSize(val value: Int)

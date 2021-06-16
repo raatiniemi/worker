@@ -16,4 +16,5 @@
 
 package me.raatiniemi.worker.domain.timeinterval.model
 
-inline class TimeIntervalId(val value: Long)
+@JvmInline
+value class TimeIntervalId(val value: Long)

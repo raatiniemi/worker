@@ -16,4 +16,5 @@
 
 package me.raatiniemi.worker.domain.project.model
 
-inline class NewProject(val name: ProjectName)
+@JvmInline
+value class NewProject(val name: ProjectName)

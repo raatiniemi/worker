@@ -74,8 +74,11 @@ data class HoursMinutes(val hours: Long, val minutes: Long) {
     }
 }
 
-inline class Hours(val value: Int)
-inline class Minutes(val value: Int)
+@JvmInline
+value class Hours(val value: Int)
+
+@JvmInline
+value class Minutes(val value: Int)
 
 fun hoursMinutes(hours: Hours, minutes: Minutes): HoursMinutes {
     return HoursMinutes(

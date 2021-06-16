@@ -271,7 +271,7 @@ abstract class ProjectRepositoryTest {
         runBlocking {
             projects.add(NewProject(android.name))
         }
-        val name = android.name.value.toLowerCase(Locale.getDefault())
+        val name = android.name.value.lowercase(Locale.getDefault())
 
         val actual = runBlocking {
             projects.findByName(

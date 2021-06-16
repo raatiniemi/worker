@@ -28,6 +28,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class FindProjectTest {
@@ -60,7 +61,7 @@ class FindProjectTest {
         repository.add(NewProject(android.name))
 
         val actual = findProject(
-            android.name.value.toLowerCase()
+            android.name.value.lowercase(Locale.getDefault())
                 .let { ProjectName(it) }
         )
 
