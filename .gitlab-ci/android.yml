@@ -10,7 +10,7 @@
     - echo "  gradle-wrapper.jar" >> "${GRADLE_WRAPPER_DIRECTORY}/gradle-wrapper.jar.sha256"
     - (cd "${GRADLE_WRAPPER_DIRECTORY}" && sha256sum --check gradle-wrapper.jar.sha256)
     - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
-    - echo "$KEYSTORE_BASE64" | base64 -d >app/upload.jks
+    - echo "$KEYSTORE_BASE64" | base64 -d >"${KEYSTORE_PATH}"
   interruptible: true
   tags:
     - docker
@@ -19,3 +19,4 @@
     ANDROID_API_VERSION: "30"
     GRADLE_WRAPPER_DIRECTORY: "./gradle/wrapper"
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+    KEYSTORE_PATH: "app/upload.jks"
