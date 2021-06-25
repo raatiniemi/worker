@@ -1,6 +1,6 @@
 ---
 .in-android-environment:
-  image: "raatiniemi/android-environment:android-${ANDROID_API_VERSION}-latest"
+  image: "raatiniemi/android-environment:jdk-${JDK_VERSION}-android-${ANDROID_API_VERSION}-latest"
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - sed -i -e 's/-all.zip/-bin.zip/' "${GRADLE_WRAPPER_DIRECTORY}/gradle-wrapper.properties"
@@ -19,4 +19,5 @@
     ANDROID_API_VERSION: "30"
     GRADLE_WRAPPER_DIRECTORY: "./gradle/wrapper"
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+    JDK_VERSION: "8"
     KEYSTORE_PATH: "app/upload.jks"
