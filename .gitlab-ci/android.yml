@@ -12,6 +12,8 @@
     - (cd "${GRADLE_WRAPPER_DIRECTORY}" && sha256sum --check gradle-wrapper.jar.sha256)
     - if [ -z "${KEYSTORE_BASE64}" ]; then echo "No keystore is available, ensure that \$KEYSTORE_BASE64 is set for project."; exit 1; fi;
     - echo "$KEYSTORE_BASE64" | base64 -d >"${KEYSTORE_PATH}"
+  after_script:
+    - rm -f "${KEYSTORE_PATH}"
   interruptible: true
   tags:
     - docker
