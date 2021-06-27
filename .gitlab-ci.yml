@@ -10,8 +10,10 @@ variables:
   TZ: "Europe/Stockholm"
 
 include:
-  - '/.gitlab-ci/android.yml'
   - '/.gitlab-ci/gradle.yml'
+  - project: 'rahome/docker-android-environment'
+    ref: master
+    file: Android.gitlab-ci.yml
 
 # stage: build-core
 
