@@ -145,7 +145,7 @@ android {
 }
 
 dependencies {
-    def flipperVersion = '0.91.2'
+    def flipperVersion = '0.102.0'
     def soloaderVersion = '0.10.1'
 
     def androidxCoreVersion = '1.5.0'
