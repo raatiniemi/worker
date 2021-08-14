@@ -159,7 +159,7 @@ dependencies {
     def lifecycleExtensionsVersion = '2.2.0'
     def roomVersion = '2.3.0'
     def pagingVersion = '3.0.1'
-    def fragmentVersion = '1.3.5'
+    def fragmentVersion = '1.3.6'
     def navigationVersion = '2.3.5'
     def materialVersion = '1.3.0'
     def timberVersion = '4.7.1'
