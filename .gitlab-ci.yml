@@ -62,7 +62,8 @@ app:build:
       - app/build
       - core/build
       - core-test/build
-  variables: !reference [.android-variables, variables]
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest
@@ -117,7 +118,8 @@ app:lint:
       - app/build
       - core/build
       - core-test/build
-  variables: !reference [.android-variables, variables]
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
 
 app:test:
   stage: test
@@ -136,7 +138,8 @@ app:test:
       - app/build
       - core/build
       - core-test/build
-  variables: !reference [.android-variables, variables]
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
       - app/build/jacoco/
@@ -193,7 +196,8 @@ generate coverage reports:
       - app/build
       - core/build
       - core-test/build
-  variables: !reference [.android-variables, variables]
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
       - app/build/reports/jacoco/jacocoTestReport
