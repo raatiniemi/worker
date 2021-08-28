@@ -15,6 +15,10 @@ include:
     ref: master
     file: Android.gitlab-ci.yml
 
+.android-variables:
+  variables:
+    JDK_VERSION: "11"
+
 # stage: build-core
 
 core:build:
@@ -58,6 +62,7 @@ app:build:
       - app/build
       - core/build
       - core-test/build
+  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest
@@ -112,6 +117,7 @@ app:lint:
       - app/build
       - core/build
       - core-test/build
+  variables: !reference [.android-variables, variables]
 
 app:test:
   stage: test
@@ -130,6 +136,7 @@ app:test:
       - app/build
       - core/build
       - core-test/build
+  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/jacoco/
@@ -186,6 +193,7 @@ generate coverage reports:
       - app/build
       - core/build
       - core-test/build
+  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/reports/jacoco/jacocoTestReport

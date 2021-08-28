@@ -19,13 +19,12 @@ plugins {
     id 'jacoco'
 }
 
-sourceCompatibility = sourceCompatibilityVersion
-targetCompatibility = targetCompatibilityVersion
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-        freeCompilerArgs = ['-XXLanguage:+InlineClasses']
+        jvmTarget = JavaVersion.VERSION_11
     }
 }
 
