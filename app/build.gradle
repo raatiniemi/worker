@@ -42,9 +42,7 @@ android {
         versionName projectVersion
         versionCode projectVersionCode
 
-        if (System.getenv("CI")) {
-            testBuildType 'instrumented'
-        }
+        testBuildType 'debug'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resConfigs "en"
@@ -72,6 +70,14 @@ android {
         debug {
             applicationIdSuffix = '.debug'
             manifestPlaceholders = [enableCrashReporting: "false"]
+            testCoverageEnabled true
+
+            if (System.getenv("CI")) {
+                shrinkResources true
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                testProguardFile 'proguard-test-rules.pro'
+            }
         }
         release {
             manifestPlaceholders = [enableCrashReporting: "true"]
@@ -84,12 +90,6 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFile 'proguard-test-rules.pro'
-        }
-        instrumented {
-            initWith release
-
-            manifestPlaceholders = [enableCrashReporting: "false"]
-            testCoverageEnabled true
         }
     }
     compileOptions {
@@ -197,10 +197,6 @@ dependencies {
     debugImplementation("androidx.fragment:fragment-testing:$fragmentVersion") {
         exclude group: 'androidx.test', module: 'core'
     }
-    //noinspection FragmentGradleConfiguration
-    instrumentedImplementation("androidx.fragment:fragment-testing:$fragmentVersion") {
-        exclude group: 'androidx.test', module: 'core'
-    }
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation "com.google.android.material:material:$materialVersion"
@@ -238,7 +234,9 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.ext:junit:$testExtJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
+        exclude module: "protobuf-lite"
+    }
     androidTestImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 }
