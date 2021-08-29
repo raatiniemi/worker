@@ -15,6 +15,10 @@ include:
     ref: master
     file: Android.gitlab-ci.yml
 
+.android-variables:
+  variables:
+    JDK_VERSION: "11"
+
 # stage: build-core
 
 core:build:
@@ -48,7 +52,7 @@ app:build:
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:assembleRelease app:assembleInstrumented app:assembleAndroidTest
+    - ./gradlew app:assembleRelease app:assembleDebug app:assembleAndroidTest
   needs:
     - core:build
   cache:
@@ -58,13 +62,15 @@ app:build:
       - app/build
       - core/build
       - core-test/build
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest
-      - app/build/outputs/apk/instrumented
+      - app/build/outputs/apk/debug
       - app/build/outputs/apk/release
-      - app/build/tmp/kotlin-classes/instrumented
-      - app/build/tmp/kotlin-classes/instrumentedAndroidTest
+      - app/build/tmp/kotlin-classes/debug
+      - app/build/tmp/kotlin-classes/debugAndroidTest
       - app/build/tmp/kotlin-classes/release
     expire_in: 4 hours
 
@@ -112,13 +118,15 @@ app:lint:
       - app/build
       - core/build
       - core-test/build
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
 
 app:test:
   stage: test
   extends:
     - .in-android-environment
   script:
-    - ./gradlew app:testInstrumentedUnitTest
+    - ./gradlew app:testDebugUnitTest
   needs:
     - core:build
     - app:build
@@ -130,11 +138,13 @@ app:test:
       - app/build
       - core/build
       - core-test/build
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
-      - app/build/jacoco/
-      - app/build/test-results/testInstrumentedUnitTest/
-      - app/build/tmp/kotlin-classes/instrumentedUnitTest/
+      - app/build/outputs/unit_test_code_coverage/
+      - app/build/test-results/testDebugUnitTest/
+      - app/build/tmp/kotlin-classes/debugUnitTest/
     expire_in: 4 hours
 
 app:instrumented test:
@@ -186,6 +196,8 @@ generate coverage reports:
       - app/build
       - core/build
       - core-test/build
+  variables:
+    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
       - app/build/reports/jacoco/jacocoTestReport

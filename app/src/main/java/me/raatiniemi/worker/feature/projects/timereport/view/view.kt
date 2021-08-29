@@ -43,7 +43,13 @@ internal fun week(week: TimeReportWeek) = week(Date(week.start.value))
 
 @SuppressLint("DefaultLocale")
 internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(Date(day.milliseconds.value))
-    .capitalize()
+    .replaceFirstChar {
+        if (it.isLowerCase()) {
+            it.titlecase(Locale.getDefault())
+        } else {
+            it.toString()
+        }
+    }
 
 internal fun firstLetter(text: CharSequence): Char {
     return text.first()
@@ -102,7 +108,9 @@ private fun format(dateFormat: DateFormat): (Milliseconds) -> String = { millise
 
 private fun convertToDate(milliseconds: Milliseconds) = Date(milliseconds.value)
 
-private fun join(separator: String): (Pair<String, String>) -> String = {
+private fun join(
+    @Suppress("SameParameterValue") separator: String
+): (Pair<String, String>) -> String = {
     "${it.first}$separator${it.second}"
 }
 

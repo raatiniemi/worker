@@ -71,16 +71,11 @@ class DateTimePickerDialogFragment : DialogFragment() {
 
             configureUserInterface(configuration)
             bindUserInterfaceToViewModel()
+            observeViewModel()
         } catch (e: IllegalArgumentException) {
             Timber.w(e, "Unable to show date time picker dialog")
             dismiss()
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        observeViewModel()
     }
 
     override fun onResume() {

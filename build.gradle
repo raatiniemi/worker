@@ -18,7 +18,7 @@
 
 buildscript {
     ext.kotlinVersion = '1.5.10'
-    ext.coroutineVersion = '1.5.0'
+    ext.coroutineVersion = '1.5.1'
     ext.jacocoVersion = '0.8.7'
     ext.jacocoReportFormats = System.getenv("JACOCO_REPORT_FORMATS") ?: "xml"
 
@@ -31,11 +31,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:7.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'gradle.plugin.com.cinnober.gradle:semver-git:2.4.0'
 
-        classpath 'com.google.gms:google-services:4.3.8'
+        classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
         classpath 'com.google.firebase:perf-plugin:1.4.0'
     }
@@ -53,11 +53,6 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.incremental = true
     }
-}
-
-ext {
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
-    targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
 apply from: 'versioning.gradle'

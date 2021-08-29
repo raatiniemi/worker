@@ -7,5 +7,5 @@
   tags:
     - docker
   variables:
-    GRADLE_VERSION: "6.7.1-jdk8"
+    GRADLE_VERSION: "7.0.2-jdk11"
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"

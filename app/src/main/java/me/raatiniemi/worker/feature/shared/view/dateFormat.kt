@@ -23,6 +23,7 @@ internal fun yearMonthDayHourMinute(date: Date): String {
     return SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         .run { format(date) }
 }
+
 internal fun yearMonthDay(date: Date): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         .run { format(date) }

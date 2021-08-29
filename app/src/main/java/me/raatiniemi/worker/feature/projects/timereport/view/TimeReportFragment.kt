@@ -234,6 +234,7 @@ class TimeReportFragment : Fragment() {
         timeReportAdapter.notifyDataSetChanged()
     }
 
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
         if (projectHolder.value == event.project) {
