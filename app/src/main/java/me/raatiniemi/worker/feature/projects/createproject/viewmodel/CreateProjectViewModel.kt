@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
 import me.raatiniemi.worker.domain.project.model.isValid
 import me.raatiniemi.worker.domain.project.model.projectName
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
@@ -62,7 +61,7 @@ internal class CreateProjectViewModel(
         }
     }
 
-    fun createProject(name: String) = viewModelScope.launch {
+    suspend fun createProject(name: String) {
         try {
             val project = createProject(projectName(name))
 

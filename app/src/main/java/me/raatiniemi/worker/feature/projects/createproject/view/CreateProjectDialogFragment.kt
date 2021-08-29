@@ -21,6 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.DialogfragmentCreateProjectBinding
 import me.raatiniemi.worker.domain.project.model.Project
@@ -94,11 +96,15 @@ class CreateProjectDialogFragment : DialogFragment() {
     private fun bindUserInterfaceToViewModel() {
         doOnTextChange(binding.etProjectName) { vm.name = it }
         done(binding.etProjectName) {
-            vm.createProject(vm.name)
+            lifecycleScope.launch {
+                vm.createProject(vm.name)
+            }
         }
 
         click(binding.btnCreate) {
-            vm.createProject(vm.name)
+            lifecycleScope.launch {
+                vm.createProject(vm.name)
+            }
         }
         click(binding.btnDismiss) { vm.dismiss() }
     }
