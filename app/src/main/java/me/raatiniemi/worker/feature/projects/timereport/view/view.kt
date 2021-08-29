@@ -43,7 +43,13 @@ internal fun week(week: TimeReportWeek) = week(Date(week.start.value))
 
 @SuppressLint("DefaultLocale")
 internal fun title(day: TimeReportDay) = shortDayMonthDayInMonth(Date(day.milliseconds.value))
-    .capitalize()
+    .replaceFirstChar {
+        if (it.isLowerCase()) {
+            it.titlecase(Locale.getDefault())
+        } else {
+            it.toString()
+        }
+    }
 
 internal fun firstLetter(text: CharSequence): Char {
     return text.first()
