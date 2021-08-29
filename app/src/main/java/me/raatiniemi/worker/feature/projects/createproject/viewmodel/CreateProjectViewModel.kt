@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
-import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
@@ -29,7 +28,6 @@ import me.raatiniemi.worker.domain.project.usecase.ProjectAlreadyExistsException
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.feature.shared.model.*
 import me.raatiniemi.worker.monitor.analytics.Event
-import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import timber.log.Timber
@@ -69,7 +67,6 @@ internal class CreateProjectViewModel(
         }
     }
 
-    @AddTrace(name = TracePerformanceEvents.CREATE_PROJECT)
     fun createProject() = viewModelScope.launch(dispatchProvider.io()) {
         consumeSuspending(_name) { name ->
             try {

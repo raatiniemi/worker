@@ -19,7 +19,6 @@ package me.raatiniemi.worker.feature.projects.all.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.datasource.AllProjectsPagingSource
@@ -39,7 +38,6 @@ import me.raatiniemi.worker.feature.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
-import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
 import java.util.*
@@ -81,7 +79,6 @@ internal class AllProjectsViewModel(
         viewActions += AllProjectsViewActions.ReloadProjects
     }
 
-    @AddTrace(name = TracePerformanceEvents.REFRESH_PROJECTS)
     suspend fun refreshActiveProjects(projects: List<ProjectsItem?>) {
         withContext(Dispatchers.Default) {
             val positions = projects.filterNotNull()
@@ -134,7 +131,6 @@ internal class AllProjectsViewModel(
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
-    @AddTrace(name = TracePerformanceEvents.CLOCK_IN)
     suspend fun clockInAt(project: Project, date: Date) {
         try {
             clockIn(project, Milliseconds(date.time))
@@ -148,7 +144,6 @@ internal class AllProjectsViewModel(
         }
     }
 
-    @AddTrace(name = TracePerformanceEvents.CLOCK_OUT)
     suspend fun clockOutAt(project: Project, date: Date) {
         try {
             clockOut(project, Milliseconds(date.time))
@@ -164,7 +159,6 @@ internal class AllProjectsViewModel(
         }
     }
 
-    @AddTrace(name = TracePerformanceEvents.REMOVE_PROJECT)
     suspend fun remove(project: Project) {
         try {
             removeProject(project)

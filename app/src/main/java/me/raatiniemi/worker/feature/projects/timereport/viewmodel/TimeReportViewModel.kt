@@ -22,7 +22,6 @@ import androidx.lifecycle.Transformations.map
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.google.firebase.perf.metrics.AddTrace
 import me.raatiniemi.worker.data.datasource.TimeReportWeekPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
@@ -39,7 +38,6 @@ import me.raatiniemi.worker.feature.projects.timereport.model.*
 import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
-import me.raatiniemi.worker.monitor.analytics.TracePerformanceEvents
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
 
@@ -207,7 +205,6 @@ internal class TimeReportViewModel(
         _selectedItems.value = selectedItems
     }
 
-    @AddTrace(name = TracePerformanceEvents.REFRESH_TIME_REPORT)
     fun refreshActiveTimeReportWeek(weeks: List<TimeReportWeek?>) {
         val position = findActivePosition(weeks)
         if (position == null) {
