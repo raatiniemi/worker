@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="app: test" type="AndroidJUnit" factoryName="Android JUnit" singleton="true">
+  <configuration default="false" name="test:app" type="JUnit" factoryName="JUnit">
     <module name="worker.app" />
     <extension name="coverage">
       <pattern>
@@ -7,14 +7,14 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
     <option name="PACKAGE_NAME" value="me.raatiniemi.worker" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />
-    <option name="PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <method v="2">
-      <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      <option name="Make" enabled="true" />
     </method>
   </configuration>
 </component>
