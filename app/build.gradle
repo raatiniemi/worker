@@ -54,6 +54,7 @@ android {
         }
     }
     buildFeatures {
+        compose true
         viewBinding true
     }
     if (System.getenv("CI")) {
@@ -99,6 +100,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "11"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.1'
     }
 
     sourceSets {
