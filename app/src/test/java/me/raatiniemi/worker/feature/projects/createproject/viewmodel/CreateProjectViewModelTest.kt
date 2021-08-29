@@ -95,9 +95,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project with empty name`() = runBlocking {
-        vm.name = ""
-
-        vm.createProject()
+        vm.createProject("")
 
         assertEquals(emptyList<Event>(), usageAnalytics.events)
         vm.viewActions.observeNonNull {
@@ -108,9 +106,8 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @Test
     fun `create project with duplicated name`() = runBlocking {
         createProject(android.name)
-        vm.name = android.name.value
 
-        vm.createProject()
+        vm.createProject(android.name.value)
 
         assertEquals(emptyList<Event>(), usageAnalytics.events)
         vm.viewActions.observeNonNull {
@@ -120,9 +117,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun `create project with valid name`() = runBlocking {
-        vm.name = android.name.value
-
-        vm.createProject()
+        vm.createProject(android.name.value)
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
         vm.viewActions.observeNonNull {

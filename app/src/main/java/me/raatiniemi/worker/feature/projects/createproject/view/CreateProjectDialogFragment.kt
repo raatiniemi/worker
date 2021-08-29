@@ -94,11 +94,11 @@ class CreateProjectDialogFragment : DialogFragment() {
     private fun bindUserInterfaceToViewModel() {
         doOnTextChange(binding.etProjectName) { vm.name = it }
         done(binding.etProjectName) {
-            vm.createProject()
+            vm.createProject(vm.name)
         }
 
         click(binding.btnCreate) {
-            vm.createProject()
+            vm.createProject(vm.name)
         }
         click(binding.btnDismiss) { vm.dismiss() }
     }

@@ -62,23 +62,21 @@ internal class CreateProjectViewModel(
         }
     }
 
-    fun createProject() = viewModelScope.launch {
-        consumeSuspending(_name) { name ->
-            try {
-                val project = createProject(projectName(name))
+    fun createProject(name: String) = viewModelScope.launch {
+        try {
+            val project = createProject(projectName(name))
 
-                usageAnalytics.log(Event.ProjectCreate)
-                viewActions += CreateProjectViewActions.Created(project)
-            } catch (e: ProjectAlreadyExistsException) {
-                Timber.d("Project with name \"$name\" already exists")
-                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
-            } catch (e: InvalidProjectNameException) {
-                Timber.w("Project name \"$name\" is not valid")
-                viewActions += CreateProjectViewActions.InvalidProjectNameErrorMessage
-            } catch (e: Exception) {
-                Timber.w(e, "Unable to create project")
-                viewActions += CreateProjectViewActions.UnknownErrorMessage
-            }
+            usageAnalytics.log(Event.ProjectCreate)
+            viewActions += CreateProjectViewActions.Created(project)
+        } catch (e: ProjectAlreadyExistsException) {
+            Timber.d("Project with name \"$name\" already exists")
+            viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+        } catch (e: InvalidProjectNameException) {
+            Timber.w("Project name \"$name\" is not valid")
+            viewActions += CreateProjectViewActions.InvalidProjectNameErrorMessage
+        } catch (e: Exception) {
+            Timber.w(e, "Unable to create project")
+            viewActions += CreateProjectViewActions.UnknownErrorMessage
         }
     }
 
