@@ -108,7 +108,9 @@ private fun format(dateFormat: DateFormat): (Milliseconds) -> String = { millise
 
 private fun convertToDate(milliseconds: Milliseconds) = Date(milliseconds.value)
 
-private fun join(separator: String): (Pair<String, String>) -> String = {
+private fun join(
+    @Suppress("SameParameterValue") separator: String
+): (Pair<String, String>) -> String = {
     "${it.first}$separator${it.second}"
 }
 
