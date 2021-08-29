@@ -59,11 +59,6 @@ class CreateProjectDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindUserInterfaceToViewModel()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
         observeViewModel()
     }
 
