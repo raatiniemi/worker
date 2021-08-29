@@ -14,9 +14,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<issues format="5" by="lint 3.5">
+<lint>
     <issue id="ObsoleteSdkInt">
         <ignore path="src/debug/res/mipmap-anydpi-v26" />
         <ignore path="src/main/res/mipmap-anydpi-v26" />
     </issue>
-</issues>
+</lint>
