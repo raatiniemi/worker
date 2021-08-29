@@ -223,11 +223,13 @@ class AllProjectsFragment : Fragment() {
         }
     }
 
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
         vm.reloadProjects()
     }
 
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
         vm.reloadProjects()
