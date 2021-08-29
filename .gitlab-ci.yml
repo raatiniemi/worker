@@ -142,7 +142,7 @@ app:test:
     JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
   artifacts:
     paths:
-      - app/build/jacoco/
+      - app/build/outputs/unit_test_code_coverage/
       - app/build/test-results/testDebugUnitTest/
       - app/build/tmp/kotlin-classes/debugUnitTest/
     expire_in: 4 hours
