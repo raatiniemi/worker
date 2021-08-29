@@ -61,7 +61,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `is create enabled with empty name`() = runBlocking {
+    fun `is create enabled with empty name`() {
         vm.name = ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -71,8 +71,10 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `is create enabled with duplicated name`() = runBlocking {
-        createProject(android.name)
+    fun `is create enabled with duplicated name`() {
+        runBlocking {
+            createProject(android.name)
+        }
         vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -84,7 +86,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `is create enabled with valid name`() = runBlocking {
+    fun `is create enabled with valid name`() {
         vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -94,8 +96,10 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `create project with empty name`() = runBlocking {
-        vm.createProject("")
+    fun `create project with empty name`() {
+        runBlocking {
+            vm.createProject("")
+        }
 
         assertEquals(emptyList<Event>(), usageAnalytics.events)
         vm.viewActions.observeNonNull {
@@ -104,10 +108,14 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `create project with duplicated name`() = runBlocking {
-        createProject(android.name)
+    fun `create project with duplicated name`() {
+        runBlocking {
+            createProject(android.name)
+        }
 
-        vm.createProject(android.name.value)
+        runBlocking {
+            vm.createProject(android.name.value)
+        }
 
         assertEquals(emptyList<Event>(), usageAnalytics.events)
         vm.viewActions.observeNonNull {
@@ -116,14 +124,18 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `create project with valid name`() = runBlocking {
-        vm.createProject(android.name.value)
+    fun `create project with valid name`() {
+        runBlocking {
+            vm.createProject(android.name.value)
+        }
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.Created(android), it)
         }
-        val actual = findProject(android.name)
+        val actual = runBlocking {
+            findProject(android.name)
+        }
         assertEquals(android, actual)
     }
 
