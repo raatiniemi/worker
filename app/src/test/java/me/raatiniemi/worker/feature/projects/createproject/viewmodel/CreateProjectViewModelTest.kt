@@ -28,9 +28,6 @@ import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
-import me.raatiniemi.worker.util.CoroutineDispatchProvider
-import me.raatiniemi.worker.util.CoroutineTestRule
-import me.raatiniemi.worker.util.TestCoroutineDispatchProvider
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -38,7 +35,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.koin.core.context.startKoin
-import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 
@@ -48,14 +44,6 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val coroutineTestRule = CoroutineTestRule()
-    private val dispatchProviderModule = module(override = true) {
-        single<CoroutineDispatchProvider> {
-            TestCoroutineDispatchProvider(coroutineTestRule.testDispatcher)
-        }
-    }
 
     private val debounceDurationInMilliseconds: Long = 300
 
@@ -68,7 +56,7 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @Before
     fun setUp() {
         startKoin {
-            modules(testKoinModules + dispatchProviderModule)
+            modules(testKoinModules)
         }
     }
 

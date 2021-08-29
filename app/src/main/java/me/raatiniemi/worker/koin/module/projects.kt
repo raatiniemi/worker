@@ -44,8 +44,7 @@ internal val projects = module {
         CreateProjectViewModel(
             usageAnalytics = get(),
             createProject = get(),
-            findProject = get(),
-            dispatchProvider = get()
+            findProject = get()
         )
     }
 

@@ -18,7 +18,6 @@ package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.project.model.isValid
 import me.raatiniemi.worker.domain.project.model.projectName
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
@@ -29,14 +28,12 @@ import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectVi
 import me.raatiniemi.worker.feature.shared.model.*
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.CoroutineDispatchProvider
 import timber.log.Timber
 
 internal class CreateProjectViewModel(
     private val usageAnalytics: UsageAnalytics,
     private val createProject: CreateProject,
-    private val findProject: FindProject,
-    private val dispatchProvider: CoroutineDispatchProvider
+    private val findProject: FindProject
 ) : ViewModel() {
     private val _name = MutableLiveData<String>()
     var name: String by MutableLiveDataProperty(_name, "")
@@ -52,22 +49,20 @@ internal class CreateProjectViewModel(
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
     private suspend fun checkForAvailability(value: String): Boolean {
-        return withContext(dispatchProvider.io()) {
-            try {
-                val project = findProject(projectName(value))
-                if (project != null) {
-                    viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
-                    false
-                } else {
-                    true
-                }
-            } catch (e: InvalidProjectNameException) {
+        return try {
+            val project = findProject(projectName(value))
+            if (project != null) {
+                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
                 false
+            } else {
+                true
             }
+        } catch (e: InvalidProjectNameException) {
+            false
         }
     }
 
-    fun createProject() = viewModelScope.launch(dispatchProvider.io()) {
+    fun createProject() = viewModelScope.launch {
         consumeSuspending(_name) { name ->
             try {
                 val project = createProject(projectName(name))
