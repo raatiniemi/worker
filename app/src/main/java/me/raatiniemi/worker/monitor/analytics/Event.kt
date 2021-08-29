@@ -16,7 +16,10 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
-internal sealed class Event(val name: EventName, val parameters: List<EventParameter> = emptyList()) {
+internal sealed class Event(
+    val name: EventName,
+    val parameters: List<EventParameter> = emptyList()
+) {
     constructor(name: EventName, parameter: EventParameter) : this(name, listOf(parameter))
 
     object TapProjectOpen : Event(TapProjectEvent.Open)

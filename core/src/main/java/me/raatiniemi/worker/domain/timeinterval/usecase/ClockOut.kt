@@ -33,7 +33,10 @@ import kotlin.math.abs
  * Use case for clocking out.
  */
 class ClockOut(private val timeIntervals: TimeIntervalRepository) {
-    suspend operator fun invoke(project: Project, milliseconds: Milliseconds): TimeInterval.Inactive {
+    suspend operator fun invoke(
+        project: Project,
+        milliseconds: Milliseconds
+    ): TimeInterval.Inactive {
         val active = findActiveTimeInterval(project)
         if (isElapsedPastAllowed(milliseconds, active.start)) {
             throw ElapsedTimePastAllowedException()

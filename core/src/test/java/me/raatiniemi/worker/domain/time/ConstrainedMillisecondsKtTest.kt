@@ -79,6 +79,7 @@ class ConstrainedMillisecondsKtTest {
 
         assertEquals(lowerBound, actual)
     }
+
     @Test
     fun `constrained milliseconds with min and max swapped`() {
         val now = Milliseconds.now

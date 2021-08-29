@@ -23,7 +23,10 @@ import me.raatiniemi.worker.domain.timeinterval.model.calculateInterval
 import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 
 class CalculateTimeToday(private val repository: TimeIntervalRepository) {
-    suspend operator fun invoke(project: Project, stopForActive: Milliseconds = Milliseconds.now): Long {
+    suspend operator fun invoke(
+        project: Project,
+        stopForActive: Milliseconds = Milliseconds.now
+    ): Long {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         val timeIntervals = repository.findAll(project, startingPoint)
         return timeIntervals.map { calculateInterval(it, stopForActive) }
