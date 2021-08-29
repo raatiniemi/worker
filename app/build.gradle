@@ -111,14 +111,6 @@ android {
         }
     }
 
-    // From kotlinx-coroutine 1.3.6, still present in 1.3.8, there is an issue
-    // with duplicate files with OS independent paths.
-    // ref: https://github.com/Kotlin/kotlinx.coroutines/issues/2023
-    packagingOptions {
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-    }
-
     lintOptions {
         baseline file("lint.xml")
 
