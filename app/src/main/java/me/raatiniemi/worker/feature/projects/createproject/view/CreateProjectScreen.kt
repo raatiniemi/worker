@@ -24,16 +24,43 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerTheme
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectError
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectState
 import me.raatiniemi.worker.feature.projects.createproject.model.emptyCreateProjectState
+import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.feature.shared.model.Error
+
+@Composable
+internal fun CreateProjectScreen(vm: CreateProjectViewModel) {
+    val name: String by vm.name.observeAsState("")
+    val error: Error? by vm.error.observeAsState()
+
+    val scope = rememberCoroutineScope()
+    CreateProjectContent(
+        state = CreateProjectState(name, error),
+        onNameChange = {
+            scope.launch {
+                vm.onNameChange(it)
+            }
+        },
+        onDismiss = vm::dismiss,
+        onCreate = {
+            scope.launch {
+                vm.createProject(name)
+            }
+        }
+    )
+}
 
 @Composable
 private fun CreateProjectContent(

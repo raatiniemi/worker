@@ -17,18 +17,19 @@
 package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.project.model.android
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.domain.project.usecase.FindProject
+import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectError
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
+import me.raatiniemi.worker.feature.shared.model.Error
 import me.raatiniemi.worker.feature.shared.model.observeNoValue
 import me.raatiniemi.worker.feature.shared.model.observeNonNull
 import me.raatiniemi.worker.koin.testKoinModules
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,14 +39,11 @@ import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 
-@ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class CreateProjectViewModelTest : AutoCloseKoinTest() {
     @JvmField
     @Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    private val debounceDurationInMilliseconds: Long = 300
 
     private val usageAnalytics by inject<InMemoryUsageAnalytics>()
     private val findProject by inject<FindProject>()
@@ -60,51 +58,85 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
         }
     }
 
-    @Test
-    fun `is create enabled with empty name`() {
-        vm.name = ""
+    // On name change
 
-        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertFalse(it)
+    @Test
+    fun `on name change with invalid name`() {
+        val actualErrors = mutableListOf<Error?>()
+        vm.error.observeForever(actualErrors::add)
+        val expectedErrors = listOf<Error?>(
+            null,
+            CreateProjectError.InvalidName
+        )
+
+        runBlocking {
+            vm.onNameChange("")
         }
-        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
+
+        assertEquals(expectedErrors, actualErrors)
+        vm.name.observeNonNull {
+            assertEquals("", it)
+        }
     }
 
     @Test
-    fun `is create enabled with duplicated name`() {
+    fun `on name change when project already exists`() {
         runBlocking {
             createProject(android.name)
         }
-        vm.name = android.name.value
+        val actualErrors = mutableListOf<Error?>()
+        vm.error.observeForever(actualErrors::add)
+        val expectedErrors = listOf<Error?>(
+            null,
+            CreateProjectError.ProjectAlreadyExists
+        )
 
-        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertFalse(it)
+        runBlocking {
+            vm.onNameChange(android.name.value)
         }
-        vm.viewActions.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertEquals(CreateProjectViewActions.DuplicateNameErrorMessage, it)
+
+        assertEquals(expectedErrors, actualErrors)
+        vm.name.observeNonNull {
+            assertEquals(android.name.value, it)
         }
     }
 
     @Test
-    fun `is create enabled with valid name`() {
-        vm.name = android.name.value
+    fun `on name change with valid name`() {
+        val actualErrors = mutableListOf<Error?>()
+        vm.error.observeForever(actualErrors::add)
+        val expectedErrors = listOf<Error?>(
+            null
+        )
 
-        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertTrue(it)
+        runBlocking {
+            vm.onNameChange(android.name.value)
         }
-        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
+
+        assertEquals(expectedErrors, actualErrors)
+        vm.name.observeNonNull {
+            assertEquals(android.name.value, it)
+        }
     }
+
+    // Create project
 
     @Test
     fun `create project with empty name`() {
+        val actualErrors = mutableListOf<Error?>()
+        vm.error.observeForever(actualErrors::add)
+        val expectedEvents = emptyList<Event>()
+        val expectedErrors = listOf<Error?>(
+            CreateProjectError.InvalidName
+        )
+
         runBlocking {
             vm.createProject("")
         }
 
-        assertEquals(emptyList<Event>(), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.InvalidProjectNameErrorMessage, it)
-        }
+        assertEquals(expectedEvents, usageAnalytics.events)
+        assertEquals(expectedErrors, actualErrors)
+        vm.viewActions.observeNoValue()
     }
 
     @Test
@@ -112,27 +144,40 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
         runBlocking {
             createProject(android.name)
         }
+        val actualErrors = mutableListOf<Error?>()
+        vm.error.observeForever(actualErrors::add)
+        val expectedEvents = emptyList<Event>()
+        val expectedErrors = listOf<Error?>(
+            CreateProjectError.ProjectAlreadyExists
+        )
 
         runBlocking {
             vm.createProject(android.name.value)
         }
 
-        assertEquals(emptyList<Event>(), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.DuplicateNameErrorMessage, it)
-        }
+        assertEquals(expectedEvents, usageAnalytics.events)
+        assertEquals(expectedErrors, actualErrors)
+        vm.viewActions.observeNoValue()
     }
 
     @Test
     fun `create project with valid name`() {
+        val actualViewActions = mutableListOf<CreateProjectViewActions?>()
+        vm.viewActions.observeForever(actualViewActions::add)
+        val expectedEvents = listOf(
+            Event.ProjectCreate
+        )
+        val expectedViewActions = listOf(
+            CreateProjectViewActions.Created(android)
+        )
+
         runBlocking {
             vm.createProject(android.name.value)
         }
 
-        assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
-        vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.Created(android), it)
-        }
+        assertEquals(expectedEvents, usageAnalytics.events)
+        assertEquals(expectedViewActions, actualViewActions)
+        vm.error.observeNoValue()
         val actual = runBlocking {
             findProject(android.name)
         }
@@ -143,10 +188,14 @@ class CreateProjectViewModelTest : AutoCloseKoinTest() {
 
     @Test
     fun dismiss() {
+        val actualViewActions = mutableListOf<CreateProjectViewActions?>()
+        vm.viewActions.observeForever(actualViewActions::add)
+        val expectedViewActions = listOf(
+            CreateProjectViewActions.Dismiss
+        )
+
         vm.dismiss()
 
-        vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.Dismiss, it)
-        }
+        assertEquals(expectedViewActions, actualViewActions)
     }
 }

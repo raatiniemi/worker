@@ -16,15 +16,19 @@
 
 package me.raatiniemi.worker.feature.projects.createproject.viewmodel
 
-import androidx.lifecycle.*
-import me.raatiniemi.worker.domain.project.model.isValid
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import me.raatiniemi.worker.domain.project.model.projectName
 import me.raatiniemi.worker.domain.project.usecase.CreateProject
 import me.raatiniemi.worker.domain.project.usecase.FindProject
 import me.raatiniemi.worker.domain.project.usecase.InvalidProjectNameException
 import me.raatiniemi.worker.domain.project.usecase.ProjectAlreadyExistsException
+import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectError
 import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectViewActions
-import me.raatiniemi.worker.feature.shared.model.*
+import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.feature.shared.model.Error
+import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
@@ -35,29 +39,24 @@ internal class CreateProjectViewModel(
     private val findProject: FindProject
 ) : ViewModel() {
     private val _name = MutableLiveData<String>()
-    var name: String by MutableLiveDataProperty(_name, "")
+    var name: LiveData<String> = _name
 
-    private val isNameValid = _name.map(::isValid)
-    private val isNameAvailable = debounceSuspend(viewModelScope, _name) { name ->
-        checkForAvailability(name)
-    }
-
-    val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
-        .map { it.first && it.second }
+    private val _error = MutableLiveData<Error?>()
+    val error: LiveData<Error?> = _error
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
-    private suspend fun checkForAvailability(value: String): Boolean {
-        return try {
-            val project = findProject(projectName(value))
+    suspend fun onNameChange(name: String) {
+        _error += null
+        _name += name
+
+        try {
+            val project = findProject(projectName(name))
             if (project != null) {
-                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
-                false
-            } else {
-                true
+                _error += CreateProjectError.ProjectAlreadyExists
             }
         } catch (e: InvalidProjectNameException) {
-            false
+            _error += CreateProjectError.InvalidName
         }
     }
 
@@ -69,13 +68,13 @@ internal class CreateProjectViewModel(
             viewActions += CreateProjectViewActions.Created(project)
         } catch (e: ProjectAlreadyExistsException) {
             Timber.d("Project with name \"$name\" already exists")
-            viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+            _error += CreateProjectError.ProjectAlreadyExists
         } catch (e: InvalidProjectNameException) {
             Timber.w("Project name \"$name\" is not valid")
-            viewActions += CreateProjectViewActions.InvalidProjectNameErrorMessage
+            _error += CreateProjectError.InvalidName
         } catch (e: Exception) {
             Timber.w(e, "Unable to create project")
-            viewActions += CreateProjectViewActions.UnknownErrorMessage
+            _error += CreateProjectError.Unknown
         }
     }
 

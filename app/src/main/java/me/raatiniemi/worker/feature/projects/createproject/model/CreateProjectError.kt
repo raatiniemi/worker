@@ -22,4 +22,6 @@ internal sealed class CreateProjectError : Error {
     object InvalidName : CreateProjectError()
 
     object ProjectAlreadyExists : CreateProjectError()
+
+    object Unknown : CreateProjectError()
 }
