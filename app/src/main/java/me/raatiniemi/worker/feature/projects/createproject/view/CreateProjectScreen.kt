@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.feature.projects.createproject.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
@@ -29,6 +31,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -72,7 +75,7 @@ private fun CreateProjectContent(
     CreateProjectCard {
         CreateProjectTitle()
         CreateProjectDescription()
-        CreateProjectTextField(state, onNameChange)
+        CreateProjectTextField(state, onNameChange, onCreate)
         CreateProjectButtonGroup {
             CreateProjectDismissButton(onDismiss)
             CreateProjectSubmitButton(state, onCreate)
@@ -115,7 +118,11 @@ private fun CreateProjectDescription() {
 }
 
 @Composable
-private fun CreateProjectTextField(state: CreateProjectState, onNameChange: (String) -> Unit) {
+private fun CreateProjectTextField(
+    state: CreateProjectState,
+    onNameChange: (String) -> Unit,
+    onCreate: (String) -> Unit
+) {
     OutlinedTextField(
         value = state.name,
         onValueChange = onNameChange,
@@ -123,7 +130,13 @@ private fun CreateProjectTextField(state: CreateProjectState, onNameChange: (Str
             Text(text = stringResource(id = R.string.projects_create_name_hint))
         },
         isError = state.error != null,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onCreate(state.name)
+            }
+        )
     )
     state.error?.let {
         CreateProjectErrorMessage(it)
