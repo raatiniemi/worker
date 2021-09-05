@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -128,7 +129,9 @@ private fun CreateProjectTextField(
             Text(text = stringResource(id = R.string.projects_create_name_hint))
         },
         isError = isError(state),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("Name"),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(
             onDone = {
@@ -150,6 +153,7 @@ private fun CreateProjectErrorMessage(error: Error) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
+            .testTag("Error")
     )
 }
 
@@ -175,7 +179,9 @@ private fun CreateProjectButtonGroup(content: @Composable RowScope.() -> Unit) {
 private fun CreateProjectDismissButton(onDismiss: () -> Unit) {
     TextButton(
         onClick = onDismiss,
-        modifier = Modifier.padding(end = 8.dp)
+        modifier = Modifier
+            .padding(end = 8.dp)
+            .testTag("Dismiss")
     ) {
         Text(
             text = stringResource(id = R.string.projects_create_dismiss).uppercase()
@@ -187,7 +193,8 @@ private fun CreateProjectDismissButton(onDismiss: () -> Unit) {
 private fun CreateProjectSubmitButton(state: CreateProjectState, onCreate: (String) -> Unit) {
     TextButton(
         onClick = { onCreate(state.name) },
-        enabled = isValid(state)
+        enabled = isValid(state),
+        modifier = Modifier.testTag("Create")
     ) {
         Text(
             text = stringResource(id = R.string.projects_create_submit).uppercase()

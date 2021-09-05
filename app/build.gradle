@@ -210,6 +210,7 @@ dependencies {
     implementation "androidx.compose.material:material:$jetpackComposeVersion"
     implementation "androidx.compose.runtime:runtime-livedata:$jetpackComposeVersion"
     implementation "androidx.compose.ui:ui-tooling:$jetpackComposeVersion"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$jetpackComposeVersion"
 
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
@@ -243,6 +244,7 @@ dependencies {
     androidTestImplementation "androidx.test:core:$testCoreVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.ext:junit:$testExtJunitVersion"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$jetpackComposeVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
         exclude module: "protobuf-lite"
