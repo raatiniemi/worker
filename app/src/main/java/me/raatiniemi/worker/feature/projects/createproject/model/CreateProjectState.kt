@@ -28,3 +28,11 @@ internal data class CreateProjectState(
 internal fun emptyCreateProjectState(): CreateProjectState {
     return CreateProjectState()
 }
+
+internal fun isError(state: CreateProjectState): Boolean {
+    return state.error != null
+}
+
+internal fun isValid(state: CreateProjectState): Boolean {
+    return !isError(state) && state.name.isNotBlank()
+}

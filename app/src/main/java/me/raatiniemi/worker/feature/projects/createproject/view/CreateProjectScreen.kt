@@ -37,9 +37,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerTheme
-import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectError
-import me.raatiniemi.worker.feature.projects.createproject.model.CreateProjectState
-import me.raatiniemi.worker.feature.projects.createproject.model.emptyCreateProjectState
+import me.raatiniemi.worker.feature.projects.createproject.model.*
 import me.raatiniemi.worker.feature.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.feature.shared.model.Error
 
@@ -129,7 +127,7 @@ private fun CreateProjectTextField(
         label = {
             Text(text = stringResource(id = R.string.projects_create_name_hint))
         },
-        isError = state.error != null,
+        isError = isError(state),
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(
@@ -189,16 +187,12 @@ private fun CreateProjectDismissButton(onDismiss: () -> Unit) {
 private fun CreateProjectSubmitButton(state: CreateProjectState, onCreate: (String) -> Unit) {
     TextButton(
         onClick = { onCreate(state.name) },
-        enabled = canCreateProject(state)
+        enabled = isValid(state)
     ) {
         Text(
             text = stringResource(id = R.string.projects_create_submit).uppercase()
         )
     }
-}
-
-private fun canCreateProject(state: CreateProjectState): Boolean {
-    return state.error == null && state.name.isNotBlank()
 }
 
 @Preview
