@@ -25,5 +25,3 @@ fun projectName(value: String?): ProjectName {
 
     return ProjectName(value)
 }
-
-fun isValid(name: String?): Boolean = !name.isNullOrEmpty()

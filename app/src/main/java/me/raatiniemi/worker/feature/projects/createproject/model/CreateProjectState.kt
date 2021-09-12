@@ -14,24 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.feature.shared.model
+package me.raatiniemi.worker.feature.projects.createproject.model
 
-import androidx.lifecycle.MutableLiveData
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
+import androidx.compose.runtime.Stable
+import me.raatiniemi.worker.feature.shared.model.Error
 
-/**
- * Hide [MutableLiveData] behind raw value property.
- */
-internal class MutableLiveDataProperty<T>(
-    private val source: MutableLiveData<T>,
-    private val defaultValue: T
-) : ReadWriteProperty<Any, T> {
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        return source.value ?: defaultValue
-    }
+@Stable
+internal data class CreateProjectState(
+    val name: String = "",
+    val error: Error? = null
+)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        source += value
-    }
+internal fun emptyCreateProjectState(): CreateProjectState {
+    return CreateProjectState()
+}
+
+internal fun isError(state: CreateProjectState): Boolean {
+    return state.error != null
+}
+
+internal fun isValid(state: CreateProjectState): Boolean {
+    return !isError(state) && state.name.isNotBlank()
 }

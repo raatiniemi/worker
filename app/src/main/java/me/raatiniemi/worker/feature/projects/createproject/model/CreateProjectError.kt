@@ -14,24 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.feature.shared.model
+package me.raatiniemi.worker.feature.projects.createproject.model
 
-import androidx.lifecycle.LiveData
-import timber.log.Timber
+import me.raatiniemi.worker.feature.shared.model.Error
 
-/**
- * Consumes non-null values from a [LiveData] source.
- *
- * @param source Source from which to consume values.
- * @param consumer Consumer which consumes values emitted from source.
- */
-internal fun <T> consume(source: LiveData<T>, consumer: (T) -> Unit) {
-    try {
-        val value = source.value
-        check(value != null)
+internal sealed class CreateProjectError : Error {
+    object InvalidName : CreateProjectError()
 
-        consumer(value)
-    } catch (e: IllegalStateException) {
-        Timber.w(e, "No value is available for consumer")
-    }
+    object ProjectAlreadyExists : CreateProjectError()
+
+    object Unknown : CreateProjectError()
 }

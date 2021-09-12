@@ -16,7 +16,4 @@
 
 package me.raatiniemi.worker.feature.shared.model
 
-import androidx.appcompat.widget.AppCompatEditText
-
-@FunctionalInterface
-internal interface EditTextViewAction : ViewAction<AppCompatEditText>
+internal interface Error

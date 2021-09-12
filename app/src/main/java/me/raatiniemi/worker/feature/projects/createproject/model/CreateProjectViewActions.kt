@@ -16,45 +16,20 @@
 
 package me.raatiniemi.worker.feature.projects.createproject.model
 
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.DialogFragment
-import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.feature.projects.createproject.view.OnCreateProject
 import me.raatiniemi.worker.feature.shared.model.BiViewAction
-import me.raatiniemi.worker.feature.shared.model.EditTextViewAction
 
-internal sealed class CreateProjectViewActions {
-    object InvalidProjectNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
-        override fun accept(t: AppCompatEditText) {
-            t.error = t.context.getString(R.string.projects_create_missing_name_error_message)
-        }
-    }
-
-    object DuplicateNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
-        override fun accept(t: AppCompatEditText) {
-            t.error = t.context.getString(
-                R.string.projects_create_project_already_exists_error_message
-            )
-        }
-    }
-
-    object UnknownErrorMessage : CreateProjectViewActions(), EditTextViewAction {
-        override fun accept(t: AppCompatEditText) {
-            t.error = t.context.getString(R.string.projects_create_unknown_error_message)
-        }
-    }
-
-    data class Created(
-        private val project: Project
-    ) : CreateProjectViewActions(), BiViewAction<DialogFragment, OnCreateProject> {
+internal sealed class CreateProjectViewActions : BiViewAction<DialogFragment, OnCreateProject> {
+    data class Created(private val project: Project) : CreateProjectViewActions() {
         override fun accept(t: DialogFragment, r: OnCreateProject) {
             r(project)
             t.dismiss()
         }
     }
 
-    object Dismiss : CreateProjectViewActions(), BiViewAction<DialogFragment, OnCreateProject> {
+    object Dismiss : CreateProjectViewActions() {
         override fun accept(t: DialogFragment, r: OnCreateProject) {
             r(null)
             t.dismiss()

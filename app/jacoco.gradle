@@ -16,7 +16,7 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion jacocoVersion
+    toolVersion "0.8.7"
 }
 
 def packageDirectory = 'me/raatiniemi/worker'
