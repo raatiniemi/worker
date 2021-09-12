@@ -1,2 +1,1 @@
-resolve crash in time report when week spans two years
-prevent clock out with elapsed time past 24 hours
+migrate create project screen to jetpack compose
