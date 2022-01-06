@@ -163,7 +163,7 @@ dependencies {
     def androidxCoreVersion = '1.7.0'
     def annotationVersion = '1.3.0'
     def appcompatVersion = '1.4.0'
-    def constraintLayoutVersion = '2.1.0'
+    def constraintLayoutVersion = '2.1.2'
     def recyclerViewVersion = '1.2.1'
     def cardViewVersion = '1.0.0'
     def preferenceVersion = '1.1.1'
