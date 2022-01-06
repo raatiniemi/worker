@@ -29,7 +29,9 @@
         android:theme="@style/Theme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="me.raatiniemi.worker.feature.home.view.HomeActivity">
+        <activity
+            android:name="me.raatiniemi.worker.feature.home.view.HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -32,13 +32,13 @@ apply plugin: 'com.google.firebase.firebase-perf'
 apply from: 'jacoco.gradle'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
         minSdkVersion 27
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionName projectVersion
         versionCode projectVersionCode
 
