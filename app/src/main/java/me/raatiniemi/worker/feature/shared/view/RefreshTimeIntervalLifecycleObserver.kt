@@ -16,9 +16,7 @@
 
 package me.raatiniemi.worker.feature.shared.view
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import me.raatiniemi.worker.domain.time.minutes
 import timber.log.Timber
 import java.util.*
@@ -27,16 +25,18 @@ import kotlin.concurrent.schedule
 internal class RefreshTimeIntervalLifecycleObserver(
     private val refreshTimeIntervalInMilliseconds: Long = 1.minutes,
     private val refresh: () -> Unit
-) : LifecycleObserver {
+) : DefaultLifecycleObserver {
     private var refreshTimer: Timer? = null
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+
         startRefreshTimer()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+
         cancelRefreshTimer()
     }
 
