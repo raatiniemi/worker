@@ -44,8 +44,7 @@ android {
 
         testBuildType 'debug'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-
-        resConfigs "en"
+        resConfigs 'en'
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -102,10 +101,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    jacoco {
-        version = "0.8.7"
-    }
-
     composeOptions {
         kotlinCompilerExtensionVersion '1.0.1'
     }
@@ -124,20 +119,18 @@ android {
     // with duplicate files with OS independent paths.
     // ref: https://github.com/Kotlin/kotlinx.coroutines/issues/2023
     packagingOptions {
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
     }
 
-    lintOptions {
-        baseline file("lint.xml")
-
-        quiet true
-        explainIssues true
-
+    lint {
         abortOnError true
-        warningsAsErrors true
-
+        baseline file('lint.xml')
+        explainIssues true
         htmlReport false
+        quiet true
+        warningsAsErrors true
         xmlReport false
     }
 
@@ -152,6 +145,9 @@ android {
             }
         }
         animationsDisabled = true
+    }
+    testCoverage {
+        jacocoVersion '0.8.7'
     }
 }
 
