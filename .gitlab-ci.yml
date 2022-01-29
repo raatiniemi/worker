@@ -1,4 +1,6 @@
+---
 stages:
+  - lint
   - build-core
   - build-app
   - test
@@ -15,6 +17,7 @@ include:
     ref: main
     file:
       - '/templates/Gradle.gitlab-ci.yml'
+      - '/templates/Yaml.gitlab-ci.yml'
   - project: 'rahome/docker-android-environment'
     ref: master
     file: Android.gitlab-ci.yml
@@ -22,6 +25,13 @@ include:
 .android-variables:
   variables:
     JDK_VERSION: "11"
+
+# stage: lint
+
+lint:yaml:
+  stage: lint
+  extends:
+    - .yaml-lint
 
 # stage: build-core
 
