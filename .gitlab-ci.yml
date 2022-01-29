@@ -24,6 +24,7 @@ include:
 
 .android-variables:
   variables:
+    ANDROID_API_VERSION: "32"
     JDK_VERSION: "11"
 
 # stage: lint
@@ -76,8 +77,7 @@ app:build:
       - app/build
       - core/build
       - core-test/build
-  variables:
-    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
+  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/outputs/apk/androidTest
@@ -132,8 +132,7 @@ app:lint:
       - app/build
       - core/build
       - core-test/build
-  variables:
-    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
+  variables: !reference [.android-variables, variables]
 
 app:test:
   stage: test
@@ -152,8 +151,7 @@ app:test:
       - app/build
       - core/build
       - core-test/build
-  variables:
-    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
+  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/outputs/unit_test_code_coverage/
@@ -210,8 +208,7 @@ generate coverage reports:
       - app/build
       - core/build
       - core-test/build
-  variables:
-    JDK_VERSION: !reference [.android-variables, variables, JDK_VERSION]
+  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/reports/jacoco/jacocoTestReport
