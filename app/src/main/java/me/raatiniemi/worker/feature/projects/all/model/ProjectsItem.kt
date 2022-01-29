@@ -34,8 +34,8 @@ data class ProjectsItem(
     private val registeredTime: List<TimeInterval>
 ) {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-    private val registeredTimeSummary: Milliseconds
-    private val activeTimeInterval: TimeInterval?
+    private val registeredTimeSummary: Milliseconds = calculateSummaryFromRegisteredTime(registeredTime)
+    private val activeTimeInterval: TimeInterval? = findActiveTimeInterval(registeredTime)
 
     val title: String
         get() = project.name.value
@@ -54,11 +54,6 @@ data class ProjectsItem(
 
     val clockedInSinceInMilliseconds: Long
         get() = activeTimeInterval?.start?.value ?: 0
-
-    init {
-        registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime)
-        activeTimeInterval = findActiveTimeInterval(registeredTime)
-    }
 
     fun asProject() = project
 
