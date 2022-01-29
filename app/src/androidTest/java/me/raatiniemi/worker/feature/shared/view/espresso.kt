@@ -20,9 +20,6 @@ import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
-import org.hamcrest.Matchers
-
-internal fun isDisabled() = Matchers.not(ViewMatchers.isEnabled())
 
 internal fun withView(@IdRes id: Int, checks: (ViewInteraction) -> Unit) {
     checks(Espresso.onView(ViewMatchers.withId(id)))
