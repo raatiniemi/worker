@@ -17,6 +17,8 @@ include:
     file: Owasp.gitlab-ci.yml
 
 .android-variables:
+  extends:
+    - .in-android-environment
   variables:
     ANDROID_API_VERSION: "32"
     JDK_VERSION: "11"
