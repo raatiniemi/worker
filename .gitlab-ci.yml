@@ -5,7 +5,7 @@ stages:
   - build-app
   - test
   - post-test
-  - sonar
+  - sast
   - deploy
 
 variables:
@@ -21,6 +21,9 @@ include:
   - project: 'rahome/docker-android-environment'
     ref: master
     file: Android.gitlab-ci.yml
+  - project: 'rahome/owasp-dependency-check-cache'
+    ref: main
+    file: Owasp.gitlab-ci.yml
 
 .android-variables:
   variables:
@@ -219,10 +222,21 @@ generate coverage reports:
   only:
     - main
 
-# stage: sonar
+# stage: sast
 
-sonar:analyze:
-  stage: sonar
+sast:owasp:
+  stage: sast
+  extends:
+    - .owasp-dependency-check
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  needs:
+    - job: core:build
+    - job: app:build
+
+sast:sonar:
+  stage: sast
   image: sonarsource/sonar-scanner-cli
   script:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
