@@ -27,6 +27,7 @@ lint:yaml:
   extends:
     - .yaml-lint
 
+# yamllint disable rule:line-length
 core:build:
   extends:
     - .in-gradle-environment
@@ -49,6 +50,7 @@ core:build:
       - core-test/build/libs/
       - core-test/build/classes/kotlin/main/
     expire_in: 4 hours
+# yamllint enable rule:line-length
 
 core:test:
   extends:
@@ -74,6 +76,7 @@ core:test:
       - core-test/build/classes/kotlin/test/
     expire_in: 4 hours
 
+# yamllint disable rule:line-length
 app:build:
   extends:
     - .in-android-environment
@@ -98,6 +101,7 @@ app:build:
       - app/build/tmp/kotlin-classes/debugAndroidTest
       - app/build/tmp/kotlin-classes/release
     expire_in: 4 hours
+# yamllint enable rule:line-length
 
 app:lint:
   extends:
@@ -141,6 +145,7 @@ app:test:
       - app/build/tmp/kotlin-classes/debugUnitTest/
     expire_in: 4 hours
 
+# yamllint disable rule:line-length
 app:instrumented test:
   image: google/cloud-sdk:latest
   before_script:
@@ -166,6 +171,7 @@ app:instrumented test:
   allow_failure: true
   only:
     - main
+# yamllint enable rule:line-length
 
 generate coverage reports:
   extends:
@@ -227,6 +233,7 @@ sast:sonar:
   only:
     - main
 
+# yamllint disable rule:line-length
 app:deploy:
   image: ruby:2.7.1-buster
   script:
@@ -258,3 +265,4 @@ app:deploy:
     SUPPLY_APK: 'app/build/outputs/apk/release/app-release.apk'
     SUPPLY_TRACK: 'internal'
     SUPPLY_JSON_KEY: 'app/google-play-android-developer-key.json'
+# yamllint enable rule:line-length
