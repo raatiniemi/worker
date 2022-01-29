@@ -8,9 +8,13 @@ stages:
 
 variables:
   TZ: "Europe/Stockholm"
+  GRADLE_VERSION: "7.2.0-jdk11"
 
 include:
-  - '/.gitlab-ci/gradle.yml'
+  - project: 'rahome/gitlab-ci-templates'
+    ref: main
+    file:
+      - '/templates/Gradle.gitlab-ci.yml'
   - project: 'rahome/docker-android-environment'
     ref: master
     file: Android.gitlab-ci.yml
