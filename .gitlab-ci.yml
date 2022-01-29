@@ -1,13 +1,4 @@
 ---
-stages:
-  - lint
-  - build-core
-  - build-app
-  - test
-  - post-test
-  - sast
-  - deploy
-
 variables:
   TZ: "Europe/Stockholm"
   GRADLE_VERSION: "7.2.0-jdk11"
@@ -30,17 +21,11 @@ include:
     ANDROID_API_VERSION: "32"
     JDK_VERSION: "11"
 
-# stage: lint
-
 lint:yaml:
-  stage: lint
   extends:
     - .yaml-lint
 
-# stage: build-core
-
 core:build:
-  stage: build-core
   extends:
     - .in-gradle-environment
   script:
@@ -63,16 +48,37 @@ core:build:
       - core-test/build/classes/kotlin/main/
     expire_in: 4 hours
 
-# stage: build-app
+core:test:
+  extends:
+    - .in-gradle-environment
+  script:
+    - gradle core:test core-test:test
+  needs:
+    - job: core:build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - core/build
+      - core-test/build
+  artifacts:
+    paths:
+      - core/build/jacoco/
+      - core/build/test-results/test/
+      - core/build/classes/kotlin/test/
+      - core-test/build/jacoco/
+      - core-test/build/test-results/test/
+      - core-test/build/classes/kotlin/test/
+    expire_in: 4 hours
 
 app:build:
-  stage: build-app
   extends:
     - .in-android-environment
   script:
     - ./gradlew app:assembleRelease app:assembleDebug app:assembleAndroidTest
   needs:
-    - core:build
+    - job: core:build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     paths:
@@ -91,42 +97,14 @@ app:build:
       - app/build/tmp/kotlin-classes/release
     expire_in: 4 hours
 
-# stage: test
-
-core:test:
-  stage: test
-  extends:
-    - .in-gradle-environment
-  script:
-    - gradle core:test core-test:test
-  needs:
-    - core:build
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: pull
-    paths:
-      - .gradle
-      - core/build
-      - core-test/build
-  artifacts:
-    paths:
-      - core/build/jacoco/
-      - core/build/test-results/test/
-      - core/build/classes/kotlin/test/
-      - core-test/build/jacoco/
-      - core-test/build/test-results/test/
-      - core-test/build/classes/kotlin/test/
-    expire_in: 4 hours
-
 app:lint:
-  stage: test
   extends:
     - .in-android-environment
   script:
     - ./gradlew app:lintRelease
   needs:
-    - core:build
-    - app:build
+    - job: core:build
+    - job: app:build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -138,14 +116,13 @@ app:lint:
   variables: !reference [.android-variables, variables]
 
 app:test:
-  stage: test
   extends:
     - .in-android-environment
   script:
     - ./gradlew app:testDebugUnitTest
   needs:
-    - core:build
-    - app:build
+    - job: core:build
+    - job: app:build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -163,7 +140,6 @@ app:test:
     expire_in: 4 hours
 
 app:instrumented test:
-  stage: test
   image: google/cloud-sdk:latest
   before_script:
     - if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "No project id is available for gcloud configuration, ensure that \$GCLOUD_PROJECT_ID is set for project."; exit 1; fi;
@@ -178,7 +154,7 @@ app:instrumented test:
   tags:
     - docker
   needs:
-    - app:build
+    - job: app:build
   artifacts:
     paths:
       - app/build/outputs/androidTest-results/connected/
@@ -189,20 +165,17 @@ app:instrumented test:
   only:
     - main
 
-# stage: post-test
-
 generate coverage reports:
-  stage: post-test
   extends:
     - .in-android-environment
   script:
     - ./gradlew jacocoTestReport
   needs:
-    - core:build
-    - app:build
-    - core:test
-    - app:test
-    - app:instrumented test
+    - job: core:build
+    - job: app:build
+    - job: core:test
+    - job: app:test
+    - job: app:instrumented test
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -222,10 +195,7 @@ generate coverage reports:
   only:
     - main
 
-# stage: sast
-
 sast:owasp:
-  stage: sast
   extends:
     - .owasp-dependency-check
   rules:
@@ -236,7 +206,6 @@ sast:owasp:
     - job: app:build
 
 sast:sonar:
-  stage: sast
   image: sonarsource/sonar-scanner-cli
   script:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
@@ -247,19 +216,16 @@ sast:sonar:
   tags:
     - docker
   needs:
-    - core:build
-    - app:build
-    - core:test
-    - app:test
-    - app:instrumented test
-    - generate coverage reports
+    - job: core:build
+    - job: app:build
+    - job: core:test
+    - job: app:test
+    - job: app:instrumented test
+    - job: generate coverage reports
   only:
     - main
 
-# stage: deploy
-
 app:deploy:
-  stage: deploy
   image: ruby:2.7.1-buster
   script:
     - if [ -z "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" ]; then echo "No Google Play Android developer key is available, ensure that \$GOOGLE_PLAY_ANDROID_DEVELOPER_KEY is set for project."; exit 1; fi;
@@ -270,9 +236,11 @@ app:deploy:
   tags:
     - docker
   needs:
-    - app:build
-    - core:test
-    - app:test
+    - job: app:build
+    - job: core:test
+      artifacts: false
+    - job: app:test
+      artifacts: false
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
