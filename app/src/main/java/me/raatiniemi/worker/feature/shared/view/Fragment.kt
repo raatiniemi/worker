@@ -33,9 +33,9 @@ import kotlin.reflect.KClass
  * @param consumer Closure for consuming emitted values.
  */
 internal fun <T> Fragment.observe(source: LiveData<T>, consumer: (T) -> Unit) {
-    source.observe(viewLifecycleOwner, {
+    source.observe(viewLifecycleOwner) {
         consumer(it)
-    })
+    }
 }
 
 /**
@@ -45,9 +45,9 @@ internal fun <T> Fragment.observe(source: LiveData<T>, consumer: (T) -> Unit) {
  * @param consumer Closure for consuming emitted values.
  */
 internal fun <T> Fragment.observeAndConsume(source: ConsumableLiveData<T>, consumer: (T) -> Unit) {
-    source.observeAndConsume(viewLifecycleOwner, {
+    source.observeAndConsume(viewLifecycleOwner) {
         consumer(it)
-    })
+    }
 }
 
 /**

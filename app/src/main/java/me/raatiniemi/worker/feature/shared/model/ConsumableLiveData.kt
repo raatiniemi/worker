@@ -32,11 +32,11 @@ class ConsumableLiveData<T> : MutableLiveData<T>() {
             Timber.d("Multiple observers are registered but only one will be notified of the change")
         }
 
-        super.observe(owner, {
+        super.observe(owner) {
             if (consumed.compareAndSet(false, true)) {
                 observer.onChanged(it)
             }
-        })
+        }
     }
 
     @MainThread
