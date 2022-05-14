@@ -144,9 +144,6 @@ android {
 }
 
 dependencies {
-    def flipperVersion = '0.104.0'
-    def soloaderVersion = '0.10.1'
-
     def jetpackComposeVersion = '1.1.1'
     def androidxCoreVersion = '1.7.0'
     def annotationVersion = '1.3.0'
@@ -175,9 +172,6 @@ dependencies {
     def archCoreTestingVersion = '2.1.0'
 
     kapt "androidx.room:room-compiler:$roomVersion"
-
-    debugImplementation "com.facebook.flipper:flipper:$flipperVersion"
-    debugImplementation "com.facebook.soloader:soloader:$soloaderVersion"
 
     implementation project(':core')
     implementation "androidx.core:core-ktx:$androidxCoreVersion"
