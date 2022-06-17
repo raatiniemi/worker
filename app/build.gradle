@@ -26,9 +26,6 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'com.google.firebase.firebase-perf'
 apply from: 'jacoco.gradle'
 
 android {
@@ -159,7 +156,6 @@ dependencies {
     def fragmentVersion = '1.4.1'
     def navigationVersion = '2.4.2'
     def materialVersion = '1.6.0'
-    def firebaseVersion = '29.0.4'
     def koinVersion = '2.2.3'
     def timberVersion = '5.0.1'
     def eventBusVersion = '3.2.0'
@@ -199,11 +195,6 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$jetpackComposeVersion"
     implementation "androidx.compose.ui:ui-tooling:$jetpackComposeVersion"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$jetpackComposeVersion"
-
-    implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-perf-ktx'
 
     //noinspection DifferentStdlibGradleVersion
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"

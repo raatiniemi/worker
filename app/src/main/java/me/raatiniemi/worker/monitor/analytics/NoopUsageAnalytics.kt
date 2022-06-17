@@ -13,15 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package me.raatiniemi.worker.monitor.analytics
 
-internal class ScreenName(internal val name: String) {
-    override fun toString(): String {
-        return name
-    }
-}
+import androidx.fragment.app.Fragment
 
-internal fun name(screenName: ScreenName): String {
-    return screenName.name
+internal class NoopUsageAnalytics : UsageAnalytics {
+    override fun setCurrentScreen(fragment: Fragment) {
+    }
+
+    override fun log(event: Event) {
+    }
 }

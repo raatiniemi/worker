@@ -17,11 +17,9 @@
 package me.raatiniemi.worker
 
 import android.app.Application
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import me.raatiniemi.worker.feature.shared.view.buildOngoingChannel
 import me.raatiniemi.worker.feature.shared.view.createNotificationChannel
 import me.raatiniemi.worker.koin.defaultKoinModules
-import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -50,8 +48,6 @@ open class WorkerApplication : Application() {
             Timber.plant(DebugTree())
             return
         }
-
-        Timber.plant(CrashlyticsTree(FirebaseCrashlytics.getInstance()))
     }
 
     private fun registerNotificationChannel() {

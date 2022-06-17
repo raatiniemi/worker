@@ -16,16 +16,12 @@
 
 package me.raatiniemi.worker.koin.module
 
-import com.google.firebase.analytics.FirebaseAnalytics
-import me.raatiniemi.worker.monitor.analytics.FirebaseUsageAnalytics
+import me.raatiniemi.worker.monitor.analytics.NoopUsageAnalytics
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 internal val monitor = module {
     single<UsageAnalytics> {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(androidContext())
-
-        FirebaseUsageAnalytics(firebaseAnalytics)
+        NoopUsageAnalytics()
     }
 }

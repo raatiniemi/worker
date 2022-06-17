@@ -61,10 +61,6 @@
             android:name=".feature.ongoing.service.ProjectNotificationService"
             android:exported="false" />
 
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="${enableCrashReporting}" />
-
     </application>
 
 </manifest>
