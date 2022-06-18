@@ -145,34 +145,6 @@ app:test:
       - app/build/tmp/kotlin-classes/debugUnitTest/
     expire_in: 4 hours
 
-# yamllint disable rule:line-length
-app:instrumented test:
-  image: google/cloud-sdk:latest
-  before_script:
-    - if [ -z "${GCLOUD_PROJECT_ID}" ]; then echo "No project id is available for gcloud configuration, ensure that \$GCLOUD_PROJECT_ID is set for project."; exit 1; fi;
-    - if [ -z "${GCLOUD_SERVICE_ACCOUNT}" ]; then echo "No service account configuration is available for gcloud, ensure that \$GCLOUD_SERVICE_ACCOUNT is set for project."; exit 1; fi;
-    - gcloud config set project "${GCLOUD_PROJECT_ID}"
-    - echo "${GCLOUD_SERVICE_ACCOUNT}" >service-account.json
-    - gcloud auth activate-service-account --key-file service-account.json
-    - gcloud firebase test android models list
-    - gcloud firebase test android versions list
-  script:
-    - bin/run-instrumented-test
-  tags:
-    - docker
-  needs:
-    - job: app:build
-  artifacts:
-    paths:
-      - app/build/outputs/androidTest-results/connected/
-      - app/build/outputs/code_coverage/
-    when: always
-    expire_in: 4 hours
-  allow_failure: true
-  only:
-    - main
-# yamllint enable rule:line-length
-
 generate coverage reports:
   extends:
     - .in-android-environment
@@ -183,7 +155,6 @@ generate coverage reports:
     - job: app:build
     - job: core:test
     - job: app:test
-    - job: app:instrumented test
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -228,7 +199,6 @@ sast:sonar:
     - job: app:build
     - job: core:test
     - job: app:test
-    - job: app:instrumented test
     - job: generate coverage reports
   only:
     - main
