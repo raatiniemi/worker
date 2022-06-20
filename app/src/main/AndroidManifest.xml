@@ -18,15 +18,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".WorkerApplication"
         android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_scheme"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:name=".WorkerApplication"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/name"
         android:supportsRtl="true"
         android:theme="@style/Theme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="31">
 
         <activity
             android:name="me.raatiniemi.worker.feature.home.view.HomeActivity"
