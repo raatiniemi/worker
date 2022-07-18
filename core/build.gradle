@@ -34,8 +34,8 @@ jacoco {
 
 jacocoTestReport {
     reports {
-        xml.enabled = jacocoReportFormats.contains('xml')
-        html.enabled = jacocoReportFormats.contains('html')
+        xml.required.set(jacocoReportFormats.contains('xml'))
+        html.required.set(jacocoReportFormats.contains('html'))
     }
 }
 
