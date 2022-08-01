@@ -19,19 +19,16 @@ package me.raatiniemi.worker.feature.projects.all.model
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.domain.project.model.Project
 import me.raatiniemi.worker.domain.time.Milliseconds
 import me.raatiniemi.worker.domain.time.constrainedMilliseconds
 import me.raatiniemi.worker.domain.time.days
-import me.raatiniemi.worker.feature.ongoing.service.ProjectNotificationService
 import me.raatiniemi.worker.feature.projects.all.view.AllProjectsAdapter
 import me.raatiniemi.worker.feature.projects.createproject.view.CreateProjectDialogFragment
 import me.raatiniemi.worker.feature.shared.datetime.view.DateTimePickerDialogFragment
@@ -185,24 +182,6 @@ internal sealed class AllProjectsViewActions {
                 Snackbar.LENGTH_SHORT
             )
             snackBar.show()
-        }
-    }
-
-    data class UpdateNotification(val project: Project) : AllProjectsViewActions(),
-        ActivityViewAction {
-        override fun accept(t: FragmentActivity) {
-            ProjectNotificationService.startServiceWithContext(t, project)
-        }
-    }
-
-    data class DismissNotification(val project: Project) : AllProjectsViewActions(),
-        ContextViewAction {
-        override fun accept(t: Context) {
-            val notificationManager = NotificationManagerCompat.from(t)
-            notificationManager.cancel(
-                project.id.value.toString(),
-                WorkerApplication.NOTIFICATION_ON_GOING_ID
-            )
         }
     }
 }

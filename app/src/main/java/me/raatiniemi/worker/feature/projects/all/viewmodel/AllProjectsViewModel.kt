@@ -18,7 +18,9 @@ package me.raatiniemi.worker.feature.projects.all.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.datasource.AllProjectsPagingSource
@@ -136,7 +138,6 @@ internal class AllProjectsViewModel(
             clockIn(project, Milliseconds(date.time))
 
             usageAnalytics.log(Event.ProjectClockIn)
-            viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
             Timber.w(e, "Unable to clock in project")
@@ -149,7 +150,6 @@ internal class AllProjectsViewModel(
             clockOut(project, Milliseconds(date.time))
 
             usageAnalytics.log(Event.ProjectClockOut)
-            viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: ElapsedTimePastAllowedException) {
             viewActions += AllProjectsViewActions.ShowElapsedTimePastAllowedErrorMessage
@@ -164,7 +164,6 @@ internal class AllProjectsViewModel(
             removeProject(project)
 
             usageAnalytics.log(Event.ProjectRemove)
-            viewActions += AllProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {
             Timber.w(e, "Unable to remove project")

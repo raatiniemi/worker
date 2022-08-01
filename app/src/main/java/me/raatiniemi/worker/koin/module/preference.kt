@@ -27,6 +27,8 @@ internal val preference = module {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
         sharedPreferences.edit()
             .remove("pref_time_sheet_summary_format")
+            .remove("pref_ongoing_notification_enabled")
+            .remove("pref_ongoing_notification_chronometer_enabled")
             .apply()
 
         SharedKeyValueStore(sharedPreferences)

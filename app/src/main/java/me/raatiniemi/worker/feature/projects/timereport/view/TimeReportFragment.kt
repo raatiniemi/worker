@@ -34,12 +34,9 @@ import me.raatiniemi.worker.feature.projects.timereport.model.TimeReportViewActi
 import me.raatiniemi.worker.feature.projects.timereport.viewmodel.TimeReportViewModel
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
-import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -232,16 +229,5 @@ class TimeReportFragment : Fragment() {
         vm.clearSelection()
 
         timeReportAdapter.notifyDataSetChanged()
-    }
-
-    @Suppress("unused")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        if (projectHolder.value == event.project) {
-            vm.reloadTimeReport()
-            return
-        }
-
-        Timber.d("No need to refresh, event is related to another project")
     }
 }

@@ -108,65 +108,6 @@ class SettingsViewModelTest : AutoCloseKoinTest() {
         assertEquals(expected, actual)
     }
 
-    // Ongoing notification enabled
-
-    @Test
-    fun `ongoing notification enabled with default value`() {
-        val actual = vm.ongoingNotificationEnabled
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun `ongoing notification enabled when disabled`() {
-        vm.ongoingNotificationEnabled = false
-
-        val actual = vm.ongoingNotificationEnabled
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun `ongoing notification enabled when enabled`() {
-        vm.ongoingNotificationEnabled = true
-
-        val actual = vm.ongoingNotificationEnabled
-
-        assertTrue(actual)
-    }
-
-    // Ongoing notification chronometer enabled
-
-    @Test
-    fun `ongoing notification chronometer enabled when ongoing notification is disabled`() {
-        vm.ongoingNotificationEnabled = false
-        vm.ongoingNotificationChronometerEnabled = true
-
-        val actual = vm.ongoingNotificationChronometerEnabled
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun `ongoing notification chronometer enabled when disabled`() {
-        vm.ongoingNotificationEnabled = true
-        vm.ongoingNotificationChronometerEnabled = false
-
-        val actual = vm.ongoingNotificationChronometerEnabled
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun `ongoing notification chronometer enabled when enabled`() {
-        vm.ongoingNotificationEnabled = true
-        vm.ongoingNotificationChronometerEnabled = true
-
-        val actual = vm.ongoingNotificationChronometerEnabled
-
-        assertTrue(actual)
-    }
-
     // Change time summary starting point
 
     @Test

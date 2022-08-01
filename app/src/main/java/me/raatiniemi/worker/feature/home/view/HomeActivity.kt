@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.feature.home.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -24,7 +23,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.ActivityHomeBinding
-import me.raatiniemi.worker.feature.ongoing.service.ReloadNotificationService
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -40,7 +38,6 @@ class HomeActivity : AppCompatActivity() {
         super.onPostCreate(savedInstanceState)
 
         configureView()
-        reloadOngoingNotifications()
     }
 
     private fun configureView() {
@@ -50,10 +47,5 @@ class HomeActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph, binding.dlProjects)
         binding.tbMain.setupWithNavController(navController, appBarConfiguration)
         binding.nvProjects.setupWithNavController(navController)
-    }
-
-    private fun reloadOngoingNotifications() {
-        Intent(this, ReloadNotificationService::class.java)
-            .also { startService(it) }
     }
 }

@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.feature.settings.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.preference.CheckBoxPreference
@@ -25,11 +24,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.feature.ongoing.service.DismissOngoingNotificationsService
-import me.raatiniemi.worker.feature.ongoing.service.ReloadNotificationService
 import me.raatiniemi.worker.feature.settings.viewmodel.SettingsViewModel
 import me.raatiniemi.worker.feature.shared.view.configurePreference
-import me.raatiniemi.worker.feature.shared.view.isOngoingChannelDisabled
 import me.raatiniemi.worker.feature.shared.view.observeAndConsume
 import me.raatiniemi.worker.feature.shared.view.onCheckChange
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
@@ -39,19 +35,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 private const val CONFIRM_CLOCK_OUT_KEY = "confirm_clock_out"
 private const val TIME_SUMMARY_KEY = "time_summary"
 
-private const val ONGOING_NOTIFICATION_ENABLED_KEY = "ongoing_notification_enabled"
-private const val ONGOING_NOTIFICATION_CHRONOMETER_ENABLED_KEY =
-    "ongoing_notification_chronometer_enabled"
-
 private const val VERSION_KEY = "version"
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private val vm: SettingsViewModel by viewModel()
     private val usageAnalytics: UsageAnalytics by inject()
-
-    private val isOngoingChannelEnabled: Boolean by lazy {
-        !isOngoingChannelDisabled(requireContext())
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
@@ -73,7 +61,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun configureUserInterface() {
         configureConfirmClockOut()
         configureTimeSummary()
-        configureOngoingNotification()
         configureVersion()
     }
 
@@ -99,53 +86,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
-    }
-
-    private fun configureOngoingNotification() {
-        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLED_KEY) {
-            isEnabled = isOngoingChannelEnabled
-            isChecked = vm.ongoingNotificationEnabled
-            setSummary(R.string.settings_ongoing_notification_enabled_summary)
-
-            onCheckChange {
-                vm.ongoingNotificationEnabled = it
-                if (vm.ongoingNotificationEnabled) {
-                    reloadOngoingNotifications()
-                } else {
-                    dismissOngoingNotifications()
-                }
-
-                configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_ENABLED_KEY) {
-                    isEnabled = vm.ongoingNotificationEnabled
-                }
-                true
-            }
-        }
-
-        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_ENABLED_KEY) {
-            isEnabled = isOngoingChannelEnabled && vm.ongoingNotificationEnabled
-            isChecked = vm.ongoingNotificationChronometerEnabled
-
-            onCheckChange {
-                if (vm.ongoingNotificationEnabled) {
-                    vm.ongoingNotificationChronometerEnabled = it
-                    reloadOngoingNotifications()
-                    true
-                } else {
-                    false
-                }
-            }
-        }
-    }
-
-    private fun reloadOngoingNotifications() {
-        Intent(requireContext(), ReloadNotificationService::class.java)
-            .let { requireContext().startService(it) }
-    }
-
-    private fun dismissOngoingNotifications() {
-        Intent(requireContext(), DismissOngoingNotificationsService::class.java)
-            .let { requireContext().startService(it) }
     }
 
     private fun configureVersion() {

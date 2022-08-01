@@ -31,7 +31,6 @@ import me.raatiniemi.worker.feature.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.feature.settings.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
-import me.raatiniemi.worker.feature.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.feature.shared.view.ConfirmAction
 import me.raatiniemi.worker.feature.shared.view.RefreshTimeIntervalLifecycleObserver
 import me.raatiniemi.worker.feature.shared.view.launch
@@ -221,12 +220,6 @@ class AllProjectsFragment : Fragment() {
                 vm.remove(viewAction.item.asProject())
             }
         }
-    }
-
-    @Suppress("unused")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    internal fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        vm.reloadProjects()
     }
 
     @Suppress("unused")

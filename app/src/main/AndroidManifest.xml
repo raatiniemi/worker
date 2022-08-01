@@ -37,30 +37,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".feature.ongoing.service.PauseService"
-            android:exported="false" />
-
-        <service
-            android:name=".feature.ongoing.service.ClockOutService"
-            android:exported="false" />
-
-        <service
-            android:name=".feature.ongoing.service.ResumeService"
-            android:exported="false" />
-
-        <service
-            android:name=".feature.ongoing.service.ReloadNotificationService"
-            android:exported="false" />
-
-        <service
-            android:name=".feature.ongoing.service.DismissOngoingNotificationsService"
-            android:exported="false" />
-
-        <service
-            android:name=".feature.ongoing.service.ProjectNotificationService"
-            android:exported="false" />
-
     </application>
 
 </manifest>

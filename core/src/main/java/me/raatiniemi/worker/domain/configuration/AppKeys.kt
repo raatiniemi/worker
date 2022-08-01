@@ -19,7 +19,5 @@ package me.raatiniemi.worker.domain.configuration
 enum class AppKeys(val rawValue: String) {
     HIDE_REGISTERED_TIME("pref_hide_registered_time"),
     CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
-    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
-    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
     TIME_SUMMARY("pref_time_summary")
 }

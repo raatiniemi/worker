@@ -32,19 +32,6 @@
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/settings_ongoing_notification_title">
-
-        <androidx.preference.CheckBoxPreference
-            android:key="ongoing_notification_enabled"
-            android:title="@string/settings_ongoing_notification_enabled_title" />
-
-        <androidx.preference.CheckBoxPreference
-            android:key="ongoing_notification_chronometer_enabled"
-            android:summary="@string/settings_ongoing_notification_chronometer_enabled_summary"
-            android:title="@string/settings_ongoing_notification_chronometer_enabled_title" />
-
-    </androidx.preference.PreferenceCategory>
-
     <androidx.preference.PreferenceCategory android:title="@string/settings_about_title">
 
         <Preference

@@ -104,27 +104,10 @@
     <string name="settings_time_summary_changed_starting_point_to_month_message">Time summary will show current month</string>
     <string name="settings_time_summary_unable_to_change_starting_point_message">Unable to change time summary starting point.</string>
 
-    <string name="settings_ongoing_notification_title">Ongoing notification</string>
-
-    <string name="settings_ongoing_notification_enabled_title">Enable</string>
-    <string name="settings_ongoing_notification_enabled_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
-
-    <string name="settings_ongoing_notification_chronometer_enabled_title">Notification timer</string>
-    <string name="settings_ongoing_notification_chronometer_enabled_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
-
     <string name="settings_about_title">About</string>
 
     <string name="settings_version_title">Version</string>
     <string name="settings_version_summary">%1$s (%2$d)</string>
-    <!--</editor-fold>-->
-
-    <!--<editor-fold desc="Ongoing notification">-->
-    <string name="ongoing_notification_channel_title">Ongoing</string>
-    <string name="ongoing_notification_channel_description">Shows while a project is either active or paused.</string>
-
-    <string name="ongoing_notification_action_pause">Pause</string>
-    <string name="ongoing_notification_action_clock_out">Clock out</string>
-    <string name="ongoing_notification_action_resume">Resume</string>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Date time picker">-->

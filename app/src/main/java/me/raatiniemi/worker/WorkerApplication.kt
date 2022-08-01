@@ -17,8 +17,6 @@
 package me.raatiniemi.worker
 
 import android.app.Application
-import me.raatiniemi.worker.feature.shared.view.buildOngoingChannel
-import me.raatiniemi.worker.feature.shared.view.createNotificationChannel
 import me.raatiniemi.worker.koin.defaultKoinModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -39,7 +37,6 @@ open class WorkerApplication : Application() {
             }
 
             configureLogging()
-            registerNotificationChannel()
         }
     }
 
@@ -48,13 +45,5 @@ open class WorkerApplication : Application() {
             Timber.plant(DebugTree())
             return
         }
-    }
-
-    private fun registerNotificationChannel() {
-        createNotificationChannel(buildOngoingChannel())
-    }
-
-    companion object {
-        const val NOTIFICATION_ON_GOING_ID = 3
     }
 }
