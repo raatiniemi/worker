@@ -141,7 +141,7 @@ android {
 }
 
 dependencies {
-    def jetpackComposeVersion = '1.1.1'
+    def jetpackComposeVersion = '1.2.0'
     def androidxCoreVersion = '1.8.0'
     def annotationVersion = '1.4.0'
     def appcompatVersion = '1.4.2'
