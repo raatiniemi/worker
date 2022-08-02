@@ -209,7 +209,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectClockIn
         )
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android),
             AllProjectsViewActions.ReloadProjects
         )
 
@@ -279,7 +278,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectClockOut
         )
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android),
             AllProjectsViewActions.ReloadProjects
         )
 
@@ -432,7 +430,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         vm.viewActions.observeForever(actual::add)
         val events = listOf(Event.ProjectClockIn)
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android),
             AllProjectsViewActions.ReloadProjects
         )
 
@@ -493,7 +490,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectClockOut
         )
         val expected = listOf(
-            AllProjectsViewActions.UpdateNotification(android),
             AllProjectsViewActions.ReloadProjects
         )
 
@@ -515,7 +511,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectRemove
         )
         val expected = listOf(
-            AllProjectsViewActions.DismissNotification(android),
             AllProjectsViewActions.ReloadProjects
         )
 
@@ -538,7 +533,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.ProjectRemove
         )
         val expected = listOf(
-            AllProjectsViewActions.DismissNotification(android),
             AllProjectsViewActions.ReloadProjects
         )
 
