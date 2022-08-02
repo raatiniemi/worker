@@ -36,14 +36,12 @@ import me.raatiniemi.worker.feature.shared.model.ActivityViewAction
 import me.raatiniemi.worker.feature.shared.model.ContextViewAction
 import me.raatiniemi.worker.feature.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TimeReportFragment : Fragment() {
-    private val eventBus = EventBus.getDefault()
     private val projectHolder: ProjectHolder by inject()
 
     private val usageAnalytics: UsageAnalytics by inject()
@@ -65,7 +63,6 @@ class TimeReportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        eventBus.register(this)
         arguments?.also {
             projectHolder += Project(
                 id = ProjectId(it.getLong("projectId")),
@@ -107,7 +104,6 @@ class TimeReportFragment : Fragment() {
         super.onDestroy()
 
         lifecycle.removeObserver(refreshActiveWeeks)
-        eventBus.unregister(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
