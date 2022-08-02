@@ -154,7 +154,7 @@ dependencies {
     def roomVersion = '2.4.3'
     def pagingVersion = '3.1.1'
     def fragmentVersion = '1.5.1'
-    def navigationVersion = '2.4.2'
+    def navigationVersion = '2.5.1'
     def materialVersion = '1.6.0'
     def koinVersion = '2.2.3'
     def timberVersion = '5.0.1'
