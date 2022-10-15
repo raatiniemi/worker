@@ -168,7 +168,6 @@ class AllProjectsFragment : Fragment() {
 
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
-            is AllProjectsViewActions.ReloadProjects -> allProjectsAdapter.refresh()
             is AllProjectsViewActions.CreateProject -> {
                 launch {
                     val project = viewAction.apply(childFragmentManager)

@@ -42,8 +42,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 internal sealed class AllProjectsViewActions {
-    object ReloadProjects : AllProjectsViewActions()
-
     object CreateProject : AllProjectsViewActions() {
         suspend fun apply(fm: FragmentManager): Project? {
             return suspendCoroutine { continuation ->
