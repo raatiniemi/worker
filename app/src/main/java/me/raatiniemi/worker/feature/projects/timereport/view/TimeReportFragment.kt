@@ -129,26 +129,22 @@ class TimeReportFragment : Fragment() {
         setHasOptionsMenu(true)
 
         binding.rvTimeReport.apply {
-            adapter = timeReportAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(false)
-        }
-
-        launch {
-            timeReportAdapter.loadStateFlow.collectLatest {
-                with(binding) {
-                    if (it.refresh is LoadState.Error) {
-                        rvTimeReport.isVisible = false
-                        tvEmptyTimeReport.isVisible = true
-                        tvEmptyTimeReport.text = getString(R.string.projects_time_report_error_text)
+            adapter = timeReportAdapter.also { adapter ->
+                adapter.addLoadStateListener { state ->
+                    if (state.refresh is LoadState.Error) {
+                        binding.rvTimeReport.isVisible = false
+                        binding.tvEmptyTimeReport.isVisible = true
+                        binding.tvEmptyTimeReport.text = getString(R.string.projects_time_report_error_text)
                     } else {
-                        val isEmpty = timeReportAdapter.itemCount < 1
-                        rvTimeReport.isVisible = !isEmpty
-                        tvEmptyTimeReport.isVisible = isEmpty
-                        tvEmptyTimeReport.text = getString(R.string.projects_time_report_empty_text)
+                        val isEmpty =  state.append.endOfPaginationReached && adapter.itemCount == 0
+                        binding.rvTimeReport.isVisible = !isEmpty
+                        binding.tvEmptyTimeReport.isVisible = isEmpty
+                        binding.tvEmptyTimeReport.text = getString(R.string.projects_time_report_empty_text)
                     }
                 }
             }
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(false)
         }
     }
 

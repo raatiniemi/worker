@@ -21,7 +21,13 @@ import androidx.lifecycle.*
 import androidx.lifecycle.Transformations.map
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.data.datasource.TimeReportWeekPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
@@ -41,6 +47,7 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class TimeReportViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
@@ -50,6 +57,8 @@ internal class TimeReportViewModel(
     private val markRegisteredTime: MarkRegisteredTime,
     private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
+    private val _reload = MutableStateFlow(value = Reload())
+
     val projectName: LiveData<String> = map(projectProvider.observable) { it.name.value }
 
     private val _selectedItems = MutableLiveData<HashSet<TimeInterval>?>()
@@ -64,20 +73,31 @@ internal class TimeReportViewModel(
 
     val isSelectionActivated: LiveData<Boolean> = _selectedItems.map(::isSelectionActivated)
 
-    val weeks = Pager(PagingConfig(pageSize = 10)) {
-        TimeReportWeekPagingSource(
-            projectProvider,
-            countTimeReportWeeks,
-            findTimeReportWeeks
-        )
-    }.flow.cachedIn(viewModelScope)
+    val weeks: Flow<PagingData<TimeReportWeek>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
-    fun reloadTimeReport() {
+    init {
+        weeks = _reload.flatMapLatest { dataSource() }
+            .cachedIn(viewModelScope)
+    }
+
+    private fun dataSource(): Flow<PagingData<TimeReportWeek>> {
+        return Pager(PagingConfig(pageSize = 10)) {
+            TimeReportWeekPagingSource(
+                projectProvider,
+                countTimeReportWeeks,
+                findTimeReportWeeks
+            )
+        }.flow
+    }
+
+    private fun reloadTimeReport() {
         clearSelection()
 
-        viewActions += TimeReportViewActions.ReloadWeeks
+        viewModelScope.launch {
+            _reload.emit(Reload())
+        }
     }
 
     fun clearSelection() {
@@ -228,4 +248,6 @@ internal class TimeReportViewModel(
 
         return week.days.firstOrNull { it is TimeReportDay.Active } != null
     }
+
+    private class Reload
 }

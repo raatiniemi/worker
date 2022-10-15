@@ -20,8 +20,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.datasource.AllProjectsPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
@@ -46,26 +52,38 @@ import java.util.*
 
 private const val ALL_PROJECTS_PAGE_SIZE = 6
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class AllProjectsViewModel(
     private val keyValueStore: KeyValueStore,
     private val usageAnalytics: UsageAnalytics,
-    countProjects: CountProjects,
-    findProjects: FindProjects,
-    getProjectTimeSince: GetProjectTimeSince,
+    private val countProjects: CountProjects,
+    private val findProjects: FindProjects,
+    private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
     private val removeProject: RemoveProject
 ) : ViewModel() {
-    val projects = Pager(PagingConfig(pageSize = ALL_PROJECTS_PAGE_SIZE)) {
-        AllProjectsPagingSource(
-            keyValueStore,
-            countProjects,
-            findProjects,
-            getProjectTimeSince
-        )
-    }.flow.cachedIn(viewModelScope)
+    private val _reload = MutableStateFlow(value = Reload())
+
+    val projects: Flow<PagingData<ProjectsItem>>
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
+
+    init {
+        projects = _reload.flatMapLatest { dataSource() }
+            .cachedIn(viewModelScope)
+    }
+
+    private fun dataSource(): Flow<PagingData<ProjectsItem>> {
+        return Pager(PagingConfig(pageSize = ALL_PROJECTS_PAGE_SIZE)) {
+            AllProjectsPagingSource(
+                keyValueStore,
+                countProjects,
+                findProjects,
+                getProjectTimeSince
+            )
+        }.flow
+    }
 
     internal fun createProject() {
         viewActions += AllProjectsViewActions.CreateProject
@@ -78,7 +96,9 @@ internal class AllProjectsViewModel(
     }
 
     fun reloadProjects() {
-        viewActions += AllProjectsViewActions.ReloadProjects
+        viewModelScope.launch {
+            _reload.emit(Reload())
+        }
     }
 
     suspend fun refreshActiveProjects(projects: List<ProjectsItem?>) {
@@ -170,4 +190,6 @@ internal class AllProjectsViewModel(
             viewActions += AllProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
         }
     }
+
+    private class Reload
 }
