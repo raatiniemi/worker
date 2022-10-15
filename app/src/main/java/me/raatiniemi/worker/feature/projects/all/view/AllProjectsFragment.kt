@@ -134,21 +134,17 @@ class AllProjectsFragment : Fragment() {
 
         binding.rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = allProjectsAdapter
-        }
-
-        launch {
-            allProjectsAdapter.loadStateFlow.collectLatest {
-                with(binding) {
-                    if (it.refresh is LoadState.Error) {
-                        rvProjects.isVisible = false
-                        tvEmptyProjects.isVisible = true
-                        tvEmptyProjects.text = getString(R.string.projects_all_error_text)
+            adapter = allProjectsAdapter.also { adapter ->
+                adapter.addLoadStateListener { state ->
+                    if (state.refresh is LoadState.Error) {
+                        binding.rvProjects.isVisible = false
+                        binding.tvEmptyProjects.isVisible = true
+                        binding.tvEmptyProjects.text = getString(R.string.projects_all_error_text)
                     } else {
-                        val isEmpty = allProjectsAdapter.itemCount < 1
-                        rvProjects.isVisible = !isEmpty
-                        tvEmptyProjects.isVisible = isEmpty
-                        tvEmptyProjects.text = getString(R.string.projects_all_empty_text)
+                        val isEmpty = state.append.endOfPaginationReached && adapter.itemCount == 0
+                        binding.rvProjects.isVisible = !isEmpty
+                        binding.tvEmptyProjects.isVisible = isEmpty
+                        binding.tvEmptyProjects.text = getString(R.string.projects_all_empty_text)
                     }
                 }
             }
