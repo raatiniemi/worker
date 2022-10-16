@@ -24,7 +24,7 @@ apply from: 'jacoco.gradle'
 
 android {
     compileSdkVersion 33
-    buildToolsVersion '32.0.0'
+    buildToolsVersion '33.0.0'
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
