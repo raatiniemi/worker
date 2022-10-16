@@ -118,7 +118,6 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         val actual = mutableListOf<AllProjectsViewActions>()
         vm.viewActions.observeForever(actual::add)
         val expected = listOf(
-            AllProjectsViewActions.ReloadProjects,
             AllProjectsViewActions.ProjectCreated
         )
 
@@ -208,9 +207,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.TapProjectToggle,
             Event.ProjectClockIn
         )
-        val expected = listOf(
-            AllProjectsViewActions.ReloadProjects
-        )
+        val expected = emptyList<AllProjectsViewActions>()
 
         runBlocking {
             vm.toggle(item, date)
@@ -277,9 +274,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
             Event.TapProjectToggle,
             Event.ProjectClockOut
         )
-        val expected = listOf(
-            AllProjectsViewActions.ReloadProjects
-        )
+        val expected = emptyList<AllProjectsViewActions>()
 
         runBlocking {
             vm.toggle(item, date)
@@ -429,9 +424,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         val actual = mutableListOf<AllProjectsViewActions>()
         vm.viewActions.observeForever(actual::add)
         val events = listOf(Event.ProjectClockIn)
-        val expected = listOf(
-            AllProjectsViewActions.ReloadProjects
-        )
+        val expected = emptyList<AllProjectsViewActions>()
 
         runBlocking {
             vm.clockInAt(android, Date())
@@ -489,9 +482,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         val events = listOf(
             Event.ProjectClockOut
         )
-        val expected = listOf(
-            AllProjectsViewActions.ReloadProjects
-        )
+        val expected = emptyList<AllProjectsViewActions>()
 
         runBlocking {
             vm.clockOutAt(android, Date())
@@ -510,9 +501,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         val events = listOf(
             Event.ProjectRemove
         )
-        val expected = listOf(
-            AllProjectsViewActions.ReloadProjects
-        )
+        val expected = emptyList<AllProjectsViewActions>()
 
         runBlocking {
             vm.remove(android)
@@ -532,9 +521,7 @@ class AllProjectsViewModelTest : AutoCloseKoinTest() {
         val events = listOf(
             Event.ProjectRemove
         )
-        val expected = listOf(
-            AllProjectsViewActions.ReloadProjects
-        )
+        val expected = emptyList<AllProjectsViewActions>()
 
         val project = runBlocking {
             vm.remove(android)
