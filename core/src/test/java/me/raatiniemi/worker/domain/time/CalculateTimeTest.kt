@@ -32,6 +32,7 @@ class CalculateTimeTest(private val expected: HoursMinutes, private val millisec
     }
 
     companion object {
+        @Suppress("unused")
         @JvmStatic
         val data: Collection<Array<Any>>
             @Parameters
