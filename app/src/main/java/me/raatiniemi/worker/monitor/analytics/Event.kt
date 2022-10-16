@@ -37,12 +37,6 @@ internal sealed class Event(
 
     object ProjectRemove : Event(ProjectEvent.Remove)
 
-    object NotificationClockIn :
-        Event(ProjectEvent.ClockIn, EventParameter.Source(ClockInOutSource.Notification))
-
-    object NotificationClockOut :
-        Event(ProjectEvent.ClockOut, EventParameter.Source(ClockInOutSource.Notification))
-
     data class TimeReportToggle(private val count: Int) :
         Event(TimeReportEvent.Toggle, EventParameter.Count(count))
 
