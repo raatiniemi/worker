@@ -17,12 +17,9 @@
 package me.raatiniemi.worker.util
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 
-@ExperimentalCoroutinesApi
 internal class TestCoroutineDispatchProvider(
-    private val dispatcher: TestCoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher
 ) : CoroutineDispatchProvider {
     override fun main(): CoroutineDispatcher {
         return dispatcher
