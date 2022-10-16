@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ComplexMethod:AllProjectsFragment.kt$AllProjectsFragment$private fun processViewAction(viewAction: AllProjectsViewActions)</ID>
+    <ID>EmptyFunctionBlock:NoopUsageAnalytics.kt$NoopUsageAnalytics${ }</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable internal fun CreateProjectScreen(vm: CreateProjectViewModel)</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectButtonGroup(content: @Composable RowScope.() -&gt; Unit)</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectCard(content: @Composable ColumnScope.() -&gt; Unit)</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectContent( state: CreateProjectState = emptyCreateProjectState(), onNameChange: (String) -&gt; Unit = { }, onDismiss: () -&gt; Unit = { }, onCreate: (String) -&gt; Unit = { } )</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectDescription()</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectDismissButton(onDismiss: () -&gt; Unit)</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectErrorMessage(error: Error)</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectSubmitButton(state: CreateProjectState, onCreate: (String) -&gt; Unit)</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectTextField( state: CreateProjectState, onNameChange: (String) -&gt; Unit, onCreate: (String) -&gt; Unit )</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Composable private fun CreateProjectTitle()</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Preview @Composable fun CreateProjectContentPreview()</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Preview @Composable fun CreateProjectContentWithContentPreview()</ID>
+    <ID>FunctionNaming:CreateProjectScreen.kt$@Preview @Composable fun CreateProjectContentWithErrorPreview()</ID>
+    <ID>FunctionNaming:WorkerTheme.kt$@Composable internal fun WorkerTheme(content: @Composable () -&gt; Unit)</ID>
+    <ID>LargeClass:TimeReportRepositoryTest.kt$TimeReportRepositoryTest</ID>
+    <ID>LongMethod:GroupByKtTest.kt$GroupByKtTest$@Test fun `group by week with time intervals during three weeks over new year`()</ID>
+    <ID>LongMethod:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$@Test fun findNotRegisteredWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear()</ID>
+    <ID>LongMethod:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$@Test fun findWeeks_withTimeIntervalsDuringThreeWeeksOverNewYear()</ID>
+    <ID>LongParameterList:AllProjectsViewModel.kt$AllProjectsViewModel$( private val keyValueStore: KeyValueStore, private val usageAnalytics: UsageAnalytics, private val countProjects: CountProjects, private val findProjects: FindProjects, private val getProjectTimeSince: GetProjectTimeSince, private val clockIn: ClockIn, private val clockOut: ClockOut, private val removeProject: RemoveProject )</ID>
+    <ID>LongParameterList:TimeReportViewModel.kt$TimeReportViewModel$( private val keyValueStore: KeyValueStore, private val usageAnalytics: UsageAnalytics, private val projectProvider: ProjectProvider, private val countTimeReportWeeks: CountTimeReportWeeks, private val findTimeReportWeeks: FindTimeReportWeeks, private val markRegisteredTime: MarkRegisteredTime, private val removeTime: RemoveTime )</ID>
+    <ID>MagicNumber:Migration2To3.kt$Migration2To3$3</ID>
+    <ID>MagicNumber:ProjectRepositoryTest.kt$ProjectRepositoryTest$10</ID>
+    <ID>MagicNumber:TimeReportDay.kt$TimeReportDay.Active$8</ID>
+    <ID>MagicNumber:TimeReportDay.kt$TimeReportDay.Inactive$8</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$10</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$1577606247000</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$1577690413000</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$1577779099000</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$1577985643000</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$1578211149000</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$1578297584000</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$3</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$4</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$5</ID>
+    <ID>MagicNumber:TimeReportRepositoryTest.kt$TimeReportRepositoryTest$6</ID>
+    <ID>MagicNumber:WorkerTheme.kt$0xff0288d1</ID>
+    <ID>MagicNumber:WorkerTheme.kt$0xff03a9f4</ID>
+    <ID>MagicNumber:WorkerTheme.kt$0xff757575</ID>
+    <ID>MagicNumber:WorkerTheme.kt$0xfffafafa</ID>
+    <ID>MagicNumber:WorkerTheme.kt$0xffff4081</ID>
+    <ID>MagicNumber:calculateTime.kt$1000</ID>
+    <ID>MagicNumber:calculateTime.kt$30</ID>
+    <ID>MagicNumber:ios.kt$3</ID>
+    <ID>MagicNumber:web.kt$4</ID>
+    <ID>MatchingDeclarationName:newTimeInterval.kt$NewTimeIntervalBuilder</ID>
+    <ID>MaxLineLength:CreateProjectScreen.kt$CreateProjectError.ProjectAlreadyExists -&gt; stringResource(id = R.string.projects_create_project_already_exists_error_message)</ID>
+    <ID>MaxLineLength:Migration2To3.kt$Migration2To3$database.execSQL("CREATE TABLE IF NOT EXISTS `projects` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)")</ID>
+    <ID>MaxLineLength:Migration2To3.kt$Migration2To3$database.execSQL("CREATE TABLE IF NOT EXISTS `time_intervals` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `project_id` INTEGER NOT NULL, `start_in_milliseconds` INTEGER NOT NULL, `stop_in_milliseconds` INTEGER NOT NULL, `registered` INTEGER NOT NULL, FOREIGN KEY(`project_id`) REFERENCES `projects`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )")</ID>
+    <ID>MaxLineLength:Migration2To3.kt$Migration2To3$database.execSQL("INSERT INTO `time_intervals` (`_id`, `project_id`, `start_in_milliseconds`, `stop_in_milliseconds`, `registered`) SELECT `_id`, `project_id`, `start`, `stop`, `registered` FROM `time`")</ID>
+    <ID>MaxLineLength:TimeReportDao.kt$TimeReportDao$ GROUP BY date(date(start_in_milliseconds / 1000, 'unixepoch', 'localtime'), '-6 days', 'weekday 1', 'localtime'))</ID>
+    <ID>MemberNameEqualsClassName:ClockOut.kt$ClockOut$private suspend fun clockOut( active: TimeInterval.Active, stop: Milliseconds ): TimeInterval.Inactive</ID>
+    <ID>NewLineAtEndOfFile:AppKeys.kt$me.raatiniemi.worker.domain.configuration.AppKeys.kt</ID>
+    <ID>NewLineAtEndOfFile:DateTimeViewActions.kt$me.raatiniemi.worker.feature.shared.datetime.model.DateTimeViewActions.kt</ID>
+    <ID>NewLineAtEndOfFile:EventSource.kt$me.raatiniemi.worker.monitor.analytics.EventSource.kt</ID>
+    <ID>ReturnCount:TimeReportViewModel.kt$TimeReportViewModel$private fun consume(longPress: TimeReportLongPressAction): Boolean</ID>
+    <ID>SwallowedException:AllProjectsViewModel.kt$AllProjectsViewModel$e: ElapsedTimePastAllowedException</ID>
+    <ID>SwallowedException:CreateProjectViewModel.kt$CreateProjectViewModel$e: InvalidProjectNameException</ID>
+    <ID>SwallowedException:CreateProjectViewModel.kt$CreateProjectViewModel$e: ProjectAlreadyExistsException</ID>
+    <ID>SwallowedException:Looper.kt$e: NoClassDefFoundError</ID>
+    <ID>SwallowedException:timeIntervalStartingPoint.kt$e: InvalidStartingPointException</ID>
+    <ID>ThrowsCount:timeIntervals.kt$fun timeInterval( projectId: ProjectId, configure: (TimeInterval.Builder) -&gt; Unit ): TimeInterval</ID>
+    <ID>TooGenericExceptionCaught:AllProjectsPagingSource.kt$AllProjectsPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AllProjectsViewModel.kt$AllProjectsViewModel$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CreateProjectViewModel.kt$CreateProjectViewModel$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TimeReportViewModel.kt$TimeReportViewModel$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TimeReportWeekPagingSource.kt$TimeReportWeekPagingSource$e: Exception</ID>
+    <ID>TooManyFunctions:AllProjectsFragment.kt$AllProjectsFragment : Fragment</ID>
+    <ID>TooManyFunctions:AllProjectsViewModel.kt$AllProjectsViewModel : ViewModel</ID>
+    <ID>TooManyFunctions:CreateProjectScreen.kt$me.raatiniemi.worker.feature.projects.createproject.view.CreateProjectScreen.kt</ID>
+    <ID>TooManyFunctions:ProjectRepositoryTest.kt$ProjectRepositoryTest</ID>
+    <ID>TooManyFunctions:TimeIntervalRepositoryTest.kt$TimeIntervalRepositoryTest</ID>
+    <ID>TooManyFunctions:TimeReportFragment.kt$TimeReportFragment : Fragment</ID>
+    <ID>TooManyFunctions:TimeReportRepositoryTest.kt$TimeReportRepositoryTest</ID>
+    <ID>TooManyFunctions:TimeReportViewModel.kt$TimeReportViewModel : ViewModelTimeReportStateManager</ID>
+    <ID>TooManyFunctions:view.kt$me.raatiniemi.worker.feature.projects.timereport.view.view.kt</ID>
+    <ID>UnnecessaryAbstractClass:DateTimeViewActions.kt$DateTimeViewActions.DateTimeIsOutsideOfAllowedInterval$DateTimeIsOutsideOfAllowedInterval</ID>
+    <ID>WildcardImport:AllProjectsFragment.kt$import android.view.*</ID>
+    <ID>WildcardImport:CountTimeReportWeeksTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:CreateProjectScreen.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:CreateProjectScreen.kt$import me.raatiniemi.worker.feature.projects.createproject.model.*</ID>
+    <ID>WildcardImport:DateTimePickerDialogFragment.kt$import me.raatiniemi.worker.feature.shared.view.*</ID>
+    <ID>WildcardImport:DateTimePickerDialogFragmentTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:DateTimeViewModelTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:FindTimeReportWeeksTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:GroupByKtTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:ProjectDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:ProjectRepositoryTest.kt$import me.raatiniemi.worker.domain.project.model.*</ID>
+    <ID>WildcardImport:RefreshTimeIntervalLifecycleObserver.kt$import androidx.lifecycle.*</ID>
+    <ID>WildcardImport:SettingsViewModelTest.kt$import org.junit.Assert.*</ID>
+    <ID>WildcardImport:TimeIntervalDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:TimeIntervalEntity.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:TimeReportFragment.kt$import android.view.*</ID>
+    <ID>WildcardImport:TimeReportFragment.kt$import me.raatiniemi.worker.feature.shared.view.*</ID>
+    <ID>WildcardImport:TimeReportRepositoryTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:TimeReportViewModel.kt$import androidx.lifecycle.*</ID>
+    <ID>WildcardImport:TimeReportViewModel.kt$import me.raatiniemi.worker.feature.projects.timereport.model.*</ID>
+    <ID>WildcardImport:TimeReportViewModelTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:TimeReportWeekPagingSourceTest.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:datePicker.kt$import me.raatiniemi.worker.domain.time.*</ID>
+    <ID>WildcardImport:koin.kt$import me.raatiniemi.worker.koin.module.*</ID>
+    <ID>WildcardImport:useCase.kt$import me.raatiniemi.worker.domain.project.usecase.*</ID>
+    <ID>WildcardImport:useCase.kt$import me.raatiniemi.worker.domain.timeinterval.usecase.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

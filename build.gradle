@@ -23,7 +23,18 @@ buildscript {
 plugins {
     alias libs.plugins.android apply false
     alias libs.plugins.kotlin.android apply false
+    alias libs.plugins.detekt
     alias libs.plugins.semver.git
+}
+
+detekt {
+    config = files("${projectDir}/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+    input = files(
+            "app/src",
+            "core/src",
+            "core-test/src"
+    )
 }
 
 allprojects {

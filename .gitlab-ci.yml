@@ -27,6 +27,12 @@ lint:yaml:
   extends:
     - .yaml-lint
 
+lint:detekt:
+  extends:
+    - .in-gradle-environment
+  script:
+    - gradle detekt
+
 # yamllint disable rule:line-length
 core:build:
   extends:
