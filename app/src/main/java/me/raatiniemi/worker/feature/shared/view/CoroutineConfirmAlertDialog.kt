@@ -25,7 +25,7 @@ internal enum class ConfirmAction { YES, NO }
 
 internal object CoroutineConfirmAlertDialog {
     suspend fun build(context: Context, title: Int, message: Int) =
-        suspendCoroutine<ConfirmAction> {
+        suspendCoroutine {
             val alert = AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
