@@ -21,10 +21,10 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 
 sealed class TimeReportTapAction : TimeReportSelectAction {
     data class TapDay(val day: TimeReportDay) : TimeReportTapAction() {
-        override val items = day.timeIntervals
+        override val items = day.timeIntervals.toSet()
     }
 
     data class TapItem(val timeInterval: TimeInterval) : TimeReportTapAction() {
-        override val items = listOf(timeInterval)
+        override val items = setOf(timeInterval)
     }
 }

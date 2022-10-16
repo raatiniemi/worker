@@ -21,10 +21,10 @@ import me.raatiniemi.worker.domain.timereport.model.TimeReportDay
 
 sealed class TimeReportLongPressAction : TimeReportSelectAction {
     data class LongPressDay(val day: TimeReportDay) : TimeReportLongPressAction() {
-        override val items = day.timeIntervals
+        override val items = day.timeIntervals.toSet()
     }
 
     data class LongPressItem(val timeInterval: TimeInterval) : TimeReportLongPressAction() {
-        override val items = listOf(timeInterval)
+        override val items = setOf(timeInterval)
     }
 }
