@@ -40,13 +40,13 @@ jacocoTestReport {
 }
 
 dependencies {
-    compileOnly project(':core')
-    compileOnly 'junit:junit:4.13.2'
-    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
+    compileOnly(project(':core'))
+    compileOnly(libs.junit)
+    compileOnly(libs.kotlinx.coroutines.test)
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation(libs.kotlin)
 
-    testImplementation project(':core')
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation(project(':core'))
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.junit)
 }

@@ -40,9 +40,9 @@ jacocoTestReport {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation(libs.kotlin)
 
-    testImplementation project(':core-test')
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation(project(':core-test'))
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.junit)
 }

@@ -14,4 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+}
+
+enableFeaturePreview("VERSION_CATALOGS")
+
 include ':app', ':core', ':core-test'
