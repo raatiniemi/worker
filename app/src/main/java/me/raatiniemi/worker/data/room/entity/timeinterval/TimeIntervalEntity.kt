@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.data.room.entity.timeinterval
 
 import androidx.room.*
-import androidx.room.ForeignKey.CASCADE
 import me.raatiniemi.worker.data.room.entity.project.ProjectEntity
 import me.raatiniemi.worker.domain.project.model.ProjectId
 import me.raatiniemi.worker.domain.time.Milliseconds
@@ -33,7 +32,7 @@ import me.raatiniemi.worker.domain.timeinterval.model.timeInterval
             entity = ProjectEntity::class,
             parentColumns = ["_id"],
             childColumns = ["project_id"],
-            onDelete = CASCADE
+            onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [
