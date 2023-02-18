@@ -23,7 +23,7 @@ eventbus = "3.2.0"
 google-material = "1.6.1"
 junit = "4.13.2"
 koin = "2.2.3"
-kotlin = "1.7.20"
+kotlin = "1.8.10"
 kotlinx-coroutines = "1.6.4"
 timber = "5.0.1"
 
@@ -82,5 +82,5 @@ android = { id = "com.android.application", version = "7.4.1" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin = { id = "kotlin", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "1.7.20-1.0.7" }
+ksp = { id = "com.google.devtools.ksp", version = "1.8.10-1.0.9" }
 semver-git = { id = "com.cinnober.gradle.semver-git", version = "2.4.0" }
