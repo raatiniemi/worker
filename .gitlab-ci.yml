@@ -1,8 +1,4 @@
 ---
-variables:
-  TZ: "Europe/Stockholm"
-  GRADLE_VERSION: "8.0.0-jdk11"
-
 include:
   - project: 'rahome/gitlab-ci-templates'
     ref: main
@@ -16,55 +12,118 @@ include:
     ref: main
     file: Owasp.gitlab-ci.yml
 
+variables:
+  GRADLE_VERSION: "8.0.0-jdk11"
+  TZ: "Europe/Stockholm"
+
 .android-variables:
   extends:
     - .in-android-environment
   variables:
-    ANDROID_API_VERSION: "33"
     JDK_VERSION: "11"
-
-lint:yaml:
-  extends:
-    - .yaml-lint
-
-lint:detekt:
-  extends:
-    - .in-gradle-environment
-  script:
-    - gradle detekt
+    ANDROID_API_VERSION: "33"
 
 # yamllint disable rule:line-length
-core:build:
+build:app:
+  stage: build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
   extends:
-    - .in-gradle-environment
-  script:
-    - gradle core:assemble core-test:assemble
-    - echo "PROJECT_VERSION=$(gradle showVersion | grep -Poi '(?<=version[:]\s)(.+)')" >> core-build.env
+    - .in-android-environment
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
       - .gradle
+      - app/build
       - core/build
       - core-test/build
+  script:
+    - ./gradlew core:assemble
+    - ./gradlew core-test:assemble
+    - ./gradlew app:assembleDebug
+    - ./gradlew app:assembleRelease
+    - ./gradlew app:assembleAndroidTest
+    - echo "PROJECT_VERSION=$(./gradlew showVersion | grep -Poi '(?<=version[:]\s)(.+)')" >> build-app.env
   artifacts:
     reports:
-      dotenv: core-build.env
+      dotenv: build-app.env
     paths:
+      - app/build/outputs/apk/release
+      - app/build/outputs/apk/debug
+      - app/build/outputs/apk/androidTest
+      - app/build/tmp/kotlin-classes/release
+      - app/build/tmp/kotlin-classes/debug
+      - app/build/tmp/kotlin-classes/debugAndroidTest
       - core/build/libs/
       - core/build/classes/kotlin/main/
       - core-test/build/libs/
       - core-test/build/classes/kotlin/main/
     expire_in: 4 hours
+  variables: !reference [.android-variables, variables]
 # yamllint enable rule:line-length
 
-core:test:
+test:android:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   extends:
-    - .in-gradle-environment
-  script:
-    - gradle core:test core-test:test
+    - .in-android-environment
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
   needs:
-    - job: core:build
+    - job: build:app
+  script:
+    - ./gradlew app:lintRelease
+  variables: !reference [.android-variables, variables]
+
+test:app:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+  extends:
+    - .in-android-environment
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - .gradle
+      - app/build
+      - core/build
+      - core-test/build
+  needs:
+    - job: build:app
+  script:
+    - ./gradlew app:testDebugUnitTest
+  artifacts:
+    paths:
+      - app/build/outputs/unit_test_code_coverage/
+      - app/build/test-results/testDebugUnitTest/
+      - app/build/tmp/kotlin-classes/debugUnitTest/
+    expire_in: 4 hours
+  variables: !reference [.android-variables, variables]
+
+test:core:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -72,6 +131,13 @@ core:test:
       - .gradle
       - core/build
       - core-test/build
+  needs:
+    - job: build:app
+  extends:
+    - .in-gradle-environment
+  script:
+    - gradle core:test
+    - gradle core-test:test
   artifacts:
     paths:
       - core/build/jacoco/
@@ -82,41 +148,36 @@ core:test:
       - core-test/build/classes/kotlin/test/
     expire_in: 4 hours
 
-# yamllint disable rule:line-length
-app:build:
+test:detekt:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
   extends:
-    - .in-android-environment
+    - .in-gradle-environment
+  needs: []
   script:
-    - ./gradlew app:assembleRelease app:assembleDebug app:assembleAndroidTest
-  needs:
-    - job: core:build
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - .gradle
-      - app/build
-      - core/build
-      - core-test/build
-  variables: !reference [.android-variables, variables]
-  artifacts:
-    paths:
-      - app/build/outputs/apk/androidTest
-      - app/build/outputs/apk/debug
-      - app/build/outputs/apk/release
-      - app/build/tmp/kotlin-classes/debug
-      - app/build/tmp/kotlin-classes/debugAndroidTest
-      - app/build/tmp/kotlin-classes/release
-    expire_in: 4 hours
-# yamllint enable rule:line-length
+    - gradle detekt
 
-app:lint:
+test:owasp:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  extends:
+    - .owasp-dependency-check
+  needs:
+    - job: build:app
+
+test:report:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   extends:
     - .in-android-environment
-  script:
-    - ./gradlew app:lintRelease
-  needs:
-    - job: core:build
-    - job: app:build
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -125,51 +186,12 @@ app:lint:
       - app/build
       - core/build
       - core-test/build
-  variables: !reference [.android-variables, variables]
-
-app:test:
-  extends:
-    - .in-android-environment
-  script:
-    - ./gradlew app:testDebugUnitTest
   needs:
-    - job: core:build
-    - job: app:build
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: pull
-    paths:
-      - .gradle
-      - app/build
-      - core/build
-      - core-test/build
-  variables: !reference [.android-variables, variables]
-  artifacts:
-    paths:
-      - app/build/outputs/unit_test_code_coverage/
-      - app/build/test-results/testDebugUnitTest/
-      - app/build/tmp/kotlin-classes/debugUnitTest/
-    expire_in: 4 hours
-
-generate coverage reports:
-  extends:
-    - .in-android-environment
+    - job: build:app
+    - job: test:core
+    - job: test:app
   script:
     - ./gradlew jacocoTestReport
-  needs:
-    - job: core:build
-    - job: app:build
-    - job: core:test
-    - job: app:test
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: pull
-    paths:
-      - .gradle
-      - app/build
-      - core/build
-      - core-test/build
-  variables: !reference [.android-variables, variables]
   artifacts:
     paths:
       - app/build/reports/jacoco/jacocoTestReport
@@ -177,55 +199,47 @@ generate coverage reports:
       - core-test/build/reports/jacoco/test
     when: always
     expire_in: 4 hours
-  only:
-    - main
+  variables: !reference [.android-variables, variables]
 
-sast:owasp:
-  extends:
-    - .owasp-dependency-check
+test:yaml:
+  stage: test
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-  needs:
-    - job: core:build
-    - job: app:build
+  extends:
+    - .yaml-lint
+  needs: []
 
-sast:sonar:
+test:sonar:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   image: sonarsource/sonar-scanner-cli
+  needs:
+    - job: build:app
+    - job: test:app
+    - job: test:core
+    - job: test:report
   script:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
-        -Dsonar.organization="${SONAR_ORGANIZATION}"
-        -Dsonar.login="${SONAR_LOGIN}"
-        -Dsonar.projectVersion="${PROJECT_VERSION}"
+      -Dsonar.organization="${SONAR_ORGANIZATION}"
+      -Dsonar.login="${SONAR_LOGIN}"
+      -Dsonar.projectVersion="${PROJECT_VERSION}"
   interruptible: false
   tags:
     - docker
-  needs:
-    - job: core:build
-    - job: app:build
-    - job: core:test
-    - job: app:test
-    - job: generate coverage reports
-  only:
-    - main
 
 # yamllint disable rule:line-length
-app:deploy:
+deploy:app:
+  stage: deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_TAG'
   image: ruby:2.7.1-buster
-  script:
-    - if [ -z "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" ]; then echo "No Google Play Android developer key is available, ensure that \$GOOGLE_PLAY_ANDROID_DEVELOPER_KEY is set for project."; exit 1; fi;
-    - echo "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" >"${SUPPLY_JSON_KEY}";
-    - bundle install
-    - bundle exec fastlane run upload_to_play_store
-  interruptible: false
-  tags:
-    - docker
-  needs:
-    - job: app:build
-    - job: core:test
-      artifacts: false
-    - job: app:test
-      artifacts: false
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -234,11 +248,23 @@ app:deploy:
       - app/build
       - core/build
       - core-test/build
-  only:
-    - tags
+  needs:
+    - job: build:app
+    - job: test:app
+      artifacts: false
+    - job: test:core
+      artifacts: false
+  script:
+    - if [ -z "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" ]; then echo "No Google Play Android developer key is available, ensure that \$GOOGLE_PLAY_ANDROID_DEVELOPER_KEY is set for project."; exit 1; fi;
+    - echo "${GOOGLE_PLAY_ANDROID_DEVELOPER_KEY}" >"${SUPPLY_JSON_KEY}";
+    - bundle install
+    - bundle exec fastlane run upload_to_play_store
+  interruptible: false
   variables:
     SUPPLY_PACKAGE_NAME: 'me.raatiniemi.worker'
     SUPPLY_APK: 'app/build/outputs/apk/release/app-release.apk'
     SUPPLY_TRACK: 'internal'
     SUPPLY_JSON_KEY: 'app/google-play-android-developer-key.json'
+  tags:
+    - docker
 # yamllint enable rule:line-length
