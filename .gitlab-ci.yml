@@ -1,7 +1,7 @@
 ---
 variables:
   TZ: "Europe/Stockholm"
-  GRADLE_VERSION: "7.4.2-jdk11"
+  GRADLE_VERSION: "8.0.0-jdk11"
 
 include:
   - project: 'rahome/gitlab-ci-templates'

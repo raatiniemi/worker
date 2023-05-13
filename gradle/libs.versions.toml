@@ -78,7 +78,7 @@ androidx-room = ["androidx-room", "androidx-room-runtime"]
 koin = ["koin-android", "koin-androidx-viewmodel"]
 
 [plugins]
-android = { id = "com.android.application", version = "7.4.1" }
+android = { id = "com.android.application", version = "8.0.1" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin = { id = "kotlin", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
