@@ -162,6 +162,7 @@ class AllProjectsFragment : Fragment() {
         }
     }
 
+    @Suppress("CyclomaticComplexMethod")
     private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
             is AllProjectsViewActions.CreateProject -> {
