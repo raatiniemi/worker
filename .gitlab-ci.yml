@@ -13,14 +13,14 @@ include:
     file: Owasp.gitlab-ci.yml
 
 variables:
-  GRADLE_VERSION: "8.0.0-jdk11"
+  GRADLE_VERSION: "8.0.0-jdk17"
   TZ: "Europe/Stockholm"
 
 .android-variables:
   extends:
     - .in-android-environment
   variables:
-    JDK_VERSION: "11"
+    JDK_VERSION: "17"
     ANDROID_API_VERSION: "33"
 
 # yamllint disable rule:line-length
