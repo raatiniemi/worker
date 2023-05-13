@@ -20,7 +20,7 @@ include:
   extends:
     - .in-android-environment
   variables:
-    ANDROID_API_VERSION: "32"
+    ANDROID_API_VERSION: "33"
     JDK_VERSION: "11"
 
 lint:yaml:
