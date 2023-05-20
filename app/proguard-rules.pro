@@ -16,6 +16,8 @@
 #   public *;
 #}
 
+-dontwarn javax.**
+
 -dontshrink
 
 # Application
