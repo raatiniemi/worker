@@ -46,7 +46,6 @@ build:app:
     - ./gradlew core-test:assemble
     - ./gradlew app:assembleDebug
     - ./gradlew app:assembleRelease
-    - ./gradlew app:assembleAndroidTest
     - echo "PROJECT_VERSION=$(./gradlew showVersion | grep -Poi '(?<=version[:]\s)(.+)')" >> build-app.env
   artifacts:
     reports:
@@ -54,10 +53,8 @@ build:app:
     paths:
       - app/build/outputs/apk/release
       - app/build/outputs/apk/debug
-      - app/build/outputs/apk/androidTest
       - app/build/tmp/kotlin-classes/release
       - app/build/tmp/kotlin-classes/debug
-      - app/build/tmp/kotlin-classes/debugAndroidTest
       - core/build/libs/
       - core/build/classes/kotlin/main/
       - core-test/build/libs/
