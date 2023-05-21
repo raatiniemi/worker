@@ -16,7 +16,7 @@
 #   public *;
 #}
 
--dontwarn javax.**
+-dontwarn javax.lang.model.element.Modifier
 
 -dontshrink
 
