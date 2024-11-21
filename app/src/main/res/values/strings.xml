@@ -119,6 +119,7 @@
 
     <string name="date_time_picker_time_is_after_allowed_title">Date/time is not allowed</string>
     <string name="date_time_picker_time_is_after_allowed_message">The chosen date and time combination is after the maximum allowed time.\n\nPlease ensure that the date/time is before %s.</string>
+    <string name="upload">Upload</string>
     <!--</editor-fold>-->
 
 </resources>

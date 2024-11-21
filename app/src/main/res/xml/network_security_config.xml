@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2022 Tobias Raatiniemi
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 Tobias Raatiniemi
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -14,13 +15,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/actions_main_create_project"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/projects_all_menu_create_project" />
-    <item
-        android:id="@+id/actions_main_upload"
-        android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/upload" />
-</menu>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">raatiniemi.se</domain>
+        <domain includeSubdomains="true">raatiniemi.me</domain>
+    </domain-config>
+</network-security-config>

@@ -20,9 +20,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.databinding.FragmentAllProjectsBinding
 import me.raatiniemi.worker.feature.projects.all.model.AllProjectsActions
@@ -124,6 +126,12 @@ class AllProjectsFragment : Fragment() {
     override fun onOptionsItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
         R.id.actions_main_create_project -> {
             vm.createProject()
+            true
+        }
+        R.id.actions_main_upload -> {
+            lifecycleScope.launch {
+                vm.change()
+            }
             true
         }
         else -> super.onOptionsItemSelected(menuItem)

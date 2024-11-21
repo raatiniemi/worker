@@ -139,6 +139,7 @@ kotlin {
 
 dependencies {
     ksp(libs.androidx.room.compiler)
+    ksp(libs.moshi.kotlin.codegen)
 
     implementation(project(':core'))
     implementation(libs.androidx.core)
@@ -169,6 +170,7 @@ dependencies {
 
     implementation(libs.timber)
     implementation(libs.eventbus)
+    implementation(libs.bundles.retrofit)
 
     testImplementation(project(':core-test'))
     testImplementation(libs.junit)

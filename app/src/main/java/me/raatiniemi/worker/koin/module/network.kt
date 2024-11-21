@@ -14,17 +14,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.koin
+package me.raatiniemi.worker.koin.module
 
-import me.raatiniemi.worker.koin.module.*
+import me.raatiniemi.worker.network.Api
+import okhttp3.OkHttpClient
+import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
-internal val defaultKoinModules = listOf(
-    monitor,
-    preference,
-    data,
-    network,
-    projects,
-    settings,
-    shared,
-    useCase
-)
+internal val network = module {
+    single {
+        OkHttpClient.Builder()
+            .build()
+    }
+
+    single {
+        Retrofit.Builder()
+            .baseUrl("http://wt.raatiniemi.se:3000")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .client(get())
+            .build()
+    }
+
+    single {
+        val retrofit = get<Retrofit>()
+        retrofit.create(Api::class.java)
+    }
+}

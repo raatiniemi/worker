@@ -33,10 +33,13 @@ import me.raatiniemi.worker.data.datasource.AllProjectsPagingSource
 import me.raatiniemi.worker.domain.configuration.AppKeys
 import me.raatiniemi.worker.domain.configuration.KeyValueStore
 import me.raatiniemi.worker.domain.project.model.Project
+import me.raatiniemi.worker.domain.project.repository.ProjectRepository
 import me.raatiniemi.worker.domain.project.usecase.CountProjects
 import me.raatiniemi.worker.domain.project.usecase.FindProjects
 import me.raatiniemi.worker.domain.project.usecase.RemoveProject
 import me.raatiniemi.worker.domain.time.Milliseconds
+import me.raatiniemi.worker.domain.timeinterval.model.TimeInterval
+import me.raatiniemi.worker.domain.timeinterval.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockIn
 import me.raatiniemi.worker.domain.timeinterval.usecase.ClockOut
 import me.raatiniemi.worker.domain.timeinterval.usecase.ElapsedTimePastAllowedException
@@ -47,6 +50,8 @@ import me.raatiniemi.worker.feature.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.feature.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import me.raatiniemi.worker.network.Api
+import me.raatiniemi.worker.network.UploadRequest
 import timber.log.Timber
 import java.util.*
 
@@ -61,7 +66,10 @@ internal class AllProjectsViewModel(
     private val getProjectTimeSince: GetProjectTimeSince,
     private val clockIn: ClockIn,
     private val clockOut: ClockOut,
-    private val removeProject: RemoveProject
+    private val removeProject: RemoveProject,
+    private val projectRepository: ProjectRepository,
+    private val timeIntervalRepository: TimeIntervalRepository,
+    private val api: Api,
 ) : ViewModel() {
     private val _reload = MutableStateFlow(value = Reload())
 
@@ -188,6 +196,49 @@ internal class AllProjectsViewModel(
         } catch (e: Exception) {
             Timber.w(e, "Unable to remove project")
             viewActions += AllProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
+        }
+    }
+
+    suspend fun change() {
+        try {
+            val projects = mutableListOf<UploadRequest.Companion.Project>()
+            for (project in projectRepository.findAll()) {
+                val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))
+                projects.add(
+                    UploadRequest.Companion.Project(
+                        id = project.id.value,
+                        name = project.name.value,
+                        timeIntervals = timeIntervals
+                            .map {
+                                if (it is TimeInterval.Registered) {
+                                    UploadRequest.Companion.TimeInterval(
+                                        id = it.id.value,
+                                        start = it.start.value,
+                                        stop = it.stop.value,
+                                        isRegistered = true,
+                                    )
+                                } else if (it is TimeInterval.Inactive) {
+                                    UploadRequest.Companion.TimeInterval(
+                                        id = it.id.value,
+                                        start = it.start.value,
+                                        stop = it.stop.value,
+                                        isRegistered = false,
+                                    )
+                                } else {
+                                    UploadRequest.Companion.TimeInterval(
+                                        id = it.id.value,
+                                        start = it.start.value,
+                                        stop = 0L,
+                                        isRegistered = false,
+                                    )
+                                }
+                            }
+                    )
+                )
+            }
+            api.upload(UploadRequest(projects))
+        } catch (e: Exception) {
+            Timber.e(e, "Unable to upload projects")
         }
     }
 
