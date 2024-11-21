@@ -21,7 +21,7 @@ variables:
     - .in-android-environment
   variables:
     JDK_VERSION: "17"
-    ANDROID_API_VERSION: "33"
+    ANDROID_API_VERSION: "34"
 
 # yamllint disable rule:line-length
 build:app:
